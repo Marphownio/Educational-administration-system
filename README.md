@@ -8,7 +8,7 @@
 
 
 <div align=center>
-<img src="C:\Users\Lenovo\Desktop\微信图片_20220223193214.jpg" width="240" height="300" align="bottom"/>
+<img src="https://devcloud.cn-north-4.huaweicloud.com/codehub/project/b24007d08d5147bd827c9300d8fc6c5d/codehub/2029523/home?ref=master&filePath=image_folder%2Fmaiwuyuao.jpg" width="240" height="300" align="bottom"/>
 </div>
 <h1 align="left">买巫予骜 20300290032</h1>
 
