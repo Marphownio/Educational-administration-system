@@ -16,4 +16,12 @@
 <p align="left">大家好，我是买巫予骜，来自四川省西昌市。我比较喜欢音乐，喜欢唱歌、弹吉他，非常高兴能够认识大家，希望与大家一起进步！</p>
 
 *****************
+</div>
+<div align=center>
+<img src="image_folder/luyiyang.jpg" height=300>
+</div>
+<h1 align="left">陆一杨 20300200013</h1>
 
+<p align="left">大家好，我是陆一杨，来自广西南宁。平时喜欢听音乐、打乒乓球，希望大家多多指教。
+
+***
