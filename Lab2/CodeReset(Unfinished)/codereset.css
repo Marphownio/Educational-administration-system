@@ -9,7 +9,7 @@ body{
     background-attachment:fixed;
 }
 
-.login{
+.resetcode{
     position: absolute;
     top: 60%;
     margin-top: -250px;
@@ -35,7 +35,7 @@ input{
     font-size: 20px;
 }
 
-.btn{
+.verify{
     background-color: #59c2c5;
     width: 30%;
     height: 43px;
@@ -45,7 +45,7 @@ input{
     font-weight: 600;
     color: white;
 }
-.btn:hover{
+.verify:hover{
     width: 31%;
     height: 44px;
     background-color: #59c2a0;
