@@ -1,0 +1,56 @@
+*{
+    user-select: none;
+}
+
+body{
+    background: url(../ImageFloder/login_background.jpeg);
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-attachment:fixed;
+}
+
+.Headline{
+    padding-left: 13%;
+    font-size:40px;
+    font-weight: 900;
+}
+
+.Navigation{
+    position:absolute;
+    top:25%;
+    left:10%;
+    width: 1235;
+    height: 350px;
+    background-color: rgba(255, 255, 255, 0.746);
+    border-radius: 25px;
+    padding: 15px;
+}
+
+a{
+    text-decoration: none;
+    color:black;
+    font-weight: 600;
+}
+.Fuwu{
+    line-height: 70px;
+    font-size: 22px;
+    font-weight: 700;
+    padding-left: 30px;
+    border-bottom: 2px solid silver;
+}
+
+table{
+    border-collapse: separate;
+    border-spacing: 15px;
+}
+
+.Choose{
+    background-color: #ffffff00;
+    width:1%;
+    height: 180px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+.Choose:hover{
+    background-color: #ffffff91;
+}
