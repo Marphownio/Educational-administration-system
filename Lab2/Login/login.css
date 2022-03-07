@@ -24,23 +24,35 @@ body{
 }
 
 
-input{
+.input1{
     outline: none;
     border: none;
     background-color: rgba(238, 237, 237, 0);
     width: 90%;
     height: 35px;
-    margin-bottom: 30px;
+    border-bottom: 2px solid silver;
+    font-size: 20px;
+}
+
+.input2{
+    outline: none;
+    border: none;
+    background-color: rgba(238, 237, 237, 0);
+    width: 90%;
+    height: 35px;
+    margin-top: 35px;
     border-bottom: 2px solid silver;
     font-size: 20px;
 }
 
 .btn{
+    outline: none;
+    border: none;
     background-color: #59c2c5;
     width: 30%;
     height: 43px;
     border-radius: 18px;
-    margin-top: 0px;
+    margin-top: 15px;
     font-size: 28px;
     font-weight: 600;
     color: white;
@@ -49,4 +61,12 @@ input{
     width: 31%;
     height: 44px;
     background-color: #59c2a0;
+}
+
+span{
+    color:rgb(98, 98, 98);
+    margin-bottom: 100px;
+    height: 4000px;
+    font-weight: 600;
+    font-size: xx-small;
 }
