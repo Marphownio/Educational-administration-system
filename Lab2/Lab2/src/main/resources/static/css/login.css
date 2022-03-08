@@ -1,0 +1,65 @@
+*{
+    user-select: none;/*页面不允许做粘贴复制*/
+}
+
+body{/*背景参数*/
+    background: url(../img/login_background.jpeg);
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-attachment:fixed;
+}
+
+.login{/*登录界面框*/
+    position: absolute;
+    top: 40%;
+    margin-top: -250px;
+    left: 50%;
+    margin-left: -280px;
+    background-color: rgba(238, 237, 237, 0.698);
+    width: 500px;
+    height: 355px;
+    border-radius: 25px;
+    text-align: center;
+    padding: 15px;
+}
+
+
+.IDinput{/*用户名输入框*/
+    outline: none;
+    border: none;
+    background-color: rgba(238, 237, 237, 0);
+    width: 90%;
+    height: 35px;
+    margin-top: 35px;
+    border-bottom: 2px solid silver;
+    font-size: 20px;
+}
+
+.Passwordinput{/*密码输入框*/
+    outline: none;
+    border: none;
+    background-color: rgba(238, 237, 237, 0);
+    width: 90%;
+    height: 35px;
+    margin-top: 35px;
+    border-bottom: 2px solid silver;
+    font-size: 20px;
+}
+
+.btn{/*提交按钮*/
+    outline: none;
+    border: none;
+    background-color: #59c2c5;
+    width: 30%;
+    height: 43px;
+    border-radius: 18px;
+    margin-top: 30px;
+    font-size: 28px;
+    font-weight: 600;
+    color: white;
+}
+.btn:hover{/*鼠标点击提交按钮后效果*/
+    width: 31%;
+    height: 44px;
+    background-color: #59c2a0;
+}
