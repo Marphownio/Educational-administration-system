@@ -1,21 +1,21 @@
 *{
     user-select: none;
-}
+}/*禁止复制页面文字*/
 
-body{
+body{/*背景图*/
     background: url(../ImageFloder/login_background.jpeg);
     background-repeat:no-repeat;
     background-size:cover;
     background-attachment:fixed;
 }
 
-.Headline{
+.Headline{/*欢迎页*/
     padding-left: 13%;
     font-size:40px;
     font-weight: 900;
 }
 
-.Navigation{
+.Dashboard{/*功能选择页面*/
     position:absolute;
     top:25%;
     left:10%;
@@ -26,12 +26,13 @@ body{
     padding: 15px;
 }
 
-a{
+a{/*超链接*/
     text-decoration: none;
     color:black;
     font-weight: 600;
 }
-.Fuwu{
+
+.table_head{/*功能选择页面的首行文字*/
     line-height: 70px;
     font-size: 22px;
     font-weight: 700;
@@ -39,18 +40,18 @@ a{
     border-bottom: 2px solid silver;
 }
 
-table{
+table{/*功能选择页面*/
     border-collapse: separate;
     border-spacing: 15px;
 }
 
-.Choose{
+.Choose{/*具体的功能按钮*/
     background-color: #ffffff00;
     width:1%;
     height: 180px;
     border-radius: 10px;
     font-size: 20px;
 }
-.Choose:hover{
+.Choose:hover{/*鼠标点击功能按钮后*/
     background-color: #ffffff91;
 }
