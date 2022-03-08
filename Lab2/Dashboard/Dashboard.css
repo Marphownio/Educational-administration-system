@@ -8,6 +8,18 @@ body{/*背景图*/
     background-size:cover;
     background-attachment:fixed;
 }
+.nav{
+    width: 100%;
+    position: relative;
+    height: 60px;
+    background-color: rgb(255,255,255,0.3);
+}
+.nav .banner_area{
+    padding-top:20px;
+    float:right;
+    padding-right:20px;
+    vertical-align: middle;
+}
 
 .Headline{/*欢迎页*/
     padding-left: 13%;
@@ -16,10 +28,9 @@ body{/*背景图*/
 }
 
 .Dashboard{/*功能选择页面*/
-    position:absolute;
     top:25%;
-    left:10%;
-    width: 1235;
+    margin: 0 auto;
+    width: 1235px;
     height: 350px;
     background-color: rgba(255, 255, 255, 0.746);
     border-radius: 25px;
@@ -51,7 +62,17 @@ table{/*功能选择页面*/
     height: 180px;
     border-radius: 10px;
     font-size: 20px;
+    text-align: center;
+    line-height:180px;
 }
+
+.Choose a{
+    display:block;
+    height: 180px;
+    border-radius: 10px;
+    text-align: center;
+}
+
 .Choose:hover{/*鼠标点击功能按钮后*/
     background-color: #ffffff91;
 }
