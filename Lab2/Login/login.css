@@ -1,15 +1,15 @@
 *{
-    user-select: none;
+    user-select: none;/*页面不允许做粘贴复制*/
 }
 
-body{
+body{/*背景参数*/
     background: url(../ImageFloder/login_background.jpeg);
     background-repeat:no-repeat;
     background-size:cover;
     background-attachment:fixed;
 }
 
-.login{
+.login{/*登录界面框*/
     position: absolute;
     top: 60%;
     margin-top: -250px;
@@ -24,7 +24,7 @@ body{
 }
 
 
-.input1{
+.IDinput{/*用户名输入框*/
     outline: none;
     border: none;
     background-color: rgba(238, 237, 237, 0);
@@ -34,7 +34,7 @@ body{
     font-size: 20px;
 }
 
-.input2{
+.Passwordinput{/*密码输入框*/
     outline: none;
     border: none;
     background-color: rgba(238, 237, 237, 0);
@@ -45,7 +45,7 @@ body{
     font-size: 20px;
 }
 
-.btn{
+.btn{/*提交按钮*/
     outline: none;
     border: none;
     background-color: #59c2c5;
@@ -57,13 +57,13 @@ body{
     font-weight: 600;
     color: white;
 }
-.btn:hover{
+.btn:hover{/*鼠标点击提交按钮后效果*/
     width: 31%;
     height: 44px;
     background-color: #59c2a0;
 }
 
-span{
+span{/*提示性息*/
     color:rgb(98, 98, 98);
     margin-bottom: 100px;
     height: 4000px;

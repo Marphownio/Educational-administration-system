@@ -4,27 +4,27 @@
 <meta charset="utf-8"> 
 <title>登录页面</title> 
 <script typr="text/javascript">
-    function Check1(){
+    function IdCheck(){//检查用户名的输入
     var usernameObj = document.getElementById("username");
-    var span1Obj=document.getElementById("span1");
-    if(usernameObj.value.length==0){
+    var span1Obj=document.getElementById("IdWarning");
+    if(usernameObj.value.length==0){//是否输入用户名
         span1Obj.innerHTML="*请输入用户名!";
     }
-    else if(isNaN(usernameObj.value)){
+    else if(isNaN(usernameObj.value)){//是否输入正确的用户名（此处暂定正确的Id只有数字）
         span1Obj.innerHTML="*请输入正确的用户名!";
     }
-    else{
+    else{//输入正确用户名则不做提示
         span1Obj.innerHTML="";
     }
 }
 
-function Check2(){
+function PasswordCheck(){//检查密码的输入
     var usercodeObj = document.getElementById("usercode");
-    var span2Obj=document.getElementById("span2");
-    if(usercodeObj.value.length==0){
+    var span2Obj=document.getElementById("Passwordwarning");
+    if(usercodeObj.value.length==0){//是否输入密码
         span2Obj.innerHTML="*请输入密码!";
     }
-    else{
+    else{//输入密码则不做提示
         span2Obj.innerHTML="";
     }
 }
@@ -37,10 +37,10 @@ function Check2(){
     <form action="" class="login">
         <h1 align="center">欢迎使用教务系统</h1>
         <h3 align="center">请先登录</h3>
-        <input class="input1" type="text" onblur="Check1()" id="username" name="name" placeholder="学号/工号"><br>
-        <span id="span1">&nbsp;</span><br>
-        <input class="input2" type="password" onblur="Check2()" id="usercode" name="code" placeholder="密码"><br>
-        <span id="span2">&nbsp;</span><br>
+        <input class="IDinput" type="text" onblur="IdCheck()" id="username" name="name" placeholder="学号/工号"><br>
+        <span id="IdWarning">&nbsp;</span><br>
+        <input class="Passwordinput" type="password" onblur="PasswordCheck()" id="usercode" name="code" placeholder="密码"><br>
+        <span id="Passwordwarning">&nbsp;</span><br>
         <input type="submit" value="登录" class="btn"> 
     </form>
 </body>
