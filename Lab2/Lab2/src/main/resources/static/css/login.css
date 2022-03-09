@@ -3,7 +3,7 @@
 }
 
 body{/*背景参数*/
-    background: url(../img/login_background.jpeg);
+    background: url(../image/background.jpg);
     background-repeat:no-repeat;
     background-size:cover;
     background-attachment:fixed;

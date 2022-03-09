@@ -11,7 +11,7 @@ public class ResetPasswordController {
     public String resetPassword(@RequestParam("newPassword1") String newPassword1, @RequestParam("newPassword2") String newPassword2) {
         //To Do:重置密码
 
-        return "redirect:/homepage"; //重定向到主页
+        return "redirect:/index"; //重定向到主页
     }
 
 }

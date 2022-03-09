@@ -3,7 +3,7 @@
 }/*禁止复制页面文字*/
 
 body{/*背景图*/
-    background: url(../ImageFloder/login_background.jpeg);
+    background: url(../image/background.jpg);
     background-repeat:no-repeat;
     background-size:cover;
     background-attachment:fixed;
