@@ -1,0 +1,78 @@
+*{
+    user-select: none;
+}/*禁止复制页面文字*/
+
+body{/*背景图*/
+    background: url(../img/login_background.jpeg);
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-attachment:fixed;
+}
+.nav{
+    width: 100%;
+    position: relative;
+    height: 60px;
+    background-color: rgb(255,255,255,0.3);
+}
+.nav .banner_area{
+    padding-top:20px;
+    float:right;
+    padding-right:20px;
+    vertical-align: middle;
+}
+
+.Headline{/*欢迎页*/
+    padding-left: 13%;
+    font-size:40px;
+    font-weight: 900;
+}
+
+.Dashboard{/*功能选择页面*/
+    top:25%;
+    margin: 0 auto;
+    width: 1235px;
+    height: 350px;
+    background-color: rgba(255, 255, 255, 0.746);
+    border-radius: 25px;
+    padding: 15px;
+}
+
+a{/*超链接*/
+    text-decoration: none;
+    color:black;
+    font-weight: 600;
+}
+
+.table_head{/*功能选择页面的首行文字*/
+    line-height: 70px;
+    font-size: 22px;
+    font-weight: 700;
+    padding-left: 30px;
+    border-bottom: 2px solid silver;
+}
+
+table{/*功能选择页面*/
+    border-collapse: separate;
+    border-spacing: 15px;
+}
+
+.Choose{/*具体的功能按钮*/
+    background-color: #ffffff00;
+    width:1%;
+    height: 180px;
+    border-radius: 10px;
+    font-size: 20px;
+    text-align: center;
+    line-height:180px;
+}
+
+.Choose a{
+    display:block;
+    height: 180px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.Choose:hover{/*鼠标点击功能按钮后*/
+    background-color: #ffffff91;
+}
