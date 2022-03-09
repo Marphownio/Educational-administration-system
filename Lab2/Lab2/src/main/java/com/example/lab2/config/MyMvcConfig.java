@@ -20,10 +20,10 @@ public class MyMvcConfig implements WebMvcConfigurer {
     }
 
     //开启拦截器的配置路径
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginHandlerInterceptor())
-                .addPathPatterns("/**")
-                .excludePathPatterns("/", "/login", "/login.html", "/css/**", "/img/**", "/homepage", "/homepage.html", "/passwordreset","/passwordreset.html");
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(new LoginHandlerInterceptor())
+//                .addPathPatterns("/**")
+//                .excludePathPatterns("/", "/login", "/login.html", "/css/**", "/img/**", "/homepage", "/homepage.html", "/passwordreset","/passwordreset.html");
+//    }
 }
