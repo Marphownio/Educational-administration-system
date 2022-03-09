@@ -15,6 +15,8 @@ public class MyMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/login.html").setViewName("login");
         registry.addViewController("/homepage").setViewName("homepage");
         registry.addViewController("/homepage.html").setViewName("homepage");
+        registry.addViewController("/passwordreset").setViewName("passwordreset");
+        registry.addViewController("/passwordreset.html").setViewName("passwordreset");
     }
 
     //开启拦截器的配置路径
@@ -22,6 +24,6 @@ public class MyMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginHandlerInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "login.html", "/login", "/css/**", "/img/**", "/homepage", "/homepage.html");
+                .excludePathPatterns("/", "/login", "/login.html", "/css/**", "/img/**", "/homepage", "/homepage.html", "/passwordreset","/passwordreset.html");
     }
 }
