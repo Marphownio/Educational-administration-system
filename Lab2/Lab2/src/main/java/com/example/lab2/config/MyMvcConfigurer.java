@@ -1,5 +1,6 @@
 package com.example.lab2.config;
 
+import com.example.lab2.interceptor.LoginHandlerInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -13,7 +14,6 @@ public class MyMvcConfigurer implements WebMvcConfigurer {
         registry.addViewController("/").setViewName("login");
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/login.html").setViewName("login");
-        registry.addViewController("/index").setViewName("index");
         registry.addViewController("/index.html").setViewName("index");
         registry.addViewController("/resetPassword").setViewName("resetPassword");
         registry.addViewController("/resetPassword.html").setViewName("resetPassword");
@@ -28,6 +28,6 @@ public class MyMvcConfigurer implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginHandlerInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/login", "/login.html", "/css/**", "/image/**", "/index", "/index.html");
+                .excludePathPatterns("/", "/login", "/login.html", "/css/**", "/image/**");
     }
 }

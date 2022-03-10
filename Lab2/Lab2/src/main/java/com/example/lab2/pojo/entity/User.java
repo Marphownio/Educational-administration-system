@@ -13,11 +13,11 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer username; // student number or employee number
+    private String id; // student number or employee number
     private String password;
     private Integer role; // student or teacher
     private String name;
-    private String IDNumber; // identity card number
+    private String idNumber; // identity card number
     private String phoneNumber;
     private String email;
 }

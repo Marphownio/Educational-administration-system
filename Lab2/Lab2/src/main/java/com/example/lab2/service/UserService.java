@@ -10,14 +10,14 @@ public interface UserService {
     User addUser(User user);
 
     //删除用户
-    void deleteUser(Integer id);
+    void deleteUser(String id);
 
     //修改用户
     User updateUser(User user);
 
     //查询全部用户
-    List<User> getAllUser();
+    List<User> findAllUser();
 
     //通过id查询用户
-    User getUserById(Integer id);
+    User findUserById(String id);
 }

@@ -10,6 +10,5 @@ spring:
     show-sql: true
     open-in-view: false
     database: mysql
-  thymeleaf:
-    cache: false
+server:
   port: 8080
