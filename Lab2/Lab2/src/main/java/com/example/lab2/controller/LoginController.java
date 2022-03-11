@@ -1,6 +1,6 @@
 package com.example.lab2.controller;
 
-import com.example.lab2.pojo.entity.User;
+import com.example.lab2.pojo.User;
 import com.example.lab2.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,6 +1,6 @@
 package com.example.lab2.service;
 
-import com.example.lab2.pojo.entity.User;
+import com.example.lab2.pojo.User;
 
 import java.util.List;
 

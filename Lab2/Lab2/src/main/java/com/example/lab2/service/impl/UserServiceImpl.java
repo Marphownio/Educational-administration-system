@@ -1,6 +1,6 @@
 package com.example.lab2.service.impl;
 
-import com.example.lab2.pojo.entity.User;
+import com.example.lab2.pojo.User;
 import com.example.lab2.repository.UserRepository;
 import com.example.lab2.service.UserService;
 

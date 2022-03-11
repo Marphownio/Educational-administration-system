@@ -1,11 +1,8 @@
-package com.example.lab2.pojo.entity;
+package com.example.lab2.pojo;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -20,5 +17,6 @@ public class User {
     private String idNumber; // identity card number
     private String phoneNumber;
     private String email;
+
 }
 
