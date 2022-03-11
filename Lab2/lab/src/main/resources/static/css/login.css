@@ -11,7 +11,7 @@ body{/*背景参数*/
 
 .login{/*登录界面框*/
     position: absolute;
-    top: 40%;
+    top: 60%;
     margin-top: -250px;
     left: 50%;
     margin-left: -280px;
