@@ -1,23 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <style type="text/css">
-        a:link {
-            color: #000000;
-            text-decoration: none;
-        }
-        a:visited {
-            color: #000000;
-            text-decoration: none;
-        }
-        a:hover {
-            color: #999999;
-            text-decoration: underline;
-        }
-    </style>
     <meta charset="UTF-8">
     <title>教师/学生信息录入</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/addUser.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/addUser.css" th:href="@{/css/addUser.css}">
 
 </head>
 <body>
@@ -27,7 +13,9 @@
         const username_voidObj=document.getElementById("username_void_message");
         const username_errorObj=document.getElementById("username_error_message");
         if(usernameObj.value.length==0)
+        {
             username_voidObj.style.display="inline";
+        }
         else
             username_voidObj.style.display="none"
         if(isNaN(usernameObj.value))
@@ -58,6 +46,10 @@
                 phone_errorObj.style.display="inline";
             else
                 phone_errorObj.style.display="none"
+        }
+        function submit_check()
+        {
+
         }
 </script>
 <header>
