@@ -4,37 +4,136 @@
         <title>教师/学生信息录入</title>
     </head>
     <body>
-    <header>
-    </header>
+    <Nav></Nav>
     <div class="void">
         <span></span>
     </div>
     <div class="showlist">
-        <div class="showlist_header">
-        <span class="role_list">
-            <button class="teacher_list">教师列表</button>
-            <button class="student_list">学生列表</button>
-            <el-button>test</el-button>
-        </span>
-            <span class="function_list">
-            <!--<a href="addUser.vue" ><span class="add" id="Add">添加</span></a>-->
-        </span>
-        </div>
-        <table class="showlist_content">
-            <thead>
-            <tr>
-                <th>学号/工号</th>
-                <th>姓名</th>
-                <th>身份证号</th>
-                <th>手机号</th>
-                <th>邮箱</th>
-            </tr>
-            </thead>
-        </table>
+        <el-form :inline="true" >
+            <el-form-item>
+                <el-button type="primary" @click="dialogVisible=true">添加</el-button>
+            </el-form-item>
+        </el-form>
+        <el-table :data="tableData" border stripe style="width: 100%">
+            <el-table-column prop="role" label="角色" width="180" />
+            <el-table-column prop="name" label="姓名" width="180" />
+            <el-table-column prop="id" label="学号/工号" />
+            <el-table-column prop="idNumber" label="身份证号" />
+            <el-table-column prop="phoneNumber" label="手机号" />
+            <el-table-column prop="email" label="邮箱" />
+            <el-table-column prop="icon" label="操作" >
+            <div>
+                <el-button type="text">编辑</el-button>
+                <el-button type="text">删除</el-button>
+            </div>
+            </el-table-column>
+        </el-table>
+
+        <el-dialog
+                v-model="dialogVisible"
+                title="添加用户"
+                width="600px"
+        >
+            <el-form
+                    ref="ruleFormRef"
+                    :model="ruleForm"
+                    :rules="editRules"
+                    label-width="120px"
+                    class="demo-ruleForm"
+                    :size="formSize"
+            >
+                <el-form-item label="角色" prop="role">
+                    <el-radio-group v-model="ruleForm.role">
+                        <el-radio label="教师"></el-radio>
+                        <el-radio label="学生"></el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="姓名" prop="name">
+                    <el-input v-model="ruleForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="学号/工号" prop="id" ref="id">
+                    <el-input v-model.number="ruleForm.id"></el-input>
+                </el-form-item>
+                <el-form-item label="身份证号" prop="idNumber" ref="idNumber">
+                    <el-input v-model.number="ruleForm.idNumber"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号" prop="phoneNumber">
+                    <el-input v-model.number="ruleForm.phoneNumber"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱" prop="email">
+                <el-input v-model="ruleForm.email"></el-input>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button type="primary" @click="submitForm(ruleFormRef)" >添加</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+
     </div>
     </body>
 </template>
+
+<script>
+    import Nav from "@/views/inc/Nav.vue";
+    export default {
+        name: "userManage",
+        components:{
+            Nav
+        },
+        data(){
+            return{
+                dialogVisible:false,
+                ruleForm:{
+
+                },
+                editRules :({
+                    name: [
+                        { required: true, message: '请输入姓名', trigger: 'blur' },
+                    ],
+                    id: [
+                        {
+                            required: true,
+                            message: '请输入学号/工号',
+                            trigger: 'change',
+                        },
+                        { type:'number',message:'输入只能为数字'}
+                    ],
+                    idNumber: [
+                        {
+                            required: true,
+                            message: '请输入身份证号',
+                            trigger: 'change',
+                        },
+                        {  min: 18, max: 18, message: '请输入18位数身份证号', trigger: 'blur' },
+                        {type:'number',message: '输入只能为数字'}
+                    ],
+                    role: [
+                        {
+                            required: true,
+                            message: '请选择角色',
+                            trigger: 'nul',
+                        },
+                    ]
+                }),
+                tableData : [
+                    {
+                        role: '管理员',
+                        name: 'admin',
+                        id:'12345678901',
+                        idNumber:'123456789012345678',
+                        phoneNumber:'12345678901',
+                        email:'12345678901@fudan.edu.cn'
+                    }
+                ]
+            }
+        },
+    }
+
+</script>
+
 <style scoped>
     @import "../assets/css/userManage.css";
-    @import "../../node_modules/element-plus/theme-chalk/index.css";
+
+
 </style>

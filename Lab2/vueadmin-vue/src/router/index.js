@@ -10,7 +10,12 @@ const routes = [
   {
     path: '/adduser',
     name: 'Adduser',
-    component: () => import('../views/addUser.vue')
+    component: () => import('../views/sys/admin/addUser.vue')
+  },
+  {
+    path: '/index',
+    name: 'Index',
+    component: () => import('../views/Index.vue')
   }
 ]
 
