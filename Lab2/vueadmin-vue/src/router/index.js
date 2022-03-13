@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/userManage.vue'
+import HomeView from '../views/Login'
 
 const routes = [
   {
     path: '/',
-    name: 'usermanage',
+    name: 'login',
     component:HomeView
   },
   {
@@ -16,6 +16,16 @@ const routes = [
     path: '/index',
     name: 'Index',
     component: () => import('../views/Index.vue')
+  },
+  {
+    path: '/usermanage',
+    name: 'usermanage',
+    component: () => import('../views/userManage.vue')
+  },
+  {
+    path: '/resetpassword',
+    name: 'resetpassword',
+    component: () => import('../views/passwordreset.vue')
   }
 ]
 
