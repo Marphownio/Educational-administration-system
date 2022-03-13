@@ -14,6 +14,7 @@
         <span class="role_list">
             <button class="teacher_list">教师列表</button>
             <button class="student_list">学生列表</button>
+            <el-button>test</el-button>
         </span>
             <span class="function_list">
             <!--<a href="addUser.vue" ><span class="add" id="Add">添加</span></a>-->
@@ -35,4 +36,5 @@
 </template>
 <style scoped>
     @import "../assets/css/userManage.css";
+    @import "../../node_modules/element-plus/theme-chalk/index.css";
 </style>

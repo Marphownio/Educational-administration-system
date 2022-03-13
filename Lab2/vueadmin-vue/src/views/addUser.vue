@@ -7,7 +7,8 @@
     <header>
     </header>
     <div class="void">
-        <span></span>
+        <span>
+        </span>
     </div>
     <div class="showlist">
         <form class="registration_form" >
