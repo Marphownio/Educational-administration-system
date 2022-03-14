@@ -26,9 +26,9 @@ public class resetPasswordController {
             return "/resetPassword";
         }
         else{
-
+            User user= new User(id,newPassword1);
+            userService.updateUser(user);
             return "redirect:/index";
         }
     }
-
 }

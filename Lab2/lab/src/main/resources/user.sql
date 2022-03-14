@@ -9,4 +9,4 @@ create table if not exists user
     email        varchar(32) unique
 );
 
-replace into user(id, password, name, role, id_number) values ('admin', 'admin', 'admin', 0, 'admin');
+replace into user(id, password, name, role, id_number) values ('admin', '123456', 'admin', 0, 'admin');

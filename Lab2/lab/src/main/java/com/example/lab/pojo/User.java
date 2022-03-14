@@ -16,4 +16,8 @@ public class User {
     private String idNumber; // identity card number
     private String phoneNumber;
     private String email;
+    public User(String ID,String PW){
+        id=ID;
+        password=PW;
+    }
 }

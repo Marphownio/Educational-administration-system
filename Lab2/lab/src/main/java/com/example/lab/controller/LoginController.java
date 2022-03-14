@@ -29,10 +29,6 @@ public class LoginController {
             session.setAttribute("user", user);
             // 初次登录，需要重置密码
             if (password.equals("123456")) {
-//                @RequestMapping("/PassId")
-//                public String toIndex(){
-//                    return "userIndex";
-//                }
                 return "/resetPassword";
             }
             // 跳转到首页
