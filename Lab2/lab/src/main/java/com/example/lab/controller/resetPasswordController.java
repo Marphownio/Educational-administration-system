@@ -12,12 +12,11 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class resetPasswordController {
-
     @Resource
     private UserService userService;
     @GetMapping (value ="resetPassword")
-
     public String resetPassword(@RequestParam("newPassword1") String newPassword1, @RequestParam("newPassword2") String newPassword2, Model model, HttpSession session) {
+        String id = (String) session.getAttribute("User");
         if (!newPassword1.equals(newPassword2)) {
             model.addAttribute("msg1", "请两次输入的密码保持一致");
             return "/resetPassword";
@@ -27,6 +26,7 @@ public class resetPasswordController {
             return "/resetPassword";
         }
         else{
+
             return "redirect:/index";
         }
     }

@@ -5,6 +5,7 @@ import com.example.lab.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
@@ -12,7 +13,6 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
-
     @Resource
     private UserService userService;
 
@@ -29,6 +29,10 @@ public class LoginController {
             session.setAttribute("user", user);
             // 初次登录，需要重置密码
             if (password.equals("123456")) {
+//                @RequestMapping("/PassId")
+//                public String toIndex(){
+//                    return "userIndex";
+//                }
                 return "/resetPassword";
             }
             // 跳转到首页
