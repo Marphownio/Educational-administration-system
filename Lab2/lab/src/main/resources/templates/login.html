@@ -8,11 +8,11 @@
 </head>
 
 <body>
-    <form class="login" th:action="@{/login}">
+    <form class="login" th:action="@{/login}" >
         <h1 style="text-align:center">欢迎使用教务系统</h1>
 
-        <!--如果msg不为空，提示错误-->
-        <p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+<!--        如果msg不为空，提示错误-->
+        <p style="color:red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}">$&nbsp;</p>
 
         <label>
             <input class="IDinput" type="text" id="id" name="id" placeholder="学号/工号"><br>

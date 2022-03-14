@@ -21,8 +21,8 @@ body{/*背景图*/
     vertical-align: middle;
 }
 
-.Headline{/*欢迎页*/
-    padding-left: 13%;
+.mar{/*欢迎页*/
+    /*padding-left: 13%;*/
     font-size:40px;
     font-weight: 900;
 }
