@@ -29,7 +29,7 @@ public class LoginController {
             session.setAttribute("user", user);
             // 初次登录，需要重置密码
             if (password.equals("123456")) {
-                return "redirect:/resetPassword";
+                return "/resetPassword";
             }
             // 跳转到首页
             return "redirect:/index";

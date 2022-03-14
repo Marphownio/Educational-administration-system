@@ -11,11 +11,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class PasswordresetController {
+public class resetPasswordController {
+
     @Resource
     private UserService userService;
-    @GetMapping(value = "/passwordreset")
-    public String login(@RequestParam("newPassword1") String newPassword1, @RequestParam("newPassword2") String newPassword2, Model model, HttpSession session) {
+    @GetMapping (value ="resetPassword")
+
+    public String resetPassword(@RequestParam("newPassword1") String newPassword1, @RequestParam("newPassword2") String newPassword2, Model model, HttpSession session) {
         if (!newPassword1.equals(newPassword2)) {
             model.addAttribute("msg1", "请两次输入的密码保持一致");
             return "/resetPassword";
@@ -24,5 +26,9 @@ public class PasswordresetController {
             model.addAttribute("msg1", "请输入与初始密码不同的新密码");
             return "/resetPassword";
         }
+        else{
+            return "redirect:/index";
+        }
     }
+
 }
