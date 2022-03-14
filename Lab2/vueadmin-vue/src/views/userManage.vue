@@ -55,7 +55,7 @@
                     <el-input v-model.number="ruleForm.id"></el-input>
                 </el-form-item>
                 <el-form-item label="身份证号" prop="idNumber" ref="idNumber">
-                    <el-input v-model.number="ruleForm.idNumber"></el-input>
+                    <el-input v-model="ruleForm.idNumber"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号" prop="phoneNumber">
                     <el-input v-model.number="ruleForm.phoneNumber"></el-input>
@@ -105,7 +105,7 @@
                             message: '请输入身份证号',
                             trigger: 'change',
                         },
-                        {  min: 18, max: 18, message: '请输入18位数身份证号', trigger: 'blur' },
+                        {  min: 18, max: 19, message: '请输入18位数身份证号', trigger: 'blur' },
                         {type:'number',message: '输入只能为数字'}
                     ],
                     role: [

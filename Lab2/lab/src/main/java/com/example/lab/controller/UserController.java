@@ -15,7 +15,7 @@ public class UserController {
     private UserServiceImpl userService;
 
     //增加用户
-    @PostMapping("/add")
+    @PostMapping("")
     public User addUser(@RequestBody User user) {
         return userService.addUser(user);
     }

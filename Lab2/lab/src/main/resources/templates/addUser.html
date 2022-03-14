@@ -85,12 +85,27 @@
                 return true;
             }
         }
-        function addUser() {
-            const form = document.forms[0];
-            form.action = "@{/user/add}";
-            form.method = "post";
-            form.submit();
-        }
+        $(document).ready(function(){
+            $("#submit").click(function () {
+                //获取值
+                var name = $("#name").val();
+                var id = $("#id").val();
+                var role = $("input[type='radio']").val();
+                var idNumber = $("#idNumber").val();
+                var phoneNumber = $("#phoneNumber").val();
+                var email = $("#email").val();
+                $.ajax({
+                    url:"user",
+                    type:"post",
+                    data:"&name="+name+"&id="+id+"&role="+role+"&idNumber="+idNumber+"&phoneNumber"+phoneNumber+"&email"+email,
+                    dataType:"json",
+                    success:function (data) {
+                        // alert(data.result);
+                        alert(data.result);
+                    }
+                })
+            })
+        });
 </script>
 <header>
     <nav class="nav">
@@ -112,7 +127,7 @@
     <span></span>
 </div>
 <div class="showlist">
-    <form class="registration_form" action="#" th:action="@{/add}" method="post" id="userform">
+    <form class="registration_form" action="#" method="post" id="userform">
         <div class="registration_table">
             <ul>
                 <li>
@@ -152,7 +167,7 @@
                     <td><input type="text" id="email" name="email" autocomplete="off"></td>
                 </li>
                 <div class="btn">
-                    <input type="submit" class="submit" onclick="return submit_check()"></input>
+                    <input type="submit" class="submit" id="submit" onclick="return submit_check()" ></input>
                 </div>
                 <a th:href="@{/userManage.html}" class="return" >返回</a>
             </ul>
