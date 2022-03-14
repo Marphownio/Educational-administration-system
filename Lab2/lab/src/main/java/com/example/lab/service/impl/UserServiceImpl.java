@@ -15,26 +15,27 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserRepository userRepository;
 
+    //增加用户
     @Override
     public User addUser(User user) {
         return userRepository.save(user);
     }
-
+    //删除用户
     @Override
     public void deleteUser(String  id) {
         userRepository.deleteById(id);
     }
-
+    //修改用户
     @Override
     public User updateUser(User user) {
         return userRepository.save(user);
     }
-
+    //查询全部用户
     @Override
     public List<User> findAllUser() {
         return userRepository.findAll();
     }
-
+    //通过id查询用户
     @Override
     public User findUserById(String id) {
         return userRepository.findById(id).orElse(null);

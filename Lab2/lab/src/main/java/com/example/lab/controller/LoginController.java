@@ -20,14 +20,19 @@ public class LoginController {
     public String login(@RequestParam("id") String id, @RequestParam("password") String password, Model model, HttpSession session) {
         User user = userService.findUserById(id);
 
-        if (user == null || !password.equals(user.getPassword())) {
+        if (user == null || !user.getPassword().equals(password)) {
             model.addAttribute("msg", "用户名或密码错误");
             return "/login";
         }
         else {
+            model.addAttribute("id", id);
             session.setAttribute("user", user);
-            return "/index";
+            // 初次登录，需要重置密码
+            if (password.equals("123456")) {
+                return "redirect:/resetPassword";
+            }
+            // 跳转到首页
+            return "redirect:/index";
         }
-
     }
 }

@@ -20,4 +20,5 @@ public interface UserService {
 
     //通过id查询用户
     User findUserById(String id);
+
 }

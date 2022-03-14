@@ -1,8 +1,7 @@
 package com.example.lab.controller;
 
 import com.example.lab.pojo.User;
-import com.example.lab.service.UserService;
-
+import com.example.lab.service.impl.UserServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -13,7 +12,7 @@ import java.util.List;
 public class UserController {
 
     @Resource
-    private UserService userService;
+    private UserServiceImpl userService;
 
     //增加用户
     @PostMapping("")
@@ -41,7 +40,7 @@ public class UserController {
 
     //通过id查询用户
     @GetMapping("/{id}")
-    public User findUserbyId(@PathVariable("id") String id) {
+    public User findUserById(@PathVariable("id") String id) {
         return userService.findUserById(id);
     }
 }

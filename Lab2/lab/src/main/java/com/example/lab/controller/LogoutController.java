@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public  class LogoutController {
 
-    //注销
+    // 注销
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

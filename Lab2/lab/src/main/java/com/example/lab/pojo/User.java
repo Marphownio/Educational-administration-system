@@ -9,14 +9,11 @@ import javax.persistence.*;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id; // student number or employee number
     private String password;
-    private Integer role; // student or teacher
+    private Integer role; // 0:admin, 1:teacher, 2:student
     private String name;
     private String idNumber; // identity card number
     private String phoneNumber;
     private String email;
-
 }
-
