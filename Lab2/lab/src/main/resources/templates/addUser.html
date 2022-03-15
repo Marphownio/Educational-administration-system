@@ -34,8 +34,8 @@
                 <li>
                     <span class="sign">*</span>
                     <label>用户角色</label>
-                    <input type="radio" name="role" id="teacher" value="1" checked><label for="teacher">教师</label>
-                    <input type="radio" name="role" id="student" value="2" checked><label for="student">学生</label>
+                    <input type="radio" name="role" id="teacher" value="1" checked th:value="1"><label for="teacher">教师</label>
+                    <input type="radio" name="role" id="student" value="2" th:value="2"><label for="student">学生</label>
                 </li>
                 <li>
                     <span class="sign">*</span>
@@ -68,7 +68,7 @@
                     <td><input type="text" id="email" name="email" autocomplete="off"></td>
                 </li>
                 <div class="btn">
-                    <input type="submit" class="submit" id="submit"></input>
+                    <input type="submit" class="submit" id="submit" onclick="return submit_check()"></input>
                 </div>
                 <a th:href="@{/userManage.html}" class="return" >返回</a>
             </ul>
