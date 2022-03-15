@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LoginController {
     @Resource
-    private UserService userService;
+    public UserService userService;
 
     @GetMapping(value = "/login")
     public String login(@RequestParam("id") String id, @RequestParam("password") String password, Model model, HttpSession session) {
