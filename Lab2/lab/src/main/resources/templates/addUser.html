@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:el-radio="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>教师/学生信息录入</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/addUser.css" th:href="@{/css/addUser.css}">
-    <script th:src="@{/js/addUser.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/addUser.css}">
+    <script type="text/javascript" th:src="@{/js/addUser.js}"></script>
 </head>
 <body>
 
@@ -28,14 +28,14 @@
     <span></span>
 </div>
 <div class="showlist">
-    <form class="registration_form" th:action="@{/adduser}" id="userform" ref="editform">
+    <form class="registration_form" th:action="@{user/adduser}" id="userform" ref="editform">
         <div class="registration_table">
             <ul>
                 <li>
                     <span class="sign">*</span>
-                    <label >用户角色</label>
-                    <input type="radio" name="role" id="teacher" checked ><label for="teacher">教师</label>
-                    <input type="radio" name="role" id="student" ><label for="student">学生</label>
+                    <label>用户角色</label>
+                    <input type="radio" name="role" id="teacher" value="1" checked><label for="teacher">教师</label>
+                    <input type="radio" name="role" id="student" value="2" checked><label for="student">学生</label>
                 </li>
                 <li>
                     <span class="sign">*</span>

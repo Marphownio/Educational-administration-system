@@ -19,17 +19,17 @@ public class ResetPasswordController {
     public String resetPassword(@RequestParam("newPassword1") String newPassword1, @RequestParam("newPassword2") String newPassword2, Model model, HttpSession session) {
         if (!newPassword1.equals(newPassword2)) {
             model.addAttribute("msg1", "请两次输入的密码保持一致");
-            return "/resetPassword";
+            return "resetPassword";
         }
         else if(newPassword1.equals("123456")) {
             model.addAttribute("msg1", "请输入与初始密码不同的新密码");
-            return "/resetPassword";
+            return "resetPassword";
         }
         else {
             User user = (User)session.getAttribute("user");
             user.setPassword(newPassword1);
             userService.updateUser(user);
-            return "redirect:/index";
+            return "redirect:index";
         }
     }
 }

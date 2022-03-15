@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     }
     //删除用户
     @Override
-    public void deleteUser(String  id) {
+    public void deleteUser(Integer  id) {
         userRepository.deleteById(id);
     }
     //修改用户
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     }
     //通过id查询用户
     @Override
-    public User findUserById(String id) {
+    public User findUserById(Integer id) {
         return userRepository.findById(id).orElse(null);
     }
 }
