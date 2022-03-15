@@ -22,9 +22,9 @@ body{/*背景图*/
 }
 
 .mar{/*欢迎页*/
-    /*padding-left: 13%;*/
-    font-size:40px;
-    font-weight: 900;
+    padding-left: 13%;
+    font-size:30px;
+    font-weight: 700;
 }
 
 .Dashboard{/*功能选择页面*/

@@ -22,7 +22,7 @@ public class ResetPasswordController {
             return "/resetPassword";
         }
         else if(newPassword1.equals("123456")) {
-            model.addAttribute("msg1", "请输入与原密码不同的新密码");
+            model.addAttribute("msg1", "请输入与初始密码不同的新密码");
             return "/resetPassword";
         }
         else {
