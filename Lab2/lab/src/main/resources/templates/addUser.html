@@ -1,112 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:el-radio="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>教师/学生信息录入</title>
     <link rel="stylesheet" type="text/css" href="/static/css/addUser.css" th:href="@{/css/addUser.css}">
+    <script th:src="@{/js/addUser.js}"></script>
 </head>
 <body>
-<script>
-        function username_check(){
-        const usernameObj=document.getElementById("id");
-        const username_voidObj=document.getElementById("username_void_message");
-        const username_errorObj=document.getElementById("username_error_message");
-        if(usernameObj.value.length==0)
-        {
-            username_voidObj.style.display="inline";
-            return -1;
-        }
-        else
-        {
-            username_voidObj.style.display = "none"
-            return 1;
-        }
-        if(isNaN(usernameObj.value))
-        {
-            username_errorObj.style.display="inline";
-            return -1;
-        }
-        else
-        {
-            username_errorObj.style.display="none";
-            return 1;
-        }
-    }
-        function name_check(){
-            const nameObj=document.getElementById("name");
-            const name_voidObj=document.getElementById("name_void_message");
-            if(nameObj.value.length==0)
-            {
-                name_voidObj.style.display="inline";
-                return -1;
-            }
-            else
-            {
-                name_voidObj.style.display="none"
-                return 1;
-            }
-        }
-        function id_check(){
-            const idObj=document.getElementById("idNumber");
-            const id_voidObj=document.getElementById("id_void_message");
-            if(idObj.value.length==0)
-            {
-                id_voidObj.style.display="inline";
-                return -1;
-            }
-            else
-            {
-                id_voidObj.style.display="none"
-                return 1;
-            }
-        }
-        function phone_check(){
-            const phoneObj=document.getElementById("phoneNumber");
-            const phone_errorObj=document.getElementById("phone_error_message");
-            if(phoneObj.value.length!=0&&phoneObj.value.length!=11||isNaN(phoneObj.value))
-            {
-                phone_errorObj.style.display="inline";
-                return -1;
-            }
-            else
-            {
-                phone_errorObj.style.display="none"
-                return 1;
-            }
-        }
-        function submit_check()
-        {
-            if(username_check()==-1||name_check()==-1||id_check()==-1||phone_check()==-1)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        $(document).ready(function(){
-            $("#submit").click(function () {
-                //获取值
-                var name = $("#name").val();
-                var id = $("#id").val();
-                var role = $("input[type='radio']").val();
-                var idNumber = $("#idNumber").val();
-                var phoneNumber = $("#phoneNumber").val();
-                var email = $("#email").val();
-                $.ajax({
-                    url:"user",
-                    type:"post",
-                    data:"&name="+name+"&id="+id+"&role="+role+"&idNumber="+idNumber+"&phoneNumber"+phoneNumber+"&email"+email,
-                    dataType:"json",
-                    success:function (data) {
-                        // alert(data.result);
-                        alert(data.result);
-                    }
-                })
-            })
-        });
-</script>
+
 <header>
     <nav class="nav">
         <div class="banner_area">
@@ -127,7 +28,7 @@
     <span></span>
 </div>
 <div class="showlist">
-    <form class="registration_form" action="#" method="post" id="userform">
+    <form class="registration_form" th:action="@{/adduser}" id="userform" ref="editform">
         <div class="registration_table">
             <ul>
                 <li>
@@ -167,7 +68,7 @@
                     <td><input type="text" id="email" name="email" autocomplete="off"></td>
                 </li>
                 <div class="btn">
-                    <input type="submit" class="submit" id="submit" onclick="return submit_check()" ></input>
+                    <input type="submit" class="submit" id="submit"></input>
                 </div>
                 <a th:href="@{/userManage.html}" class="return" >返回</a>
             </ul>
