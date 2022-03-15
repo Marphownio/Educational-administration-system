@@ -16,10 +16,11 @@ public class LoginController {
     @Resource
     public UserService userService;
 
-    @GetMapping(value = "/login")
+    //登录
+    @RequestMapping(value = "/login")
     public String login(@RequestParam("id") String id, @RequestParam("password") String password, Model model, HttpSession session) {
-        User user = userService.findUserById(id);
 
+        User user = userService.findUserById(id);
         if (user == null || !user.getPassword().equals(password)) {
             model.addAttribute("msg", "用户名或密码错误");
             return "/login";

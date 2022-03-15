@@ -9,6 +9,7 @@ import javax.persistence.*;
 public class User {
 
     @Id
+    @GeneratedValue
     private String id; // student number or employee number
     private String password;
     private Integer role; // 0:admin, 1:teacher, 2:student
@@ -16,10 +17,4 @@ public class User {
     private String idNumber; // identity card number
     private String phoneNumber;
     private String email;
-    public User(){
-    }
-    public User(String ID,String PW){
-        id=ID;
-        password=PW;
-    }
 }

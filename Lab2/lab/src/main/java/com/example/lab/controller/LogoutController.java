@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 public  class LogoutController {
 
     // 注销
-    @RequestMapping("/logout")
+    @RequestMapping(value = "/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/index";
