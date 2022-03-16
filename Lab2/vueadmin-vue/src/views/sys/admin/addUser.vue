@@ -18,8 +18,8 @@
                     <li>
                         <span class="sign">*</span>
                         <label >用户角色</label>
-                        <input type="radio" name="role" id="teacher" checked ><label for="teacher">教师</label>
-                        <input type="radio" name="role" id="student" ><label for="student">学生</label>
+                        <input type="radio" name="role" id="teacher" checked value="1"><label for="teacher">教师</label>
+                        <input type="radio" name="role" id="student" value="2"><label for="student">学生</label>
                     </li>
                     <li>
                         <span class="sign">*</span>

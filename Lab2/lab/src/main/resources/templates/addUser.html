@@ -40,9 +40,9 @@
                 <li>
                     <span class="sign">*</span>
                     <label >学号/工号</label>
-                    <td><input type="text" aria-required="true" id="id" name="id" onblur="username_check()" autocomplete="off"></td>
-                    <span class="error username_void" id="username_void_message">该字段不能为空！</span>
-                    <span class="error username_void" id="username_error_message">输入格式不正确，请检查输入！</span>
+                    <td><input type="text" aria-required="true" id="id" name="id" onblur="id_check()" autocomplete="off"></td>
+                    <span class="error id_void" id="id_void_message">该字段不能为空！</span>
+                    <span class="error id_error" id="id_error_message">输入格式不正确，请检查输入！</span>
                 </li>
                 <li>
                     <span class="sign">*</span>
@@ -53,8 +53,9 @@
                 <li>
                     <span class="sign">*</span>
                     <label >身份证号</label>
-                    <td><input type="text" aria-required="true" id="idNumber" name="idNumber" onblur="id_check()" autocomplete="off"></td>
-                    <span class="error void" id="id_void_message">该字段不能为空！</span>
+                    <td><input type="text" aria-required="true" id="idNumber" name="idNumber" onblur="idNumber_check()" autocomplete="off"></td>
+                    <span class="error void" id="idNumber_void_message">该字段不能为空！</span>
+                    <span class="error idNumber_error" id="idNumber_error_message">输入格式不正确，请检查输入！</span>
                 </li>
                 <li>
                     <span class="sign">(选填)</span>
@@ -65,7 +66,8 @@
                 <li>
                     <span>(选填)</span>
                     <label >邮箱</label>
-                    <td><input type="text" id="email" name="email" autocomplete="off"></td>
+                    <td><input type="text" id="email" name="email" onblur="email_check()" autocomplete="off"></td>
+                    <span class="error" id="email_error_message">输入格式不正确，请检查输入！</span>
                 </li>
                 <div class="btn">
                     <input type="submit" class="submit" id="submit" onclick="return submit_check()"></input>
