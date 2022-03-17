@@ -1,10 +1,21 @@
+function teacher_checked()
+{
+
+}
+
 function id_check(){
     const idObj=document.getElementById("id");
     const id_voidObj=document.getElementById("id_void_message");
     const id_errorObj=document.getElementById("id_error_message");
+    const id_TlObj=document.getElementById("id_Tl_message");
+    const id_SlObj=document.getElementById("id_Sl_message");
+    const input_role = document.getElementById("teacher").checked;
     if(idObj.value.length==0)
     {
         id_voidObj.style.display="inline";
+        id_SlObj.style.display="none";
+        id_TlObj.style.display="none";
+        id_errorObj.style.display="none";
         return -1;
     }
     else if(isNaN(idObj.value))
@@ -13,10 +24,37 @@ function id_check(){
         id_errorObj.style.display="inline";
         return -1;
     }
+    else if(input_role==true)
+    {
+        id_SlObj.style.display="none";
+        id_voidObj.style.display="none";
+        id_errorObj.style.display="none";
+        if(idObj.value.length!=8)
+        {
+            id_TlObj.style.display="inline";
+            return -1;
+        }
+        else
+        {
+            id_TlObj.style.display="none";
+            return 1;
+        }
+    }
     else
     {
+        id_TlObj.style.display="none";
+        id_voidObj.style.display="none";
         id_errorObj.style.display="none";
-        return 1;
+        if(idObj.value.length!=6)
+        {
+            id_SlObj.style.display="inline";
+            return -1;
+        }
+        else
+        {
+            id_SlObj.style.display="none";
+            return 1;
+        }
     }
 }
 function name_check(){

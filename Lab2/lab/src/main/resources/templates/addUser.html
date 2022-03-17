@@ -34,15 +34,17 @@
                 <li>
                     <span class="sign">*</span>
                     <label>用户角色</label>
-                    <input type="radio" name="role" id="teacher" value="1" checked th:value="1"><label for="teacher">教师</label>
-                    <input type="radio" name="role" id="student" value="2" th:value="2"><label for="student">学生</label>
+                    <input type="radio" name="role" id="teacher" value="1" checked ><label for="teacher">教师</label>
+                    <input type="radio" name="role" id="student" value="2" ><label for="student">学生</label>
                 </li>
                 <li>
                     <span class="sign">*</span>
                     <label >学号/工号</label>
                     <td><input type="text" aria-required="true" id="id" name="id" onblur="id_check()" autocomplete="off"></td>
                     <span class="error id_void" id="id_void_message">该字段不能为空！</span>
-                    <span class="error id_error" id="id_error_message">输入格式不正确，请检查输入！</span>
+                    <span class="error id_error" id="id_error_message">输入只能为数字！</span>
+                    <span class="error id_error" id="id_Tl_message">请输入8位工号！</span>
+                    <span class="error id_error" id="id_Sl_message">请输入6位学号！</span>
                 </li>
                 <li>
                     <span class="sign">*</span>
@@ -81,3 +83,6 @@
 
 </body>
 </html>
+<script>
+
+</script>
