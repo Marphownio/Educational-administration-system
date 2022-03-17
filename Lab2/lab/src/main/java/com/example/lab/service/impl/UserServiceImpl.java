@@ -15,27 +15,66 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserRepository userRepository;
 
-    //增加用户
+    // 增加用户
     @Override
-    public User addUser(User user) {
-        return userRepository.save(user);
+    public String addUser(User user) {
+        String resultMsg;
+        if (findUserById(user.getId()) != null) {
+            resultMsg = "用户已存在";
+        }
+        else {
+            try {
+                userRepository.save(user);
+                resultMsg = "添加成功";
+            }
+            catch (Exception e) {
+                resultMsg = "添加失败";
+            }
+        }
+        return resultMsg;
     }
-    //删除用户
+    // 删除用户
     @Override
-    public void deleteUser(Integer  id) {
-        userRepository.deleteById(id);
+    public String deleteUser(Integer id) {
+        String resultMsg;
+        if (findUserById(id) == null) {
+            resultMsg = "用户不存在";
+        }
+        else {
+            try {
+                userRepository.deleteById(id);
+                resultMsg = "删除成功";
+            }
+            catch (Exception e) {
+                resultMsg = "删除失败";
+            }
+        }
+        return resultMsg;
     }
-    //修改用户
+    // 修改用户
     @Override
-    public User updateUser(User user) {
-        return userRepository.save(user);
+    public String updateUser(User user) {
+        String resultMsg;
+        if (findUserById(user.getId()) == null) {
+            resultMsg = "用户不存在";
+        }
+        else {
+            try {
+                userRepository.save(user);
+                resultMsg = "修改成功";
+            }
+            catch (Exception e) {
+                resultMsg = "修改失败";
+            }
+        }
+        return resultMsg;
     }
-    //查询全部用户
+    // 查询全部用户
     @Override
     public List<User> findAllUser() {
         return userRepository.findAll();
     }
-    //通过id查询用户
+    // 通过id查询用户
     @Override
     public User findUserById(Integer id) {
         return userRepository.findById(id).orElse(null);

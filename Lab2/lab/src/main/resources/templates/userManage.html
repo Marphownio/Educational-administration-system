@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <style type="text/css">
-    </style>
     <meta charset="UTF-8">
     <title>教师/学生信息录入</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/userManage.css}">
@@ -33,6 +31,10 @@
             <button class="teacher_list">教师列表</button>
             <button class="student_list">学生列表</button>
         </span>
+
+        <!--如果msg不为空，提示错误-->
+        <span style="color:red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></span>
+
         <span class="function_list">
             <a th:href="@{/addUser.html}" ><span class="add" id="Add">添加</span></a>
         </span>

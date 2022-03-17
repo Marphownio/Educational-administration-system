@@ -9,12 +9,11 @@ import javax.persistence.*;
 public class User {
 
     @Id
-    private Integer id; // student number or employee number
+    private Integer id; // 学号/工号
     private String password;
     private Integer role; // 0:admin, 1:teacher, 2:student
     private String name;
-    private String idNumber; // identity card number
+    private String idNumber; // 身份证号
     private String phoneNumber;
     private String email;
-
 }

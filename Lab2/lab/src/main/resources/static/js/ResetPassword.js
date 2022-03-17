@@ -27,7 +27,7 @@ function WhetherSame(){
     const password1=password1Obj.value;
     const password2Obj=document.getElementById("newPassword2");
     const password2=password2Obj.value;
-    if(password1==password2){
+    if(password1===password2){
         return true;
     }
     else{
@@ -38,6 +38,5 @@ function WhetherSame(){
 }
 
 function submit_check(){
-    if(testpassword()==true&&WhetherSame()==true) return true;
-    else return false;
+    return testpassword() && WhetherSame();
 }
