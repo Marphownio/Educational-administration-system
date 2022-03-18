@@ -20,15 +20,15 @@ public class UserServiceImpl implements UserService {
     public String addUser(User user) {
         String resultMsg;
         if (findUserById(user.getId()) != null) {
-            resultMsg = "用户已存在";
+            resultMsg = "学号/工号已存在，添加失败！";
         }
         else {
             try {
                 userRepository.save(user);
-                resultMsg = "添加成功";
+                resultMsg = "添加成功！";
             }
             catch (Exception e) {
-                resultMsg = "添加失败";
+                resultMsg = "身份证号码已存在，添加失败！";
             }
         }
         return resultMsg;

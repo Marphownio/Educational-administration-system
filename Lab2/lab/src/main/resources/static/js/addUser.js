@@ -115,7 +115,7 @@ function idNumber_check(){
 function phone_check(){
     const phoneObj=document.getElementById("phoneNumber");
     const phoneErrorObj=document.getElementById("phone_error_message");
-    const REGEX_PHONE_NO_11 = /^1[3456789]\d{9}$/;
+    const REGEX_PHONE_NO_11 = /^1\d{10}$/;
     if(phoneObj.value.match(REGEX_PHONE_NO_11) || phoneObj.value.length === 0)
     {
         phoneErrorObj.style.display="none"
