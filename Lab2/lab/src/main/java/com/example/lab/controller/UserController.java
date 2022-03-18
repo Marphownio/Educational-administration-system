@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -19,15 +18,9 @@ public class UserController {
 
     // 增加用户
     @PostMapping(value = "")
-    public String addUser(User user, Model model, HttpSession session) {
-        User currentUser = (User)session.getAttribute("user");
-        if(currentUser.getRole() != 0) {
-            model.addAttribute("msg", "没有权限");
-        }
-        else {
-            user.setPassword("fudan123456"); // 统一设置初始密码
-            model.addAttribute("msg", userService.addUser(user));
-        }
+    public String addUser(User user, Model model) {
+        user.setPassword("fudan123456"); // 统一设置初始密码
+        model.addAttribute("msg", userService.addUser(user));
         return "userManage";
     }
 
