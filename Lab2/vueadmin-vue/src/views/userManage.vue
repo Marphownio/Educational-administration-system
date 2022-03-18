@@ -23,7 +23,7 @@
             <el-table-column prop="email" label="邮箱" />
             <el-table-column prop="icon" label="操作" >
             <div>
-                <el-button type="text">编辑</el-button>
+                <el-button type="text" @click="editHandle(scope.row.id)">编辑</el-button>
                 <el-popconfirm title="确认删除吗？">
                     <template #reference>
                         <el-button type="text">删除</el-button>
@@ -39,7 +39,7 @@
                 width="600px"
         >
             <el-form
-                    ref="ruleFormRef"
+                    ref="ruleForm"
                     :model="ruleForm"
                     :rules="editRules"
                     label-width="120px"
@@ -48,8 +48,8 @@
             >
                 <el-form-item label="角色" prop="role">
                     <el-radio-group v-model="ruleForm.role">
-                        <el-radio label="教师"></el-radio>
-                        <el-radio label="学生"></el-radio>
+                        <el-radio label="教师" model-value="1"></el-radio>
+                        <el-radio label="学生" model-value="2"></el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="姓名" prop="name">
@@ -62,14 +62,14 @@
                     <el-input v-model="ruleForm.idNumber"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号" prop="phoneNumber">
-                    <el-input v-model.number="ruleForm.phoneNumber"></el-input>
+                    <el-input v-model="ruleForm.phoneNumber"></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱" prop="email">
                 <el-input v-model="ruleForm.email"></el-input>
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm(ruleFormRef)" >添加</el-button>
+                    <el-button type="primary" @click="submitForm" >添加</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
@@ -89,26 +89,33 @@
             return{
                 dialogVisible:false,
                 ruleForm:{
-
                 },
                 editRules :({
                     name: [
                         { required: true, message: '请输入姓名', trigger: 'blur' },
+                        {pattern:'^[a-zA-Z\u4e00-\u9fa5]+$',message: '输入只能为中英文',trigger: 'change'}
                     ],
                     id: [
                         {
                             required: true,
                             message: '请输入学号/工号',
-                            trigger: 'change',
+                            trigger: 'blur',
                         },
-                        { type:'number',message:'输入只能为数字'}
+                        { type:'number',message:'输入只能为数字',trigger: 'change'}
                     ],
                     idNumber: [
                         {
                             required: true,
                             message: '请输入身份证号',
-                            trigger: 'change',
+                            trigger: 'blur',
                         },
+                        {pattern:'/(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)/',message:'输入格式不正确，请检查输入',trigger: 'blur'}
+                    ],
+                    phoneNumber:[
+                        {pattern:'^1[0-9]{10}$',message:'请输入以1开头的11位数字',trigger:'blur',}
+                    ],
+                    email:[
+                        {pattern:'/^([a-zA-Z0-9]+[-_\\.]?)+@[a-zA-Z0-9]+\\.[a-z]+$/',message:'邮箱格式不正确，请重新输入',trigger:'blur',}
                     ],
                     role: [
                         {
@@ -120,9 +127,9 @@
                 }),
                 tableData : [
                     {
-                        role: '管理员',
+                        role: '0',
                         name: 'admin',
-                        id:'12345678901',
+                        id:'000000',
                         idNumber:'123456789012345678',
                         phoneNumber:'12345678901',
                         email:'12345678901@fudan.edu.cn'
@@ -140,11 +147,11 @@
                     this.tableData=res.data.data;
                 })
             },
-            submitForm(formName){
-                this.$refs[formName].validate((valid)=>{
+            submitForm(){
+                this.$refs.ruleForm.validate(valid=>{
                     if(valid){
-                        this.$axios.post('/sys/menu/'+(this.ruleForm.id?'update':'save'),this.ruleForm)
-                        .then(res=>{
+                        //this.$axios.post('/sys/menu/'+(this.ruleForm.id?'update':'save'),this.ruleForm)
+                        //.then(res=>{
                             this.$message({
                                 showClose: true,
                                 message: '添加成功',
@@ -152,11 +159,36 @@
                                 onClose:()=>{
                                     this.getUserForm()
                                 }
-                            });
+                            //})
                             }
                         )
                     }
+                    else{
+                        this.$nextTick(() => {
+                            this.scrollToTop(this.$refs[formName].$el)
+                        })
+                    }
                 })
+            },
+            nameCheck () {
+                const relu = "^[a-zA-Z\u4e00-\u9fa5]+$";
+                const re = new RegExp(regu);
+                if (this.value.search(re) !== -1){
+                } else {
+                    message:'输入只能为中英文！'
+                }
+            },
+            editHandle(id){
+                this.$axios.get('/sys/menu/info/'+id).then(res=>{
+                    this.ruleForm=res.data.data;
+                    this.dialogVisible=true;
+                })
+            },
+            scrollToTop (node) {
+                const ChildHasError = Array.from(node.querySelectorAll('.is-error'))
+                if (!ChildHasError.length) throw new Error('有错误，但是找不到错误位置')
+                // 找到第一个错误位置
+                const FirstErrorNode = ChildHasError[0]
             }
         }
     }

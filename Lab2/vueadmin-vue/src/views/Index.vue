@@ -9,7 +9,7 @@
     </tr>
     <tr>
       <td style="text-align:center" class="Choose">
-        <a th:href="@{/userManage.html}" > 教师/学生管理 </a>
+        <router-link to="/usermanage" > 教师/学生管理 </router-link>
       </td>
       <td style="text-align:center" class="Choose">
         <a href="">选课</a>
@@ -64,5 +64,5 @@
 </script>
 
 <style scoped>
-@import "../assets/css/Index.css"
+@import "../assets/css/Index.css";
 </style>

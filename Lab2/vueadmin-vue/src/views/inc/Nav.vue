@@ -16,7 +16,6 @@
                 </template>
             </el-dropdown>
             <router-link to="/">首页</router-link>
-            <el-link href="/">首页</el-link>
         </div>
     </nav>
 </template>
