@@ -9,16 +9,9 @@
 <header>
     <nav class="nav">
         <div class="banner_area">
-            <span>admin</span>           <!-- 显示账号 -->
-            <span>|管理员</span>           <!-- 显示身份-->
+            <a th:href="@{index.html}">首页</a>
             &nbsp;&nbsp;
-            <button type="submit" name="首页">
-                <span>首页</span>
-            </button>
-            &nbsp;&nbsp;
-            <button type="submit" name="退出登录">
-                <span>退出登录</span>
-            </button>
+            <a th:href="@{logout}">注销</a>
         </div>
     </nav>
 </header>
@@ -36,8 +29,9 @@
         <span style="color:red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></span>
 
         <span class="function_list">
-            <a th:href="@{/addUser.html}" ><span class="add" id="Add">添加</span></a>
+            <a th:href="@{addUser.html}"><span class="add" id="Add">添加</span></a>
         </span>
+
     </div>
     <table class="showlist_content">
         <thead>

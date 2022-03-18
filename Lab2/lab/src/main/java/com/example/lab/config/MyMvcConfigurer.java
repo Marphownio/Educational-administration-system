@@ -1,6 +1,7 @@
 package com.example.lab.config;
 
 import com.example.lab.interceptor.LoginHandlerInterceptor;
+import com.example.lab.interceptor.PermissionHandlerInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -27,8 +28,12 @@ public class MyMvcConfigurer implements WebMvcConfigurer {
     // 开启拦截器的配置路径
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // 登录拦截
         registry.addInterceptor(new LoginHandlerInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns("/", "/login", "/login.html", "/css/**", "/image/**", "/js/**");
+
+        // 权限拦截
+        registry.addInterceptor(new PermissionHandlerInterceptor()).addPathPatterns("/addUser", "/addUser.html");
     }
 }
