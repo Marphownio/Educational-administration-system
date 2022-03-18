@@ -1,12 +1,14 @@
 function id_check(){
     const idObj=document.getElementById("id");
     const id_voidObj=document.getElementById("id_void_message");
+    const id_22Obj=document.getElementById("id_22_message");
     const id_errorObj=document.getElementById("id_error_message");
     const id_TlObj=document.getElementById("id_Tl_message");
     const id_SlObj=document.getElementById("id_Sl_message");
     const input_role = document.getElementById("teacher").checked;
     if(idObj.value.length===0)
     {
+        id_22Obj.style.display="none";
         id_voidObj.style.display="inline";
         id_SlObj.style.display="none";
         id_TlObj.style.display="none";
@@ -19,8 +21,17 @@ function id_check(){
         id_errorObj.style.display="inline";
         return -1;
     }
+    else if(idObj.value[0]!=2||idObj.value[1]!=2){
+        id_22Obj.style.display="inline";
+        id_SlObj.style.display="none";
+        id_voidObj.style.display="none";
+        id_errorObj.style.display="none";
+        id_TlObj.style.display="none";
+        return -1;
+    }
     else if(input_role===true)
     {
+        id_22Obj.style.display="none";
         id_SlObj.style.display="none";
         id_voidObj.style.display="none";
         id_errorObj.style.display="none";
@@ -37,6 +48,7 @@ function id_check(){
     }
     else
     {
+        id_22Obj.style.display="none";
         id_TlObj.style.display="none";
         id_voidObj.style.display="none";
         id_errorObj.style.display="none";
@@ -52,6 +64,7 @@ function id_check(){
         }
     }
 }
+
 function name_check(){
     const nameObj=document.getElementById("name");
     const name_voidObj=document.getElementById("name_void_message");
