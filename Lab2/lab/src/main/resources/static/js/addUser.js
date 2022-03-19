@@ -69,6 +69,7 @@ function name_check(){
     const nameObj=document.getElementById("name");
     const name_voidObj=document.getElementById("name_void_message");
     const name_errorObj=document.getElementById("name_error_message");
+    const name_longObj=document.getElementById("name_long_message");
     if(nameObj.value.length===0)
     {
         name_errorObj.style.display="none";
@@ -80,12 +81,19 @@ function name_check(){
         name_voidObj.style.display="none"
         const regu = "^[a-zA-Z\u4e00-\u9fa5]+$";
         const re = new RegExp(regu);
-        if (nameObj.value.search(re) !== -1){
-            name_errorObj.style.display="none";
-            return 1;
-        } else {
+        if (nameObj.value.search(re) === -1){
             name_errorObj.style.display="inline";
             return -1;
+        } else {
+            name_errorObj.style.display="none";
+            if(nameObj.value.length>32){
+                name_longObj.style.display="inline";
+                return -1;
+            }
+            else {
+                name_longObj.style.display="none";
+                return 1;
+            }
         }
     }
 }
