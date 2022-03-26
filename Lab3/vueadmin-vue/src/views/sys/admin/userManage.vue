@@ -14,14 +14,17 @@
                 <el-button type="primary" @click="dialogVisible=true">添加</el-button>
             </el-form-item>
         </el-form>
-        <el-table :data="tableData" border stripe style="width: 100%">
-            <el-table-column prop="role" label="角色" width="100px" />
-            <el-table-column prop="name" label="姓名" width="100px" />
-            <el-table-column prop="id" label="学号/工号" width="120px"/>
-            <el-table-column prop="idNumber" label="身份证号" />
+        <el-table :data="tableData" >
+            <el-table-column fixed prop="id" label="学号/工号" width="120px"/>
+            <el-table-column prop="role" label="角色" width="120px" />
+            <el-table-column prop="name" label="姓名" width="120px" />
+            <el-table-column prop="" label="学院" width="120px"/>
+            <el-table-column prop="" label="专业" width="120px"/>
+            <el-table-column prop="idNumber" label="身份证号" width="180px"/>
             <el-table-column prop="phoneNumber" label="手机号" width="120px"/>
-            <el-table-column prop="email" label="邮箱" />
-            <el-table-column prop="icon" label="操作" >
+            <el-table-column prop="email" label="邮箱" width="180px"/>
+            <el-table-column prop="state" label="状态" width="120px"/>
+            <el-table-column fixed="right" prop="icon" label="操作" width="120px">
             <div>
                 <el-button type="text" @click="editHandle(row.id)">编辑</el-button>
                 <el-popconfirm title="确认删除吗？">
@@ -51,6 +54,18 @@
                         <el-radio label="教师" model-value="1"></el-radio>
                         <el-radio label="学生" model-value="2"></el-radio>
                     </el-radio-group>
+                </el-form-item>
+                <el-form-item label="学院">
+                    <el-select >
+                        <el-option label="学院1" value="shanghai" />
+                        <el-option label="学院2" value="beijing" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="专业">
+                    <el-select  >
+                        <el-option label="专业1" value="shanghai" />
+                        <el-option label="专业2" value="beijing" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="姓名" prop="name">
                     <el-input v-model="ruleForm.name"></el-input>
@@ -132,7 +147,7 @@
                         id:'000000',
                         idNumber:'123456789012345678',
                         phoneNumber:'12345678901',
-                        email:'12345678901@fudan.edu.cn'
+                        email:'12345678901@test.cn'
                     }
                 ]
             }

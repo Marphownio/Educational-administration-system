@@ -7,7 +7,7 @@ Mock.mock('/sys/menu/list','get',()=>{
                 id:'12345678901',
                 idNumber:'123456789012345678',
                 phoneNumber:'12345678901',
-                email:'12345678901@fudan.edu.cn'
+                email:'12345678901@test.cn'
             },
         ]
     }

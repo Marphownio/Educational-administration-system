@@ -76,3 +76,10 @@ body{
     text-align: center;
     table-layout: fixed;
 }
+
+el-table{
+    border: gray;
+    stripe:true;
+    height:200px;
+    table-layout:auto;
+}
