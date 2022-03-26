@@ -1,7 +1,7 @@
 <template>
     <head>
         <meta charset="UTF-8">
-        <title>教师/学生信息录入</title>
+        <title>用户管理</title>
     </head>
     <body>
     <Nav></Nav>
@@ -23,7 +23,7 @@
             <el-table-column prop="email" label="邮箱" />
             <el-table-column prop="icon" label="操作" >
             <div>
-                <el-button type="text" @click="editHandle(scope.row.id)">编辑</el-button>
+                <el-button type="text" @click="editHandle(row.id)">编辑</el-button>
                 <el-popconfirm title="确认删除吗？">
                     <template #reference>
                         <el-button type="text">删除</el-button>
@@ -172,7 +172,7 @@
             },
             nameCheck () {
                 const relu = "^[a-zA-Z\u4e00-\u9fa5]+$";
-                const re = new RegExp(regu);
+                const re = new RegExp(relu);
                 if (this.value.search(re) !== -1){
                 } else {
                     message:'输入只能为中英文！'
@@ -187,16 +187,12 @@
             scrollToTop (node) {
                 const ChildHasError = Array.from(node.querySelectorAll('.is-error'))
                 if (!ChildHasError.length) throw new Error('有错误，但是找不到错误位置')
-                // 找到第一个错误位置
-                const FirstErrorNode = ChildHasError[0]
             }
         }
     }
 
 </script>
 
-<style scoped>
-    @import "../assets/css/userManage.css";
-
-
+<style>
+    @import "../../../assets/css/userManage.css";
 </style>

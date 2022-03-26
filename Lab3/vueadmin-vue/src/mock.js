@@ -12,3 +12,4 @@ Mock.mock('/sys/menu/list','get',()=>{
         ]
     }
 })
+

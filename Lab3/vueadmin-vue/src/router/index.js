@@ -13,14 +13,14 @@ const routes = [
     component: () => import('../views/Login.vue')
   },
   {
-    path: '/adduser',
-    name: 'Adduser',
-    component: () => import('../views/sys/admin/addUser.vue')
+    path: '/majormanage',
+    name: 'majormanage',
+    component: () => import('../views/sys/admin/majorManage.vue')
   },
   {
     path: '/usermanage',
     name: 'usermanage',
-    component: () => import('../views/userManage.vue')
+    component: () => import('../views/sys/admin/userManage.vue')
   },
   {
     path: '/resetpassword',

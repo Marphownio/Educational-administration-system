@@ -9,10 +9,10 @@
     </tr>
     <tr>
       <td style="text-align:center" class="Choose">
-        <router-link to="/usermanage" > 教师/学生管理 </router-link>
+        <router-link to="/usermanage" > 用户管理 </router-link>
       </td>
       <td style="text-align:center" class="Choose">
-        <a href="">选课</a>
+        <router-link to="/majormanage">学院/专业管理</router-link>
       </td>
       <td style="text-align:center" class="Choose">
         <a href="" >评教</a>
