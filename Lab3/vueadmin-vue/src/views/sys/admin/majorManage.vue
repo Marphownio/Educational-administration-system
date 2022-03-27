@@ -69,9 +69,7 @@
         </el-dialog>
     </body>
 </template>
-<script src="../../../assets/js/majorManage.js">
-
-</script>
+<script src="../../../assets/js/majorManage.js"></script>
 
 <style scoped>
     @import "../../../assets/css/majorManage.css";
