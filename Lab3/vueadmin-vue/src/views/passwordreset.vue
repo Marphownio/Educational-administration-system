@@ -24,7 +24,7 @@
       <el-input  v-model="ruleForm.pw2"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button  type="submit" @submit="submitform">确认修改</el-button>
+      <el-button  type="primary" @click="submit_check">确认修改</el-button>
     </el-form-item>
   </el-form>
   </div>

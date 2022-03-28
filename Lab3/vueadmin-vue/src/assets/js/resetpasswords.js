@@ -64,10 +64,10 @@ export default {
                 }
             })
         },
-        submitform(){
-            request.post("http://localhost:8080/resetPassword",this.ruleForm).then(res =>{
-
-            })
-        }
+        // submitform(){
+        //     request.post("http://localhost:8080/resetPassword",this.ruleForm).then(res =>{
+        //
+        //     })
+        // }
     }
 }
