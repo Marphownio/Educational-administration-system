@@ -1,21 +1,41 @@
 <template>
-  <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
-  <form class="Preset" th:action="@{/resetPassword}" >
+  <head>
+    <meta charset="UTF-8">
+    <title>重置密码</title>
+  </head>
+  <body>
+  <div>
+  <el-form
+      id="Preset"
+      ref="ruleForm"
+      :model="ruleForm"
+      :rules="editRules"
+      label-width="120px"
+      @submit.prevent="submit_check"
+      class="demo-ruleForm"
+      :size="formSize"
+  >
     <h1 style="text-align:center">首次登录请重置密码</h1>
     <h4 style="text-align:center">密码需包含大小写字母、数字及字符</h4>
-
-    <!--如果msg不为空，提示错误-->
-    <p style="color:red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
-
-    <input onblur="testpassword()" type="password" id = "newPassword1" name="newPassword1" placeholder="请输入新密码">
-    <span id="warn_msg" style="align-content: center;" >&nbsp;</span>
-    <input onblur="WhetherSame()" type="password" id = "newPassword2" name="newPassword2" placeholder="请再次输入密码">
-    <input type="submit" value="确认" onclick="return submit_check()" class="verify">
-  </form>
-  </html>
-
+    <el-form-item label="请输入新密码:" prop="pw1" ref="pw1">
+      <el-input v-model="ruleForm.pw1"></el-input>
+    </el-form-item>
+    <el-form-item label="请确认密码:" prop="pw2" ref="pw2">
+      <el-input  v-model="ruleForm.pw2"></el-input>
+    </el-form-item>
+    <el-form-item>
+      <el-button  type="submit">确认修改</el-button>
+    </el-form-item>
+  </el-form>
+  </div>
+  </body>
 </template>
-<script src="../assets/js/resetpasswords.js"></script>
+
+
+<script src="../assets/js/resetpasswords.js" type="text/javascript">
+</script>
+
+
 <style scoped>
 @import "../assets/css/resetPassword.css";
 </style>

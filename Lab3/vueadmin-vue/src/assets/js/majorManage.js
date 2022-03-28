@@ -1,4 +1,3 @@
-import Nav from "@/views/inc/Nav.vue";
 export default {
     name: "userManage",
     components:{
@@ -7,8 +6,7 @@ export default {
     data(){
         return{
             dialogVisible:false,
-            ruleForm:{
-            },
+            ruleForm:{},
             editRules :({
                 name: [
                     { required: true, message: '请输入姓名', trigger: 'blur' },

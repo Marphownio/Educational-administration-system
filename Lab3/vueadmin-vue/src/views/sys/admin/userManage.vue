@@ -3,11 +3,15 @@
         <meta charset="UTF-8">
         <title>用户管理</title>
     </head>
+
     <body>
+
     <Nav></Nav>
+
     <div class="void">
         <span></span>
     </div>
+
     <div class="showlist">
         <el-form :inline="true" >
             <el-form-item>
@@ -35,6 +39,7 @@
             </div>
             </el-table-column>
         </el-table>
+
 
         <el-dialog
                 v-model="dialogVisible"

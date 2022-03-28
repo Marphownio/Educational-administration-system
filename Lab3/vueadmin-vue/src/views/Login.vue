@@ -1,12 +1,17 @@
 <template>
   <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title>登录页面</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+  </head>
 
   <body>
   <form class="login" th:action="@{login}" >
     <h1 style="text-align:center">欢迎使用教务系统</h1>
 
     <!--如果msg不为空，提示错误-->
-    <p style="color:red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}">wrgw</p>
+    <p style="color:red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
 
     <input class="IDinput" type="text" id="id" name="id" placeholder="学号/工号"><br>
     <input class="Passwordinput" type="password" id="password" name="password" placeholder="密码"><br>
@@ -14,7 +19,6 @@
   </form>
   </body>
   </html>
-
 </template>
 
 
