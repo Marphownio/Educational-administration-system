@@ -4,27 +4,27 @@ import HomeView from '../views/Index'
 const routes = [
   {
     path: '/',
-    name:'index',
+    name:'Index',
     component:HomeView
   },
   {
     path: '/login',
-    name:'login',
+    name:'Login',
     component: () => import('../views/Login.vue')
   },
   {
     path: '/majormanage',
-    name: 'majormanage',
+    name: 'Majormanage',
     component: () => import('../views/sys/admin/majorManage.vue')
   },
   {
     path: '/usermanage',
-    name: 'usermanage',
+    name: 'Usermanage',
     component: () => import('../views/sys/admin/userManage.vue')
   },
   {
     path: '/resetpassword',
-    name: 'resetpassword',
+    name: 'Resetpassword',
     component: () => import('../views/passwordreset.vue')
   }
 ]

@@ -3,14 +3,14 @@
         <div class="banner_area">
             <el-dropdown>
                 <span class="el-dropdown-link">
-                {{userInfo.id}}|{{userInfo.role}}
+               {{userInfo.id}}|{{userInfo.name}}
                     <el-icon class="el-icon--right">
                         <arrow-down />
                     </el-icon>
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item>个人中心</el-dropdown-item>
+                        <el-dropdown-item >个人中心</el-dropdown-item>
                         <el-dropdown-item divided>退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
@@ -21,31 +21,29 @@
 </template>
 
 <script>
+    import {ArrowDown} from "@element-plus/icons-vue";
     export default {
         name: "Nav",
+        components: {ArrowDown},
         data()
         {
             return{
                 userInfo:{
-                    role:"",
                     id:"",
                     name:"",
-                    idNumber:"",
-                    phoneNumber:"",
-                    email:""
                 }
             }
-        }
-        /*create(){
+        },
+        create(){
             this.getUserInfo()
         },
-        methods(){
+        methods:{
             getUserInfo(){
-                this.$axios.get(url:"/sys/userInfo").then(res=>{
+                this.$axios.get("/userInfo").then(res=>{
                     this.userInfo=res.data.data
                 })
             }
-        }*/
+        }
     }
 </script>
 
