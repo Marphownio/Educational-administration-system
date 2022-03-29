@@ -109,9 +109,3 @@ const filterTableData = computed(() =>
             data.name.toLowerCase().includes(search.value.toLowerCase())
     )
 )
-/*const handleEdit = (index: number, row: User) => {
-    console.log(index, row)
-}
-const handleDelete = (index: number, row: User) => {
-    console.log(index, row)
-}*/

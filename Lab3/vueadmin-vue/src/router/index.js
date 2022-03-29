@@ -23,6 +23,26 @@ const routes = [
     component: () => import('../views/sys/admin/userManage.vue')
   },
   {
+    path: '/lessonmanage',
+    name: 'Lessonmanage',
+    component: () => import('../views/sys/admin/lessonManage.vue')
+  },
+  {
+    path: '/selectmanage',
+    name: 'Selectmanage',
+    component: () => import('../views/sys/admin/selectManage.vue')
+  },
+  {
+    path: '/timemanage',
+    name: 'Timemanage',
+    component: () => import('../views/sys/admin/timeManage.vue')
+  },
+  {
+    path: '/classroommanage',
+    name: 'Classroommanage',
+    component: () => import('../views/sys/admin/classroomManage.vue')
+  },
+  {
     path: '/resetpassword',
     name: 'Resetpassword',
     component: () => import('../views/passwordreset.vue')

@@ -15,18 +15,18 @@
         <router-link to="/majormanage">学院/专业管理</router-link>
       </td>
       <td style="text-align:center" class="Choose">
-        <a href="" >评教</a>
+          <router-link to="/lessonmanage" > 课程管理 </router-link>
       </td>
       <td style="text-align:center" class="Choose">
-        <a href="">查看课表</a>
+          <router-link to="/selectionmanage" > 选课管理 </router-link>
       </td>
     </tr>
     <tr>
       <td style="text-align:center" class="Choose">
-        <a href="" >教师/学生管理</a>
+          <router-link to="/timemanage" > 上课时间管理 </router-link>
       </td>
       <td style="text-align:center" class="Choose">
-        <a href="">选课</a>
+          <router-link to="/classrmanage" > 教室管理 </router-link>
       </td>
       <td style="text-align:center" class="Choose">
         <a href="" >评教</a>
