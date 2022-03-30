@@ -12,7 +12,7 @@
         <router-link to="/personalinfo" >个人信息</router-link>
       </td>
       <td style="text-align:center" class="Choose">
-        <router-link to="">查看可选课程</router-link>
+        <router-link to="/classselection">选课</router-link>
       </td>
       <td style="text-align:center" class="Choose">
         <router-link to="/resetpassword" > 重置密码 </router-link>

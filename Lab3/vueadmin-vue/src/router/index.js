@@ -58,6 +58,11 @@ const routes = [
     component: () => import('../views/personal_info.vue')
   },
   {
+    path: '/classselection',
+    name: 'classselection',
+    component: () => import('../views/sys/stu/stu_class_selection.vue')
+  },
+  {
     path: '/resetpassword',
     name: 'Resetpassword',
     component: () => import('../views/passwordreset.vue')

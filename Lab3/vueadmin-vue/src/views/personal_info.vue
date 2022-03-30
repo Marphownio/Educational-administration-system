@@ -1,4 +1,10 @@
 <template>
+  <head>
+    <meta charset="UTF-8">
+    <title>学生选课</title>
+  </head>
+
+  <body>
   <Nav></Nav>
   <div id="personal_infor">
   <el-descriptions
@@ -72,7 +78,7 @@
       </el-form-item>
     </el-form>
   </el-dialog>
-
+  </body>
 </template>
 
 <script src="../assets/js/personal_infor.js" type="text/javascript">
