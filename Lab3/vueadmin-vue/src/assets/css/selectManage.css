@@ -14,3 +14,29 @@ a:hover {
     color: #999999;
     text-decoration: underline;
 }
+
+.showList{
+    top:25%;
+    margin: 100px auto;
+    width: 535px;
+    height:500px;
+    background-color:white;
+    box-shadow: 0 0 10px 10px rgb(226 234 242 / 50%);
+    border-radius: 40px;
+    padding: 15px;
+    text-align: center;
+}
+.open{
+    background-color: #59c2c5;
+    color: white;
+    font-size: 35px;
+    height: 50px;
+    margin: 140px auto;
+}
+.close{
+    background-color: crimson;
+    color: white;
+    font-size: 35px;
+    height: 50px;
+    margin:0 auto;
+}

@@ -7,8 +7,10 @@
     <body>
 
     <Nav></Nav>
-    <el-button @click="openSelection" style="background-color: #59c2c5;color: white;margin: 0 auto;">开放选课</el-button>
-    <el-button @click="closeSelection" style="background-color: crimson;color: white;margin: 0 auto">关闭选课</el-button>
+    <div class="showList">  <!--showList命名是为了防止样式击穿，vue3中style的scoped属性不生效-->
+        <li style="list-style-type:none"><el-button @click="openSelection" class="open">开放选课</el-button></li>
+        <li style="list-style-type:none"><el-button @click="closeSelection" class="close">关闭选课</el-button></li>
+    </div>
     </body>
 </template>
 
@@ -16,6 +18,6 @@
 
 </script>
 
-<style scoped>
-
+<style>
+  @import "../../../assets/css/selectManage.css";
 </style>
