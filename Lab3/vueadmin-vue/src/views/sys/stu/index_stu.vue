@@ -9,13 +9,13 @@
     </tr>
     <tr>
       <td style="text-align:center" class="Choose">
-        <router-link to="" >个人信息维护</router-link>
+        <router-link to="" >个人信息</router-link>
       </td>
       <td style="text-align:center" class="Choose">
         <router-link to="">查看可选课程</router-link>
       </td>
       <td style="text-align:center" class="Choose">
-        <router-link to="/index_stu" > 敬请期待 </router-link>
+        <router-link to="/resetpassword" > 重置密码 </router-link>
       </td>
       <td style="text-align:center" class="Choose">
         <router-link to="/index_stu" > 敬请期待 </router-link>

@@ -53,6 +53,11 @@ const routes = [
     component: () => import('../views/sys/admin/classroomManage.vue')
   },
   {
+    path: '/personalinfo',
+    name: 'personalinfo',
+    component: () => import('../views/personal_info.vue')
+  },
+  {
     path: '/resetpassword',
     name: 'Resetpassword',
     component: () => import('../views/passwordreset.vue')
