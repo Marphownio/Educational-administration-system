@@ -18,7 +18,7 @@
           <router-link to="/lessonmanage" > 课程管理 </router-link>
       </td>
       <td style="text-align:center" class="Choose">
-          <router-link to="/selectionmanage" > 选课管理 </router-link>
+          <router-link to="/selectmanage" > 选课管理 </router-link>
       </td>
     </tr>
     <tr>
@@ -26,7 +26,7 @@
           <router-link to="/timemanage" > 上课时间管理 </router-link>
       </td>
       <td style="text-align:center" class="Choose">
-          <router-link to="/classrmanage" > 教室管理 </router-link>
+          <router-link to="/classroommanage" > 教室管理 </router-link>
       </td>
       <td style="text-align:center" class="Choose">
         <a href="" >评教</a>
