@@ -9,7 +9,7 @@
     </tr>
     <tr>
       <td style="text-align:center" class="Choose">
-        <router-link to="" >个人信息</router-link>
+        <router-link to="/personalinfo" >个人信息</router-link>
       </td>
       <td style="text-align:center" class="Choose">
         <router-link to="">查看可选课程</router-link>
