@@ -20,7 +20,7 @@
         </el-form>
         <el-table :data="tableData" >
             <el-table-column fixed prop="id" label="学号/工号" width="120px"/>
-            <el-table-column prop="role" label="角色" width="120px" />
+            <el-table-column prop="role" label="身份" width="120px" />
             <el-table-column prop="name" label="姓名" width="120px" />
             <el-table-column prop="college" label="学院" width="120px"/>
             <el-table-column prop="major" label="专业" width="120px"/>

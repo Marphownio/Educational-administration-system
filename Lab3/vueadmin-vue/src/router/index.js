@@ -8,6 +8,16 @@ const routes = [
     component:HomeView
   },
   {
+    path: '/index_stu',
+    name:'index_stu',
+    component: () => import('../views/sys/stu/index_stu.vue')
+  },
+  {
+    path: '/index_teacher',
+    name:'index_teacher',
+    component: () => import('../views/sys/teacher/index_teacher.vue')
+  },
+  {
     path: '/login',
     name:'Login',
     component: () => import('../views/Login.vue')
@@ -41,6 +51,16 @@ const routes = [
     path: '/classroommanage',
     name: 'Classroommanage',
     component: () => import('../views/sys/admin/classroomManage.vue')
+  },
+  {
+    path: '/personalinfo',
+    name: 'personalinfo',
+    component: () => import('../views/personal_info.vue')
+  },
+  {
+    path: '/classselection',
+    name: 'classselection',
+    component: () => import('../views/sys/stu/stu_class_selection.vue')
   },
   {
     path: '/resetpassword',
