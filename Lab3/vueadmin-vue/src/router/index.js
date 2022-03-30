@@ -8,6 +8,16 @@ const routes = [
     component:HomeView
   },
   {
+    path: '/index_stu',
+    name:'index_stu',
+    component: () => import('../views/sys/stu/index_stu.vue')
+  },
+  {
+    path: '/index_teacher',
+    name:'index_teacher',
+    component: () => import('../views/sys/teacher/index_teacher.vue')
+  },
+  {
     path: '/login',
     name:'Login',
     component: () => import('../views/Login.vue')
