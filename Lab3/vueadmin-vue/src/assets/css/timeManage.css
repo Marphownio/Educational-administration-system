@@ -15,28 +15,30 @@ a:hover {
     text-decoration: underline;
 }
 
-.showList {
+.void{
+    height:100px;
+}
+body{
+    background: url(../images/background.jpg);
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-attachment:fixed;
+}
+
+.ShowList{
     top:25%;
     margin: 100px auto;
-    width: 535px;
-    height:500px;
+    width: 50%;
+    height:70%;
     background-color:white;
     box-shadow: 0 0 10px 10px rgb(226 234 242 / 50%);
     border-radius: 40px;
     padding: 15px;
     text-align: center;
 }
-.open{
-    background-color: #59c2c5;
-    color: white;
-    font-size: 35px;
-    height: 50px;
-    margin: 140px auto;
+
+.edit{
+    margin-top: 40px;
 }
-.close{
-    background-color: crimson;
-    color: white;
-    font-size: 35px;
-    height: 50px;
-    margin:0 auto;
-}
+
+

@@ -106,7 +106,9 @@ export default {
                     idNumber:'123456789012345678',
                     phoneNumber:'12345678901',
                     email:'12345678901@test.cn',
-                    state: 1
+                    state: 1,
+                    major:'专业1',
+                    college:'学院1'
                 },
                 {
                     role: '1',

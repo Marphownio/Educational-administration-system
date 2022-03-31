@@ -109,6 +109,6 @@
 
 </script>
 
-<style >
+<style scoped>
     @import "../../../assets/css/userManage.css";
 </style>

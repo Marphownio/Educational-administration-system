@@ -64,5 +64,5 @@
 </script>
 
 <style scoped>
-@import "../assets/css/Index.css";
+@import "../../../assets/css/Index.css";
 </style>

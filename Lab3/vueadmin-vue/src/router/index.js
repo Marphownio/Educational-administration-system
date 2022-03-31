@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/Index'
+import HomeView from '../views/sys/admin/index_admin'
 
 const routes = [
   {
@@ -66,7 +66,12 @@ const routes = [
     path: '/resetpassword',
     name: 'Resetpassword',
     component: () => import('../views/passwordreset.vue')
-  }
+  },
+  /*{
+    path: '/test',//测试效果用页面，可删可改
+    name: 'Test',
+    component: () => import('../views/test.vue')
+  }*/
 ]
 
 const router = createRouter({
