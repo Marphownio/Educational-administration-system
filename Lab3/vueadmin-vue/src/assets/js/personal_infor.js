@@ -23,7 +23,7 @@ export default {
             }
         };
         let emailcheck =(rule,value,callback)=>{
-            const pat0=/^[\w_.-]+@[\w_-]+(.[\w_-]+)+\w+$/;
+            const pat0=/^[\w\._-]+@(([\w_-]+)\.+)+\w+$/;
             if (value===""){
                 callback(new Error('请输入新邮箱地址'));
                 return false;

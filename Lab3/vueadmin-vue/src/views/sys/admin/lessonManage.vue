@@ -20,7 +20,7 @@
         </el-form>
         <el-table :data="tableData" >
             <el-table-column fixed prop="id" label="课程编号" width="120px"/>
-            <el-table-column prop="name" label="课程名" width="120px" />
+            <el-table-column prop="name" label="课程名称" width="120px" />
             <el-table-column prop="college" label="开课院系" width="120px"/>
             <el-table-column prop="major" label="学时" width="120px"/>
             <el-table-column prop="idNumber" label="学分" width="120px"/>

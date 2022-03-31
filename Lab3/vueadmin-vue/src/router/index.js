@@ -63,6 +63,11 @@ const routes = [
     component: () => import('../views/sys/stu/stu_class_selection.vue')
   },
   {
+    path: '/teaclassmanage',
+    name: 'teaclassmanage',
+    component: () => import('../views/sys/teacher/tea_class_management.vue')
+  },
+  {
     path: '/resetpassword',
     name: 'Resetpassword',
     component: () => import('../views/passwordreset.vue')
