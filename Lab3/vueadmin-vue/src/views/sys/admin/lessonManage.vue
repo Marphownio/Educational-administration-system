@@ -15,7 +15,7 @@
     <div class="showlist">
         <el-form :inline="true" >
             <el-form-item>
-                <el-button type="primary" @click="dialogVisible=true">添加</el-button>
+                <el-button type="primary" @click="dialogVisible=true">审核课程申请</el-button>
             </el-form-item>
         </el-form>
         <el-table :data="tableData" >
@@ -44,55 +44,19 @@
 
         <el-dialog
                 v-model="dialogVisible"
-                title="添加课程"
+                title="课程申请"
                 width="600px"
         >
-            <el-form
-                    ref="ruleForm"
-                    :model="ruleForm"
-                    :rules="editRules"
-                    label-width="120px"
-                    class="demo-ruleForm"
-                    :size="formSize"
-            >
-                <el-form-item label="角色" prop="role">
-                    <el-radio-group v-model="ruleForm.role">
-                        <el-radio label=1 model-value="1">教师</el-radio>
-                        <el-radio label=2 model-value="2">学生</el-radio>
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item label="学院">
-                    <el-select v-model="ruleForm.college" placeholder="选择学院">
-                        <el-option label="学院1" value="1" />
-                        <el-option label="学院2" value="2" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="专业">
-                    <el-select  v-model="ruleForm.major" placeholder="选择专业">
-                        <el-option label="专业1" value="11" />
-                        <el-option label="专业2" value="21" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="姓名" prop="name">
-                    <el-input v-model="ruleForm.name"></el-input>
-                </el-form-item>
-                <el-form-item label="学号/工号" prop="id" ref="id">
-                    <el-input v-model="ruleForm.id"></el-input>
-                </el-form-item>
-                <el-form-item label="身份证号" prop="idNumber" ref="idNumber">
-                    <el-input v-model="ruleForm.idNumber"></el-input>
-                </el-form-item>
-                <el-form-item label="手机号" prop="phoneNumber">
-                    <el-input v-model="ruleForm.phoneNumber"></el-input>
-                </el-form-item>
-                <el-form-item label="邮箱" prop="email">
-                    <el-input v-model="ruleForm.email"></el-input>
-                </el-form-item>
-
-                <el-form-item>
-                    <el-button type="primary" @click="submitForm" >添加</el-button>
-                </el-form-item>
-            </el-form>
+            <div id="noapply">
+                暂无课程申请
+            </div>
+            <div id="apply">
+            
+            </div>
+            <div id="react">
+                <el-button type="primary" @click="submitForm" >同意</el-button>
+                <el-button type="primary" @click="rejectForm" >拒绝</el-button>
+            </div>
         </el-dialog>
 
     </div>
@@ -104,5 +68,5 @@
 </script>
 
 <style scoped>
-    @import "../../../assets/css/userManage.css";
+    @import "../../../assets/css/lessonManage.css";
 </style>

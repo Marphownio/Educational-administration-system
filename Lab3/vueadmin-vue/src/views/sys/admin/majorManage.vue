@@ -15,11 +15,11 @@
             </el-form-item>
         </el-form>
         <el-table :data="tableData" style="width: 100%; margin-bottom: 20px" row-key="number" border default-expand-all>
-            <el-table-column prop="number" label="编号" sortable width="180" />
-            <el-table-column prop="college" label="学院" sortable width="180" />
-            <el-table-column prop="major" label="专业" sortable width="180" />
-            <el-table-column prop="data" label="描述信息" sortable width="180" />
-            <el-table-column align="right">
+            <el-table-column prop="number" label="编号" sortable width="180px" />
+            <el-table-column prop="college" label="学院" sortable width="180px" />
+            <el-table-column prop="major" label="专业" sortable width="180px" />
+            <el-table-column prop="data" label="描述信息" sortable width="180px" />
+            <el-table-column align="right" width="420px">
                 <template #header>
                     <el-input v-model="search" size="small" placeholder="输入学院/专业名称" />
                 </template>
