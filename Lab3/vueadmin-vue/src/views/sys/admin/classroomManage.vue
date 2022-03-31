@@ -7,10 +7,9 @@
                   :header-cell-style="{'text-align':'center'}"
                   :cell-style="{'text-align':'center'}"
         >
-            <el-table-column label="上课时间表">
-                <el-table-column prop="number" label="课程编号" width="210px"/>
-                <el-table-column prop="begin" label="开始时间" width="210px"/>
-                <el-table-column prop="end" label="结束时间" width="210px"/>
+            <el-table-column label="教室列表">
+                <el-table-column prop="building" sortable label="教学楼" width="310px"/>
+                <el-table-column prop="classroom" sortable label="教室" width="310px"/>
             </el-table-column>
         </el-table>
         <el-form :inline="true" >

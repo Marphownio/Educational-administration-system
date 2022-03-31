@@ -17,6 +17,18 @@ export default {
                     id: 2,
                     name: '课程2',
                 },
+            ],
+            applyData:[
+                {
+                    request:2,
+                    id: 1,
+                    name: '课程1',
+                },
+                {
+                    request:1,
+                    id: 2,
+                    name: '课程2',
+                },
             ]
         }
     },
