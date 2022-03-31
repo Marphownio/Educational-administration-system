@@ -9,8 +9,6 @@
   <Nav></Nav>
   <span id="welcomeinform">可选课程信息：</span>
   <div id="classinform">
-    <el-form :inline="true" >
-    </el-form>
     <el-table id="classinformtable" :data="tableData" >
       <el-table-column prop="classid" label="课程编号" width="90px"/>
       <el-table-column prop="classname" label="课程名称" width="90px" />
