@@ -12,7 +12,7 @@
         <router-link to="/personalinfo" >个人信息</router-link>
       </td>
       <td style="text-align:center" class="Choose">
-        <router-link to="">已有课程维护</router-link>
+        <router-link to="/teaclassmanage">已有课程维护</router-link>
       </td>
       <td style="text-align:center" class="Choose">
         <router-link to="/resetpassword" > 重置密码 </router-link>
