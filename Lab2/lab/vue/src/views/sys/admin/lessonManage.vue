@@ -15,6 +15,15 @@
     <div class="showlist">
         <el-form :inline="true" >
             <el-form-item>
+                <el-button type="primary" @click="dialogVisible=true">添加课程</el-button><!--这个写法无法写入两个弹窗，需将课程申请换成方法（待完成）-->
+                <el-upload
+                        class="upload-demo"
+                        action=""
+                        :on-change="handleChange"
+                        accept=".csv"
+                        :auto-upload="false">
+                    <el-button type="primary" style="margin-left: 20px;margin-right: 20px;margin-top: 10px">通过csv文件添加</el-button>
+                </el-upload>
                 <el-button type="primary" @click="dialogVisible=true">审核课程申请</el-button>
             </el-form-item>
         </el-form>
@@ -43,6 +52,7 @@
 
 
         <el-dialog
+                id="apply"
                 v-model="dialogVisible"
                 title="课程申请"
                 width="80%"
@@ -73,6 +83,41 @@
                 </el-table-column>
             </el-table>
         </el-dialog>
+
+       <!-- <el-dialog
+                id="add"
+                v-model="dialogVisible"
+                title="添加用户"
+                width="600px"
+        >
+            <el-form
+                    ref="ruleForm"
+                    :model="ruleForm"
+                    :rules="editRules"
+                    label-width="120px"
+                    class="demo-ruleForm"
+            >
+                <el-form-item label="课程名称" prop="name">
+                    <el-input v-model="ruleForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="开课院系" prop="college" ref="college">
+                    <el-input v-model="ruleForm.id"></el-input>
+                </el-form-item>
+                <el-form-item label="学时" prop="time" ref="time">
+                    <el-input v-model="ruleForm.idNumber"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号" prop="phoneNumber">
+                    <el-input v-model="ruleForm.phoneNumber"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱" prop="email">
+                    <el-input v-model="ruleForm.email"></el-input>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button type="primary" @click="submitForm" >添加</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>-->
 
     </div>
     </body>

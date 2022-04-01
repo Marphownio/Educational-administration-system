@@ -15,7 +15,15 @@
     <div class="showlist">
         <el-form :inline="true" >
             <el-form-item>
-                <el-button type="primary" @click="dialogVisible=true">添加</el-button>
+                <el-button type="primary" @click="dialogVisible=true">添加用户</el-button>
+                <el-upload
+                        class="upload-demo"
+                        action=""
+                        :on-change="handleChange"
+                        accept=".csv"
+                        :auto-upload="false">
+                    <el-button type="primary" style="margin-left: 20px;margin-right: 20px;margin-top: 10px">通过csv文件添加</el-button>
+                </el-upload>
             </el-form-item>
         </el-form>
         <el-table :data="tableData" >
