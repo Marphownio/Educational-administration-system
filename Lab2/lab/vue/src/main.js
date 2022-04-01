@@ -7,6 +7,8 @@ import axios from 'axios'
 import ElementPlus from 'element-plus'
 import 'element-plus/theme-chalk/index.css'
 
+require("./mock.js")
+
 const app=createApp(App)
 app.config.globalProperties.$axios=axios;
 app.use(store).use(router).use(ElementPlus).mount('#app')
