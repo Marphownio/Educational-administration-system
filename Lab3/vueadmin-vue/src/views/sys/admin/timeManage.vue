@@ -8,9 +8,9 @@
               :cell-style="{'text-align':'center'}"
               >
         <el-table-column label="上课时间表">
-            <el-table-column prop="number" label="课程编号" width="210px"/>
-            <el-table-column prop="begin" label="开始时间" width="210px"/>
-            <el-table-column prop="end" label="结束时间" width="210px"/>
+            <el-table-column prop="number" label="课程编号" />
+            <el-table-column prop="begin" label="开始时间" />
+            <el-table-column prop="end" label="结束时间" />
         </el-table-column>
     </el-table>
         <el-form :inline="true" >

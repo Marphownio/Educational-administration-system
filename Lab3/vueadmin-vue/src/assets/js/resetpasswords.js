@@ -1,7 +1,11 @@
 import request from "@/utils/request";
+import Nav from "@/views/inc/Nav";
 
 export default {
     name: "resetpasswords",
+    components:{
+        Nav
+    },
     data(){
         let testpassword = (rule, value, callback) =>{
             const pat0=/^[\w-_]{6,32}$/;//密码的规则0

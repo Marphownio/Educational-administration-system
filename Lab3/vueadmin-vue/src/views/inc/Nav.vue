@@ -40,7 +40,7 @@
         methods:{
             getUserInfo(){
                 this.$axios.get("/userInfo").then(res=>{
-                    this.userInfo=res.data.data
+                    this.userInfo=res.data.data.record
                 })
             }
         }

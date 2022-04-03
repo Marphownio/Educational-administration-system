@@ -1,4 +1,4 @@
-<template>
+<template v-slot="scope">
     <head>
         <meta charset="UTF-8">
         <title>用户管理</title>
@@ -15,7 +15,15 @@
     <div class="showlist">
         <el-form :inline="true" >
             <el-form-item>
-                <el-button type="primary" @click="dialogVisible=true">添加</el-button>
+                <el-button type="primary" @click="dialogVisible=true">添加用户</el-button>
+                <el-upload
+                        class="upload-demo"
+                        action=""
+                        :on-change="handleChange"
+                        accept=".csv"
+                        :auto-upload="false">
+                    <el-button type="primary" style="margin-left: 20px;margin-right: 20px;margin-top: 10px">通过csv文件添加</el-button>
+                </el-upload>
             </el-form-item>
         </el-form>
         <el-table :data="tableData" >
@@ -36,6 +44,7 @@
                 </template>
             </el-table-column>
             <el-table-column fixed="right" prop="icon" label="操作" width="170px">
+                <template v-slot="scope">
             <div>
                 <el-button @click="editHandle(scope.row.id)">编辑</el-button>
                 <el-popconfirm title="确认删除吗？">
@@ -44,6 +53,7 @@
                     </template>
                 </el-popconfirm>
             </div>
+                </template>
             </el-table-column>
         </el-table>
 
@@ -59,7 +69,6 @@
                     :rules="editRules"
                     label-width="120px"
                     class="demo-ruleForm"
-                    :size="formSize"
             >
                 <el-form-item label="角色" prop="role">
                     <el-radio-group v-model="ruleForm.role">

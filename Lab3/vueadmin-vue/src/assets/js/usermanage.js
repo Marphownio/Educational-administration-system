@@ -1,4 +1,5 @@
 import Nav from "@/views/inc/Nav.vue";
+import Papa from "papaparse";
 
 export default {
     name: "userManage",
@@ -25,7 +26,7 @@ export default {
         };
         let idcheck=(rule,value,callback)=>{
             console.log(this.ruleForm.role);
-            if(value[0]!=2||value[1]!=2){           //这里改成！==的话貌似会报错
+            if(value[0]!=2||value[1]!=2){           //这里改成！==的话貌似会报错，总之改动需检查
                 callback(new Error('工号/学号前两位需为22'));
                 return false;
             }
@@ -100,24 +101,7 @@ export default {
             }),
             tableData : [
                 {
-                    role: '0',
-                    name: 'admin',
-                    id:'000000',
-                    idNumber:'123456789012345678',
-                    phoneNumber:'12345678901',
-                    email:'12345678901@test.cn',
-                    state: 1,
-                    major:'专业1',
                     college:'学院1'
-                },
-                {
-                    role: '1',
-                    name: 'test',
-                    id:'000000',
-                    idNumber:'123456789012345678',
-                    phoneNumber:'12345678901',
-                    email:'12345678901@test.cn',
-                    state:3
                 }
             ]
         }
@@ -129,13 +113,14 @@ export default {
     methods:{
         getUserForm(){
             this.$axios.get("/admin/user/list").then(res=>{
-                this.tableData=res.data.data;
+                this.tableData=res.data.data.record;
             })
         },
         submitForm(){
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
-                    this.$axios.post('/admin/user/'+(this.ruleForm.id?'update':'save'),this.ruleForm)
+                    console.log(this.ruleForm)
+                    this.$axios.post('/admin/user/save',this.ruleForm)
                     .then(res=>{
                         this.$message({
                             showClose: true,
@@ -156,9 +141,48 @@ export default {
                 }
             })
         },
+        handleChange(file) {
+            this.fileTemp = file.raw
+            if (this.fileTemp) {
+                if ((this.fileTemp.type === '.csv') || (this.fileTemp.type === 'application/vnd.ms-excel')) {
+                    this.importcsv(file.raw)
+                } else {
+                    this.$message({
+                        type: 'warning',
+                        message: '附件格式错误，请删除后重新上传！'
+                    })
+                }
+            } else {
+                this.$message({
+                    type: 'warning',
+                    message: '请上传附件！'
+                })
+            }
+        },
+        importcsv (obj) {
+            Papa.parse(obj, {
+                complete (results) {
+                    console.log(results)//调试查看csv文件的数据
+                    let data = []
+                    //遍历csv文件中的数据，存放到data中
+                    for (let i = 0; i < results.data.length; i++) {
+                        let obj = {}
+                        obj.number = results.data[i][0]
+                        obj.name = results.data[i][1]
+                        obj.nameRemark = results.data[i][2]
+                        obj.index = results.data[i][3]
+                        data.push(obj)
+                    }
+                    data.splice(0, 1)//将数组第一位的表格名称去除
+                    console.log('data', data)
+                    this.tableData = data//将数据放入要展示的表格中
+                }
+            })
+        },
         editHandle(id){
-            this.$axios.get('/sys/menu/info/'+id).then(res=>{
-                this.ruleForm=res.data.data
+            this.$axios.get('/admin/user/list/'+id).then(res=>{
+                this.ruleForm=res.data.data.record
+                console.log(id)
                 this.dialogVisible=true
             })
         },

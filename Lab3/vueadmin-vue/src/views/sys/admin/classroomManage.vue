@@ -8,8 +8,8 @@
                   :cell-style="{'text-align':'center'}"
         >
             <el-table-column label="教室列表">
-                <el-table-column prop="building" sortable label="教学楼" width="310px"/>
-                <el-table-column prop="classroom" sortable label="教室" width="310px"/>
+                <el-table-column prop="building" sortable label="教学楼" />
+                <el-table-column prop="classroom" sortable label="教室" />
             </el-table-column>
         </el-table>
         <el-form :inline="true" >

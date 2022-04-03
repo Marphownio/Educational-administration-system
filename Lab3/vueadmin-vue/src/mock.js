@@ -30,4 +30,7 @@ Mock.mock('/admin/user/list','get',()=>{
     }
     return Result
 })
+Mock.mock(RegExp('/sys/menu/save'), 'post', () => {
 
+    return Result
+})
