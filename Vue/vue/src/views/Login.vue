@@ -1,25 +1,40 @@
 <template>
-  <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <meta charset="utf-8">
-    <title>登录页面</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <meta charset="UTF-8">
+    <title>登录</title>
   </head>
-
   <body>
-  <form class="login" th:action="@{login}" >
-    <h1 style="text-align:center">欢迎使用教务系统</h1>
+  <div>
+    <el-form
+        id="loginform"
+        ref="loginruleForm"
+        :model="loginruleForm"
+        :rules="logineditRules"
+        @submit.prevent="loginfunc"
+        class="demo-ruleForm"
+        :size="formSize"
+    >
+      <h1 style="text-align:center">欢迎使用教务系统</h1>
+      <h4 style="text-align:center">请先登录</h4>
+      <p style="color:red" text="${msg}" if="${not #strings.isEmpty(msg)}"></p>
 
-    <!--如果msg不为空，提示错误-->
-    <p style="color:red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
-
-    <input class="IDinput" type="text" id="id" name="id" placeholder="学号/工号"><br>
-    <input class="Passwordinput" type="password" id="password" name="password" placeholder="密码"><br>
-    <input type="submit" value="登录" class="btn" >
-  </form>
+      <el-form-item class="typein" label="学/工号:" prop="loginid" ref="loginid">
+        <el-input v-model="loginruleForm.loginid"></el-input>
+      </el-form-item>
+      <el-form-item class="typein" label="密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:" prop="loginpw" ref="loginpw">
+        <el-input  v-model="loginruleForm.loginpw"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button  type="primary" @click="loginfunc">登录</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
   </body>
-  </html>
 </template>
+
+
+<script src="../assets/js/login.js" type="text/javascript">
+</script>
 
 
 <style scoped>
