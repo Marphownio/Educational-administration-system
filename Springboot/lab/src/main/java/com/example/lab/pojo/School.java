@@ -2,7 +2,10 @@ package com.example.lab.pojo;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 //学院类

@@ -5,7 +5,6 @@ import com.example.lab.pojo.Major;
 import com.example.lab.pojo.School;
 import com.example.lab.pojo.User;
 import com.example.lab.service.UserService;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(value = "/user")
 public class UserController {
 

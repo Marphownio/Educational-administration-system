@@ -2,14 +2,15 @@ package com.example.lab.controller;
 
 import com.example.lab.pojo.User;
 import com.example.lab.service.UserService;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
-@Controller
+@RestController
 public class ResetPasswordController {
 
     @Resource
