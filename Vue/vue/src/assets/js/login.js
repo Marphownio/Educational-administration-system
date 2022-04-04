@@ -24,7 +24,7 @@ export default {
         loginfunc() {
             this.$refs.loginruleForm.validate((valid) => {
                 if (valid) {
-                    request.post("/login",this.loginruleForm).then(res=>{
+                    request.get("/login",this.loginruleForm).then(res=>{
                         console.log(res);
                     })
                 }
