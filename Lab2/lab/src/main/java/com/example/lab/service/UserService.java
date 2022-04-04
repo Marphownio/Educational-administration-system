@@ -10,7 +10,7 @@ public interface UserService {
     String addUser(User user);
 
     // 删除用户
-    String deleteUser(Integer id);
+    String deleteUser(Integer userId);
 
     // 修改用户
     String updateUser(User user);
@@ -19,6 +19,8 @@ public interface UserService {
     List<User> findAllUser();
 
     // 通过id查询用户
-    User findUserById(Integer id);
+    User findUserByUserId(Integer userId);
 
+    // 通过名称查询用户
+    User findUserByUserName(String username);
 }

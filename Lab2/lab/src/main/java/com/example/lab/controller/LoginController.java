@@ -19,20 +19,20 @@ public class LoginController {
 
     // 登录
     @RequestMapping(value = "/login")
-    public String login(@RequestParam("id") String id, @RequestParam("password") String mima, Model model, HttpSession session) {
-        if(!id.matches("^\\d{6}$") && !id.matches("^\\d{8}$")){
+    public String login(@RequestParam("id") String userId, @RequestParam("password") String password, Model model, HttpSession session) {
+        if(!userId.matches("^\\d{6}$") && !userId.matches("^\\d{8}$")){
             model.addAttribute("msg","用户名或密码错误");
             return "login";
         }
-        User user = userService.findUserById(parseInt(id));
-        if (user == null || !user.getPassword().equals(mima)) {
+        User user = userService.findUserByUserId(parseInt(userId));
+        if (user == null || !user.getPassword().equals(password)) {
             model.addAttribute("msg", "用户名或密码错误");
             return "login";
         }
         else {
             session.setAttribute("user", user);
             // 初次登录，需要重置密码
-            if (mima.equals("fudan123456")) {
+            if (password.equals("fudan123456")) {
                 return "resetPassword";
             }
             // 跳转到首页

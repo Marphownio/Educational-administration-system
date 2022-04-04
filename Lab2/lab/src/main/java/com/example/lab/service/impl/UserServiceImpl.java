@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String addUser(User user) {
         String resultMsg;
-        if (findUserById(user.getId()) != null) {
+        if (findUserByUserId(user.getUserId()) != null) {
             resultMsg = "学号/工号已存在，添加失败！";
         }
         else {
@@ -35,14 +35,14 @@ public class UserServiceImpl implements UserService {
     }
     // 删除用户
     @Override
-    public String deleteUser(Integer id) {
+    public String deleteUser(Integer userId) {
         String resultMsg;
-        if (findUserById(id) == null) {
+        if (findUserByUserId(userId) == null) {
             resultMsg = "用户不存在";
         }
         else {
             try {
-                userRepository.deleteById(id);
+                userRepository.deleteById(userId);
                 resultMsg = "删除成功";
             }
             catch (Exception e) {
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String updateUser(User user) {
         String resultMsg;
-        if (findUserById(user.getId()) == null) {
+        if (findUserByUserId(user.getUserId()) == null) {
             resultMsg = "用户不存在";
         }
         else {
@@ -76,7 +76,12 @@ public class UserServiceImpl implements UserService {
     }
     // 通过id查询用户
     @Override
-    public User findUserById(Integer id) {
-        return userRepository.findById(id).orElse(null);
+    public User findUserByUserId(Integer userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
+    // 通过名称查询用户
+    @Override
+    public User findUserByUserName(String username) {
+        return userRepository.findByUsername(username);
     }
 }

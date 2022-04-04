@@ -1,5 +1,8 @@
 package com.example.lab.controller;
 
+import com.example.lab.pojo.Course;
+import com.example.lab.pojo.Major;
+import com.example.lab.pojo.School;
 import com.example.lab.pojo.User;
 import com.example.lab.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -7,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -20,14 +24,22 @@ public class UserController {
     @PostMapping(value = "")
     public String addUser(User user, Model model) {
         user.setPassword("fudan123456"); // 统一设置初始密码
+        School school = new School();
+        Major major = new Major();
+        List<Course> courseList=new ArrayList<>();
+        user.setSchool(school);
+        user.setMajor(major);
+        user.setCourses(courseList);
+        user.setStatus(false);
+
         model.addAttribute("msg", userService.addUser(user));
         return "userManage";
     }
 
     // 删除用户
-    @DeleteMapping(value = "/{id}")
-    public String deleteUser(@PathVariable("id") Integer id, Model model) {
-        model.addAttribute("msg", userService.deleteUser(id));
+    @DeleteMapping(value = "/{userId}")
+    public String deleteUser(@PathVariable("userId") Integer userId, Model model) {
+        model.addAttribute("msg", userService.deleteUser(userId));
         return "userManage";
     }
 
@@ -46,9 +58,9 @@ public class UserController {
     }
 
     // 通过id查询用户
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{userId}")
     @ResponseBody
-    public User findUserById(@PathVariable("id") Integer id) {
-        return userService.findUserById(id);
+    public User findUserById(@PathVariable("userId") Integer userId) {
+        return userService.findUserByUserId(userId);
     }
 }
