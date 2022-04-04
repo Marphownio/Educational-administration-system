@@ -1,4 +1,4 @@
-<template v-slot="scope">
+<template v-slot="scope" >
     <head>
         <meta charset="UTF-8">
         <title>用户管理</title>
@@ -47,11 +47,7 @@
                 <template v-slot="scope">
             <div>
                 <el-button @click="editHandle(scope.row.id)">编辑</el-button>
-                <el-popconfirm title="确认删除吗？">
-                    <template #reference>
-                        <el-button type="danger">删除</el-button>
-                    </template>
-                </el-popconfirm>
+                <el-button type="danger" @click="delHandle(scope.row.id)">删除</el-button>
             </div>
                 </template>
             </el-table-column>

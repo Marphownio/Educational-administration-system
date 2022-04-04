@@ -7,6 +7,7 @@ export default {
         Nav
     },
     data(){
+        console.log(this.ruleForm);
         let namecheck=(rule,value,callback)=>{
             const relu = "^[a-zA-Z\u4e00-\u9fa5]+$";
             const re = new RegExp(relu);
@@ -180,10 +181,23 @@ export default {
             })
         },
         editHandle(id){
-            this.$axios.get('/admin/user/list/'+id).then(res=>{
-                this.ruleForm=res.data.data.record
-                console.log(id)
+            this.$axios.get("/admin/user/edit"+id).then(res=>{
+                this.ruleForm=res.data.data.result
+                console.log(this.ruleForm)
+                this.ruleForm.id=res.data.data.record.id
                 this.dialogVisible=true
+            })
+        },
+        delHandle(id){
+            this.$axios.post("/admin/user/delete"+id).then(res=> {
+                this.$message({
+                    showClose: true,
+                    message: '操作成功',
+                    type: 'success',
+                    onClose: () => {
+                        this.getUserForm()
+                    }
+                })
             })
         },
         scrollToTop (node) {
