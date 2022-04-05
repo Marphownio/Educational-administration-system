@@ -21,30 +21,59 @@ public class LoginController {
 
     // 登录
     @PostMapping(value = "/login")
-    public ResponseEntity<String> login(@RequestParam("loginid") String userId, @RequestParam("loginpw") String password, Model model, HttpSession session) {
+    public ResponseEntity<User> login(@RequestParam("loginid") String userId, @RequestParam("loginpw") String password, Model model, HttpSession session) {
 
         if(!userId.matches("^\\d{6}$") && !userId.matches("^\\d{8}$")){
-            model.addAttribute("msg","用户名或密码错误");
-            System.out.println(userId + "   " + password + "    error1");   // 测试用，可删除，下同
-            return new ResponseEntity<>("Hello World!", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        else if(password.equals("fudan_admin") && userId.equals("000000")){
+            User admin=new User();
+            admin.setRole(0);
+            session.setAttribute("admin", admin);
+            return ResponseEntity.ok(admin);
         }
         else {
             User user = userService.findUserByUserId(parseInt(userId));
             if (user == null || !user.getPassword().equals(password)) {
-                model.addAttribute("msg", "用户名或密码错误");
-                System.out.println(userId + "   " + password + "    error2");
-                return new ResponseEntity<>("Hello World!", HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
             else {
                 session.setAttribute("user", user);
-                // 初次登录，需要重置密码
-                if (password.equals("fudan123456")) {
-                    System.out.println(userId + "   " + password + "    success1");
-                    return new ResponseEntity<>("Hello World!", HttpStatus.OK);
-                }
+                return ResponseEntity.ok(user);
+//                // 初次登录，需要重置密码
+//                if(!userId.matches("^\\d{6}$")){
+//                    //学生登录
+//                    return ResponseEntity.ok(user);
+//                    if (password.equals("fudan123456")) {
+//                        //重置密码
+//                        return ResponseEntity.status(0);
+//                    }
+//                    else{
+//                        // 跳转到首页
+//                        return ResponseEntity.ok(user);
+//                    }
+//                }
+//                if(!userId.matches("^\\d{8}$")){
+//                    //教师登录
+//                    if (password.equals("fudan123456")) {
+//                        //重置密码
+////                        return new ResponseEntity<>();
+//                    }
+//                    else{
+//                        // 跳转到首页
+//                        System.out.println(userId + "   " + password + "    success2");
+//                        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
+//                    }
+//                }
+
+
+
+
+
+
                 // 跳转到首页
-                System.out.println(userId + "   " + password + "    success2");
-                return new ResponseEntity<>("Hello World!", HttpStatus.OK);
+//                System.out.println(userId + "   " + password + "    success2");
+//                return new ResponseEntity<>("Hello World!", HttpStatus.OK);
             }
         }
     }

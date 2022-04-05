@@ -5,6 +5,10 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: url("../images/background.jpg");
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-attachment:fixed;
 }
 
 #loginform{/*密码重置表*/

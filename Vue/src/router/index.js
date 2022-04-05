@@ -4,8 +4,13 @@ import HomeView from '../views/Login'
 const routes = [
   {
     path: '/',
-    name:'Index',
+    name:'login',
     component:HomeView
+  },
+  {
+    path: '/index_admin',
+    name:'index_admin',
+    component: () => import('../views/sys/admin/index_admin.vue')
   },
   {
     path: '/index_stu',
@@ -17,11 +22,11 @@ const routes = [
     name:'index_teacher',
     component: () => import('../views/sys/teacher/index_teacher.vue')
   },
-  {
-    path: '/login',
-    name:'Login',
-    component: () => import('../views/Login.vue')
-  },
+  // {
+  //   path: '/login',
+  //   name:'Login',
+  //   component: () => import('../views/Login.vue')
+  // },
   {
     path: '/majormanage',
     name: 'Majormanage',

@@ -19,10 +19,10 @@
       <p style="color:red" text="${msg}" if="${not #strings.isEmpty(msg)}"></p>
 
       <el-form-item class="typein" label="学/工号:" prop="loginid" ref="loginid">
-        <el-input v-model="loginruleForm.loginid"></el-input>
+        <el-input type="text" v-model="loginruleForm.loginid"></el-input>
       </el-form-item>
       <el-form-item class="typein" label="密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:" prop="loginpw" ref="loginpw">
-        <el-input  v-model="loginruleForm.loginpw"></el-input>
+        <el-input type="password"  v-model="loginruleForm.loginpw"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button  type="primary" @click="loginfunc">登录</el-button>
