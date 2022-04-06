@@ -29,7 +29,7 @@ public class MajorController {
             case "添加失败！":
                 return new ResponseEntity<>("添加失败！",HttpStatus.NOT_IMPLEMENTED);
             default:
-                return new ResponseEntity<>("未知错误",HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("未知错误",HttpStatus.NOT_IMPLEMENTED);
         }
     }
 
@@ -37,7 +37,7 @@ public class MajorController {
     public ResponseEntity<String> deleteMajor(@PathVariable("majorId") Integer majorId){
         switch (majorService.deleteMajor(majorId)){
             case "该专业不存在，删除失败！":
-                return new ResponseEntity<>("该专业不存在，删除失败！",HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("该专业不存在，删除失败！",HttpStatus.NOT_IMPLEMENTED);
             case "删除成功！":
                 return new ResponseEntity<>("删除成功！",HttpStatus.ACCEPTED);
             case "删除失败！":
@@ -50,7 +50,7 @@ public class MajorController {
     public ResponseEntity<String> updateMajor(Major major){
         switch (majorService.updateMajor(major)){
             case "专业不存在！":
-                return new ResponseEntity<>("专业不存在！",HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("专业不存在！",HttpStatus.NOT_IMPLEMENTED);
             case "修改成功！":
                 return new ResponseEntity<>("修改成功！",HttpStatus.ACCEPTED);
             case "修改失败！":

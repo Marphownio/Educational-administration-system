@@ -22,7 +22,7 @@ public class SchoolController {
     public ResponseEntity<String> addSchool(School school) {
         switch (schoolService.addSchool(school)){
             case "该学院已存在，添加失败！":
-                return new ResponseEntity<>("该学院已存在，添加失败！", HttpStatus.CONFLICT);
+                return new ResponseEntity<>("该学院已存在，添加失败！", HttpStatus.NOT_IMPLEMENTED);
             case "添加成功！":
                 return new ResponseEntity<>("添加成功！",HttpStatus.ACCEPTED);
             case "添加失败！":
@@ -35,7 +35,7 @@ public class SchoolController {
     public ResponseEntity<String> deleteSchool(@PathVariable("schoolId") Integer schoolId){
         switch (schoolService.deleteSchool(schoolId)){
             case "学院不存在":
-                return new ResponseEntity<>("学院不存在",HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("学院不存在",HttpStatus.NOT_IMPLEMENTED);
             case "删除成功":
                 return new ResponseEntity<>("删除成功",HttpStatus.ACCEPTED);
             case "删除失败":
@@ -48,7 +48,7 @@ public class SchoolController {
     public ResponseEntity<String> updateSchool(School school){
         switch (schoolService.updateSchool(school)){
             case "学院不存在":
-                return new ResponseEntity<>("学院不存在",HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("学院不存在",HttpStatus.NOT_IMPLEMENTED);
             case "修改成功":
                 return new ResponseEntity<>("修改成功",HttpStatus.ACCEPTED);
             case "修改失败":

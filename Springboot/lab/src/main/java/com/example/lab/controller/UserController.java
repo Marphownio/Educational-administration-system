@@ -45,7 +45,7 @@ public class UserController {
 
         switch (userService.addUser(user)){
             case "学号/工号已存在，添加失败！":
-                return new ResponseEntity<>("学号/工号已存在，添加失败！",HttpStatus.CONFLICT);
+                return new ResponseEntity<>("学号/工号已存在，添加失败！",HttpStatus.NOT_IMPLEMENTED);
             case "添加成功！":
                 return new ResponseEntity<>("添加成功",HttpStatus.OK);
             case "添加失败！":
@@ -62,7 +62,7 @@ public class UserController {
 
         switch (userService.deleteUser(userId)){
             case "用户不存在":
-                return new ResponseEntity<>("用户不存在",HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("用户不存在",HttpStatus.NOT_IMPLEMENTED);
             case "删除成功":
                 return new ResponseEntity<>("删除成功！",HttpStatus.OK);
             case "删除失败":
@@ -77,7 +77,7 @@ public class UserController {
     public ResponseEntity<String> updateUser(User user) {
         switch ( userService.updateUser(user)){
             case "用户不存在":
-                return new ResponseEntity<>("用户不存在",HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("用户不存在",HttpStatus.NOT_IMPLEMENTED);
             case "修改成功":
                 return new ResponseEntity<>("修改成功！",HttpStatus.OK);
             case "修改失败":
