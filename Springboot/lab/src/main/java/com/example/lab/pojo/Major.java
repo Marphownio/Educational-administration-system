@@ -16,16 +16,16 @@ public class Major{
     private String introduction;
 
 
-    @ManyToOne
+    @ManyToOne(targetEntity = School.class)
     @JoinColumn(name = "schoolId")
     private School school;
 
-    @OneToMany
+    @OneToMany(targetEntity = Course.class)
     @JoinColumn(name = "courseId")
     private List<Course> courses;
 
     //学生
-    @OneToMany
+    @OneToMany(targetEntity = User.class)
     @JoinColumn(name = "userId")
     private List<User> students;
 }

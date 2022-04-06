@@ -29,17 +29,17 @@ public class Course {
     private String introduction;
 
     //所属专业
-    @ManyToOne
+    @ManyToOne(targetEntity = Major.class)
     @JoinColumn(name = "MajorId")
     private Major major;
 
     //开课院系
-    @ManyToOne
+    @ManyToOne(targetEntity = School.class)
     @JoinColumn(name = "schoolId")
     private School school;
 
     //任课教师和学生
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = User.class, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name = "Course_User",
             joinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")},
             inverseJoinColumns = {@JoinColumn(name = "userId", referencedColumnName ="userId")})

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import java.util.Calendar;
 import java.util.List;
 
 //学院类
@@ -19,15 +20,15 @@ public class School {
     private String introduce;
 
 
-    @OneToMany
+    @OneToMany(targetEntity = Major.class)
     @JoinColumn(name = "majorId")
     private List<Major> majors;
 
-    @OneToMany
+    @OneToMany(targetEntity = Course.class)
     @JoinColumn(name = "courseId")
     private List<Course> courses;
 
-    @OneToMany
+    @OneToMany(targetEntity = User.class)
     @JoinColumn(name = "userId")
     private List<User> users;
 }

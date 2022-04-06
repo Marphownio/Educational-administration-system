@@ -19,16 +19,15 @@ public class User {
     private String email;
     private Boolean status;
 
-
-    @ManyToOne
+    @ManyToOne(targetEntity = School.class)
     @JoinColumn(name = "schoolId")
     private School school;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Major.class)
     @JoinColumn(name = "majorId")
     private Major major;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = Course.class, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name = "Course_User",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
             inverseJoinColumns = {@JoinColumn(name = "courseId", referencedColumnName ="courseId")})

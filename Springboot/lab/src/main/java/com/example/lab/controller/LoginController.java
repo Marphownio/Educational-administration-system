@@ -23,10 +23,11 @@ public class LoginController {
     @PostMapping(value = "/login")
     public ResponseEntity<User> login(@RequestParam("loginid") String userId, @RequestParam("loginpw") String password, HttpSession session) {
 
-        if(!userId.matches("^\\d{6}$") && !userId.matches("^\\d{8}$")){
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        else if(password.equals("fudan_admin") && userId.equals("000000")){
+//        if(!userId.matches("^\\d{6}$") && !userId.matches("^\\d{8}$")){
+//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//        }
+//        else
+            if(password.equals("fudan_admin") && userId.equals("000000")){
             User admin=new User();
             admin.setUserId(0);
             admin.setPassword("fudan_admin");

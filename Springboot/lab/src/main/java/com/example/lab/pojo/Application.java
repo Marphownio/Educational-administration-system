@@ -10,7 +10,10 @@ public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer applicationId;
-    @OneToOne
+
+    @OneToOne(targetEntity = Course.class)
+    @JoinColumn(name = "courseId")
     private Course course;
+
     private ApplicationType type;
 }
