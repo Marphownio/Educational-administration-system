@@ -59,7 +59,6 @@ export default {
                             // 处理错误情况
                             alert("用户名或密码错误! 请重新输入");
                             return that.$router.push({path: '/'});
-
                         })
                 }
                 else {
