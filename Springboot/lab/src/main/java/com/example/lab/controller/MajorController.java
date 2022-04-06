@@ -5,8 +5,6 @@ import com.example.lab.pojo.Major;
 import com.example.lab.service.MajorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -42,8 +40,10 @@ public class MajorController {
                 return new ResponseEntity<>("删除成功！",HttpStatus.ACCEPTED);
             case "删除失败！":
                 return new ResponseEntity<>("删除失败！",HttpStatus.NOT_IMPLEMENTED);
+            default:
+                return new ResponseEntity<>("未知错误",HttpStatus.BAD_REQUEST);
+
         }
-        return new ResponseEntity<>("Hello World!",HttpStatus.OK);
     }
 
     @PutMapping(value = "")
@@ -55,8 +55,9 @@ public class MajorController {
                 return new ResponseEntity<>("修改成功！",HttpStatus.ACCEPTED);
             case "修改失败！":
                 return new ResponseEntity<>("修改失败！",HttpStatus.ACCEPTED);
+            default:
+                return new ResponseEntity<>("未知错误",HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Hello World!",HttpStatus.OK);
     }
 
     @GetMapping(value = "")
@@ -79,11 +80,11 @@ public class MajorController {
 
     @GetMapping(value = "/{majorName}")
     public ResponseEntity<Major> findMajorByMajorName(@PathVariable("majorName") String majorName){
-            Major major = majorService.findMajorByMajorName(majorName);
-            if (major == null){
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            return new ResponseEntity<>(major,HttpStatus.ACCEPTED);
+        Major major = majorService.findMajorByMajorName(majorName);
+        if (major == null){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(major,HttpStatus.ACCEPTED);
     }
 }
 

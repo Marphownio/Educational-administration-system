@@ -1,13 +1,10 @@
 package com.example.lab.controller;
 
 import com.example.lab.pojo.Course;
-import com.example.lab.pojo.Major;
-import com.example.lab.pojo.School;
 import com.example.lab.pojo.User;
 import com.example.lab.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -33,11 +30,7 @@ public class UserController {
     public ResponseEntity<String> addUser(User user) {
 
         user.setPassword("fudan123456"); // 统一设置初始密码
-//        School school = new School();
-//        Major major = new Major();
         List<Course> courseList=new ArrayList<>();
-//        user.setSchool(school);
-//        user.setMajor(major);
         user.setCourses(courseList);
         user.setStatus(true);
 
