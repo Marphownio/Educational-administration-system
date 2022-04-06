@@ -1,17 +1,32 @@
 package com.example.lab.service.impl;
 
+import com.example.lab.pojo.Application;
 import com.example.lab.pojo.Course;
+import com.example.lab.pojo.User;
+import com.example.lab.repository.ApplicationRepository;
 import com.example.lab.repository.CourseRepository;
 import com.example.lab.service.CourseService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
 public class CourseServiceImpl implements CourseService {
     @Resource
     private CourseRepository courseRepository;
+
+ /*   @Resource
+    private ApplicationRepository applicationRepository;
+
+    private HttpSession httpSession;
+    private final User currentUser;
+    {
+        assert false;
+        currentUser = (User)httpSession.getAttribute("user");
+    }
+*/
 
     //增加课程
     @Override
@@ -81,5 +96,4 @@ public class CourseServiceImpl implements CourseService {
     public Course findCourseByCourseName(String courseName) {
         return courseRepository.findByCourseName(courseName);
     }
-
 }

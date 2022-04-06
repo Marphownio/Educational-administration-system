@@ -1,5 +1,6 @@
 package com.example.lab.service;
 
+import com.example.lab.pojo.Application;
 import com.example.lab.pojo.Course;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface CourseService {
     Course findCourseByCourseId(Integer courseId);
     //通过名称查询专业
     Course findCourseByCourseName(String courseName);
+
+
 }
