@@ -5,7 +5,6 @@ import com.example.lab.service.SchoolService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,8 +26,9 @@ public class SchoolController {
                 return new ResponseEntity<>("添加成功！",HttpStatus.ACCEPTED);
             case "添加失败！":
                 return new ResponseEntity<>("添加失败！",HttpStatus.INTERNAL_SERVER_ERROR);
+            default:
+                return new ResponseEntity<>("未知错误",HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Hello World！",HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{schoolId}")
@@ -40,8 +40,9 @@ public class SchoolController {
                 return new ResponseEntity<>("删除成功",HttpStatus.ACCEPTED);
             case "删除失败":
                 return new ResponseEntity<>("删除失败",HttpStatus.INTERNAL_SERVER_ERROR);
+            default:
+                return new ResponseEntity<>("未知错误",HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Hello World！",HttpStatus.OK);
     }
 
     @PutMapping(value = "")
@@ -53,8 +54,9 @@ public class SchoolController {
                 return new ResponseEntity<>("修改成功",HttpStatus.ACCEPTED);
             case "修改失败":
                 return new ResponseEntity<>("修改失败",HttpStatus.INTERNAL_SERVER_ERROR);
+            default:
+                return new ResponseEntity<>("未知错误",HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Hello World！",HttpStatus.OK);
     }
 
     @GetMapping(value = "{/schoolId}")
