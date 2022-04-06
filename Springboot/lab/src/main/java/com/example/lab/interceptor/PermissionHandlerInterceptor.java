@@ -1,7 +1,7 @@
 package com.example.lab.interceptor;
 
 import com.example.lab.pojo.User;
-import org.jetbrains.annotations.NotNull;
+import com.sun.istack.NotNull;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

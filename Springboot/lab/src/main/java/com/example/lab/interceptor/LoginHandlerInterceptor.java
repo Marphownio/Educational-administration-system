@@ -1,6 +1,6 @@
 package com.example.lab.interceptor;
 
-import org.jetbrains.annotations.NotNull;
+import com.sun.istack.NotNull;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
