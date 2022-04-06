@@ -25,6 +25,7 @@ public class UserController {
         return  (User)httpSession.getAttribute("user");
     }
 
+
     // 增加用户
     @PostMapping(value = "/add")
     public ResponseEntity<String> addUser(User user) {
@@ -34,19 +35,17 @@ public class UserController {
         user.setCourses(courseList);
         user.setStatus(true);
 
-        //
-
-        switch (userService.addUser(user)){
-            case "学号/工号已存在，添加失败！":
+        switch (userService.addUser(user)) {
+            case EXIST:
                 return new ResponseEntity<>("学号/工号已存在，添加失败！",HttpStatus.NOT_IMPLEMENTED);
-            case "添加成功！":
+            case SUCCESS:
                 return new ResponseEntity<>("添加成功",HttpStatus.OK);
-            case "添加失败！":
+            case FAILED:
                 return new ResponseEntity<>("添加失败",HttpStatus.NOT_IMPLEMENTED);
+            default:
+                return new ResponseEntity<>("未知错误", HttpStatus.NOT_IMPLEMENTED);
+
         }
-
-        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
-
     }
 
     // 删除用户
@@ -54,31 +53,30 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable("userId") Integer userId) {
 
         switch (userService.deleteUser(userId)){
-            case "用户不存在":
+            case NOTFOUND:
                 return new ResponseEntity<>("用户不存在",HttpStatus.NOT_IMPLEMENTED);
-            case "删除成功":
+            case SUCCESS:
                 return new ResponseEntity<>("删除成功！",HttpStatus.OK);
-            case "删除失败":
+            case FAILED:
                 return new ResponseEntity<>("删除失败！",HttpStatus.NOT_IMPLEMENTED);
+            default:
+                return new ResponseEntity<>("未知错误", HttpStatus.NOT_IMPLEMENTED);
         }
-
-        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
     }
 
     // 修改用户
     @PutMapping(value = "/update")
     public ResponseEntity<String> updateUser(User user) {
-        switch ( userService.updateUser(user)){
-            case "用户不存在":
+        switch ( userService.updateUser(user) ){
+            case NOTFOUND:
                 return new ResponseEntity<>("用户不存在",HttpStatus.NOT_IMPLEMENTED);
-            case "修改成功":
+            case SUCCESS:
                 return new ResponseEntity<>("修改成功！",HttpStatus.OK);
-            case "修改失败":
+            case FAILED:
                 return new ResponseEntity<>("修改失败！",HttpStatus.NOT_IMPLEMENTED);
+            default:
+                return new ResponseEntity<>("未知错误", HttpStatus.NOT_IMPLEMENTED);
         }
-
-        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
-
     }
 
     // 查询全部用户
@@ -98,14 +96,13 @@ public class UserController {
     public ResponseEntity<User> findUserByUserId(@PathVariable("userId") Integer userId) {
 
         User user = userService.findUserByUserId(userId);
-        if (user == null){
+        if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
-
     }
 
-    //
+    // 通过姓名查询用户
     @GetMapping(value = "/{username}")
     public ResponseEntity<User> findUserByUserName(@PathVariable("username") String username) {
 
@@ -114,7 +111,5 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
         }
         return new ResponseEntity<>(userService.findUserByUserName(username), HttpStatus.OK);
-
     }
-
 }

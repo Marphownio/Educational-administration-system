@@ -4,27 +4,27 @@ import com.example.lab.pojo.School;
 import com.example.lab.service.SchoolService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(value="/school")
 public class SchoolController {
+
     @Resource
     public SchoolService schoolService;
 
     @PostMapping(value = "")
     public ResponseEntity<String> addSchool(School school) {
         switch (schoolService.addSchool(school)){
-            case "该学院已存在，添加失败！":
+            case EXIST:
                 return new ResponseEntity<>("该学院已存在，添加失败！", HttpStatus.NOT_IMPLEMENTED);
-            case "添加成功！":
+            case SUCCESS:
                 return new ResponseEntity<>("添加成功！",HttpStatus.ACCEPTED);
-            case "添加失败！":
+            case FAILED:
                 return new ResponseEntity<>("添加失败！",HttpStatus.INTERNAL_SERVER_ERROR);
             default:
                 return new ResponseEntity<>("未知错误",HttpStatus.BAD_REQUEST);
@@ -34,11 +34,11 @@ public class SchoolController {
     @DeleteMapping(value = "/{schoolId}")
     public ResponseEntity<String> deleteSchool(@PathVariable("schoolId") Integer schoolId){
         switch (schoolService.deleteSchool(schoolId)){
-            case "学院不存在":
+            case NOTFOUND:
                 return new ResponseEntity<>("学院不存在",HttpStatus.NOT_IMPLEMENTED);
-            case "删除成功":
+            case SUCCESS:
                 return new ResponseEntity<>("删除成功",HttpStatus.ACCEPTED);
-            case "删除失败":
+            case FAILED:
                 return new ResponseEntity<>("删除失败",HttpStatus.INTERNAL_SERVER_ERROR);
             default:
                 return new ResponseEntity<>("未知错误",HttpStatus.BAD_REQUEST);
@@ -48,11 +48,11 @@ public class SchoolController {
     @PutMapping(value = "")
     public ResponseEntity<String> updateSchool(School school){
         switch (schoolService.updateSchool(school)){
-            case "学院不存在":
+            case NOTFOUND:
                 return new ResponseEntity<>("学院不存在",HttpStatus.NOT_IMPLEMENTED);
-            case "修改成功":
+            case SUCCESS:
                 return new ResponseEntity<>("修改成功",HttpStatus.ACCEPTED);
-            case "修改失败":
+            case FAILED:
                 return new ResponseEntity<>("修改失败",HttpStatus.INTERNAL_SERVER_ERROR);
             default:
                 return new ResponseEntity<>("未知错误",HttpStatus.BAD_REQUEST);

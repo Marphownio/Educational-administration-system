@@ -2,16 +2,15 @@ package com.example.lab.pojo;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @Data
 public class Application {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer applicationId;
     @OneToOne
     private Course course;
-    private String type;
+    private ApplicationType type;
 }

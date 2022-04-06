@@ -15,6 +15,7 @@ import static java.lang.Integer.parseInt;
 
 @RestController
 public class LoginController {
+
     @Resource
     public UserService userService;
 

@@ -1,5 +1,6 @@
 package com.example.lab.service.impl;
 
+import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.School;
 import com.example.lab.repository.SchoolRepository;
 import com.example.lab.service.SchoolService;
@@ -7,63 +8,60 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+
 @Service
 public class SchoolServiceImpl implements SchoolService {
 
     @Resource
     private SchoolRepository schoolRepository;
+
+
     @Override
-    public String addSchool(School school) {
-        String resultMsg;
+    public ResultMessage addSchool(School school) {
         if (findSchoolBySchoolId(school.getSchoolId()) != null) {
-            resultMsg = "该学院已存在，添加失败！";
+            return ResultMessage.EXIST;
         }
         else {
             try {
                 schoolRepository.save(school);
-                resultMsg = "添加成功！";
+                return ResultMessage.SUCCESS;
             }
-            catch (Exception e) {
-                resultMsg = "该学院已存在，添加失败！";
+            catch (Exception exception) {
+                return ResultMessage.FAILED;
             }
         }
-        return resultMsg;
     }
 
     @Override
-    public String deleteSchool(Integer schoolId) {
-        String resultMsg;
+    public ResultMessage deleteSchool(Integer schoolId) {
         if (findSchoolBySchoolId(schoolId) == null) {
-            resultMsg = "学院不存在";
+            return ResultMessage.NOTFOUND;
         }
         else {
             try {
                 schoolRepository.deleteById(schoolId);
-                resultMsg = "删除成功";
+                return ResultMessage.SUCCESS;
             }
-            catch (Exception e) {
-                resultMsg = "删除失败";
+            catch (Exception exception) {
+                return ResultMessage.FAILED;
             }
         }
-        return resultMsg;
     }
 
     @Override
-    public String updateSchool(School school) {
-        String resultMsg;
+    public ResultMessage updateSchool(School school) {
         if (findSchoolBySchoolId(school.getSchoolId()) == null) {
-            resultMsg = "学院不存在";
+            return ResultMessage.NOTFOUND;
         }
         else {
             try {
                 schoolRepository.save(school);
-                resultMsg = "修改成功";
+                return ResultMessage.SUCCESS;
             }
-            catch (Exception e) {
-                resultMsg = "修改失败";
+            catch (Exception exception) {
+                return ResultMessage.FAILED;
             }
         }
-        return resultMsg;
     }
 
     @Override

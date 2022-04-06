@@ -1,5 +1,6 @@
 package com.example.lab.service;
 
+import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.User;
 
 import java.util.List;
@@ -7,13 +8,13 @@ import java.util.List;
 public interface UserService {
 
     // 增加用户
-    String addUser(User user);
+    ResultMessage addUser(User user);
 
     // 删除用户
-    String deleteUser(Integer userId);
+    ResultMessage deleteUser(Integer userId);
 
     // 修改用户
-    String updateUser(User user);
+    ResultMessage updateUser(User user);
 
     // 查询全部用户
     List<User> findAllUser();
