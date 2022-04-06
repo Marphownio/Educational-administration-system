@@ -40,40 +40,6 @@ public class LoginController {
             else {
                 session.setAttribute("user", user);
                 return ResponseEntity.ok(user);
-//                // 初次登录，需要重置密码
-//                if(!userId.matches("^\\d{6}$")){
-//                    //学生登录
-//                    return ResponseEntity.ok(user);
-//                    if (password.equals("fudan123456")) {
-//                        //重置密码
-//                        return ResponseEntity.status(0);
-//                    }
-//                    else{
-//                        // 跳转到首页
-//                        return ResponseEntity.ok(user);
-//                    }
-//                }
-//                if(!userId.matches("^\\d{8}$")){
-//                    //教师登录
-//                    if (password.equals("fudan123456")) {
-//                        //重置密码
-////                        return new ResponseEntity<>();
-//                    }
-//                    else{
-//                        // 跳转到首页
-//                        System.out.println(userId + "   " + password + "    success2");
-//                        return new ResponseEntity<>("Hello World!", HttpStatus.OK);
-//                    }
-//                }
-
-
-
-
-
-
-                // 跳转到首页
-//                System.out.println(userId + "   " + password + "    success2");
-//                return new ResponseEntity<>("Hello World!", HttpStatus.OK);
             }
         }
     }

@@ -4,26 +4,27 @@
     <title>重置密码</title>
   </head>
   <body>
+  <Nav></Nav>
   <div>
   <el-form
       id="Preset"
-      ref="ruleForm"
-      :model="ruleForm"
-      :rules="editRules"
-      label-width="120px"
+      ref="rpwruleForm"
+      :model="rpwruleForm"
+      :rules="rpweditRules"
+      label-width="90px"
       @submit.prevent="submit_check"
       class="demo-ruleForm"
       :size="formSize"
   >
     <h1 style="text-align:center">请重置密码</h1>
     <h4 style="text-align:center">密码需包含大小写字母、数字及字符</h4>
-    <el-form-item label="请输入新密码:" prop="pw1" ref="pw1">
-      <el-input v-model="ruleForm.pw1"></el-input>
+    <el-form-item class="typein2" label="新密码:" prop="newpw1" ref="newpw1">
+      <el-input type="password"  v-model="rpwruleForm.newpw1"></el-input>
     </el-form-item>
-    <el-form-item label="请确认密码:" prop="pw2" ref="pw2">
-      <el-input  v-model="ruleForm.pw2"></el-input>
+    <el-form-item class="typein2" label="再次确认:" prop="newpw2" ref="newpw2">
+      <el-input type="password"   v-model="rpwruleForm.newpw2"></el-input>
     </el-form-item>
-    <el-form-item>
+    <el-form-item class="typein3">
       <el-button  type="primary" @click="submit_check">确认修改</el-button>
     </el-form-item>
   </el-form>
