@@ -18,7 +18,7 @@ public class MajorController {
     @Resource
     public MajorService majorService;
 
-    @PostMapping(value = "")
+    @PostMapping(value = "/add")
     public ResponseEntity<String> addMajor(Major major){
         switch (majorService.addMajor(major)){
             case EXIST:
@@ -47,7 +47,7 @@ public class MajorController {
         }
     }
 
-    @PutMapping(value = "")
+    @PutMapping(value = "/update")
     public ResponseEntity<String> updateMajor(Major major){
         switch (majorService.updateMajor(major)){
             case NOTFOUND:
@@ -61,7 +61,7 @@ public class MajorController {
         }
     }
 
-    @GetMapping(value = "")
+    @GetMapping(value = "/list")
     public ResponseEntity<List<Major>> findAllMajor(){
         List<Major> majorList = new ArrayList<>(majorService.findAllMajor());
         if (majorList.isEmpty()) {

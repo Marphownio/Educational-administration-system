@@ -4,9 +4,7 @@ import com.example.lab.pojo.Application;
 import com.example.lab.service.AdminService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -17,11 +15,10 @@ public class AdminController {
     @Resource
     private AdminService adminService;
 
-    @PostMapping
+    @PostMapping(value = "")
     public ResponseEntity<String> processCourseApplication(Application application) {
 
         switch (adminService.processCourseApplication(application)) {
-
             case SUCCESS_ADD:
                 return new ResponseEntity<>("添加课程成功！", HttpStatus.OK);
             case FAILED_ADD:
@@ -38,4 +35,5 @@ public class AdminController {
                 return new ResponseEntity<>("未知错误",HttpStatus.NOT_IMPLEMENTED);
         }
     }
+
 }

@@ -15,7 +15,7 @@ public class ApplicationController {
     @Resource
     private ApplicationService applicationService;
 
-    @PostMapping
+    @PostMapping(value = "/add")
     public ResponseEntity<String> addCourseApplication(Course course){
 
         switch (applicationService.addCourseApplication(course)) {
@@ -43,7 +43,7 @@ public class ApplicationController {
         }
     }
 
-    @PutMapping
+    @PutMapping(value = "/update")
     public ResponseEntity<String> updateCourseApplication(Course course) {
 
         switch (applicationService.addCourseApplication(course)) {

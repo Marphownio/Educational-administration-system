@@ -17,7 +17,7 @@ public class CourseController {
     @Resource
     private CourseService courseService;
 
-    @PostMapping(value = "")
+    @PostMapping(value = "/add")
     public ResponseEntity<String> addCourse(Course course){
         switch (courseService.addCourse(course)){
             case EXIST:
@@ -45,7 +45,7 @@ public class CourseController {
         }
     }
 
-    @PutMapping
+    @PutMapping(value = "/update")
     public ResponseEntity<String> updateCourse(Course course){
         switch (courseService.updateCourse(course)){
             case NOTFOUND:
@@ -59,7 +59,7 @@ public class CourseController {
         }
     }
 
-    @GetMapping
+    @GetMapping(value = "/list")
     public ResponseEntity<List<Course>> findAllCourse(){
         List<Course> courseList = new ArrayList<>(courseService.findAllCourse());
         if (courseList.isEmpty()){

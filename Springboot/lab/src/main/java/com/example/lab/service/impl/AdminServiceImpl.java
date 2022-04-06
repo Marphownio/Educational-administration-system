@@ -4,9 +4,11 @@ import com.example.lab.pojo.Application;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.service.AdminService;
 import com.example.lab.service.CourseService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+@Service
 public class AdminServiceImpl implements AdminService {
 
     @Resource

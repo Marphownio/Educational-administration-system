@@ -17,7 +17,7 @@ public class SchoolController {
     @Resource
     public SchoolService schoolService;
 
-    @PostMapping(value = "")
+    @PostMapping(value = "/add")
     public ResponseEntity<String> addSchool(School school) {
         switch (schoolService.addSchool(school)){
             case EXIST:
@@ -45,7 +45,7 @@ public class SchoolController {
         }
     }
 
-    @PutMapping(value = "")
+    @PutMapping(value = "/update")
     public ResponseEntity<String> updateSchool(School school){
         switch (schoolService.updateSchool(school)){
             case NOTFOUND:
@@ -68,7 +68,7 @@ public class SchoolController {
         return new ResponseEntity<>(school,HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(value = "")
+    @GetMapping(value = "/list")
     public ResponseEntity<List<School>> findAllSchool(){
         List<School> schoolList = new ArrayList<>(schoolService.findAllSchool());
         if(schoolList.isEmpty()){
