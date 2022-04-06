@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '../views/Login'
 
 const routes = [
@@ -77,11 +77,11 @@ const routes = [
     name: 'Resetpassword',
     component: () => import('../views/passwordreset.vue')
   },
-  /*{
-    path: '/test',//测试效果用页面，可删可改
-    name: 'Test',
-    component: () => import('../views/test.vue')
-  }*/
+  // {
+  //   path: '*',
+  //   name: 'NotFound',
+  //   component: () => import('../views/NotFoundComponent.vue')
+  // }
 ]
 
 const router = createRouter({
