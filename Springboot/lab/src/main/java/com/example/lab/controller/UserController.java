@@ -20,13 +20,13 @@ public class UserController {
     private UserService userService;
 
     // 获取用户信息
-    @GetMapping(value = "/userInfo")
+    @GetMapping(value = "/info")
     public User getUserInfo(HttpSession httpSession) {
         return  (User)httpSession.getAttribute("user");
     }
 
     // 增加用户
-    @PostMapping(value = "")
+    @PostMapping(value = "/add")
     public ResponseEntity<String> addUser(User user) {
 
         user.setPassword("fudan123456"); // 统一设置初始密码
@@ -66,7 +66,7 @@ public class UserController {
     }
 
     // 修改用户
-    @PutMapping(value = "")
+    @PutMapping(value = "/update")
     public ResponseEntity<String> updateUser(User user) {
         switch ( userService.updateUser(user)){
             case "用户不存在":
@@ -82,7 +82,7 @@ public class UserController {
     }
 
     // 查询全部用户
-    @GetMapping(value = "")
+    @GetMapping(value = "/list")
     public ResponseEntity<List<User>> findAllUser() {
 
         List<User> userList = new ArrayList<>(userService.findAllUser()) ;
@@ -105,6 +105,7 @@ public class UserController {
 
     }
 
+    //
     @GetMapping(value = "/{username}")
     public ResponseEntity<User> findUserByUserName(@PathVariable("username") String username) {
 

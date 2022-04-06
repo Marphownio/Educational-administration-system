@@ -59,7 +59,7 @@ public class SchoolController {
         }
     }
 
-    @GetMapping(value = "{/schoolId}")
+    @GetMapping(value = "/{schoolId}")
     public ResponseEntity<School> findSchoolById(@PathVariable("schoolId") Integer schoolId){
         School school = schoolService.findSchoolBySchoolId(schoolId);
         if (school == null){
