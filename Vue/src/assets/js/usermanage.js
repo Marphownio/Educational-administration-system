@@ -113,7 +113,7 @@ export default {
 
     methods:{
         getUserForm(){
-            this.$axios.get("/admin/user/list").then(res=>{
+            this.$axios.get("/user/info").then(res=>{
                 this.tableData=res.data.data.record;
             })
         },
@@ -121,7 +121,7 @@ export default {
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
                     console.log(this.ruleForm)
-                    this.$axios.post('/admin/user/save',this.ruleForm)
+                    this.$axios.post("/user/add",this.ruleForm)
                     .then(res=>{
                         this.$message({
                             showClose: true,
@@ -173,6 +173,18 @@ export default {
                         obj.nameRemark = results.data[i][2]
                         obj.index = results.data[i][3]
                         data.push(obj)
+                        this.$axios.post("/user/add",this.obj).then(res=>{
+                                this.$message({
+                                    showClose: true,
+                                    message: '操作成功',
+                                    type: 'success',
+                                    onClose:()=>{
+                                        this.getUserForm()
+                                    }
+                                });
+                                this.dialogVisible=false;
+                            }
+                        )
                     }
                     data.splice(0, 1)//将数组第一位的表格名称去除
                     console.log('data', data)
@@ -181,7 +193,7 @@ export default {
             })
         },
         editHandle(id){
-            this.$axios.get("/admin/user/edit"+id).then(res=>{
+            this.$axios.get("/user/update").then(res=>{
                 this.ruleForm=res.data.data.result
                 console.log(this.ruleForm)
                 this.ruleForm.id=res.data.data.record.id
@@ -189,7 +201,7 @@ export default {
             })
         },
         delHandle(id){
-            this.$axios.post("/admin/user/delete"+id).then(res=> {
+            this.$axios.post("/user/"+id).then(res=> {
                 this.$message({
                     showClose: true,
                     message: '操作成功',

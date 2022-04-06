@@ -1,4 +1,4 @@
-package com.example.lab.controller;
+/*package com.example.lab.controller;
 
 import com.example.lab.pojo.School;
 import com.example.lab.service.SchoolService;
@@ -85,4 +85,4 @@ public class SchoolController {
         }
         return new ResponseEntity<>(school,HttpStatus.ACCEPTED);
     }
-}
+}*/
