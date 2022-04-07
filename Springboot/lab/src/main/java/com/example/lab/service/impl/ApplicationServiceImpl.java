@@ -1,8 +1,8 @@
 package com.example.lab.service.impl;
 
-import com.example.lab.pojo.Application;
+import com.example.lab.pojo.entity.Application;
 import com.example.lab.pojo.ApplicationType;
-import com.example.lab.pojo.Course;
+import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.repository.ApplicationRepository;
 import com.example.lab.service.ApplicationService;

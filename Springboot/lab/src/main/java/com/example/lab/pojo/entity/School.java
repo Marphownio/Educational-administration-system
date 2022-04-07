@@ -1,4 +1,4 @@
-package com.example.lab.pojo;
+package com.example.lab.pojo.entity;
 
 import lombok.Data;
 
@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import java.util.Calendar;
 import java.util.List;
 
 //学院类

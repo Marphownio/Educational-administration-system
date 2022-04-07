@@ -1,6 +1,6 @@
 package com.example.lab.controller;
 
-import com.example.lab.pojo.Course;
+import com.example.lab.pojo.entity.Course;
 import com.example.lab.service.ApplicationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

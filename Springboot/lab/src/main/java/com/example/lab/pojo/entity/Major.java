@@ -1,4 +1,4 @@
-package com.example.lab.pojo;
+package com.example.lab.pojo.entity;
 
 
 import lombok.Data;
@@ -6,9 +6,10 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.List;
 
+// 专业
 @Entity
 @Data
-public class Major{
+public class Major {
 
     @Id
     private Integer majorId;

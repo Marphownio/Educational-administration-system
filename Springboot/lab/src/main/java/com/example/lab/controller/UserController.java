@@ -1,7 +1,7 @@
 package com.example.lab.controller;
 
-import com.example.lab.pojo.Course;
-import com.example.lab.pojo.User;
+import com.example.lab.pojo.entity.Course;
+import com.example.lab.pojo.entity.User;
 import com.example.lab.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +51,6 @@ public class UserController {
     // 删除用户
     @DeleteMapping(value = "/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable("userId") Integer userId) {
-
         switch (userService.deleteUser(userId)){
             case NOTFOUND:
                 return new ResponseEntity<>("用户不存在",HttpStatus.NOT_IMPLEMENTED);

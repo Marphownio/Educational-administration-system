@@ -1,7 +1,7 @@
 package com.example.lab.service.impl;
 
 import com.example.lab.pojo.ResultMessage;
-import com.example.lab.pojo.School;
+import com.example.lab.pojo.entity.School;
 import com.example.lab.repository.SchoolRepository;
 import com.example.lab.service.SchoolService;
 import org.springframework.stereotype.Service;

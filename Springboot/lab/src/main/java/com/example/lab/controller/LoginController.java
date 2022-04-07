@@ -1,6 +1,7 @@
 package com.example.lab.controller;
 
-import com.example.lab.pojo.User;
+import com.example.lab.pojo.UserRole;
+import com.example.lab.pojo.entity.User;
 import com.example.lab.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class LoginController {
             User admin=new User();
             admin.setUserId(0);
             admin.setPassword("fudan_admin");
-            admin.setRole(0);
+            admin.setRole(UserRole.ADMIN);
             session.setAttribute("admin", admin);
             return ResponseEntity.ok(admin);
         }

@@ -1,6 +1,6 @@
 package com.example.lab.service;
 
-import com.example.lab.pojo.Application;
+import com.example.lab.pojo.entity.Application;
 import com.example.lab.pojo.ResultMessage;
 
 public interface AdminService {

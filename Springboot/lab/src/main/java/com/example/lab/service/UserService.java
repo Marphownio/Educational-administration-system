@@ -1,7 +1,7 @@
 package com.example.lab.service;
 
 import com.example.lab.pojo.ResultMessage;
-import com.example.lab.pojo.User;
+import com.example.lab.pojo.entity.User;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 //package com.example.lab.controller;
 //
-//import com.example.lab.pojo.User;
+//import com.example.lab.pojo.entity.User;
 //import com.example.lab.service.UserService;
 //import org.springframework.http.HttpStatus;
 //import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package com.example.lab.service;
 
-import com.example.lab.pojo.Major;
+import com.example.lab.pojo.entity.Major;
 import com.example.lab.pojo.ResultMessage;
 
 import java.util.List;

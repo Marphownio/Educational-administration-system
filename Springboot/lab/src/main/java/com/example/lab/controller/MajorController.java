@@ -1,7 +1,7 @@
 package com.example.lab.controller;
 
 
-import com.example.lab.pojo.Major;
+import com.example.lab.pojo.entity.Major;
 import com.example.lab.service.MajorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

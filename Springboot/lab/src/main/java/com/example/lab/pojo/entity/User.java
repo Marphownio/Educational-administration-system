@@ -1,5 +1,6 @@
-package com.example.lab.pojo;
+package com.example.lab.pojo.entity;
 
+import com.example.lab.pojo.UserRole;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,11 +11,11 @@ import java.util.List;
 public class User {
 
     @Id
-    private Integer userId; // 学号/工号
+    private Integer userId;
     private String password = "fudan123456";
-    private Integer role; // 0:admin, 1:teacher, 2:student
+    private UserRole role;
     private String username;
-    private String idNumber; // 身份证号
+    private String idNumber;
     private String phoneNumber;
     private String email;
     private Boolean status;
