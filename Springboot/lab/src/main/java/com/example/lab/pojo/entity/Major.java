@@ -1,15 +1,18 @@
 package com.example.lab.pojo.entity;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 // 专业
 @Entity
-@Data
+@Getter
+@Setter
 public class Major {
 
     @Id
@@ -19,18 +22,16 @@ public class Major {
     private String introduction;
 
 
-    @ManyToOne(targetEntity = School.class)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "schoolId")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private School school;
 
-    @OneToMany(targetEntity = Course.class, fetch=FetchType.EAGER)
-    @JoinColumn(name = "courseId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Set<Course> courses;
+    @OneToMany(mappedBy = "courseId", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @JsonIgnore
+    private Set<Course> courses = new HashSet<>();
 
-    @OneToMany(targetEntity = User.class, fetch=FetchType.EAGER)
-    @JoinColumn(name = "userId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Set<User> students;
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @JsonIgnore
+    private Set<User> users = new HashSet<>();
 }

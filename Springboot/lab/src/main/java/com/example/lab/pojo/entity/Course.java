@@ -1,14 +1,17 @@
 package com.example.lab.pojo.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 // 课程类
 @Entity
-@Data
+@Getter
+@Setter
 public class Course {
 
     // 课程代码
@@ -30,23 +33,21 @@ public class Course {
     private String introduction;
 
     // 所属专业
-    @ManyToOne(targetEntity = Major.class)
-    @JoinColumn(name = "MajorId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Major major;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "majorId")
+    private Major major = new Major();
 
     // 开课院系
-    @ManyToOne(targetEntity = School.class)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "schoolId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private School school;
+    private School school = new School();
 
     // 任课教师和学生
-    @ManyToMany(targetEntity = User.class, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JsonIgnore
     @JoinTable(name = "Course_User",
             joinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")},
             inverseJoinColumns = {@JoinColumn(name = "userId", referencedColumnName ="userId")})
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
 }
