@@ -1,6 +1,5 @@
 package com.example.lab.controller;
 
-import com.example.lab.pojo.Admin;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.UserRole;
 import com.example.lab.pojo.entity.User;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import static com.example.lab.LabApplication.admin;
 import static java.lang.Integer.parseInt;
 
 @RestController
@@ -26,12 +26,12 @@ public class LoginController {
     @PostMapping(value = "/login")
     public ResponseEntity<ResultMessage> login(@RequestParam("loginid") String userId, @RequestParam("loginpw") String password, HttpSession session) {
 
-        Admin admin = new Admin();
 
 //        if(!userId.matches("^\\d{6}$") && !userId.matches("^\\d{8}$")){
 //            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 //        }
 //        else
+
         if(admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getPassword())) {
             return new ResponseEntity<>(ResultMessage.SUCCESS_LOGIN_ADMIN, HttpStatus.OK);
         }
