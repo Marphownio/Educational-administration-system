@@ -1,0 +1,17 @@
+package com.example.lab.pojo;
+
+public enum ResultMessage {
+    EXIST,
+    NOTFOUND,
+    SUCCESS,
+    SUCCESS_LOGIN_ADMIN,
+    SUCCESS_LOGIN_TEACHER,
+    SUCCESS_LOGIN_STUDENT,
+    SUCCESS_ADD,
+    SUCCESS_DELETE,
+    SUCCESS_UPDATE,
+    FAILED,
+    FAILED_ADD,
+    FAILED_DELETE,
+    FAILED_UPDATE,
+}

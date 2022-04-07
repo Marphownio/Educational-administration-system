@@ -1,25 +1,27 @@
 package com.example.lab.service;
 
-
-import com.example.lab.pojo.School;
+import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.entity.School;
 
 import java.util.List;
 
 public interface SchoolService {
-    //增加学院
-    String addSchool(School school);
 
-    //删除学院
-    String deleteSchool(Integer schoolId);
+    // 增加学院
+    ResultMessage addSchool(School school);
 
-    //更新学院信息
-    String updateSchool(School school);
-    //查找所有学院
+    // 删除学院
+    ResultMessage deleteSchool(Integer schoolId);
+
+    // 更新学院信息
+    ResultMessage updateSchool(School school);
+
+    // 查询所有学院
     List<School> findAllSchool();
 
-    //查找学院
+    // 通过id查询学院
     School findSchoolBySchoolId(Integer schoolId);
 
+    // 通过学院名查询学院
     School findSchoolBySchoolName(String schoolName);
-    //查找学院下的开设课程？？？
 }

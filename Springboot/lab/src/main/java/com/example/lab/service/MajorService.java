@@ -1,19 +1,29 @@
 package com.example.lab.service;
 
-import com.example.lab.pojo.Major;
+import com.example.lab.pojo.entity.Major;
+import com.example.lab.pojo.ResultMessage;
 
 import java.util.List;
 
 public interface MajorService {
 
-    String addMajor(Major major);
+    // 增加专业
+    ResultMessage addMajor(Major major);
 
-    String deleteMajor(Integer majorId);
+    // 删除专业
+    ResultMessage deleteMajor(Integer majorId);
 
-    String updateMajor(Major major);
+    // 更新专业
+    ResultMessage updateMajor(Major major);
 
+    // 查询全部专业
+    List<Major> findAllMajor();
+
+    // 通过id查询专业
     Major findMajorByMajorId(Integer majorId);
 
+    // 通过名称查询专业
     Major findMajorByMajorName(String majorName);
-    List<Major> findAllMajor();
+
+
 }

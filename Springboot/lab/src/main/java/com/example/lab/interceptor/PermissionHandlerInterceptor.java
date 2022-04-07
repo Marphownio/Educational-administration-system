@@ -1,6 +1,6 @@
 //package com.example.lab.interceptor;
 //
-//import com.example.lab.pojo.User;
+//import com.example.lab.pojo.entity.User;
 //import com.sun.istack.NotNull;
 //import org.springframework.web.servlet.HandlerInterceptor;
 //
