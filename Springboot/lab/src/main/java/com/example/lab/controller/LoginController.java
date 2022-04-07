@@ -4,8 +4,6 @@ import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.UserRole;
 import com.example.lab.pojo.entity.User;
 import com.example.lab.service.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,27 +22,27 @@ public class LoginController {
 
     // 登录
     @PostMapping(value = "/login")
-    public ResponseEntity<ResultMessage> login(@RequestParam("loginid") String userId, @RequestParam("loginpw") String password, HttpSession session) {
+    public ResultMessage login(@RequestParam("loginid") String userId, @RequestParam("loginpw") String password, HttpSession session) {
 
-
-//        if(!userId.matches("^\\d{6}$") && !userId.matches("^\\d{8}$")){
-//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//        }
-//        else
-
-        if(admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getPassword())) {
-            return new ResponseEntity<>(ResultMessage.SUCCESS_LOGIN_ADMIN, HttpStatus.OK);
-        }
-        else {
-            User user = userService.findUserByUserId(parseInt(userId));
+        if (userId.matches("^\\d{6}$") || userId.matches("^\\d{8}$")) {
+            if (admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getPassword())) {
+                session.setAttribute("user", admin);
+                return ResultMessage.SUCCESS_LOGIN_ADMIN;
+            }
+            else {
+                User user = userService.findUserByUserId(parseInt(userId));
                 if (user != null && user.getPassword().equals(password) && user.getStatus()) {
                     if (user.getRole() == UserRole.TEACHER) {
-                        return new ResponseEntity<>(ResultMessage.SUCCESS_LOGIN_TEACHER, HttpStatus.OK);
-                    } else if (user.getRole() == UserRole.STUDENT) {
-                        return new ResponseEntity<>(ResultMessage.SUCCESS_LOGIN_STUDENT, HttpStatus.OK);
+                        session.setAttribute("user", user);
+                        return ResultMessage.SUCCESS_LOGIN_TEACHER;
+                    }
+                    else if (user.getRole() == UserRole.STUDENT) {
+                        session.setAttribute("user", user);
+                        return ResultMessage.SUCCESS_LOGIN_STUDENT;
                     }
                 }
-                return new ResponseEntity<>(ResultMessage.FAILED, HttpStatus.FORBIDDEN);
             }
+        }
+        return ResultMessage.FAILED;
     }
 }

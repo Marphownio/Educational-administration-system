@@ -32,9 +32,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         else {
             Application application = new Application();
 
-
 //            application.setApplicationId(course.getCourseId());
-
 
             application.setCourse(course);
             application.setType(ApplicationType.ADD);
@@ -59,9 +57,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         else {
             Application application = new Application();
 
-
 //            application.setApplicationId(courseId);
-
 
             application.setCourse(course);
             application.setType(ApplicationType.DELETE);
@@ -84,9 +80,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         else {
             Application application = new Application();
 
-
 //            application.setApplicationId(course.getCourseId());
-
 
             application.setCourse(course);
             application.setType(ApplicationType.UPDATE);
