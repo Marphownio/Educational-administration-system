@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 // 课程类
@@ -43,7 +42,7 @@ public class Course {
     private School school;
 
     // 任课教师和学生
-    @ManyToMany(targetEntity = User.class, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = User.class, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "Course_User",
             joinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")},
             inverseJoinColumns = {@JoinColumn(name = "userId", referencedColumnName ="userId")})

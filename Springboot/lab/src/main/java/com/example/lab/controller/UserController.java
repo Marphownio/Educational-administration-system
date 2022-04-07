@@ -1,6 +1,5 @@
 package com.example.lab.controller;
 
-import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.User;
 import com.example.lab.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -9,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @RestController

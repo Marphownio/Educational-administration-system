@@ -32,7 +32,7 @@ public class User {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Major major;
 
-    @ManyToMany(targetEntity = Course.class, cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = Course.class, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "Course_User",
             joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
             inverseJoinColumns = {@JoinColumn(name = "courseId", referencedColumnName ="courseId")})
