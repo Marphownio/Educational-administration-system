@@ -70,7 +70,7 @@ public class MajorController {
         return new ResponseEntity<>(majors,HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(value = "/{majorId}")
+    @GetMapping(value = "/getbyid/{majorId}")
     public ResponseEntity<Major> findMajorByMajorId(@PathVariable("majorId") Integer majorId){
         Major major = majorService.findMajorByMajorId(majorId);
         if (major == null){
@@ -79,7 +79,7 @@ public class MajorController {
         return new ResponseEntity<>(major,HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(value = "/{majorName}")
+    @GetMapping(value = "/getbyname/{majorName}")
     public ResponseEntity<Major> findMajorByMajorName(@PathVariable("majorName") String majorName){
         Major major = majorService.findMajorByMajorName(majorName);
         if (major == null){

@@ -68,7 +68,7 @@ public class CourseController {
         return new ResponseEntity<>(courseList ,HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{courseId}")
+    @GetMapping(value = "/getbyid/{courseId}")
     public ResponseEntity<Course> findCourseByCourseId(@PathVariable("courseId") Integer courseId){
         Course course = courseService.findCourseByCourseId(courseId);
         if (course == null){
@@ -77,7 +77,7 @@ public class CourseController {
         return new ResponseEntity<>(course, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{courseName}")
+    @GetMapping(value = "/getbyname/{courseName}")
     public ResponseEntity<Course> findCourseByCourseName(@PathVariable("courseName") String courseName){
         Course course = courseService.findCourseByCourseName(courseName);
         if (course == null){

@@ -85,7 +85,7 @@ public class UserController {
     }
 
     // 通过id查询用户
-    @GetMapping(value = "/{userId}")
+    @GetMapping(value = "/getbyid/{userId}")
     public ResponseEntity<User> findUserByUserId(@PathVariable("userId") Integer userId) {
 
         User user = userService.findUserByUserId(userId);
@@ -96,7 +96,7 @@ public class UserController {
     }
 
     // 通过姓名查询用户
-    @GetMapping(value = "/{username}")
+    @GetMapping(value = "/getbyname/{username}")
     public ResponseEntity<User> findUserByUserName(@PathVariable("username") String username) {
 
         User user = userService.findUserByUserName(username);

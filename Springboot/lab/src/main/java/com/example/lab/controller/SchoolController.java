@@ -59,7 +59,7 @@ public class SchoolController {
         }
     }
 
-    @GetMapping(value = "/{schoolId}")
+    @GetMapping(value = "/getbyid/{schoolId}")
     public ResponseEntity<School> findSchoolById(@PathVariable("schoolId") Integer schoolId){
         School school = schoolService.findSchoolBySchoolId(schoolId);
         if (school == null){
@@ -77,7 +77,7 @@ public class SchoolController {
         return new ResponseEntity<>(schools,HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(value = "/{schoolName}")
+    @GetMapping(value = "/getbyname/{schoolName}")
     public ResponseEntity<School> findSchoolBySchoolName(@PathVariable("schoolName") String schoolName){
         School school = schoolService.findSchoolBySchoolName(schoolName);
         if (school == null){
