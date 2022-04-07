@@ -18,7 +18,7 @@ public class Application {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "courseId")
-    private Course course;
+    private Course course = new Course();
 
     private ApplicationType type;
 }
