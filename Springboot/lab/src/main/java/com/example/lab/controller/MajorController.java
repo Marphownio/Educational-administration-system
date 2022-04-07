@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/major")
@@ -62,12 +62,12 @@ public class MajorController {
     }
 
     @GetMapping(value = "/list")
-    public ResponseEntity<List<Major>> findAllMajor(){
-        List<Major> majorList = new ArrayList<>(majorService.findAllMajor());
-        if (majorList.isEmpty()) {
+    public ResponseEntity<Set<Major>> findAllMajor(){
+        Set<Major> majors = new HashSet<>(majorService.findAllMajor());
+        if (majors.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(majorList,HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(majors,HttpStatus.ACCEPTED);
     }
 
     @GetMapping(value = "/{majorId}")

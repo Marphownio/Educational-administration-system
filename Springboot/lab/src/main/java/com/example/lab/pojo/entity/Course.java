@@ -1,9 +1,11 @@
 package com.example.lab.pojo.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 // 课程类
 @Entity
@@ -31,11 +33,13 @@ public class Course {
     // 所属专业
     @ManyToOne(targetEntity = Major.class)
     @JoinColumn(name = "MajorId")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Major major;
 
     // 开课院系
     @ManyToOne(targetEntity = School.class)
     @JoinColumn(name = "schoolId")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private School school;
 
     // 任课教师和学生
@@ -43,6 +47,7 @@ public class Course {
     @JoinTable(name = "Course_User",
             joinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")},
             inverseJoinColumns = {@JoinColumn(name = "userId", referencedColumnName ="userId")})
-    private List<User> users;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Set<User> users;
 
 }

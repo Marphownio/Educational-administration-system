@@ -1,10 +1,12 @@
 package com.example.lab.pojo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 // 专业
 @Entity
@@ -13,20 +15,23 @@ public class Major {
 
     @Id
     private Integer majorId;
+
     private String majorName;
     private String introduction;
 
 
     @ManyToOne(targetEntity = School.class)
     @JoinColumn(name = "schoolId")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private School school;
 
-    @OneToMany(targetEntity = Course.class)
+    @OneToMany(targetEntity = Course.class, fetch=FetchType.EAGER)
     @JoinColumn(name = "courseId")
-    private List<Course> courses;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Set<Course> courses;
 
-    //学生
-    @OneToMany(targetEntity = User.class)
+    @OneToMany(targetEntity = User.class, fetch=FetchType.EAGER)
     @JoinColumn(name = "userId")
-    private List<User> students;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Set<User> students;
 }

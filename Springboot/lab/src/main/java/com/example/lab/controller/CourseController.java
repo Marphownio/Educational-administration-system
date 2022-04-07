@@ -63,26 +63,26 @@ public class CourseController {
     public ResponseEntity<List<Course>> findAllCourse(){
         List<Course> courseList = new ArrayList<>(courseService.findAllCourse());
         if (courseList.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+            return new ResponseEntity<>(null, HttpStatus.NOT_IMPLEMENTED);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(courseList ,HttpStatus.OK);
     }
 
     @GetMapping(value = "/{courseId}")
     public ResponseEntity<Course> findCourseByCourseId(@PathVariable("courseId") Integer courseId){
         Course course = courseService.findCourseByCourseId(courseId);
         if (course == null){
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+            return new ResponseEntity<>(null, HttpStatus.NOT_IMPLEMENTED);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(course, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{courseName}")
     public ResponseEntity<Course> findCourseByCourseName(@PathVariable("courseName") String courseName){
         Course course = courseService.findCourseByCourseName(courseName);
         if (course == null){
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+            return new ResponseEntity<>(null, HttpStatus.NOT_IMPLEMENTED);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(course, HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.lab.service.impl;
 
+import com.example.lab.LabApplication;
 import com.example.lab.pojo.entity.Application;
 import com.example.lab.pojo.ApplicationType;
 import com.example.lab.pojo.entity.Course;
@@ -10,6 +11,8 @@ import com.example.lab.service.CourseService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -28,6 +31,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         else {
             Application application = new Application();
+
+
+//            application.setApplicationId(course.getCourseId());
+
+
             application.setCourse(course);
             application.setType(ApplicationType.ADD);
             try {
@@ -50,6 +58,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         else {
             Application application = new Application();
+
+
+//            application.setApplicationId(courseId);
+
+
             application.setCourse(course);
             application.setType(ApplicationType.DELETE);
             try {
@@ -70,6 +83,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         else {
             Application application = new Application();
+
+
+//            application.setApplicationId(course.getCourseId());
+
+
             application.setCourse(course);
             application.setType(ApplicationType.UPDATE);
             try {
@@ -80,5 +98,10 @@ public class ApplicationServiceImpl implements ApplicationService {
                 return ResultMessage.FAILED;
             }
         }
+    }
+
+    @Override
+    public List<Application> findAllApplication() {
+        return applicationRepository.findAll();
     }
 }

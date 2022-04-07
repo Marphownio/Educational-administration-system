@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -29,11 +31,6 @@ public class UserController {
     // 增加用户
     @PostMapping(value = "/add")
     public ResponseEntity<String> addUser(User user) {
-
-        user.setPassword("fudan123456"); // 统一设置初始密码
-        List<Course> courseList=new ArrayList<>();
-        user.setCourses(courseList);
-        user.setStatus(true);
 
         switch (userService.addUser(user)) {
             case EXIST:
@@ -80,13 +77,13 @@ public class UserController {
 
     // 查询全部用户
     @GetMapping(value = "/list")
-    public ResponseEntity<List<User>> findAllUser() {
+    public ResponseEntity<Set<User>> findAllUser() {
 
-        List<User> userList = new ArrayList<>(userService.findAllUser()) ;
-        if (userList.isEmpty()){
+        Set<User> users = new HashSet<>(userService.findAllUser());
+        if (users.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
         }
-        return new ResponseEntity<>(userList, HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
 
     }
 

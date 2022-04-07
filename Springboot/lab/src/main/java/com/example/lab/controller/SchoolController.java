@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value="/school")
@@ -53,9 +55,9 @@ public class SchoolController {
             case SUCCESS:
                 return new ResponseEntity<>("修改成功",HttpStatus.ACCEPTED);
             case FAILED:
-                return new ResponseEntity<>("修改失败",HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>("修改失败",HttpStatus.NOT_ACCEPTABLE);
             default:
-                return new ResponseEntity<>("未知错误",HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("未知错误",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -63,25 +65,25 @@ public class SchoolController {
     public ResponseEntity<School> findSchoolById(@PathVariable("schoolId") Integer schoolId){
         School school = schoolService.findSchoolBySchoolId(schoolId);
         if (school == null){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
         return new ResponseEntity<>(school,HttpStatus.ACCEPTED);
     }
 
     @GetMapping(value = "/list")
-    public ResponseEntity<List<School>> findAllSchool(){
-        List<School> schoolList = new ArrayList<>(schoolService.findAllSchool());
-        if(schoolList.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<Set<School>> findAllSchool(){
+        Set<School> schools = new HashSet<>(schoolService.findAllSchool());
+        if(schools.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
-        return new ResponseEntity<>(schoolList,HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(schools,HttpStatus.ACCEPTED);
     }
 
     @GetMapping(value = "/{schoolName}")
     public ResponseEntity<School> findSchoolBySchoolName(@PathVariable("schoolName") String schoolName){
         School school = schoolService.findSchoolBySchoolName(schoolName);
         if (school == null){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
         return new ResponseEntity<>(school,HttpStatus.ACCEPTED);
     }
