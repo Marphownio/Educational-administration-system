@@ -1,5 +1,6 @@
 import Nav from "@/views/inc/Nav.vue";
 import Papa from "papaparse";
+import request from "@/utils/request";
 
 export default {
     name: "userManage",
@@ -26,7 +27,6 @@ export default {
 
         };
         let idcheck=(rule,value,callback)=>{
-            console.log(this.ruleForm.role);
             if(value[0]!=2||value[1]!=2){           //这里改成！==的话貌似会报错，总之改动需检查
                 callback(new Error('工号/学号前两位需为22'));
                 return false;
@@ -60,9 +60,18 @@ export default {
         return{
             dialogVisible:false,
             ruleForm:{
+                userId:'',
+                role:'',
+                school:'',
+                major:'',
+                username:'',
+                idNumber:'',
+                phoneNumber: '',
+                email:'',
+                status:'',
             },
             editRules :({
-                name: [
+                username: [
                     {
                         required: true,
                         message: '请输入姓名',
@@ -70,7 +79,7 @@ export default {
                     },
                     { validator: namecheck,trigger: 'blur'}
                 ],
-                id: [
+                userId: [
                     {
                         required: true,
                         message: '请输入学号/工号',
@@ -102,7 +111,15 @@ export default {
             }),
             tableData : [
                 {
-                    college:'学院1'
+                    userId:'',
+                    role:'',
+                    college:'',
+                    major:'',
+                    username:'',
+                    idNumber:'',
+                    phoneNumber: '',
+                    email:'',
+                    status:'',
                 }
             ]
         }
@@ -113,15 +130,20 @@ export default {
 
     methods:{
         getUserForm(){
-            this.$axios.get("/user/info").then(res=>{
-                this.tableData=res.data.data.record;
+            request.get("/user/list").then(res=>{
+                this.tableData=res;
             })
         },
         submitForm(){
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
+                    let formData = new FormData();
+                    for(let key in this.ruleForm) {
+                        formData.append(key,this.ruleForm[key]);
+                    }
                     console.log(this.ruleForm)
-                    this.$axios.post("/user/add",this.ruleForm)
+                    console.log(formData)
+                    request.post("/user/add",formData)
                     .then(res=>{
                         this.$message({
                             showClose: true,

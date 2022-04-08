@@ -37,10 +37,10 @@
             <el-table-column prop="email" label="邮箱" width="180px"/>
             <el-table-column prop="state" label="状态" width="120px">
                 <template v-slot="scope">
-                    <el-tag v-if="scope.row.state===1" type="success">在读</el-tag>
-                    <el-tag v-if="scope.row.state===2" type="success">在岗</el-tag>
-                    <el-tag v-if="scope.row.state===3" type="info" >已毕业</el-tag>
-                    <el-tag v-if="scope.row.state===4" type="info">已离职</el-tag>
+                    <el-tag v-if="scope.row.state===true&&scope.row.role===2" type="success">在读</el-tag>
+                    <el-tag v-if="scope.row.state===true&&scope.row.role===1" type="success">在岗</el-tag>
+                    <el-tag v-if="scope.row.state===false&&scope.row.role===2" type="info" >已毕业</el-tag>
+                    <el-tag v-if="scope.row.state===false&&scope.row.role===1" type="info">已离职</el-tag>
                 </template>
             </el-table-column>
             <el-table-column fixed="right" prop="icon" label="操作" width="170px">
@@ -73,7 +73,7 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="学院">
-                    <el-select v-model="ruleForm.college" placeholder="选择学院">
+                    <el-select v-model="ruleForm.school" placeholder="选择学院">
                         <el-option label="学院1" value="1" />
                         <el-option label="学院2" value="2" />
                     </el-select>
@@ -84,11 +84,11 @@
                         <el-option label="专业2" value="21" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="姓名" prop="name">
-                    <el-input v-model="ruleForm.name"></el-input>
+                <el-form-item label="姓名" prop="username">
+                    <el-input v-model="ruleForm.username"></el-input>
                 </el-form-item>
-                <el-form-item label="学号/工号" prop="id" ref="id">
-                    <el-input v-model="ruleForm.id"></el-input>
+                <el-form-item label="学号/工号" prop="userId" ref="userId">
+                    <el-input v-model="ruleForm.userId"></el-input>
                 </el-form-item>
                 <el-form-item label="身份证号" prop="idNumber" ref="idNumber">
                     <el-input v-model="ruleForm.idNumber"></el-input>
