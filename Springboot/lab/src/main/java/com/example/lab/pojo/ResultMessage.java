@@ -16,4 +16,5 @@ public enum ResultMessage {
     FAILED_ADD,
     FAILED_DELETE,
     FAILED_UPDATE,
+    NOT_OPEN
 }

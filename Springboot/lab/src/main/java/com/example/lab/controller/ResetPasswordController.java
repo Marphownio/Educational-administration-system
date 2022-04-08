@@ -1,6 +1,7 @@
 package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.UserRole;
 import com.example.lab.pojo.entity.User;
 import com.example.lab.service.UserService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,14 +20,21 @@ public class ResetPasswordController {
     @RequestMapping(value ="/resetPassword")
     public ResultMessage resetPassword(@RequestParam("newpw1") String newPassword, HttpSession session) {
         User user = (User)session.getAttribute("user");
-        if(newPassword.equals(user.getPassword())) {
+        if(user.getRole() == UserRole.ADMIN || newPassword.equals(user.getPassword())) {
             return ResultMessage.FAILED;
         }
         else {
             user.setPassword(newPassword);
             try {
                 userService.updateUser(user);
-                return ResultMessage.SUCCESS;
+                switch (user.getRole()) {
+                    case TEACHER:
+                        return ResultMessage.SUCCESS_LOGIN_TEACHER;
+                    case STUDENT:
+                        return ResultMessage.SUCCESS_LOGIN_STUDENT;
+                    default:
+                        return ResultMessage.FAILED;
+                }
             }
             catch (Exception exception) {
                 return ResultMessage.FAILED;
