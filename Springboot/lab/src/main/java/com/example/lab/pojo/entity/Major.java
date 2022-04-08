@@ -26,11 +26,11 @@ public class Major {
     @JoinColumn(name = "schoolId")
     private School school;
 
-    @OneToMany(mappedBy = "courseId", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "major", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @JsonIgnore
     private Set<Course> courses = new HashSet<>();
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "major", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 }

@@ -31,23 +31,10 @@ public class SelectCourseController {
         if (admin.getCourseSelection()) {
             try {
                 User currentUser = (User) session.getAttribute("user");
-
-                System.out.println(currentUser.getCourses());
-
                 Course course = courseService.findCourseByCourseId(courseId);
-
-                System.out.println(course);
-                System.out.println(course.getUsers());
-
-//                currentUser.getCourses().add(course);
                 course.getUsers().add(currentUser);
-
-                System.out.println(currentUser.getCourses());
-                System.out.println(course.getUsers());
-
-//                userService.updateUser(currentUser);
                 courseService.updateCourse(course);
-
+                session.setAttribute("user", currentUser);
                 return ResultMessage.SUCCESS;
             } catch (Exception exception) {
                 return ResultMessage.FAILED;
