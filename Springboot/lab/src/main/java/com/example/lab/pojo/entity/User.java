@@ -18,22 +18,25 @@ public class User {
     private Integer userId;
 
     private String password = "fudan123456";
+
+    @Column(nullable = false)
     private UserRole role;
+
     private String username;
     private String idNumber;
     private String phoneNumber;
     private String email;
     private Boolean status = true;
 
-    @ManyToOne//(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "schoolId")
     private School school;
 
-    @ManyToOne//(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "majorId")
     private Major major;
 
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.PERSIST)//, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
 //    @JoinTable(name = "Course_User",
 //            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
