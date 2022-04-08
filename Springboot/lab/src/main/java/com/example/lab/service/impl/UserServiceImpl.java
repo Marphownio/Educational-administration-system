@@ -5,6 +5,7 @@ import com.example.lab.pojo.entity.User;
 import com.example.lab.repository.UserRepository;
 import com.example.lab.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -30,6 +31,29 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
+
+//    @Resource
+//    private ReadExcel readExcel;
+//
+//    @Override
+//    public boolean BatchImportUser(String name, MultipartFile file) {
+//        boolean b = false;
+//        //创建处理EXCEL
+//        ReadExcel readExcel=new ReadExcel();
+//        //解析excel，获取客户信息集合。
+//        List<User> customerList = readExcel.getExcelInfo(name ,file);
+//
+//        if(customerList != null){
+//            b = true;
+//        }
+//
+//        //迭代添加客户信息（注：实际上这里也可以直接将customerList集合作为参数，在Mybatis的相应映射文件中使用foreach标签进行批量添加。）
+//        for(Customer customer:customerList){
+//            customerDoImpl.addCustomers(customer);
+//        }
+//        return b;
+//    }
+
 
     @Override
     public ResultMessage deleteUser(Integer userId) {

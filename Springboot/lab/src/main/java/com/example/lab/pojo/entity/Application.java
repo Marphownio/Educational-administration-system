@@ -16,7 +16,7 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer applicationId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "courseId")
     private Course course;
 

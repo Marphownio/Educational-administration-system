@@ -37,7 +37,7 @@ public class ApplicationController {
     @GetMapping(value = "/list")
     public ResponseEntity<Set<Application>> findAllApplication() {
         Set<Application> applications = new HashSet<>(applicationService.findAllApplication());
-        if (applications.isEmpty()){
+        if (applications.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(applications ,HttpStatus.OK);
