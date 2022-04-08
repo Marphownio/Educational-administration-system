@@ -28,25 +28,21 @@ public class LoginController {
             if (admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getPassword())) {
                 session.setAttribute("user", admin);
                 return ResultMessage.SUCCESS_LOGIN_ADMIN;
-            }
-            else {
+            } else {
                 User user = userService.findUserByUserId(parseInt(userId));
                 if (user != null && user.getPassword().equals(password) && user.getStatus()) {
                     if (user.getRole() == UserRole.TEACHER) {
                         session.setAttribute("user", user);
                         if (user.getPassword().equals("fudan123456")) {
                             return ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD;
-                        }
-                        else {
+                        } else {
                             return ResultMessage.SUCCESS_LOGIN_TEACHER;
                         }
-                    }
-                    else if (user.getRole() == UserRole.STUDENT) {
+                    } else if (user.getRole() == UserRole.STUDENT) {
                         session.setAttribute("user", user);
                         if (user.getPassword().equals("fudan123456")) {
                             return ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD;
-                        }
-                        else {
+                        } else {
                             return ResultMessage.SUCCESS_LOGIN_STUDENT;
                         }
                     }

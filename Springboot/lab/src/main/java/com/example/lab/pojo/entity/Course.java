@@ -43,11 +43,11 @@ public class Course {
     private School school;
 
     // 任课教师和学生
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "courses", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
-    @JoinTable(name = "Course_User",
-            joinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")},
-            inverseJoinColumns = {@JoinColumn(name = "userId", referencedColumnName ="userId")})
+//    @JoinTable(name = "Course_User",
+//            joinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")},
+//            inverseJoinColumns = {@JoinColumn(name = "userId", referencedColumnName ="userId")})
     private Set<User> users = new HashSet<>();
 
 }

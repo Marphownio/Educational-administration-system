@@ -113,7 +113,7 @@ export default {
 
     methods:{
         getUserForm(){
-            this.$axios.get("/admin/user/list").then(res=>{
+            this.$axios.get("/user/list").then(res=>{
                 this.tableData=res.data.data.record;
             })
         },

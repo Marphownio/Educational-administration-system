@@ -7,7 +7,6 @@ public class Admin {
 
     private Integer userId = 0;
     private String password = "fudan_admin";
-    private UserRole role = UserRole.ADMIN;
     private Boolean status = true;
     private Boolean courseSelection = true;
 
