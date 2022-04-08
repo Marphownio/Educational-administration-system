@@ -1,14 +1,17 @@
 package com.example.lab.pojo.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 //学院类
 @Entity
-@Data
+@Getter
+@Setter
 public class School {
 
     @Id
@@ -17,19 +20,15 @@ public class School {
     private String schoolName;
     private String introduction;
 
+    @OneToMany(mappedBy = "majorId", cascade = CascadeType.ALL)//, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Major> majors = new HashSet<>();
 
-    @OneToMany(targetEntity = Major.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "majorId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Set<Major> majors;
+    @OneToMany(mappedBy = "courseId", cascade = CascadeType.ALL)//, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Course> courses = new HashSet<>();
 
-    @OneToMany(targetEntity = Course.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "courseId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Set<Course> courses;
-
-    @OneToMany(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Set<User> users;
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)//, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<User> users = new HashSet<>();
 }

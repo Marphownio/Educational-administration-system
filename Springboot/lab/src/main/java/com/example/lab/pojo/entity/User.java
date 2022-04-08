@@ -1,14 +1,17 @@
 package com.example.lab.pojo.entity;
 
 import com.example.lab.pojo.UserRole;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class User {
 
     @Id
@@ -22,21 +25,19 @@ public class User {
     private String email;
     private Boolean status = true;
 
-    @ManyToOne(targetEntity = School.class)
+    @ManyToOne//(fetch = FetchType.EAGER)
     @JoinColumn(name = "schoolId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private School school;
 
-    @ManyToOne(targetEntity = Major.class)
+    @ManyToOne//(fetch = FetchType.EAGER)
     @JoinColumn(name = "majorId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Major major;
 
-    @ManyToMany(targetEntity = Course.class, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinTable(name = "Course_User",
-            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
-            inverseJoinColumns = {@JoinColumn(name = "courseId", referencedColumnName ="courseId")})
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Set<Course> courses;
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.PERSIST)//, fetch = FetchType.EAGER)
+    @JsonIgnore
+//    @JoinTable(name = "Course_User",
+//            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
+//            inverseJoinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")})
+    private Set<Course> courses = new HashSet<>();
 
 }
