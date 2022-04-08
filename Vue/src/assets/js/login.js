@@ -32,12 +32,12 @@ export default {
 
                     request.post("/login",formData)
                         .then(function (response) {
-                            console.log(response)
-                            if(response.role===0){
+                            console.log(response);
+                            if(response==="SUCCESS_LOGIN_ADMIN"){
                                 //管理员登录
                                 return that.$router.push({path: '/index_admin'});
                             }
-                            if(response.role===1){
+                            else if(response==="SUCCESS_LOGIN_TEACHER"){
                                 //教师登录
                                 if(response.password.equals("fudan123456")){
                                     //重置密码
@@ -45,21 +45,21 @@ export default {
                                 }
                                 else return that.$router.push({path: '/index_teacher'})
                             }
-                            if(response.role===2){
-                                //学生登录
-                                if(response.password.equals("fudan123456")){
-                                    //重置密码
-                                    return that.$router.push({path: '/resetpassword'});
-                                }
-                                else return that.$router.push({path: '/index_stu'});
-                            }
+                            // if(response.role===2){
+                            //     //学生登录
+                            //     if(response.password.equals("fudan123456")){
+                            //         //重置密码
+                            //         return that.$router.push({path: '/resetpassword'});
+                            //     }
+                            //     else return that.$router.push({path: '/index_stu'});
+                            // }
 
                         })
-                        .catch(function () {
-                            // 处理错误情况
-                            alert("用户名或密码错误! 请重新输入");
-                            return that.$router.push({path: '/'});
-                        })
+                        // .catch(function () {
+                        //     // 处理错误情况
+                        //     alert("用户名或密码错误! 请重新输入");
+                        //     return that.$router.push({path: '/'});
+                        // })
                 }
                 else {
                     return false;

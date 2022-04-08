@@ -27,9 +27,9 @@ request.interceptors.response.use(
             return res
         }
         // 兼容服务端返回的字符串数据
-        if (typeof res === 'string') {
-            res = res ? JSON.parse(res) : res
-        }
+        // if (typeof res === 'string') {
+        //     res = res ? JSON.parse(res) : res
+        // }
         return res;
     },
     error => {
