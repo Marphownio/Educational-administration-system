@@ -25,12 +25,13 @@ export default {
             const that=this;
             this.$refs.loginruleForm.validate((valid) => {
                 if (valid) {
-                    let formData = new FormData();
-                    for(let key in this.loginruleForm) {
-                        formData.append(key,this.loginruleForm[key]);
-                    }
 
-                    request.post("/login",formData)
+                    // let formData = new FormData();
+                    // for(let key in this.loginruleForm) {
+                    //     formData.append(key,this.loginruleForm[key]);
+                    // }
+
+                    request.post("/login",this.loginruleForm)
                         .then(function (response) {
                             if(response==="FAILED"){
                                 //登录失败

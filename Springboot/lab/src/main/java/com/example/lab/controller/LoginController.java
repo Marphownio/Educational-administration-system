@@ -22,7 +22,7 @@ public class LoginController {
 
     // 登录
     @PostMapping(value = "/login")
-    public ResultMessage login(@RequestParam("loginid") String userId, @RequestParam("loginpw") String password, HttpSession session) {
+    public ResultMessage login(@RequestParam(value = "loginid") String userId, @RequestParam(value = "loginpw") String password, HttpSession session) {
 
         if (userId.matches("^\\d{6}$") || userId.matches("^\\d{8}$")) {
             if (admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getPassword())) {
