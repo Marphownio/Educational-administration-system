@@ -33,17 +33,17 @@ public class Course {
     private String introduction;
 
     // 所属专业
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne//(fetch = FetchType.EAGER)
     @JoinColumn(name = "majorId")
-    private Major major = new Major();
+    private Major major;
 
     // 开课院系
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne//(fetch = FetchType.EAGER)
     @JoinColumn(name = "schoolId")
-    private School school = new School();
+    private School school;
 
     // 任课教师和学生
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST)//, fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinTable(name = "Course_User",
             joinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")},

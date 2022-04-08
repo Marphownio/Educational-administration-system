@@ -22,16 +22,15 @@ public class Major {
     private String introduction;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne//(fetch = FetchType.EAGER)
     @JoinColumn(name = "schoolId")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private School school;
 
-    @OneToMany(mappedBy = "courseId", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "courseId", cascade = CascadeType.ALL)//, fetch=FetchType.EAGER)
     @JsonIgnore
     private Set<Course> courses = new HashSet<>();
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)//, fetch=FetchType.EAGER)
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 }

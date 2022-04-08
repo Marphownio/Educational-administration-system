@@ -20,15 +20,15 @@ public class School {
     private String schoolName;
     private String introduction;
 
-    @OneToMany(mappedBy = "majorId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "majorId", cascade = CascadeType.ALL)//, fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Major> majors = new HashSet<>();
 
-    @OneToMany(mappedBy = "courseId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "courseId", cascade = CascadeType.ALL)//, fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Course> courses = new HashSet<>();
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)//, fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 }

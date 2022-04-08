@@ -25,19 +25,19 @@ public class User {
     private String email;
     private Boolean status = true;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne//(fetch = FetchType.EAGER)
     @JoinColumn(name = "schoolId")
-    private School school = new School();
+    private School school;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne//(fetch = FetchType.EAGER)
     @JoinColumn(name = "majorId")
-    private Major major = new Major();
+    private Major major;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.PERSIST)//, fetch = FetchType.EAGER)
     @JsonIgnore
-    @JoinTable(name = "Course_User",
-            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
-            inverseJoinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")})
+//    @JoinTable(name = "Course_User",
+//            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
+//            inverseJoinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")})
     private Set<Course> courses = new HashSet<>();
 
 }
