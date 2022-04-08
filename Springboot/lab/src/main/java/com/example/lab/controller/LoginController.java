@@ -34,11 +34,21 @@ public class LoginController {
                 if (user != null && user.getPassword().equals(password) && user.getStatus()) {
                     if (user.getRole() == UserRole.TEACHER) {
                         session.setAttribute("user", user);
-                        return ResultMessage.SUCCESS_LOGIN_TEACHER;
+                        if (user.getPassword().equals("fudan123456")) {
+                            return ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD;
+                        }
+                        else {
+                            return ResultMessage.SUCCESS_LOGIN_TEACHER;
+                        }
                     }
                     else if (user.getRole() == UserRole.STUDENT) {
                         session.setAttribute("user", user);
-                        return ResultMessage.SUCCESS_LOGIN_STUDENT;
+                        if (user.getPassword().equals("fudan123456")) {
+                            return ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD;
+                        }
+                        else {
+                            return ResultMessage.SUCCESS_LOGIN_STUDENT;
+                        }
                     }
                 }
             }

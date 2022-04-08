@@ -18,7 +18,10 @@ public class User {
     private Integer userId;
 
     private String password = "fudan123456";
+
+    @Column(nullable = false)
     private UserRole role;
+
     private String username;
     private String idNumber;
     private String phoneNumber;
