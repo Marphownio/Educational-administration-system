@@ -75,10 +75,15 @@ export default {
                                 alert("密码重置失败！请重新尝试");
                                 return that.$router.push({path: '/resetpassword'});
                             }
-                            else if(response==="SUCCESS"){
-                                //密码重置成功
+                            else if(response==="SUCCESS_LOGIN_TEACHER"){
+                                //教师密码重置成功
                                 alert("密码重置成功！");
-                                return that.$router.push({path: '/index_admin'});
+                                return that.$router.push({path: '/index_teacher'});
+                            }
+                            else if(response==="SUCCESS_LOGIN_STUDENT"){
+                                //学生密码重置成功
+                                alert("密码重置成功！");
+                                return that.$router.push({path: '/index_stu'});
                             }
                         })
                 }
