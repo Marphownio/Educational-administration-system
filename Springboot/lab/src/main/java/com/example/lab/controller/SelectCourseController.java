@@ -39,14 +39,14 @@ public class SelectCourseController {
                 System.out.println(course);
                 System.out.println(course.getUsers());
 
-                currentUser.getCourses().add(course);
-//                course.getUsers().add(currentUser);
+//                currentUser.getCourses().add(course);
+                course.getUsers().add(currentUser);
 
                 System.out.println(currentUser.getCourses());
                 System.out.println(course.getUsers());
 
-                userService.updateUser(currentUser);
-//                courseService.updateCourse(course);
+//                userService.updateUser(currentUser);
+                courseService.updateCourse(course);
 
                 return ResultMessage.SUCCESS;
             } catch (Exception exception) {

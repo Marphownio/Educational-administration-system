@@ -36,11 +36,11 @@ public class User {
     @JoinColumn(name = "majorId")
     private Major major;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
-    @JoinTable(name = "User_Course",
-            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
-            inverseJoinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")})
+//    @JoinTable(name = "User_Course",
+//            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
+//            inverseJoinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")})
     private Set<Course> courses = new HashSet<>();
 
 }
