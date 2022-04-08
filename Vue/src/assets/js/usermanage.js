@@ -60,15 +60,15 @@ export default {
         return{
             dialogVisible:false,
             ruleForm:{
-                userId:'',
-                role:'',
-                school:'',
-                major:'',
-                username:'',
-                idNumber:'',
-                phoneNumber: '',
-                email:'',
-                status:'',
+                userId:{},
+                role:{},
+                school:{},
+                major:{},
+                username:{},
+                idNumber:{},
+                phoneNumber: {},
+                email:{},
+                status:{},
             },
             editRules :({
                 username: [

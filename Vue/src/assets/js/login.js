@@ -25,6 +25,13 @@ export default {
             const that=this;
             this.$refs.loginruleForm.validate((valid) => {
                 if (valid) {
+<<<<<<< Updated upstream
+=======
+                    let formData = new FormData();
+                    for(let key in this.loginruleForm.record) {
+                        formData.append(key,this.loginruleForm[key]);
+                    }
+>>>>>>> Stashed changes
 
                     // let formData = new FormData();
                     // for(let key in this.loginruleForm) {
