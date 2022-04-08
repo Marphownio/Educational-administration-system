@@ -58,7 +58,6 @@ export default {
             }),
         }
     },
-
     created(){
     },
     methods:{
@@ -71,21 +70,16 @@ export default {
                     }
                     request.post("/resetPassword",formData)
                         .then(function (response) {
-                            //成功情况
-                            alert("密码重置成功！");
-                            if(response.role===1){
-                                //教师登录
-                                return that.$router.push({path: '/index_teacher'});
+                            if(response==="FAILED"){
+                                //密码重置失败
+                                alert("密码重置失败！请重新尝试");
+                                return that.$router.push({path: '/resetpassword'});
                             }
-                            else if(response.role===2){
-                                //学生登录
-                                return that.$router.push({path: '/index_stu'});
+                            else if(response==="SUCCESS"){
+                                //密码重置成功
+                                alert("密码重置成功！");
+                                return that.$router.push({path: '/index_admin'});
                             }
-                        })
-                        .catch(function (error) {
-                            // 处理错误情况
-                            alert("重置密码失败，请再次尝试!");
-                            return that.$router.push({path: '/resetpassword'});
                         })
                 }
                 else {
@@ -93,10 +87,5 @@ export default {
                 }
             })
         },
-        // submitform(){
-        //     request.post("http://localhost:8080/resetPassword",this.ruleForm).then(res =>{
-        //
-        //     })
-        // }
     }
 }
