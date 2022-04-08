@@ -1,9 +1,10 @@
 package com.example.lab.service.impl;
 
-import com.example.lab.pojo.entity.Application;
+import com.example.lab.pojo.ApplicationType;
+import com.example.lab.pojo.UserRole;
+import com.example.lab.pojo.entity.*;
 import com.example.lab.pojo.ResultMessage;
-import com.example.lab.service.AdminService;
-import com.example.lab.service.CourseService;
+import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,33 +15,64 @@ public class AdminServiceImpl implements AdminService {
     @Resource
     private CourseService courseService;
 
-    @Override
-    public ResultMessage processCourseApplication(Application application) {
+    @Resource
+    private MajorService majorService;
 
-        switch (application.getType()){
+    @Resource
+    private SchoolService schoolService;
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private ApplicationService applicationService;
+
+    @Override
+    public ResultMessage processCourseApplication(Integer applicationId, Boolean operation) {
+
+        if (!operation) {
+            return applicationService.deleteApplication(applicationId);
+        }
+        Application application = applicationService.findApplicationById(applicationId);
+        if (application == null) {// || applicationService.deleteApplication(applicationId) != ResultMessage.SUCCESS) {
+            return ResultMessage.FAILED;
+        }
+        Course course = new Course();
+        if (application.getType() != ApplicationType.DELETE) {
+            School school = schoolService.findSchoolBySchoolId(application.getSchoolId());
+            Major major = majorService.findMajorByMajorId(application.getMajorId());
+            User teacher = userService.findUserByUserId(application.getUserId());
+            if (school == null || major == null || teacher == null || teacher.getRole() != UserRole.TEACHER) {
+               return ResultMessage.FAILED;
+            }
+            course.setSchool(school);
+            course.setMajor(major);
+            course.getUsers().add(teacher);
+            course.setCourseId(application.getApplicationId());
+            course.setCourseName(application.getCourseName());
+            course.setClassHour(application.getClassHour());
+            course.setCredit(application.getCredit());
+            course.setClassTime(application.getClassTime());
+            course.setClassPlace(application.getClassPlace());
+            course.setCapacity(application.getCapacity());
+            course.setIntroduction(application.getIntroduction());
+        }
+        ResultMessage resultMessage;
+        switch (application.getType()) {
             case ADD:
-                if (courseService.addCourse(application.getCourse()) == ResultMessage.SUCCESS) {
-                    return ResultMessage.SUCCESS_ADD;
-                }
-                else {
-                    return ResultMessage.FAILED_ADD;
-                }
+                resultMessage = courseService.addCourse(course); break;
             case DELETE:
-                if (courseService.deleteCourse(application.getCourse().getCourseId()) == ResultMessage.SUCCESS) {
-                    return ResultMessage.SUCCESS_DELETE;
-                }
-                else {
-                    return ResultMessage.FAILED_DELETE;
-                }
+                resultMessage = courseService.deleteCourse(application.getApplicationId()); break;
             case UPDATE:
-                if (courseService.updateCourse(application.getCourse()) == ResultMessage.SUCCESS) {
-                    return ResultMessage.SUCCESS_UPDATE;
-                }
-                else {
-                    return ResultMessage.FAILED_UPDATE;
-                }
+                resultMessage = courseService.updateCourse(course); break;
             default:
-                return ResultMessage.FAILED;
+                resultMessage = ResultMessage.FAILED; break;
+        }
+        if (resultMessage == ResultMessage.SUCCESS) {
+            return applicationService.deleteApplication(applicationId);
+        }
+        else {
+            return ResultMessage.FAILED;
         }
     }
 }

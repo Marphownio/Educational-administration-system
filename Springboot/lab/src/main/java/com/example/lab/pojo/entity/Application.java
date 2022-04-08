@@ -12,13 +12,33 @@ import javax.persistence.*;
 @Setter
 public class Application {
 
+    // 申请id、课程id
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer applicationId;
+    // 课程名
+    private String courseName;
+    // 学时
+    private Integer classHour;
+    // 学分
+    private Integer credit;
+    // 上课时间
+    private String classTime;
+    // 上课地点
+    private String classPlace;
+    // 选课容量
+    private String capacity;
+    // 课程介绍
+    private String introduction;
+    // 所属专业
+    @Column(nullable = false)
+    private Integer majorId;
+    // 开课院系
+    @Column(nullable = false)
+    private Integer schoolId;
+    // 任课教师
+    private Integer userId;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "courseId")
-    private Course course;
-
+    // 申请处理方式
+    @Column(nullable = false)
     private ApplicationType type;
 }

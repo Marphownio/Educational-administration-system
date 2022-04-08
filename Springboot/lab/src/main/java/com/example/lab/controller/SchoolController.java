@@ -34,7 +34,7 @@ public class SchoolController {
     }
 
     @GetMapping(value = "/list")
-    public ResponseEntity<Set<School>> findAllSchool(){
+    public ResponseEntity<Set<School>> findAllSchool() {
         Set<School> schools = new HashSet<>(schoolService.findAllSchool());
         if (schools.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);

@@ -1,7 +1,6 @@
 package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
-import com.example.lab.pojo.entity.Application;
 import com.example.lab.service.AdminService;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +13,9 @@ public class AdminController {
     @Resource
     private AdminService adminService;
 
-    @PostMapping(value = "")
-    public ResultMessage processCourseApplication(Application application) {
-        return adminService.processCourseApplication(application);
+    @DeleteMapping(value = "")
+    public ResultMessage processCourseApplication(@RequestParam(value = "applicationId") Integer applicationId,
+                                                  @RequestParam(value = "operation") Boolean operation) {
+        return adminService.processCourseApplication(applicationId, operation);
     }
 }

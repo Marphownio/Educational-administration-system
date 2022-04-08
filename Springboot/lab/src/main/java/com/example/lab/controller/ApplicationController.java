@@ -2,7 +2,6 @@ package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.entity.Application;
-import com.example.lab.pojo.entity.Course;
 import com.example.lab.service.ApplicationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +19,8 @@ public class ApplicationController {
     private ApplicationService applicationService;
 
     @PostMapping(value = "/add")
-    public ResultMessage addCourseApplication(Course course) {
-        return applicationService.addCourseApplication(course);
-    }
-
-    @DeleteMapping(value = "/{courseId}")
-    public ResultMessage deleteCourseApplication(@PathVariable("courseId") Integer courseId) {
-        return applicationService.deleteCourseApplication(courseId);
-    }
-
-    @PutMapping(value = "/update")
-    public ResultMessage updateCourseApplication(Course course) {
-        return applicationService.updateCourseApplication(course);
+    public ResultMessage addApplication(Application application) {
+        return applicationService.addApplication(application);
     }
 
     @GetMapping(value = "/list")

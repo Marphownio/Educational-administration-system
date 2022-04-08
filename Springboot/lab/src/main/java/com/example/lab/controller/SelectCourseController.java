@@ -2,10 +2,8 @@ package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.entity.Course;
-import com.example.lab.pojo.entity.Major;
 import com.example.lab.pojo.entity.User;
 import com.example.lab.service.CourseService;
-import com.example.lab.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +19,6 @@ import static com.example.lab.LabApplication.admin;
 public class SelectCourseController {
 
     @Resource
-    private UserService userService;
-
-    @Resource
     private CourseService courseService;
 
     @PostMapping(value = "/select")
@@ -34,7 +29,6 @@ public class SelectCourseController {
                 Course course = courseService.findCourseByCourseId(courseId);
                 course.getUsers().add(currentUser);
                 courseService.updateCourse(course);
-                session.setAttribute("user", currentUser);
                 return ResultMessage.SUCCESS;
             } catch (Exception exception) {
                 return ResultMessage.FAILED;

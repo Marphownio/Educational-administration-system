@@ -1,7 +1,6 @@
 package com.example.lab.pojo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +19,6 @@ public class Major {
 
     private String majorName;
     private String introduction;
-
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "schoolId")

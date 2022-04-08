@@ -1,7 +1,6 @@
 package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
-import com.example.lab.pojo.UserRole;
 import com.example.lab.pojo.entity.User;
 import com.example.lab.service.UserService;
 import org.springframework.web.bind.annotation.RequestMapping;
