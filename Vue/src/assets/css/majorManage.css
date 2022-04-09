@@ -26,8 +26,9 @@ body{
     background-attachment:fixed;
 }
 
-.showlistq{
+.showlist{
     top:25%;
+    width:1235px;
     margin: 0 auto;
     height: 70%;
     background-color:white;

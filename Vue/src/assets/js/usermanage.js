@@ -177,7 +177,7 @@ export default {
             })
         },
         submitForm1(){
-            console.log(this.ruleForm);
+            console.log(this.ruleForm.school)
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
                     let params = new URLSearchParams();
@@ -230,6 +230,14 @@ export default {
             })
         },
         submitForm2(){
+            console.log(this.ruleForm.school)
+            if(typeof this.ruleForm.school === "string")
+            {
+                console.log(1);
+                this.tableData.school=this.tableData.school.schoolId;
+            }
+            if(typeof this.tableData.major === "object")
+                this.tableData.major=this.tableData.major.majorId;
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
                     let params = new URLSearchParams();
@@ -334,8 +342,7 @@ export default {
         editHandle(obj){
             this.dialogVisible2=true;
             this.ruleForm=obj;
-            console.log(this.ruleForm);
-            console.log(this.ruleForm.status);
+            console.log(obj)
         },
         delHandle(id){
             this.$axios.post("/user/"+id).then(res=> {

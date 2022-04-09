@@ -80,7 +80,7 @@
                 </el-form-item>
                 <el-form-item label="学院">
                     <el-select v-model="ruleForm.school" placeholder="选择学院">
-                        <el-option v-for="item in schooldata" :key="item.id" :label="item.schoolName" :value="item.schoolId" />
+                        <el-option v-for="item in schooldata" :key="item.schoolId" :label="item.schoolName" :value="item.schoolId" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="专业">
@@ -147,8 +147,8 @@
                 </el-form-item>
                 <el-form-item label="是否在校/在岗" prop="status">
                     <el-radio-group v-model="ruleForm.status">
-                        <el-radio label=true model-value=true>是</el-radio>
-                        <el-radio label=false model-value=false>否</el-radio>
+                        <el-radio :label=true :model-value=true>是</el-radio>
+                        <el-radio :label=false :model-value=false>否</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="手机号" prop="phoneNumber">

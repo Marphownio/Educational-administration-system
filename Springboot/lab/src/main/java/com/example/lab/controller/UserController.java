@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/update")
-    public ResultMessage updateUser(User user) {
+    public ResultMessage updateUser( User user) {
         return userService.updateUser(user);
     }
 
