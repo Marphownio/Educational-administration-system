@@ -58,6 +58,8 @@ export default {
         };
         return{
             dialogVisible:false,
+            schooldata:[],
+            majordata:[],
             ruleForm:{
                 userId:'',
                 role:'',
@@ -123,11 +125,25 @@ export default {
             ]
         }
     },
+    mounted() {
+        this.getSchool();
+        this.getMajor();
+    },
     created(){
         this.getUserForm()
     },
 
     methods:{
+        getSchool:function(){
+            request.get("/school/list").then(res=>{
+                this.schooldata= res;
+            })
+        },
+        getMajor:function(){
+            request.get("/major/list").then(res=>{
+                this.majordata= res;
+            })
+        },
         getUserForm(){
             request.get("/user/list").then(res=>{
                 this.tableData=res;

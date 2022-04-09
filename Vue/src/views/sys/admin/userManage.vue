@@ -74,14 +74,12 @@
                 </el-form-item>
                 <el-form-item label="学院">
                     <el-select v-model="ruleForm.school" placeholder="选择学院">
-                        <el-option label="学院1" value="1" />
-                        <el-option label="学院2" value="2" />
+                        <el-option v-for="item in schooldata" :key="item.id" :label="item.schoolName" :value="item.schoolId" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="专业">
                     <el-select  v-model="ruleForm.major" placeholder="选择专业">
-                        <el-option label="专业1" value="11" />
-                        <el-option label="专业2" value="21" />
+                        <el-option v-for="item in majordata" :key="item.id" :label="item.schoolName" :value="item.schoolId" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="姓名" prop="username">
