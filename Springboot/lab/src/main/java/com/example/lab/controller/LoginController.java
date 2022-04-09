@@ -1,20 +1,15 @@
 package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
-import com.example.lab.pojo.UserRole;
 import com.example.lab.pojo.entity.Student;
 import com.example.lab.pojo.entity.Teacher;
-import com.example.lab.pojo.entity.User;
 import com.example.lab.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-
-import java.util.Map;
 
 import static com.example.lab.LabApplication.admin;
 import static java.lang.Integer.parseInt;

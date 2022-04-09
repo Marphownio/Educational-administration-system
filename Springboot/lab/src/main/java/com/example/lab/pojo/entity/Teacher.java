@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.annotation.Resource;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,10 +26,8 @@ public class Teacher extends User {
         this.setPhoneNumber(user.getPhoneNumber());
         this.setStatus(user.getStatus());
 
-        System.out.println("11");
         this.setSchool(new School());
         this.setMajor(new Major());
-        System.out.println("12");
         this.getSchool().setSchoolId(user.getSchool().getSchoolId());
         this.getMajor().setMajorId(user.getMajor().getMajorId());
     }

@@ -30,9 +30,9 @@ public class School {
     @JsonIgnore
     private Set<Course> courses = new HashSet<>();
 
-//    @OneToMany(mappedBy = "school", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-//    @JsonIgnore
-//    private Set<User> users = new HashSet<>();
+    @OneToMany(mappedBy = "school", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<User> users = new HashSet<>();
 
     @OneToMany(mappedBy = "school", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
