@@ -1,6 +1,11 @@
 import Nav from "@/views/inc/Nav.vue";
 import Papa from "papaparse";
 import request from "@/utils/request";
+import Index_teacher from "@/views/sys/teacher/index_teacher";
+
+class User{
+
+}
 
 export default {
     name: "userManage",
@@ -8,7 +13,6 @@ export default {
         Nav
     },
     data(){
-        console.log(this.ruleForm);
         let namecheck=(rule,value,callback)=>{
             const relu = "^[a-zA-Z\u4e00-\u9fa5]+$";
             const re = new RegExp(relu);
@@ -60,15 +64,15 @@ export default {
         return{
             dialogVisible:false,
             ruleForm:{
-                userId:{},
-                role:{},
-                school:{},
-                major:{},
-                username:{},
-                idNumber:{},
-                phoneNumber: {},
-                email:{},
-                status:{},
+                userId:'',
+                role:'',
+                school:'',
+                major:'',
+                username:'',
+                idNumber:'',
+                phoneNumber: '',
+                email:'',
+                status:'',
             },
             editRules :({
                 username: [
@@ -113,7 +117,7 @@ export default {
                 {
                     userId:'',
                     role:'',
-                    college:'',
+                    school:'',
                     major:'',
                     username:'',
                     idNumber:'',
@@ -137,14 +141,20 @@ export default {
         submitForm(){
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
-                    let formData = new FormData();
-                    for(let key in this.ruleForm) {
-                        formData.append(key,this.ruleForm[key]);
-                    }
-                    console.log(this.ruleForm)
-                    console.log(formData)
-                    request.post("/user/add",formData)
-                    .then(res=>{
+                    let params = new URLSearchParams();
+                    params.append('userId', this.ruleForm.userId);
+                    //params.append('role', this.ruleForm.role);
+                    params.append('school', this.ruleForm.school);
+                    params.append('major', this.ruleForm.major);
+                    params.append('idNumber', this.ruleForm.idNumber);
+                    params.append('username', this.ruleForm.username);
+                    params.append('phoneNumber', this.ruleForm.phoneNumber);
+                    params.append('email', this.ruleForm.email);
+                    this.$axios({
+                        method: 'post',
+                        url:'/api/user/add',
+                        data:params
+                    }).then(res=>{
                         this.$message({
                             showClose: true,
                             message: '操作成功',
@@ -159,7 +169,7 @@ export default {
                 }
                 else{
                     this.$nextTick(() => {
-                        this.scrollToTop(this.$refs.ruleForm.$el)
+                       this.scrollToTop(this.$refs.ruleForm.$el)
                     })
                 }
             })

@@ -12,7 +12,6 @@
         :rules="logineditRules"
         @submit.prevent="loginfunc"
         class="demo-ruleForm"
-        :size="formSize"
     >
       <h1 style="text-align:center">欢迎使用教务系统</h1>
       <h4 style="text-align:center">请先登录</h4>
