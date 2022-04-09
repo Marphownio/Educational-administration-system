@@ -1,11 +1,6 @@
 import Nav from "@/views/inc/Nav.vue";
 import Papa from "papaparse";
 import request from "@/utils/request";
-import Index_teacher from "@/views/sys/teacher/index_teacher";
-
-class User{
-
-}
 
 export default {
     name: "userManage",
@@ -143,7 +138,7 @@ export default {
                 if(valid){
                     let params = new URLSearchParams();
                     params.append('userId', this.ruleForm.userId);
-                    //params.append('role', this.ruleForm.role);
+                    params.append('role', this.ruleForm.role);
                     params.append('school', this.ruleForm.school);
                     params.append('major', this.ruleForm.major);
                     params.append('idNumber', this.ruleForm.idNumber);

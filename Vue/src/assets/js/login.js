@@ -29,10 +29,7 @@ export default {
                     for(let key in this.loginruleForm) {
                         formData.append(key,this.loginruleForm[key]);
                     }
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
                     request.post("/login",formData)
                         .then(function (response) {
                             if(response==="FAILED"){

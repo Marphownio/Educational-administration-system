@@ -11,17 +11,32 @@
     <div class="showlist">
         <el-form :inline="true" >
             <el-form-item>
-                <el-button type="primary" @click="dialogVisible=true">添加</el-button>
+                <el-button type="primary" @click="dialogVisible1=true">添加学院</el-button>
+                <el-button type="primary" @click="dialogVisible2=true">添加专业</el-button>
             </el-form-item>
         </el-form>
-        <el-table :data="tableData" style="width: 100%; margin-bottom: 20px" row-key="number" border default-expand-all>
-            <el-table-column prop="number" label="编号" sortable width="180px" />
-            <el-table-column prop="college" label="学院" sortable width="180px" />
-            <el-table-column prop="major" label="专业" sortable width="180px" />
-            <el-table-column prop="data" label="描述信息" sortable width="180px" />
+        <el-table :data="tableData1" style="width: 100%; margin-bottom: 20px" row-key="number" border default-expand-all>
+            <el-table-column prop="schoolId" label="学院代码" sortable width="180px" />
+            <el-table-column prop="schoolName" label="学院" sortable width="180px" />
+            <el-table-column prop="introduction" label="描述信息" sortable  />
             <el-table-column align="right" width="420px">
                 <template #header>
-                    <el-input v-model="search" size="small" placeholder="输入学院/专业名称" />
+                    <el-input v-model="search" size="small" placeholder="输入学院名称" />
+                </template>
+                <template #default="scope">
+                    <el-button>编辑</el-button> <!--@click="handleEdit(scope.$index, scope.row)"-->
+                    <el-button type="danger" >删除</el-button> <!--@click="handleDelete(scope.$index, scope.row)"-->
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-table :data="tableData2" style="width: 100%; margin-bottom: 20px" row-key="number" border default-expand-all>
+            <el-table-column prop="majorId" label="专业代码" sortable width="180px" />
+            <el-table-column prop="school" label="所属学院" sortable width="180px" />
+            <el-table-column prop="majorName" label="专业" sortable width="180px" />
+            <el-table-column prop="introduction" label="描述信息" sortable  />
+            <el-table-column align="right" width="420px">
+                <template #header>
+                    <el-input v-model="search" size="small" placeholder="输入专业名称" />
                 </template>
                 <template #default="scope">
                     <el-button>编辑</el-button> <!--@click="handleEdit(scope.$index, scope.row)"-->
@@ -31,28 +46,56 @@
         </el-table>
     </div>
 
-    <el-dialog v-model="dialogVisible" title="添加" width="600px">
+    <el-dialog v-model="dialogVisible1" title="添加学院" width="600px">
             <el-form
-                    ref="ruleForm"
-                    :model="ruleForm"
-                    :rules="editRules"
+                    ref="ruleForm1"
+                    :model="ruleForm1"
+                    :rules="editRules1"
                     label-width="120px"
                     class="demo-ruleForm"
             >
-                <el-form-item label="学院名" prop="college">
-                    <el-input v-model="ruleForm.college"></el-input>
+                <el-form-item label="学院代码" prop="schoolId">
+                    <el-input v-model="ruleForm1.schoolId"></el-input>
                 </el-form-item>
-                <el-form-item label="专业名" prop="major">
-                    <el-input v-model="ruleForm.major"></el-input>
+                <el-form-item label="学院名" prop="schoolName">
+                    <el-input v-model="ruleForm1.schoolName"></el-input>
                 </el-form-item>
-                <el-form-item label="描述信息" prop="message">
-                    <el-input v-model="ruleForm.message"></el-input>
+                <el-form-item label="描述信息" prop="introduction">
+                    <el-input v-model="ruleForm1.introduction"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm" >添加</el-button>
+                    <el-button type="primary" @click="submitForm1" >添加</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
+
+    <el-dialog v-model="dialogVisible2" title="添加专业" width="600px">
+        <el-form
+                ref="ruleForm2"
+                :model="ruleForm2"
+                :rules="editRules2"
+                label-width="120px"
+                class="demo-ruleForm"
+        >
+            <el-form-item label="专业代码" prop="majorId">
+                <el-input v-model="ruleForm2.majorId"></el-input>
+            </el-form-item>
+            <el-form-item label="所属学院">
+                <el-select v-model="ruleForm2.school" placeholder="所属学院">
+                    <el-option v-for="item in depss" :key="item.id" :label="item.schoolName" :value="item.schoolId" />
+                </el-select>
+            </el-form-item>
+            <el-form-item label="专业名" prop="majorName">
+                <el-input v-model="ruleForm2.majorName"></el-input>
+            </el-form-item>
+            <el-form-item label="描述信息" prop="introduction">
+                <el-input v-model="ruleForm2.introduction"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="submitForm2" >添加</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
     </body>
 </template>
 <script  src="../../../assets/js/majorManage.js"></script>

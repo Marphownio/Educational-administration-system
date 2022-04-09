@@ -76,3 +76,6 @@ body{
     text-align: center;
     table-layout: fixed;
 }
+table{
+    margin-bottom: 20px;
+}
