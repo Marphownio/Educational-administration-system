@@ -25,6 +25,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Resource
     private ApplicationRepository applicationRepository;
 
+    // 教师申请增删改课程
     @Override
     public ResultMessage addApplication(Application application) {
         User teacher = userService.findUserByUserId(application.getTeacherId());
@@ -53,6 +54,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
     }
 
+    // 教师取消申请或管理员处理完申请后将其删除
     @Override
     public ResultMessage deleteApplication(Integer applicationId) {
         if (findApplicationById(applicationId) == null) {
@@ -69,11 +71,13 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
     }
 
+    // 管理员获取所有申请
     @Override
     public List<Application> findAllApplication() {
         return applicationRepository.findAll();
     }
 
+    // 通过id查找申请
     @Override
     public Application findApplicationById(Integer applicationId) {
         return applicationRepository.findById(applicationId).orElse(null);

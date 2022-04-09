@@ -17,6 +17,7 @@ public class Teacher extends User {
     @JsonIgnore
     private Set<Course> courses = new HashSet<>();
 
+    // 通过用户产生一个教师
     public Teacher(User user) {
         this.setUserId(user.getUserId());
         this.setPassword(user.getPassword());

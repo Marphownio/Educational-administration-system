@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.util.List;
 
+// 用户的增删改查服务
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -117,36 +118,43 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    // 查询全部用户
     @Override
     public List<User> findAllUser() {
         return userRepository.findAll();
     }
 
+    // 查询全部教师
     @Override
     public List<Teacher> findAllTeacher() {
         return teacherRepository.findAll();
     }
 
+    // 查询全部学生
     @Override
     public List<Student> findAllStudent() {
         return studentRepository.findAll();
     }
 
+    // 通过id查询用户
     @Override
     public User findUserByUserId(Integer userId) {
         return userRepository.findById(userId).orElse(null);
     }
 
+    // 通过姓名查询用户
     @Override
     public User findUserByUserName(String username) {
         return userRepository.findByUsername(username);
     }
 
+    // 通过id查询教师
     @Override
     public Teacher findTeacherByTeacherId(Integer teacherId) {
         return teacherRepository.findById(teacherId).orElse(null);
     }
 
+    // 通过id查询学生
     @Override
     public Student findStudentByStudentId(Integer studentId) {
         return studentRepository.findById(studentId).orElse(null);

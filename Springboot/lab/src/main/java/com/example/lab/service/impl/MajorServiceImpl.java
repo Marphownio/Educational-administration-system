@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
+// 专业的增删改查服务
 @Service
 public class MajorServiceImpl implements MajorService {
 

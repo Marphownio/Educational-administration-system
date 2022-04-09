@@ -55,8 +55,4 @@ public class Course {
             inverseJoinColumns = {@JoinColumn(name = "studentId", referencedColumnName ="user_id")})
     private Set<Student> students = new HashSet<>();
 
-//    public Course(Application application) {
-//
-//    }
-
 }

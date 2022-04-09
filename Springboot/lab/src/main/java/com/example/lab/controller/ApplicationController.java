@@ -24,6 +24,12 @@ public class ApplicationController {
         return applicationService.addApplication(application);
     }
 
+    // 教师取消申请
+    @RequestMapping(value = "cancel")
+    public ResultMessage cancelApplication(Integer applicationId) {
+        return applicationService.deleteApplication(applicationId);
+    }
+
     // 管理员获取所有申请
     @GetMapping(value = "/list")
     public ResponseEntity<Set<Application>> findAllApplication() {
