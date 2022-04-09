@@ -26,7 +26,10 @@ export default {
 
         };
         let idcheck=(rule,value,callback)=>{
-            if(value[0]!=2||value[1]!=2){           //这里改成！==的话貌似会报错，总之改动需检查
+            if(this.dialogVisible1===true)
+            {
+                if(value[0]!=='2'||value[1]!=='2')
+            {
                 callback(new Error('工号/学号前两位需为22'));
                 return false;
             }
@@ -55,9 +58,12 @@ export default {
                 else
                     return true;
             }
+        }
+            else return true;
         };
         return{
-            dialogVisible:false,
+            dialogVisible1:false,
+            dialogVisible2:false,
             schooldata:[],
             majordata:[],
             ruleForm:{
@@ -116,21 +122,6 @@ export default {
                         trigger: 'change',
                     },
                 ],
-                school: [
-                    {
-                        type:'integer',
-                        required: true,
-                        message: '请选择学院',
-                        trigger: 'change',
-                    },
-                ],
-                major: [
-                    {
-                        required: true,
-                        message: '请选择专业',
-                        trigger: 'change',
-                    },
-                ]
             }),
             tableData : [
                 {
@@ -152,32 +143,41 @@ export default {
         this.getMajor();
     },
     created(){
-        this.getUserForm()
+        this.getUserForm();
     },
     methods:{
+        refresh(){
+          this.ruleForm= {};
+        },
         getSchool:function(){
             request.get("/school/list").then(res=>{
                 this.schooldata= res;
+                this.ruleForm.school=res[0];
             })
+            this.ruleForm.school=this.schooldata[0];
         },
         getMajor:function(){
             request.get("/major/list").then(res=>{
                 this.majordata= res;
+                this.ruleForm.major=res[0];
             })
+
         },
         getUserForm(){
             request.get("/user/list").then(res=>{
                 this.tableData=res;
                 for(let i=0;i<Object.keys(res).length;i++)
                 {
-                    this.tableData[i].school=res[i].school.key[schoolName];
-                    this.tableData[i].major=res[i].major;
-                    console.log(JSON.parse(res[i].school))
+                    if(res[i].school!==null)
+                    {
+                        this.tableData[i].school=res[i].school.schoolName;
+                        this.tableData[i].major=res[i].major.majorName;
+                    }
                 }
             })
         },
-        submitForm(){
-            console.log(this.ruleForm.status)
+        submitForm1(){
+            console.log(this.ruleForm);
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
                     let params = new URLSearchParams();
@@ -206,8 +206,7 @@ export default {
                                 this.getUserForm()
                             }
                             });
-                        console.log(res.data);
-                        this.dialogVisible=false;
+                        this.dialogVisible1=false;
                         }
                         if(res.data==='SUCCESS')
                         {
@@ -219,14 +218,65 @@ export default {
                                     this.getUserForm()
                                 }
                             });
-                            console.log(res.data);
-                            this.dialogVisible=false;
+                            this.dialogVisible1=false;
                         }
                     })
                 }
                 else{
                     this.$nextTick(() => {
                        this.scrollToTop(this.$refs.ruleForm.$el)
+                    })
+                }
+            })
+        },
+        submitForm2(){
+            this.$refs.ruleForm.validate(valid=>{
+                if(valid){
+                    let params = new URLSearchParams();
+                    params.append('userId', this.ruleForm.userId);
+                    params.append('role', this.ruleForm.role);
+                    params.append('school', JSON.parse(this.ruleForm.school));
+                    params.append('major', JSON.parse(this.ruleForm.major));
+                    params.append('idNumber', this.ruleForm.idNumber);
+                    params.append('username', this.ruleForm.username);
+                    params.append('phoneNumber', this.ruleForm.phoneNumber);
+                    params.append('email', this.ruleForm.email);
+                    params.append('status', this.ruleForm.status);
+                    this.$axios({
+                        method: 'post',
+                        url:'/api/user/update',
+                        data:params,
+
+                    }).then(res=>{
+                        if(res.data==='EXIST')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '该用户已存在',
+                                type: 'fail',
+                                onClose:()=>{
+                                    this.getUserForm()
+                                }
+                            });
+                            this.dialogVisible2=false;
+                        }
+                        if(res.data==='SUCCESS')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '操作成功',
+                                type: 'success',
+                                onClose:()=>{
+                                    this.getUserForm()
+                                }
+                            });
+                            this.dialogVisible2=false;
+                        }
+                    })
+                }
+                else{
+                    this.$nextTick(() => {
+                        this.scrollToTop(this.$refs.ruleForm.$el)
                     })
                 }
             })
@@ -282,8 +332,10 @@ export default {
             })
         },
         editHandle(obj){
-            this.dialogVisible=true;
+            this.dialogVisible2=true;
             this.ruleForm=obj;
+            console.log(this.ruleForm);
+            console.log(this.ruleForm.status);
         },
         delHandle(id){
             this.$axios.post("/user/"+id).then(res=> {
