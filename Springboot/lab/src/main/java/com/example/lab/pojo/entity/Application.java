@@ -36,7 +36,8 @@ public class Application {
     @Column(nullable = false)
     private Integer schoolId;
     // 任课教师
-    private Integer userId;
+    @Column(nullable = false)
+    private Integer teacherId;
 
     // 申请处理方式
     @Column(nullable = false)
