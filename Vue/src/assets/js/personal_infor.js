@@ -119,6 +119,9 @@ export default {
                               alert('手机号码修改成功!');
                               return true;
                           }
+                      },function (err) {
+                          console.log(err);
+                          alert("手机号码修改失败! 请再次尝试");
                       })
                 }
                 else {
@@ -149,6 +152,8 @@ export default {
                                 alert('邮箱地址修改成功!');
                                 return true;
                             }
+                        }, function (err) {
+                                alert("邮箱地址修改失败! 请再次尝试");
                         })
                 }
                 else {
