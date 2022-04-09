@@ -26,16 +26,10 @@ export default {
             this.$refs.loginruleForm.validate((valid) => {
                 if (valid) {
                     let formData = new FormData();
-                    for(let key in this.loginruleForm.record) {
+                    for(let key in this.loginruleForm) {
                         formData.append(key,this.loginruleForm[key]);
                     }
-
-                    // let formData = new FormData();
-                    // for(let key in this.loginruleForm) {
-                    //     formData.append(key,this.loginruleForm[key]);
-                    // }
-
-                    request.post("/login",this.loginruleForm)
+                    request.post("/login",formData)
                         .then(function (response) {
                             if(response==="FAILED"){
                                 //登录失败
