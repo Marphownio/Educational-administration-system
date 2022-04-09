@@ -8,7 +8,7 @@
     <div class="void">
         <span></span>
     </div>
-    <div class="showlist">
+    <div class="showlistq">
         <el-form :inline="true" >
             <el-form-item>
                 <el-button type="primary" @click="dialogVisible1=true">添加学院</el-button>

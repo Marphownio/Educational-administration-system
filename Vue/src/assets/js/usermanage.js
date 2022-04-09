@@ -108,6 +108,28 @@ export default {
                         message: '请选择角色',
                         trigger: 'change',
                     },
+                ],
+                status: [
+                    {
+                        required: true,
+                        message: '请选择状态',
+                        trigger: 'change',
+                    },
+                ],
+                school: [
+                    {
+                        type:'integer',
+                        required: true,
+                        message: '请选择学院',
+                        trigger: 'change',
+                    },
+                ],
+                major: [
+                    {
+                        required: true,
+                        message: '请选择专业',
+                        trigger: 'change',
+                    },
                 ]
             }),
             tableData : [
@@ -132,7 +154,6 @@ export default {
     created(){
         this.getUserForm()
     },
-
     methods:{
         getSchool:function(){
             request.get("/school/list").then(res=>{
@@ -156,6 +177,7 @@ export default {
             })
         },
         submitForm(){
+            console.log(this.ruleForm.status)
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
                     let params = new URLSearchParams();
@@ -167,24 +189,40 @@ export default {
                     params.append('username', this.ruleForm.username);
                     params.append('phoneNumber', this.ruleForm.phoneNumber);
                     params.append('email', this.ruleForm.email);
-                    console.log(params);
+                    params.append('status', this.ruleForm.status);
                     this.$axios({
                         method: 'post',
                         url:'/api/user/add',
                         data:params,
 
                     }).then(res=>{
-                        this.$message({
+                        if(res.data==='EXIST')
+                        {
+                            this.$message({
                             showClose: true,
-                            message: '操作成功',
-                            type: 'success',
+                            message: '该用户已存在',
+                            type: 'fail',
                             onClose:()=>{
                                 this.getUserForm()
                             }
                             });
+                        console.log(res.data);
                         this.dialogVisible=false;
                         }
-                    )
+                        if(res.data==='SUCCESS')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '操作成功',
+                                type: 'success',
+                                onClose:()=>{
+                                    this.getUserForm()
+                                }
+                            });
+                            console.log(res.data);
+                            this.dialogVisible=false;
+                        }
+                    })
                 }
                 else{
                     this.$nextTick(() => {
@@ -243,13 +281,9 @@ export default {
                 }
             })
         },
-        editHandle(id){
-            this.$axios.get("/user/update").then(res=>{
-                this.ruleForm=res.data.data.result
-                console.log(this.ruleForm)
-                this.ruleForm.id=res.data.data.record.id
-                this.dialogVisible=true
-            })
+        editHandle(obj){
+            this.dialogVisible=true;
+            this.ruleForm=obj;
         },
         delHandle(id){
             this.$axios.post("/user/"+id).then(res=> {

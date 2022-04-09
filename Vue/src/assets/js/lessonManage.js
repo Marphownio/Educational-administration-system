@@ -6,8 +6,77 @@ export default {
     },
     data(){
         return{
-            dialogVisible:false,
-            ruleForm:{},
+            dialogVisible1:false,
+            dialogVisible2:false,
+            ruleForm1:{},
+            ruleForm2:{
+
+            },
+            editRules1 :({
+                courseId: [
+                    {
+                        required: true,
+                        message: '请输入课程代码',
+                        trigger: 'blur'
+                    },
+                ],
+                courseName: [
+                    {
+                        required: true,
+                        message: '请输入课程名',
+                        trigger: 'blur',
+                    },
+                ],
+                school: [
+                    {
+                        required: true,
+                        message: '请输入开课院系',
+                        trigger: 'blur',
+                    },
+                ],
+                teacher:[
+                    {
+                        required: true,
+                        message: '请输入任课教师',
+                        trigger: 'blur',
+                    },
+                ],
+                courseHour:[
+                    {
+                        required: true,
+                        message: '请输入学时',
+                        trigger: 'blur',
+                    },
+                ],
+                credit: [
+                    {
+                        required: true,
+                        message: '请选择学分',
+                        trigger: 'change',
+                    },
+                ],
+                classTime:[
+                    {
+                        required: true,
+                        message: '请输入上课时间',
+                        trigger: 'blur',
+                    },
+                ],
+                classPlace:[
+                    {
+                        required: true,
+                        message: '请输入上课地点',
+                        trigger: 'blur',
+                    },
+                ],
+                capacity:[
+                    {
+                        required: true,
+                        message: '请输入选课容量',
+                        trigger: 'blur',
+                    },
+                ],
+            }),
             tableData:[
                 {
                     id: 1,
@@ -33,12 +102,69 @@ export default {
         }
     },
     created(){
-
+        this.getSchool();
+        //this.getUser();
     },
-
     methods:{
+        getSchool:function(){
+            request.get("/school/list").then(res=>{
+                this.schooldata= res;
+            })
+        },
+        getUser:function(){
+            request.get("//list").then(res=>{
+                this.majordata= res;
+            })
+        },
+        getCourseForm(){
+            request.get("/course/list").then(res=>{
+                this.tableData=res;
+                for(let i=0;i<Object.keys(res).length;i++)
+                {
+                    this.tableData[i].school=res[i].school.key[schoolName];
+                    this.tableData[i].major=res[i].major;
+                    console.log(JSON.parse(res[i].school))
+                }
+            })
+        },
         submitForm(){
+            this.$refs.ruleForm.validate(valid=>{
+                if(valid){
+                    let params = new URLSearchParams();
+                    params.append('courseId', this.ruleForm1.courseId);
+                    params.append('courseName', this.ruleForm1.courseName);
+                    params.append('school', JSON.parse(this.ruleForm1.school));
+                    params.append('teacher', JSON.parse(this.ruleForm1.teacher));
+                    params.append('courseHour', this.ruleForm1.courseHour);
+                    params.append('credit', this.ruleForm1.credit);
+                    params.append('classTime', this.ruleForm1.classTime);
+                    params.append('classPlace', this.ruleForm1.classPlace);
+                    params.append('capacity', this.ruleForm1.capacity);
+                    params.append('introduction', this.ruleForm1.introduction);
+                    this.$axios({
+                        method: 'post',
+                        url:'/api/course/add',
+                        data:params,
 
+                    }).then(res=>{
+                            this.$message({
+                                showClose: true,
+                                message: '操作成功',
+                                type: 'success',
+                                onClose:()=>{
+                                    this.getCourseForm()
+                                }
+                            });
+                            this.dialogVisible=false;
+                        }
+                    )
+                }
+                else{
+                    this.$nextTick(() => {
+                        this.scrollToTop(this.$refs.ruleForm.$el)
+                    })
+                }
+            })
         },
         rejectForm(){
 
@@ -90,12 +216,11 @@ export default {
         scrollToTop (node) {
             const ChildHasError = Array.from(node.querySelectorAll('.is-error'))
             if (!ChildHasError.length) throw new Error('有错误，但是找不到错误位置')
-            // 找到第一个错误位置
-            const FirstErrorNode = ChildHasError[0]
         }
     }
 }
 import { computed, ref } from 'vue'
+import request from "@/utils/request";
 const search = ref('')
 const filterTableData = computed(() =>
     tableData.filter(

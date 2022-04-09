@@ -1,5 +1,9 @@
 import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
+<<<<<<< Updated upstream
 import HomeView from '../views/sys/teacher/index_teacher'
+=======
+import HomeView from '../views/Login'
+>>>>>>> Stashed changes
 
 const routes = [
   {

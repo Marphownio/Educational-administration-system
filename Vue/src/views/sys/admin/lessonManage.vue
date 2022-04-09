@@ -15,7 +15,7 @@
     <div class="showlist">
         <el-form :inline="true" >
             <el-form-item>
-                <el-button type="primary" @click="dialogVisible=true">添加课程</el-button><!--这个写法无法写入两个弹窗，需将课程申请换成方法（待完成）-->
+                <el-button type="primary" @click="dialogVisible1=true">添加课程</el-button><!--这个写法无法写入两个弹窗，需将课程申请换成方法（待完成）-->
                 <el-upload
                         class="upload-demo"
                         action=""
@@ -24,7 +24,7 @@
                         :auto-upload="false">
                     <el-button type="primary" style="margin-left: 20px;margin-right: 20px;margin-top: 10px">通过csv文件添加</el-button>
                 </el-upload>
-                <el-button type="primary" @click="dialogVisible=true">审核课程申请</el-button>
+                <el-button type="primary" @click="dialogVisible2=true">审核课程申请</el-button>
             </el-form-item>
         </el-form>
         <el-table :data="tableData" >
@@ -53,7 +53,7 @@
 
         <el-dialog
                 id="apply"
-                v-model="dialogVisible"
+                v-model="dialogVisible2"
                 title="课程申请"
                 width="80%"
         >
@@ -84,40 +84,59 @@
             </el-table>
         </el-dialog>
 
-       <!-- <el-dialog
+        <el-dialog
                 id="add"
-                v-model="dialogVisible"
-                title="添加用户"
+                v-model="dialogVisible1"
+                title="添加课程"
                 width="600px"
         >
             <el-form
                     ref="ruleForm"
-                    :model="ruleForm"
-                    :rules="editRules"
+                    :model="ruleForm1"
+                    :rules="editRules1"
                     label-width="120px"
                     class="demo-ruleForm"
             >
-                <el-form-item label="课程名称" prop="name">
-                    <el-input v-model="ruleForm.name"></el-input>
+                <el-form-item label="课程代码" prop="courseId">
+                    <el-input v-model="ruleForm1.courseId"></el-input>
                 </el-form-item>
-                <el-form-item label="开课院系" prop="college" ref="college">
-                    <el-input v-model="ruleForm.id"></el-input>
+                <el-form-item label="课程名" prop="courseName">
+                    <el-input v-model="ruleForm1.courseName"></el-input>
                 </el-form-item>
-                <el-form-item label="学时" prop="time" ref="time">
-                    <el-input v-model="ruleForm.idNumber"></el-input>
+                <el-form-item label="开课院系">
+                    <el-select v-model="ruleForm1.school" placeholder="选择学院">
+                        <el-option v-for="item in schooldata" :key="item.id" :label="item.schoolName" :value="item.schoolId" />
+                    </el-select>
                 </el-form-item>
-                <el-form-item label="手机号" prop="phoneNumber">
-                    <el-input v-model="ruleForm.phoneNumber"></el-input>
+                <el-form-item label="任课教师">
+                    <el-select v-model="ruleForm1.school" placeholder="选择教师">
+                        <el-option v-for="item in teacherdata" :key="item.id" :label="item.schoolName" :value="item.schoolId" />
+                    </el-select>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="email">
-                    <el-input v-model="ruleForm.email"></el-input>
+                <el-form-item label="学时" prop="courseHour">
+                    <el-input v-model="ruleForm1.courseHour"></el-input>
+                </el-form-item>
+                <el-form-item label="学分" prop="credit">
+                    <el-input v-model="ruleForm1.credit"></el-input>
+                </el-form-item>
+                <el-form-item label="上课时间" prop="classTime">
+                    <el-input v-model="ruleForm1.classTime"></el-input>
+                </el-form-item>
+                <el-form-item label="上课地点" prop="classPlace">
+                    <el-input v-model="ruleForm1.classPlace"></el-input>
+                </el-form-item>
+                <el-form-item label="选课容量" prop="capacity">
+                    <el-input v-model="ruleForm1.capacity"></el-input>
+                </el-form-item>
+                <el-form-item label="课程介绍" prop="introduction">
+                    <el-input v-model="ruleForm1.introduction"></el-input>
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm" >添加</el-button>
+                    <el-button type="primary" @click="submitForm1" >添加</el-button>
                 </el-form-item>
             </el-form>
-        </el-dialog>-->
+        </el-dialog>
 
     </div>
     </body>
