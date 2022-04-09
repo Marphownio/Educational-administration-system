@@ -3,6 +3,7 @@ package com.example.lab.pojo.entity;
 import com.example.lab.pojo.UserRole;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorValue("role")
+@Proxy(lazy = false)
 public class User {
 
     @Id
@@ -34,11 +36,11 @@ public class User {
     private String email;
     private Boolean status = true;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "school_id")
     private School school;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "major_id")
     private Major major;
 

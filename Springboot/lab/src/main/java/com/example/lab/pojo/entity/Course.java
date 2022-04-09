@@ -36,22 +36,22 @@ public class Course {
     private String introduction;
 
     // 所属专业
-    @ManyToOne//(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "major_id")
     private Major major;
 
     // 开课院系
-    @ManyToOne//(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "school_id")
     private School school;
 
     // 任课教师
-    @ManyToOne//(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "teacher_id", referencedColumnName = "user_id")
     private Teacher teacher;
 
     // 学生
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})//, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinTable(name = "Course_Students",
             joinColumns = {@JoinColumn(name = "course_id", referencedColumnName = "course_id")},

@@ -15,7 +15,7 @@ import java.util.Set;
 @Proxy(lazy = false)
 public class Teacher extends User {
 
-    @OneToMany(mappedBy = "teacher", cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})//, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "teacher", cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Course> courses = new HashSet<>();
 

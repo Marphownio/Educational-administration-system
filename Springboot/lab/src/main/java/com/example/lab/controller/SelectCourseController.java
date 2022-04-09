@@ -3,8 +3,6 @@ package com.example.lab.controller;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.Student;
-import com.example.lab.pojo.entity.Teacher;
-import com.example.lab.pojo.entity.User;
 import com.example.lab.service.CourseService;
 import com.example.lab.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -32,21 +30,11 @@ public class SelectCourseController {
     public ResultMessage selectCourse(@RequestParam("courseId") Integer courseId, HttpSession session) {
         if (admin.getCourseSelectionSystem()) {
             try {
-                Student currentUser = new Student((Student) session.getAttribute("user"));
-
+                Student currentUser = userService.findStudentByStudentId(((Student) session.getAttribute("user")).getUserId());
                 Course course = courseService.findCourseByCourseId(courseId);
-
-                currentUser.getCourses().add(course);
-
-                userService.updateUser(currentUser);
-
-//                course.getStudents().add(currentUser);
-//                courseService.updateCourse(course);
-
-
+                course.getStudents().add(currentUser);
+                courseService.updateCourse(course);
                 return ResultMessage.SUCCESS;
-
-
             } catch (Exception exception) {
                 return ResultMessage.FAILED;
             }
