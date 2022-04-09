@@ -18,11 +18,13 @@ public class ApplicationController {
     @Resource
     private ApplicationService applicationService;
 
+    // 教师申请增删改课程
     @PostMapping(value = "/add")
     public ResultMessage addApplication(Application application) {
         return applicationService.addApplication(application);
     }
 
+    // 管理员获取所有申请
     @GetMapping(value = "/list")
     public ResponseEntity<Set<Application>> findAllApplication() {
         Set<Application> applications = new HashSet<>(applicationService.findAllApplication());
