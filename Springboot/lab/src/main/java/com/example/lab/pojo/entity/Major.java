@@ -18,17 +18,19 @@ public class Major {
     private Integer majorId;
 
     private String majorName;
+
+    @Column(length = 1024)
     private String introduction;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "schoolId")
+    @JoinColumn(name = "schoolId", nullable = false)
     private School school;
 
-    @OneToMany(mappedBy = "major", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
     @JsonIgnore
     private Set<Course> courses = new HashSet<>();
 
-    @OneToMany(mappedBy = "major", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 }

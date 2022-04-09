@@ -28,7 +28,7 @@ public class SelectCourseController {
             try {
                 User currentUser = (User) session.getAttribute("user");
                 Course course = courseService.findCourseByCourseId(courseId);
-                course.getUsers().add(currentUser);
+                course.getStudents().add(currentUser);
                 courseService.updateCourse(course);
                 return ResultMessage.SUCCESS;
             } catch (Exception exception) {

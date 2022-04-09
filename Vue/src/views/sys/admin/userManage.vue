@@ -37,10 +37,10 @@
             <el-table-column prop="email" label="邮箱" width="180px"/>
             <el-table-column prop="state" label="状态" width="120px">
                 <template v-slot="scope">
-                    <el-tag v-if="scope.row.state===true&&scope.row.role===2" type="success">在读</el-tag>
-                    <el-tag v-if="scope.row.state===true&&scope.row.role===1" type="success">在岗</el-tag>
-                    <el-tag v-if="scope.row.state===false&&scope.row.role===2" type="info" >已毕业</el-tag>
-                    <el-tag v-if="scope.row.state===false&&scope.row.role===1" type="info">已离职</el-tag>
+                    <el-tag v-if="scope.row.state===true&&scope.row.role==='STUDENT'" type="success">在读</el-tag>
+                    <el-tag v-if="scope.row.state===true&&scope.row.role==='TEACHER'" type="success">在岗</el-tag>
+                    <el-tag v-if="scope.row.state===false&&scope.row.role==='STUDENT'" type="info" >已毕业</el-tag>
+                    <el-tag v-if="scope.row.state===false&&scope.row.role==='TEACHER'" type="info">已离职</el-tag>
                 </template>
             </el-table-column>
             <el-table-column fixed="right" prop="icon" label="操作" width="170px">
@@ -68,8 +68,8 @@
             >
                 <el-form-item label="角色" prop="role">
                     <el-radio-group v-model="ruleForm.role">
-                        <el-radio label=1 model-value="1">教师</el-radio>
-                        <el-radio label=2 model-value="2">学生</el-radio>
+                        <el-radio label=1 model-value="TEACHER">教师</el-radio>
+                        <el-radio label=2 model-value="STUDENT">学生</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="学院">

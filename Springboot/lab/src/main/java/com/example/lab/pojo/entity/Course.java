@@ -30,24 +30,30 @@ public class Course {
     // 选课容量
     private String capacity;
     // 课程介绍
+    @Column(length = 1024)
     private String introduction;
 
     // 所属专业
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "majorId")
+    @JoinColumn(name = "majorId", nullable = false)
     private Major major;
 
     // 开课院系
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "schoolId")
+    @JoinColumn(name = "schoolId", nullable = false)
     private School school;
 
-    // 任课教师和学生
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    // 任课教师
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "teacherId", nullable = false)
+    private User teacher;
+
+    // 学生
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinTable(name = "Course_User",
             joinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")},
-            inverseJoinColumns = {@JoinColumn(name = "userId", referencedColumnName ="userId")})
-    private Set<User> users = new HashSet<>();
+            inverseJoinColumns = {@JoinColumn(name = "studentId", referencedColumnName ="userId")})
+    private Set<User> students = new HashSet<>();
 
 }
