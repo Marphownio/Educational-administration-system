@@ -14,7 +14,6 @@ import java.util.Set;
 @Setter
 public class Course {
 
-    // 课程代码
     @Id
     private Integer courseId;
     // 课程名
@@ -44,16 +43,20 @@ public class Course {
     private School school;
 
     // 任课教师
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "teacherId", nullable = false)
-    private User teacher;
+    private Teacher teacher;
 
     // 学生
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
-    @JoinTable(name = "Course_User",
+    @JoinTable(name = "Course_Students",
             joinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")},
-            inverseJoinColumns = {@JoinColumn(name = "studentId", referencedColumnName ="userId")})
-    private Set<User> students = new HashSet<>();
+            inverseJoinColumns = {@JoinColumn(name = "studentId", referencedColumnName ="user_id")})
+    private Set<Student> students = new HashSet<>();
+
+//    public Course(Application application) {
+//
+//    }
 
 }

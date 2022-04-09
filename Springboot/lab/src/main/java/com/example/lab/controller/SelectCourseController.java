@@ -2,6 +2,7 @@ package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.entity.Course;
+import com.example.lab.pojo.entity.Student;
 import com.example.lab.pojo.entity.User;
 import com.example.lab.service.CourseService;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class SelectCourseController {
     public ResultMessage selectCourse(@RequestParam("courseId") Integer courseId, HttpSession session) {
         if (admin.getCourseSelectionSystem()) {
             try {
-                User currentUser = (User) session.getAttribute("user");
+                Student currentUser = (Student) session.getAttribute("user");
                 Course course = courseService.findCourseByCourseId(courseId);
                 course.getStudents().add(currentUser);
                 courseService.updateCourse(course);
@@ -44,7 +45,7 @@ public class SelectCourseController {
     @GetMapping(value = "/selectable")
     public ResponseEntity<Set<Course>> getSelectableCourse(HttpSession session) {
         if (admin.getCourseSelectionSystem()) {
-            User currentUser = (User) session.getAttribute("user");
+            Student currentUser = (Student) session.getAttribute("user");
             Set<Course> selectableCourses = currentUser.getMajor().getCourses();
             if (selectableCourses == null) {
                 return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);

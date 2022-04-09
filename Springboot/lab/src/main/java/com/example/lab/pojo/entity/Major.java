@@ -30,7 +30,15 @@ public class Major {
     @JsonIgnore
     private Set<Course> courses = new HashSet<>();
 
-    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+//    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+//    @JsonIgnore
+//    private Set<User> users = new HashSet<>();
+
+    @OneToMany(mappedBy = "school", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
-    private Set<User> users = new HashSet<>();
+    private Set<Teacher> teachers = new HashSet<>();
+
+    @OneToMany(mappedBy = "school", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Student> students = new HashSet<>();
 }

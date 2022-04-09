@@ -1,6 +1,8 @@
 package com.example.lab.service;
 
 import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.entity.Student;
+import com.example.lab.pojo.entity.Teacher;
 import com.example.lab.pojo.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,9 +25,20 @@ public interface UserService {
     // 查询全部用户
     List<User> findAllUser();
 
+    // 查询全部教师
+    List<Teacher> findAllTeacher();
+
+    // 查询全部学生
+    List<Student> findAllStudent();
+
     // 通过id查询用户
     User findUserByUserId(Integer userId);
 
     // 通过名称查询用户
     User findUserByUserName(String username);
+
+    // 通过id查询教师
+    Teacher findTeacherByTeacherId(Integer teacherId);
+    // 通过id查询学生
+    Student findStudentByStudentId(Integer studentId);
 }

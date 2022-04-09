@@ -41,7 +41,7 @@ public class AdminServiceImpl implements AdminService {
         if (application.getType() != ApplicationType.DELETE) {
             School school = schoolService.findSchoolBySchoolId(application.getSchoolId());
             Major major = majorService.findMajorByMajorId(application.getMajorId());
-            User teacher = userService.findUserByUserId(application.getTeacherId());
+            Teacher teacher = userService.findTeacherByTeacherId(application.getTeacherId());
             if (school == null || major == null || teacher == null || teacher.getRole() != UserRole.TEACHER) {
                return ResultMessage.FAILED;
             }

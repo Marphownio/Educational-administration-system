@@ -1,6 +1,8 @@
 package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.entity.Student;
+import com.example.lab.pojo.entity.Teacher;
 import com.example.lab.pojo.entity.User;
 import com.example.lab.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -80,6 +82,26 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    // 查询全部教师
+    @GetMapping(value = "/teacher/list")
+    public ResponseEntity<Set<Teacher>> findAllTeacher() {
+        Set<Teacher> teachers = new HashSet<>(userService.findAllTeacher());
+        if (teachers.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(teachers, HttpStatus.OK);
+    }
+
+    // 查询全部学生
+    @GetMapping(value = "/student/list")
+    public ResponseEntity<Set<Student>> findAllStudent() {
+        Set<Student> students = new HashSet<>(userService.findAllStudent());
+        if (students.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
     // 通过id查询用户

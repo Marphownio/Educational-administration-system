@@ -2,6 +2,8 @@ package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.UserRole;
+import com.example.lab.pojo.entity.Student;
+import com.example.lab.pojo.entity.Teacher;
 import com.example.lab.pojo.entity.User;
 import com.example.lab.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,25 +31,27 @@ public class LoginController {
 
         if (userId.matches("^\\d{6}$") || userId.matches("^\\d{8}$")) {
             if (admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getPassword())) {
-                session.setAttribute("user", admin);
+                session.setAttribute("admin", admin);
                 return ResultMessage.SUCCESS_LOGIN_ADMIN;
             } else {
-                User user = userService.findUserByUserId(parseInt(userId));
-                if (user != null && user.getPassword().equals(password) && user.getStatus()) {
-                    if (user.getRole() == UserRole.TEACHER) {
-                        session.setAttribute("user", user);
-                        if (user.getPassword().equals("fudan123456")) {
-                            return ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD;
-                        } else {
-                            return ResultMessage.SUCCESS_LOGIN_TEACHER;
-                        }
-                    } else if (user.getRole() == UserRole.STUDENT) {
-                        session.setAttribute("user", user);
-                        if (user.getPassword().equals("fudan123456")) {
-                            return ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD;
-                        } else {
-                            return ResultMessage.SUCCESS_LOGIN_STUDENT;
-                        }
+                Teacher teacher = userService.findTeacherByTeacherId(parseInt(userId));
+                Student student = userService.findStudentByStudentId(parseInt(userId));
+                if(teacher != null && student != null) {
+                    return ResultMessage.FAILED;
+                }
+                if (teacher != null && teacher.getPassword().equals(password) && teacher.getStatus()) {
+                    session.setAttribute("user", teacher);
+                    if (teacher.getPassword().equals("fudan123456")) {
+                        return ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD;
+                    } else {
+                        return ResultMessage.SUCCESS_LOGIN_TEACHER;
+                    }
+                } else if (student != null && student.getPassword().equals(password) && student.getStatus()) {
+                    session.setAttribute("user", student);
+                    if (student.getPassword().equals("fudan123456")) {
+                        return ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD;
+                    } else {
+                        return ResultMessage.SUCCESS_LOGIN_STUDENT;
                     }
                 }
             }

@@ -12,10 +12,12 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorValue("role")
 public class User {
 
     @Id
-    @Column(length = 8)
+    @Column(name = "user_id",length = 8)
     private Integer userId;
 
     @Column(length = 32)
@@ -42,12 +44,5 @@ public class User {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "majorId")
     private Major major;
-
-    @ManyToMany(mappedBy = "students", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JsonIgnore
-//    @JoinTable(name = "User_Course",
-//            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},
-//            inverseJoinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")})
-    private Set<Course> courses = new HashSet<>();
 
 }

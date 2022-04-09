@@ -18,6 +18,7 @@ public class ResetPasswordController {
 
     @RequestMapping(value ="/resetPassword")
     public ResultMessage resetPassword(@RequestParam("newpw1") String newPassword, HttpSession session) {
+
         User user = (User)session.getAttribute("user");
         if(newPassword.equals(user.getPassword())) {
             return ResultMessage.FAILED;

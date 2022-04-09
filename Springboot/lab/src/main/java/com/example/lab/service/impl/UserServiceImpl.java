@@ -1,7 +1,12 @@
 package com.example.lab.service.impl;
 
 import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.UserRole;
+import com.example.lab.pojo.entity.Student;
+import com.example.lab.pojo.entity.Teacher;
 import com.example.lab.pojo.entity.User;
+import com.example.lab.repository.StudentRepository;
+import com.example.lab.repository.TeacherRepository;
 import com.example.lab.repository.UserRepository;
 import com.example.lab.service.UserService;
 import org.springframework.stereotype.Service;
@@ -9,12 +14,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Resource
     private UserRepository userRepository;
+
+    @Resource
+    private TeacherRepository teacherRepository;
+
+    @Resource
+    private StudentRepository studentRepository;
 
     @Override
     public ResultMessage addUser(User user) {
@@ -23,8 +35,15 @@ public class UserServiceImpl implements UserService {
         }
         else {
             try {
-                userRepository.save(user);
-                return ResultMessage.SUCCESS;
+                if (user.getRole() == UserRole.TEACHER) {
+                    teacherRepository.save(new Teacher(user));
+                    return ResultMessage.SUCCESS;
+                } else if (user.getRole() == UserRole.STUDENT) {
+                    studentRepository.save(new Student(user));
+                    return ResultMessage.SUCCESS;
+                } else {
+                    return ResultMessage.FAILED;
+                }
             }
             catch (Exception exception) {
                 return ResultMessage.FAILED;
@@ -54,7 +73,6 @@ public class UserServiceImpl implements UserService {
 //        return b;
 //    }
 
-
     @Override
     public ResultMessage deleteUser(Integer userId) {
         if (findUserByUserId(userId) == null) {
@@ -62,8 +80,14 @@ public class UserServiceImpl implements UserService {
         }
         else {
             try {
-                userRepository.deleteById(userId);
-                return ResultMessage.SUCCESS;
+                if(findTeacherByTeacherId(userId) != null) {
+                    teacherRepository.deleteById(userId);
+                    return ResultMessage.SUCCESS;
+                } else if (findStudentByStudentId(userId) != null) {
+                    studentRepository.deleteById(userId);
+                    return ResultMessage.SUCCESS;
+                }
+                return ResultMessage.FAILED;
             }
             catch (Exception exception) {
                 return ResultMessage.FAILED;
@@ -78,8 +102,15 @@ public class UserServiceImpl implements UserService {
         }
         else {
             try {
-                userRepository.save(user);
-                return ResultMessage.SUCCESS;
+                if (user.getRole() == UserRole.TEACHER) {
+                    teacherRepository.save(new Teacher(user));
+                    return ResultMessage.SUCCESS;
+                } else if (user.getRole() == UserRole.STUDENT) {
+                    studentRepository.save(new Student(user));
+                    return ResultMessage.SUCCESS;
+                } else {
+                    return ResultMessage.FAILED;
+                }
             }
             catch (Exception exception) {
                 return ResultMessage.FAILED;
@@ -93,6 +124,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<Teacher> findAllTeacher() {
+        return teacherRepository.findAll();
+    }
+
+    @Override
+    public List<Student> findAllStudent() {
+        return studentRepository.findAll();
+    }
+
+    @Override
     public User findUserByUserId(Integer userId) {
         return userRepository.findById(userId).orElse(null);
     }
@@ -100,5 +141,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUserName(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public Teacher findTeacherByTeacherId(Integer teacherId) {
+        return teacherRepository.findById(teacherId).orElse(null);
+    }
+
+    @Override
+    public Student findStudentByStudentId(Integer studentId) {
+        return studentRepository.findById(studentId).orElse(null);
     }
 }
