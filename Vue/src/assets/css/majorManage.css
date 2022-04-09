@@ -19,6 +19,7 @@ a:hover {
     height:100px;
 }
 body{
+    min-width: 1400px;
     background: url(../images/background.jpg);
     background-repeat:no-repeat;
     background-size:cover;
@@ -28,7 +29,6 @@ body{
 .showlist{
     top:25%;
     margin: 0 auto;
-    width: 1235px;
     height: 70%;
     background-color:white;
     box-shadow: 0 0 10px 10px rgb(226 234 242 / 50%);

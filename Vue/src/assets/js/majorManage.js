@@ -21,10 +21,9 @@ export default {
             ruleForm2:{
                 majorId: '',
                 majorName: '',
-                school: '',
+                school: {schoolId:''},
                 introduction:'',
             },
-
             editRules1 :({
                 schoolId: [
                     {
@@ -94,6 +93,10 @@ export default {
         getMajorForm(){
             request.get("/major/list").then(res=>{
                 this.tableData2=res;
+                for(let i=0;i<Object.keys(res).length;i++)
+                {
+                    this.tableData2[i].school=res[i].school.schoolName;
+                }
             })
         },
         submitForm1() {
@@ -113,7 +116,8 @@ export default {
                                 message: '操作成功',
                                 type: 'success',
                                 onClose: () => {
-                                    this.getSchoolForm()
+                                    this.getSchoolForm();
+                                    this.getDep();
                                 }
                             });
                             this.dialogVisible1 = false;
@@ -133,7 +137,7 @@ export default {
                     let params = new URLSearchParams();
                     params.append('majorId', this.ruleForm2.majorId);
                     params.append('majorName', this.ruleForm2.majorName);
-                    params.append('school', this.ruleForm2.school);
+                    params.append('school', JSON.parse(this.ruleForm2.majorName));
                     params.append('introduction', this.ruleForm2.introduction);
                     this.$axios({
                         method: 'post',

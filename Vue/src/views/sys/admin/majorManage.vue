@@ -16,12 +16,12 @@
             </el-form-item>
         </el-form>
         <el-table :data="tableData1" style="width: 100%; margin-bottom: 20px" row-key="number" border default-expand-all>
-            <el-table-column prop="schoolId" label="学院代码" sortable width="180px" />
-            <el-table-column prop="schoolName" label="学院" sortable width="180px" />
+            <el-table-column prop="schoolId" label="学院代码" sortable width="140px" />
+            <el-table-column prop="schoolName" label="学院名" sortable width="140px" />
             <el-table-column prop="introduction" label="描述信息" sortable  />
             <el-table-column align="right" width="420px">
                 <template #header>
-                    <el-input v-model="search" size="small" placeholder="输入学院名称" />
+                    <el-input v-model="search" size="small" placeholder="输入学院名称" width="100px"/>
                 </template>
                 <template #default="scope">
                     <el-button>编辑</el-button> <!--@click="handleEdit(scope.$index, scope.row)"-->
@@ -30,13 +30,13 @@
             </el-table-column>
         </el-table>
         <el-table :data="tableData2" style="width: 100%; margin-bottom: 20px" row-key="number" border default-expand-all>
-            <el-table-column prop="majorId" label="专业代码" sortable width="180px" />
-            <el-table-column prop="school" label="所属学院" sortable width="180px" />
-            <el-table-column prop="majorName" label="专业" sortable width="180px" />
+            <el-table-column prop="majorId" label="专业代码" sortable width="140px" />
+            <el-table-column prop="school" label="所属学院" sortable width="140px" />
+            <el-table-column prop="majorName" label="专业名" sortable width="140px" />
             <el-table-column prop="introduction" label="描述信息" sortable  />
             <el-table-column align="right" width="420px">
                 <template #header>
-                    <el-input v-model="search" size="small" placeholder="输入专业名称" />
+                    <el-input v-model="search" size="small" placeholder="输入专业名称" width="100px"/>
                 </template>
                 <template #default="scope">
                     <el-button>编辑</el-button> <!--@click="handleEdit(scope.$index, scope.row)"-->
@@ -82,7 +82,7 @@
             </el-form-item>
             <el-form-item label="所属学院">
                 <el-select v-model="ruleForm2.school" placeholder="所属学院">
-                    <el-option v-for="item in depss" :key="item.id" :label="item.schoolName" :value="item.schoolId" />
+                    <el-option v-for="item in depss" :key="item.schoolName" :label="item.schoolName" :value="item.schoolId" />
                 </el-select>
             </el-form-item>
             <el-form-item label="专业名" prop="majorName">

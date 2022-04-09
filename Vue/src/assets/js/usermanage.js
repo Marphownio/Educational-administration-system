@@ -141,12 +141,18 @@ export default {
         },
         getMajor:function(){
             request.get("/major/list").then(res=>{
-                this.depss= res;
+                this.majordata= res;
             })
         },
         getUserForm(){
             request.get("/user/list").then(res=>{
                 this.tableData=res;
+                for(let i=0;i<Object.keys(res).length;i++)
+                {
+                    this.tableData[i].school=res[i].school.key[schoolName];
+                    this.tableData[i].major=res[i].major;
+                    console.log(JSON.parse(res[i].school))
+                }
             })
         },
         submitForm(){
@@ -155,8 +161,8 @@ export default {
                     let params = new URLSearchParams();
                     params.append('userId', this.ruleForm.userId);
                     params.append('role', this.ruleForm.role);
-                    params.append('school', this.ruleForm.school);
-                    params.append('major', this.ruleForm.major);
+                    params.append('school', JSON.parse(this.ruleForm.school));
+                    params.append('major', JSON.parse(this.ruleForm.major));
                     params.append('idNumber', this.ruleForm.idNumber);
                     params.append('username', this.ruleForm.username);
                     params.append('phoneNumber', this.ruleForm.phoneNumber);

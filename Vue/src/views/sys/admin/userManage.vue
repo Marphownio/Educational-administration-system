@@ -79,7 +79,7 @@
                 </el-form-item>
                 <el-form-item label="专业">
                     <el-select  v-model="ruleForm.major" placeholder="选择专业">
-                        <el-option v-for="item in majordata" :key="item.id" :label="item.schoolName" :value="item.schoolId" />
+                        <el-option v-for="item in majordata" :key="item.id" :label="item.majorName" :value="item.majorId" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="姓名" prop="username">
