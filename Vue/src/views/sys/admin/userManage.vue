@@ -68,8 +68,8 @@
             >
                 <el-form-item label="角色" prop="role">
                     <el-radio-group v-model="ruleForm.role">
-                        <el-radio label=1 model-value="TEACHER">教师</el-radio>
-                        <el-radio label=2 model-value="STUDENT">学生</el-radio>
+                        <el-radio label=TEACHER model-value="TEACHER">教师</el-radio>
+                        <el-radio label=STUDENT model-value="STUDENT">学生</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="学院">

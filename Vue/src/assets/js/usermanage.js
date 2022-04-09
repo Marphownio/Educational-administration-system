@@ -35,7 +35,7 @@ export default {
                 callback(new Error('输入只能为数字'));
                 return false;
             }
-            else if(this.ruleForm.role==='1')
+            else if(this.ruleForm.role==='TEACHER')
             {
                 if(value.length!==8)
                 {
@@ -45,7 +45,7 @@ export default {
                 else
                     return true;
             }
-            else if(this.ruleForm.role==='2')
+            else if(this.ruleForm.role==='STUDENT')
             {
                 if(value.length!==6)
                 {
@@ -141,7 +141,7 @@ export default {
         },
         getMajor:function(){
             request.get("/major/list").then(res=>{
-                this.majordata= res;
+                this.depss= res;
             })
         },
         getUserForm(){
@@ -161,10 +161,12 @@ export default {
                     params.append('username', this.ruleForm.username);
                     params.append('phoneNumber', this.ruleForm.phoneNumber);
                     params.append('email', this.ruleForm.email);
+                    console.log(params);
                     this.$axios({
                         method: 'post',
                         url:'/api/user/add',
-                        data:params
+                        data:params,
+
                     }).then(res=>{
                         this.$message({
                             showClose: true,
