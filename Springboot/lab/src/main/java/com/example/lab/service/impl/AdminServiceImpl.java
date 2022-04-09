@@ -34,20 +34,20 @@ public class AdminServiceImpl implements AdminService {
             return applicationService.deleteApplication(applicationId);
         }
         Application application = applicationService.findApplicationById(applicationId);
-        if (application == null) {// || applicationService.deleteApplication(applicationId) != ResultMessage.SUCCESS) {
+        if (application == null) { // || applicationService.deleteApplication(applicationId) != ResultMessage.SUCCESS) {
             return ResultMessage.FAILED;
         }
         Course course = new Course();
         if (application.getType() != ApplicationType.DELETE) {
             School school = schoolService.findSchoolBySchoolId(application.getSchoolId());
             Major major = majorService.findMajorByMajorId(application.getMajorId());
-            User teacher = userService.findUserByUserId(application.getUserId());
+            User teacher = userService.findUserByUserId(application.getTeacherId());
             if (school == null || major == null || teacher == null || teacher.getRole() != UserRole.TEACHER) {
                return ResultMessage.FAILED;
             }
             course.setSchool(school);
             course.setMajor(major);
-            course.getUsers().add(teacher);
+            course.setTeacher(teacher);
             course.setCourseId(application.getApplicationId());
             course.setCourseName(application.getCourseName());
             course.setClassHour(application.getClassHour());

@@ -15,16 +15,23 @@ import java.util.Set;
 public class User {
 
     @Id
+    @Column(length = 8)
     private Integer userId;
 
+    @Column(length = 32)
     private String password = "fudan123456";
 
     @Column(nullable = false)
     private UserRole role;
 
     private String username;
+
+    @Column(length = 18)
     private String idNumber;
+
+    @Column(length = 11)
     private String phoneNumber;
+
     private String email;
     private Boolean status = true;
 
@@ -36,7 +43,7 @@ public class User {
     @JoinColumn(name = "majorId")
     private Major major;
 
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "students", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
 //    @JoinTable(name = "User_Course",
 //            joinColumns = {@JoinColumn(name = "userId", referencedColumnName = "userId")},

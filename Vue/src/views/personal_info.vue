@@ -8,7 +8,6 @@
   <Nav></Nav>
   <div id="personal_infor">
   <el-descriptions
-      :data="tableData"
       class="descriptions"
       title="您的信息"
       direction="vertical"
@@ -16,20 +15,20 @@
       :align="center"
       border
   >
-    <el-descriptions-item prop="name" class="item" label="姓名"></el-descriptions-item>
-    <el-descriptions-item prop="id" class="item" label="学/工号"></el-descriptions-item>
-    <el-descriptions-item prop="role" class="item" label="身份"></el-descriptions-item>
-    <el-descriptions-item prop="college" class="item" label="学院"></el-descriptions-item>
-    <el-descriptions-item prop="major" class="item" label="专业"></el-descriptions-item>
-    <el-descriptions-item prop="idNumber" class="item" label="身份证号"></el-descriptions-item>
-    <el-descriptions-item prop="phoneNumber" class="item" label="手机号">
+    <el-descriptions-item class="item" label="姓名">{{this.PersonalData.name}}</el-descriptions-item>
+    <el-descriptions-item class="item" label="学/工号">{{this.PersonalData.id}}</el-descriptions-item>
+    <el-descriptions-item class="item" label="身份">{{this.PersonalData.role}}</el-descriptions-item>
+    <el-descriptions-item class="item" label="学院">{{this.PersonalData.college}}</el-descriptions-item>
+    <el-descriptions-item class="item" label="专业">{{this.PersonalData.major}}</el-descriptions-item>
+    <el-descriptions-item class="item" label="身份证号">{{this.PersonalData.idNumber}}</el-descriptions-item>
+    <el-descriptions-item class="item" label="手机号">{{this.PersonalData.phoneNumber}}
       <el-button class="verify" type="primary" @click="dialogVisible1=true">修改</el-button>
     </el-descriptions-item>
-    <el-descriptions-item prop="email" class="item" label="邮箱">
+    <el-descriptions-item class="item" label="邮箱">{{this.PersonalData.email}}
       <el-button class="verify" type="primary" @click="dialogVisible2=true">修改</el-button>
     </el-descriptions-item>
-    <el-descriptions-item prop="status" class="item" label="状态">
-        <el-tag size="small">在读</el-tag>
+    <el-descriptions-item class="item" label="状态">
+        <el-tag size="small">{{this.PersonalData.status}}</el-tag>
     </el-descriptions-item>
   </el-descriptions>
   </div>
