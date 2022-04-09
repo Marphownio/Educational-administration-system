@@ -8,6 +8,7 @@
   <Nav></Nav>
   <div id="personal_infor">
   <el-descriptions
+      :data="tableData"
       class="descriptions"
       title="您的信息"
       direction="vertical"
@@ -15,19 +16,19 @@
       :align="center"
       border
   >
-    <el-descriptions-item class="item" label="姓名">张三</el-descriptions-item>
-    <el-descriptions-item class="item" label="学/工号">18100000000</el-descriptions-item>
-    <el-descriptions-item class="item" label="身份">学生</el-descriptions-item>
-    <el-descriptions-item class="item" label="学院">计算机科学技术学院</el-descriptions-item>
-    <el-descriptions-item class="item" label="专业">软件工程</el-descriptions-item>
-    <el-descriptions-item class="item" label="身份证号">111111111111111111</el-descriptions-item>
-    <el-descriptions-item class="item" label="手机号">11111111111
+    <el-descriptions-item prop="name" class="item" label="姓名"></el-descriptions-item>
+    <el-descriptions-item prop="id" class="item" label="学/工号"></el-descriptions-item>
+    <el-descriptions-item prop="role" class="item" label="身份"></el-descriptions-item>
+    <el-descriptions-item prop="college" class="item" label="学院"></el-descriptions-item>
+    <el-descriptions-item prop="major" class="item" label="专业"></el-descriptions-item>
+    <el-descriptions-item prop="idNumber" class="item" label="身份证号"></el-descriptions-item>
+    <el-descriptions-item prop="phoneNumber" class="item" label="手机号">
       <el-button class="verify" type="primary" @click="dialogVisible1=true">修改</el-button>
     </el-descriptions-item>
-    <el-descriptions-item class="item" label="邮箱">123@fudan.edu.cn
+    <el-descriptions-item prop="email" class="item" label="邮箱">
       <el-button class="verify" type="primary" @click="dialogVisible2=true">修改</el-button>
     </el-descriptions-item>
-    <el-descriptions-item class="item" label="状态">
+    <el-descriptions-item prop="status" class="item" label="状态">
         <el-tag size="small">在读</el-tag>
     </el-descriptions-item>
   </el-descriptions>

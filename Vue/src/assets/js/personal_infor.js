@@ -1,4 +1,5 @@
 import Nav from "@/views/inc/Nav.vue";
+import request from "@/utils/request";
 export default {
     name: "personal_infor",
     components:{
@@ -40,6 +41,19 @@ export default {
             }
         };
         return{
+            tableData : [
+                {
+                    name:'',
+                    id:'',
+                    role:'',
+                    college:'',
+                    major:'',
+                    idNumber:'',
+                    phoneNumber: '',
+                    email:'',
+                    status:'',
+                }
+            ],
             ruleForm2:{
                 newemailaddress:''
             },
@@ -60,7 +74,24 @@ export default {
             dialogVisible1:false,
         };
     },
+    created(){
+        this.getUserinfo()
+    },
     methods:{
+        getUserinfo(){
+            request.get("/user/info").then(res=>{
+                console.log(res);
+                // this.tableData.name=res.username;
+                // this.tableData.id=res.userId;
+                // this.tableData.role=res.role;
+                // this.tableData.college=res.school;
+                // this.tableData.major=res.major;
+                // this.tableData.idNumber=res.idNumber;
+                // this.tableData.phoneNumber=res.phoneNumber;
+                // this.tableData.email=res.email;
+                // this.tableData.status=res.status;
+            })
+        },
         submit_check1() {
             this.$refs.ruleForm1.validate((valid) => {
                 if (valid) {
