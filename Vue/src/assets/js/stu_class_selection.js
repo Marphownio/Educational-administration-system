@@ -79,7 +79,22 @@ export default {
                 })
         },
         stu_select(classid){
-            alert(classid);
-        }
+            request.post("/course/selectable",classid)
+                .then(function (response) {
+                    if (response === "FAILED") {
+                        alert("选课失败！请重新尝试");
+                        return false;
+                    } else if (response === "NOT_OPEN") {
+                        alert("当前选课未开放！");
+                        return false;
+                    } else if (response === "SUCCESS") {
+                        alert("选课成功！");
+                    }
+                },function (err) {
+                        alert("选课失败！请重新尝试！");
+                        return false;
+                    }
+        )
+    }
     }
 }
