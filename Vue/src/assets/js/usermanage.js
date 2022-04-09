@@ -251,16 +251,16 @@ export default {
                     params.append('email', this.ruleForm.email);
                     params.append('status', this.ruleForm.status);
                     this.$axios({
-                        method: 'post',
+                        method: 'put',
                         url:'/api/user/update',
                         data:params,
 
                     }).then(res=>{
-                        if(res.data==='EXIST')
+                        if(res.data==='NOTFOUND')
                         {
                             this.$message({
                                 showClose: true,
-                                message: '该用户已存在',
+                                message: '该用户不存在',
                                 type: 'fail',
                                 onClose:()=>{
                                     this.getUserForm()

@@ -1,13 +1,10 @@
 package com.example.lab.pojo.entity;
 
 import com.example.lab.pojo.UserRole;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -38,11 +35,11 @@ public class User {
     private Boolean status = true;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "schoolId")
+    @JoinColumn(name = "school_id")
     private School school;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "majorId")
+    @JoinColumn(name = "major_id")
     private Major major;
 
 }

@@ -3,7 +3,10 @@ package com.example.lab.controller;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.Student;
+import com.example.lab.pojo.entity.Teacher;
+import com.example.lab.pojo.entity.User;
 import com.example.lab.service.CourseService;
+import com.example.lab.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,16 +24,29 @@ public class SelectCourseController {
     @Resource
     private CourseService courseService;
 
+    @Resource
+    private UserService userService;
+
     // 学生选课
     @PostMapping(value = "/select")
     public ResultMessage selectCourse(@RequestParam("courseId") Integer courseId, HttpSession session) {
         if (admin.getCourseSelectionSystem()) {
             try {
-                Student currentUser = (Student) session.getAttribute("user");
+                Student currentUser = new Student((Student) session.getAttribute("user"));
+
                 Course course = courseService.findCourseByCourseId(courseId);
-                course.getStudents().add(currentUser);
-                courseService.updateCourse(course);
+
+                currentUser.getCourses().add(course);
+
+                userService.updateUser(currentUser);
+
+//                course.getStudents().add(currentUser);
+//                courseService.updateCourse(course);
+
+
                 return ResultMessage.SUCCESS;
+
+
             } catch (Exception exception) {
                 return ResultMessage.FAILED;
             }
