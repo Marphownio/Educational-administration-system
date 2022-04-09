@@ -41,8 +41,7 @@ export default {
             }
         };
         return{
-            tableData : [
-                {
+            PersonalData :{
                     name:'',
                     id:'',
                     role:'',
@@ -52,10 +51,17 @@ export default {
                     phoneNumber: '',
                     email:'',
                     status:'',
-                }
-            ],
+                },
             ruleForm2:{
-                newemailaddress:''
+                userId:'',
+                role:'',
+                school:'',
+                major:'',
+                idNumber:'',
+                username:'',
+                phoneNumber:'',
+                newemailaddress:'',
+                status:''
             },
             editRules2:({
                 newemailaddress:[
@@ -64,7 +70,15 @@ export default {
             }),
             dialogVisible2:false,
             ruleForm1:{
-                newphonenumber:''
+                    userId:'',
+                    role:'',
+                    school:'',
+                    major:'',
+                    idNumber:'',
+                    username:'',
+                    newphonenumber:'',
+                    email:'',
+                    status:''
             },
             editRules1:({
                 newphonenumber:[
@@ -80,23 +94,32 @@ export default {
     methods:{
         getUserinfo(){
             request.get("/user/info").then(res=>{
-                console.log(res);
-                // this.tableData.name=res.username;
-                // this.tableData.id=res.userId;
-                // this.tableData.role=res.role;
-                // this.tableData.college=res.school;
-                // this.tableData.major=res.major;
-                // this.tableData.idNumber=res.idNumber;
-                // this.tableData.phoneNumber=res.phoneNumber;
-                // this.tableData.email=res.email;
-                // this.tableData.status=res.status;
+                this.PersonalData=res;
             })
         },
         submit_check1() {
             this.$refs.ruleForm1.validate((valid) => {
                 if (valid) {
-                    this.dialogVisible1=false;
-                    alert('手机号码修改成功!');
+                    this.ruleForm1.userId=this.PersonalData.id;
+                    this.ruleForm1.role=this.PersonalData.role;
+                    this.ruleForm1.school=this.PersonalData.college;
+                    this.ruleForm1.major=this.PersonalData.major;
+                    this.ruleForm1.idNumber=this.PersonalData.idNumber;
+                    this.ruleForm1.username=this.PersonalData.name;
+                    this.ruleForm1.email=this.PersonalData.email;
+                    this.ruleForm1.status=this.PersonalData.status;
+                    request.put("/user/update",this.ruleForm1)
+                      .then(function (response) {
+                          if(response==="FAILED_UPDATE"){
+                              alert("手机号码修改失败! 请再次尝试");
+                              return false;
+                          }
+                          else if(response==="SUCCESS_UPDATE"){
+                              this.dialogVisible1=false;
+                              alert('手机号码修改成功!');
+                              return true;
+                          }
+                      })
                 }
                 else {
                     return false;
@@ -106,8 +129,27 @@ export default {
         submit_check2() {
             this.$refs.ruleForm2.validate((valid) => {
                 if (valid) {
-                    this.dialogVisible2=false;
-                    alert('邮箱地址修改成功!');
+                    this.ruleForm2.userId=this.PersonalData.id;
+                    this.ruleForm2.role=this.PersonalData.role;
+                    this.ruleForm2.school=this.PersonalData.college;
+                    this.ruleForm2.major=this.PersonalData.major;
+                    this.ruleForm2.idNumber=this.PersonalData.idNumber;
+                    this.ruleForm2.username=this.PersonalData.name;
+                    this.ruleForm2.phoneNumber=this.PersonalData.phoneNumber;
+                    this.ruleForm2.status=this.PersonalData.status;
+                    console.log(this.ruleForm2);
+                    request.put("/user/update",this.ruleForm2)
+                        .then(function (response) {
+                            if(response==="FAILED_UPDATE"){
+                                alert("邮箱地址修改失败! 请再次尝试");
+                                return false;
+                            }
+                            else if(response==="SUCCESS_UPDATE"){
+                                this.dialogVisible1=false;
+                                alert('邮箱地址修改成功!');
+                                return true;
+                            }
+                        })
                 }
                 else {
                     return false;
