@@ -5,11 +5,14 @@ import com.example.lab.pojo.UserRole;
 import com.example.lab.pojo.entity.User;
 import com.example.lab.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+
+import java.util.Map;
 
 import static com.example.lab.LabApplication.admin;
 import static java.lang.Integer.parseInt;
@@ -22,7 +25,7 @@ public class LoginController {
 
     // 登录
     @PostMapping(value = "/login")
-    public ResultMessage login(@RequestParam(value = "loginid") String userId, @RequestParam(value = "loginpw") String password, HttpSession session) {
+    public ResultMessage login(@RequestParam(value = "loginid") String userId, @RequestParam(value = "loginpw") String password , HttpSession session) {
 
         if (userId.matches("^\\d{6}$") || userId.matches("^\\d{8}$")) {
             if (admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getPassword())) {

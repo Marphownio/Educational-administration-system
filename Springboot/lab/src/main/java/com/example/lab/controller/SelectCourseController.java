@@ -21,9 +21,10 @@ public class SelectCourseController {
     @Resource
     private CourseService courseService;
 
+    // 学生选课
     @PostMapping(value = "/select")
     public ResultMessage selectCourse(@RequestParam("courseId") Integer courseId, HttpSession session) {
-        if (admin.getCourseSelection()) {
+        if (admin.getCourseSelectionSystem()) {
             try {
                 User currentUser = (User) session.getAttribute("user");
                 Course course = courseService.findCourseByCourseId(courseId);
@@ -39,9 +40,10 @@ public class SelectCourseController {
         }
     }
 
+    // 学生获取可选的课程
     @GetMapping(value = "/selectable")
     public ResponseEntity<Set<Course>> getSelectableCourse(HttpSession session) {
-        if (admin.getCourseSelection()) {
+        if (admin.getCourseSelectionSystem()) {
             User currentUser = (User) session.getAttribute("user");
             Set<Course> selectableCourses = currentUser.getMajor().getCourses();
             if (selectableCourses == null) {
