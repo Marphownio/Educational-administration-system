@@ -16,7 +16,7 @@ import java.util.Set;
 import static com.example.lab.LabApplication.admin;
 
 @RestController
-@RequestMapping(value = "course")
+@RequestMapping(value = "/course")
 public class SelectCourseController {
 
     @Resource

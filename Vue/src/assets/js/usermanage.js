@@ -1,11 +1,6 @@
 import Nav from "@/views/inc/Nav.vue";
 import Papa from "papaparse";
 import request from "@/utils/request";
-import Index_teacher from "@/views/sys/teacher/index_teacher";
-
-class User{
-
-}
 
 export default {
     name: "userManage",
@@ -40,7 +35,7 @@ export default {
                 callback(new Error('输入只能为数字'));
                 return false;
             }
-            else if(this.ruleForm.role==='1')
+            else if(this.ruleForm.role==='TEACHER')
             {
                 if(value.length!==8)
                 {
@@ -50,7 +45,7 @@ export default {
                 else
                     return true;
             }
-            else if(this.ruleForm.role==='2')
+            else if(this.ruleForm.role==='STUDENT')
             {
                 if(value.length!==6)
                 {
@@ -63,6 +58,8 @@ export default {
         };
         return{
             dialogVisible:false,
+            schooldata:[],
+            majordata:[],
             ruleForm:{
                 userId:'',
                 role:'',
@@ -128,14 +125,34 @@ export default {
             ]
         }
     },
+    mounted() {
+        this.getSchool();
+        this.getMajor();
+    },
     created(){
         this.getUserForm()
     },
 
     methods:{
+        getSchool:function(){
+            request.get("/school/list").then(res=>{
+                this.schooldata= res;
+            })
+        },
+        getMajor:function(){
+            request.get("/major/list").then(res=>{
+                this.majordata= res;
+            })
+        },
         getUserForm(){
             request.get("/user/list").then(res=>{
                 this.tableData=res;
+                for(let i=0;i<Object.keys(res).length;i++)
+                {
+                    this.tableData[i].school=res[i].school.key[schoolName];
+                    this.tableData[i].major=res[i].major;
+                    console.log(JSON.parse(res[i].school))
+                }
             })
         },
         submitForm(){
@@ -143,17 +160,19 @@ export default {
                 if(valid){
                     let params = new URLSearchParams();
                     params.append('userId', this.ruleForm.userId);
-                    //params.append('role', this.ruleForm.role);
-                    params.append('school', this.ruleForm.school);
-                    params.append('major', this.ruleForm.major);
+                    params.append('role', this.ruleForm.role);
+                    params.append('school', JSON.parse(this.ruleForm.school));
+                    params.append('major', JSON.parse(this.ruleForm.major));
                     params.append('idNumber', this.ruleForm.idNumber);
                     params.append('username', this.ruleForm.username);
                     params.append('phoneNumber', this.ruleForm.phoneNumber);
                     params.append('email', this.ruleForm.email);
+                    console.log(params);
                     this.$axios({
                         method: 'post',
                         url:'/api/user/add',
-                        data:params
+                        data:params,
+
                     }).then(res=>{
                         this.$message({
                             showClose: true,

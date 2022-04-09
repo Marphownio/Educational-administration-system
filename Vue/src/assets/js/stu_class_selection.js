@@ -1,4 +1,5 @@
 import Nav from "@/views/inc/Nav.vue";
+import request from "@/utils/request";
 
 export default {
     name: "classselection",
@@ -9,36 +10,91 @@ export default {
         return{
             tableData : [
                 {
-                    classid: 'MATH2030001.01',
-                    classname: '数学分析',
-                    faculty:'数学系',
-                    classhours:'每周6课时',
-                    credit:'5',
-                    teacher:'张三',
-                    introduction: '计算机科学技术学院基础课',
-                    time:'周一第6-7节，周三第3-4节，周五第1-2节课',
-                    classroom: 'H3108',
-                    capacity:'90',
-
+                    classid: '1',
+                    classname: '',
+                    faculty:'',
+                    classhours:'',
+                    credit:'',
+                    teacher:'',
+                    introduction: '',
+                    time:'',
+                    classroom: '',
+                    capacity:'',
                 },
                 {
-                    classid: 'SOFT4000003.01',
-                    classname: '离散数学',
-                    faculty:'软件学院',
-                    classhours:'每周3课时',
-                    credit:'2',
-                    teacher:'李四',
-                    introduction: '计算机科学技术学院基础课',
-                    time:'周二第3-5节',
-                    classroom: 'HGX408',
-                    capacity:'100',
-
+                    classid: '2',
+                    classname: '',
+                    faculty:'',
+                    classhours:'',
+                    credit:'',
+                    teacher:'',
+                    introduction: '',
+                    time:'',
+                    classroom: '',
+                    capacity:'',
                 },
             ]
         }
     },
     created(){
+        this.getclassinfo();
     },
     methods:{
+        getclassinfo(){
+            const that=this;
+                request.get("/course/selectable")
+                    .then(res=>{
+                            if(res.HttpStatus=="NO_CONTENT"){
+                                alert("当前无可选课程！");
+                                this.tableData.classid="NULL";
+                                this.tableData.classname="NULL";
+                                this.tableData.faculty="NULL";
+                                this.tableData.classhours="NULL";
+                                this.tableData.credit="NULL";
+                                this.tableData.teacher="NULL";
+                                this.tableData.introduction="NULL";
+                                this.tableData.time="NULL";
+                                this.tableData.classroom="NULL";
+                                this.tableData.capacity="NULL";
+                            }
+                            else if(res.HttpStatus=="NOT_ACCEPTABLE"){
+                                alert("当前选课未开放！");
+                                return that.$router.push({path: '/index_stu'});
+                            }
+                            else if(res.HttpStatus=="OK"){
+                                // this.tableData.classid=res.courseId;
+                                // this.tableData.classid=res.courseId;
+                                // this.tableData.classid=res.courseId;
+                                // this.tableData.classid=res.courseId;
+                                // this.tableData.classid=res.courseId;
+                                // this.tableData.classid=res.courseId;
+                                // this.tableData.classid=res.courseId;
+                                // this.tableData.classid=res.courseId;
+                                // this.tableData.classid=res.courseId;
+                                // this.tableData.classid=res.courseId;
+                            }
+                    },function (err) {
+                    alert("课程信息获取失败！");
+                    return false;
+                })
+        },
+        stu_select(classid){
+            request.post("/course/selectable",classid)
+                .then(function (response) {
+                    if (response === "FAILED") {
+                        alert("选课失败！请重新尝试");
+                        return false;
+                    } else if (response === "NOT_OPEN") {
+                        alert("当前选课未开放！");
+                        return false;
+                    } else if (response === "SUCCESS") {
+                        alert("选课成功！");
+                    }
+                },function (err) {
+                        alert("选课失败！请重新尝试！");
+                        return false;
+                    }
+        )
+    }
     }
 }

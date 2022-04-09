@@ -62,6 +62,7 @@ export default {
     },
     methods:{
         submit_check() {
+            const that=this;
             this.$refs.rpwruleForm.validate((valid) => {
                 if (valid) {
                     let formData = new FormData();

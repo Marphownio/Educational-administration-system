@@ -4,9 +4,9 @@ export default {
     name: "login",
     data(){
         return{
-            loginruleForm: {
-                loginid: '',
-                loginpw: ''
+            loginruleForm:{
+                loginid:'',
+                loginpw:''
             },
             logineditRules :({
                 loginid: [

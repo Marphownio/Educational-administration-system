@@ -20,9 +20,9 @@
       <el-table-column prop="time" label="上课时间" width="150px"/>
       <el-table-column prop="classroom" label="上课地点" width="90px"/>
       <el-table-column prop="capacity" label="选课容量" width="90px"/>
-      <el-table-column fixed="right" prop="icon" label="操作" width="100px">
-        <div>
-          <el-popconfirm title="确认选课吗？">
+      <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="100px">
+        <div >
+          <el-popconfirm @confirm="stu_select(scope.row.classid)"  title="确认选课吗？">
             <template #reference>
               <el-button type="danger">选课</el-button>
             </template>
