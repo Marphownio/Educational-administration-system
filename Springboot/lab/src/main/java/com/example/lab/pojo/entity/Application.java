@@ -43,7 +43,7 @@ public class Application {
     @Column(nullable = false)
     private Integer teacherId;
 
-    // 申请处理方式
+    // 申请的处理方式
     @Column(nullable = false)
     private ApplicationType type;
 }

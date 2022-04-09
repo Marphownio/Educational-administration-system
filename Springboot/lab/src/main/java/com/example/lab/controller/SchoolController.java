@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.Set;
 
+// 学院的增删改查
 @RestController
 @RequestMapping(value="/school")
 public class SchoolController {

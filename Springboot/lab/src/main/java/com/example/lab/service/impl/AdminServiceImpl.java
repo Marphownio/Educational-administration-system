@@ -27,6 +27,7 @@ public class AdminServiceImpl implements AdminService {
     @Resource
     private ApplicationService applicationService;
 
+    // 管理员处理教师对课程的请求
     @Override
     public ResultMessage processCourseApplication(Integer applicationId, Boolean operation) {
 
@@ -34,7 +35,7 @@ public class AdminServiceImpl implements AdminService {
             return applicationService.deleteApplication(applicationId);
         }
         Application application = applicationService.findApplicationById(applicationId);
-        if (application == null) { // || applicationService.deleteApplication(applicationId) != ResultMessage.SUCCESS) {
+        if (application == null) {
             return ResultMessage.FAILED;
         }
         Course course = new Course();

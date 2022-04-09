@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashSet;
 import java.util.Set;
 
+// 用户的增删改查
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
@@ -24,7 +25,7 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    // 获取用户信息
+    // 获取当前用户信息
     @GetMapping(value = "/info")
     public User getUserInfo(HttpSession httpSession) {
         return  (User)httpSession.getAttribute("user");

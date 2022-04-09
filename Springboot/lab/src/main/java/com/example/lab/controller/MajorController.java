@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.Set;
 
+// 专业的增删改查
 @RestController
 @RequestMapping(value = "/major")
 public class MajorController {

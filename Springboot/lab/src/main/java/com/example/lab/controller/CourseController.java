@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+// 课程的增删改查
 @RestController
 @RequestMapping(value = "/course")
 public class CourseController {

@@ -16,6 +16,7 @@ public class ResetPasswordController {
     @Resource
     public UserService userService;
 
+    // 重置密码
     @RequestMapping(value ="/resetPassword")
     public ResultMessage resetPassword(@RequestParam("newpw1") String newPassword, HttpSession session) {
 

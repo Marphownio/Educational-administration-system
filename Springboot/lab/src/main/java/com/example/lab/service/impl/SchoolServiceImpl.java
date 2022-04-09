@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
+// 学院的增删改查服务
 @Service
 public class SchoolServiceImpl implements SchoolService {
 
     @Resource
     private SchoolRepository schoolRepository;
-
 
     @Override
     public ResultMessage addSchool(School school) {
