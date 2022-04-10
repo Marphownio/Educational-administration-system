@@ -26,7 +26,7 @@ public class LoginController {
 
         if (userId.matches("^\\d{6}$") || userId.matches("^\\d{8}$")) {
             if (admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getPassword())) {
-                session.setAttribute("admin", admin);
+                session.setAttribute("user", admin);
                 return ResultMessage.SUCCESS_LOGIN_ADMIN;
             } else {
                 Teacher teacher = userService.findTeacherByTeacherId(parseInt(userId));

@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.example.lab.LabApplication.admin;
 
 // 用户的增删改查
 @RestController
@@ -29,6 +28,12 @@ public class UserController {
     // 获取当前用户信息
     @GetMapping(value = "/info")
     public User getUserInfo(HttpSession session) {
+        if ((session.getAttribute("user")).getClass().getSimpleName().equals("Admin")) {
+            User user = new User();
+            user.setUserId(admin.getUserId());
+            user.setRole(admin.getRole());
+            return user;
+        }
         return  userService.findUserByUserId(((User)session.getAttribute("user")).getUserId());
     }
 
@@ -37,9 +42,7 @@ public class UserController {
         return userService.addUser(user);
     }
 
-//    @Resource
-//    private ReadExcel readExcel;
-//
+    // 批量导入用户
     @PostMapping("/batchimport")
     public ResultMessage BatchImportUser(@RequestParam(value = "filename",required = false) MultipartFile file) {
         //判断文件是否为空
@@ -57,8 +60,6 @@ public class UserController {
             return ResultMessage.FAILED;
         }
     }
-
-
 
     @DeleteMapping(value = "/{userId}")
     public ResultMessage deleteUser(@PathVariable("userId") Integer userId) {
