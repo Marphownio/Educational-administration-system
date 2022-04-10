@@ -46,6 +46,9 @@ export default {
                 newpw1:'',
                 newpw2:''
             },
+            newPWsubmitForm:{
+                newpw1:'',
+            },
             rpweditRules :({
                 newpw1: [
                     {required: true, message: '请输入新密码', trigger: 'blur' },
@@ -64,28 +67,32 @@ export default {
         submit_check() {
             const that=this;
             this.$refs.rpwruleForm.validate((valid) => {
+                this.newPWsubmitForm.newpw1=this.rpwruleForm.newpw1;
                 if (valid) {
                     let formData = new FormData();
-                    for(let key in this.loginruleForm) {
-                        formData.append(key,this.loginruleForm[key]);
+                    for(let key in this.newPWsubmitForm) {
+                        formData.append(key,this.newPWsubmitForm[key]);
                     }
                     request.post("/resetPassword",formData)
                         .then(function (response) {
-                            if(response==="FAILED"){
+                            if(response=="FAILED"){
                                 //密码重置失败
                                 alert("密码重置失败！请重新尝试");
                                 return that.$router.push({path: '/resetpassword'});
                             }
-                            else if(response==="SUCCESS_LOGIN_TEACHER"){
+                            else if(response=="SUCCESS_LOGIN_TEACHER"){
                                 //教师密码重置成功
                                 alert("密码重置成功！");
                                 return that.$router.push({path: '/index_teacher'});
                             }
-                            else if(response==="SUCCESS_LOGIN_STUDENT"){
+                            else if(response=="SUCCESS_LOGIN_STUDENT"){
                                 //学生密码重置成功
                                 alert("密码重置成功！");
                                 return that.$router.push({path: '/index_stu'});
                             }
+                        },function (err){
+                            alert("密码重置失败！请重新尝试");
+                            return false;
                         })
                 }
                 else {
