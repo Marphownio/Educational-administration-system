@@ -1,4 +1,6 @@
 import Nav from "@/views/inc/Nav.vue";
+import request from "@/utils/request";
+
 export default {
     name: "userManage",
     components:{
@@ -6,11 +8,14 @@ export default {
     },
     data(){
         return{
-            dialogVisible1:false,
-            dialogVisible2:false,
+            addcourse:false,
+            updatecourse:false,
+            checkcourse:false,
             schooldata:[],
             teacherdata:[],
-            ruleForm1:{},
+            ruleForm1:{
+                introduction:''
+            },
             ruleForm2:{
 
             },
@@ -29,21 +34,21 @@ export default {
                         trigger: 'blur',
                     },
                 ],
-                school: [
+                schoolId: [
                     {
                         required: true,
-                        message: '请输入开课院系',
+                        message: '请选择开课院系',
                         trigger: 'blur',
                     },
                 ],
-                teacher:[
+                teacherId:[
                     {
                         required: true,
-                        message: '请输入任课教师',
+                        message: '请选择任课教师',
                         trigger: 'blur',
                     },
                 ],
-                courseHour:[
+                classHour:[
                     {
                         required: true,
                         message: '请输入学时',
@@ -103,9 +108,12 @@ export default {
             ]
         }
     },
-    created(){
+    mounted() {
         this.getSchool();
-        this.getTeacher();
+        this.getTeacher()
+    },
+    created(){
+        this.getCourseForm();
     },
     methods:{
         getSchool:function(){
@@ -121,55 +129,131 @@ export default {
         getCourseForm(){
             request.get("/course/list").then(res=>{
                 this.tableData=res;
-                for(let i=0;i<Object.keys(res).length;i++)
+                for(let i=0;i<Object.keys(this.tableData).length;i++)
                 {
-                    this.tableData[i].school=res[i].school.key[schoolName];
-                    this.tableData[i].major=res[i].major;
-                    console.log(JSON.parse(res[i].school))
+                    if(this.tableData[i].school!==null)
+                    {
+                        this.tableData[i].schoolName=this.tableData[i].school.schoolName;
+                        this.tableData[i].schoolId=this.tableData[i].school.schoolId;
+                    }
+                    if(this.tableData[i].teacher!==null)
+                    {
+
+                        this.tableData[i].teacherName=this.tableData[i].teacher.username;
+                        this.tableData[i].teacherId=this.tableData[i].teacher.userId;
+                    }
                 }
             })
         },
-        submitForm(){
+        submitaddcourse(){
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
                     let params = new URLSearchParams();
                     params.append('courseId', this.ruleForm1.courseId);
                     params.append('courseName', this.ruleForm1.courseName);
-                    params.append('school', JSON.parse(this.ruleForm1.school));
-                    params.append('teacher', JSON.parse(this.ruleForm1.teacher));
-                    params.append('courseHour', this.ruleForm1.courseHour);
+                    params.append('school', JSON.parse(this.ruleForm1.schoolId));
+                    params.append('teacher', JSON.parse(this.ruleForm1.teacherId));
+                    params.append('classHour', this.ruleForm1.classHour);
                     params.append('credit', this.ruleForm1.credit);
                     params.append('classTime', this.ruleForm1.classTime);
                     params.append('classPlace', this.ruleForm1.classPlace);
                     params.append('capacity', this.ruleForm1.capacity);
-                    params.append('introduction', this.ruleForm1.introduction);
+                    if(this.ruleForm1.introduction==='')
+                        params.append('introduction', "该课程暂无介绍");
+                    else
+                        params.append('introduction', this.ruleForm1.introduction);
                     this.$axios({
                         method: 'post',
                         url:'/api/course/add',
                         data:params,
-
                     }).then(res=>{
+                        if(res.data==='SUCCESS'){
                             this.$message({
                                 showClose: true,
                                 message: '操作成功',
                                 type: 'success',
-                                onClose:()=>{
+                                onClose: () => {
                                     this.getCourseForm()
                                 }
                             });
-                            this.dialogVisible=false;
+                            this.addcourse = false;
+                        }
+                        else if(res.data==='EXIST')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '该专业代码已存在',
+                                type: 'error',
+                            });
+                        }
+                        else if(res.data==='FAILED')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '操作失败',
+                                type: 'error',
+                            });
+                        }
                         }
                     )
                 }
                 else{
                     this.$nextTick(() => {
-                        this.scrollToTop(this.$refs.ruleForm.$el)
+                        this.scrollToTop(this.$refs.ruleForm1.$el)
                     })
                 }
             })
         },
-        rejectForm(){
-
+        submitupdatecourse(){
+            this.$refs.ruleForm.validate(valid=>{
+                if(valid){
+                    let params = new URLSearchParams();
+                    params.append('courseId', this.ruleForm1.courseId);
+                    params.append('courseName', this.ruleForm1.courseName);
+                    params.append('school', JSON.parse(this.ruleForm1.schoolId));
+                    params.append('teacher', JSON.parse(this.ruleForm1.teacherId));
+                    params.append('classHour', this.ruleForm1.classHour);
+                    params.append('credit', this.ruleForm1.credit);
+                    params.append('classTime', this.ruleForm1.classTime);
+                    params.append('classPlace', this.ruleForm1.classPlace);
+                    params.append('capacity', this.ruleForm1.capacity);
+                    if(this.ruleForm1.introduction==='')
+                        params.append('introduction', "该课程暂无介绍");
+                    else
+                        params.append('introduction', this.ruleForm1.introduction);
+                    this.$axios({
+                        method: 'put',
+                        url:'/api/course/update',
+                        data:params,
+                    }).then(res=>{
+                            if(res.data==='SUCCESS'){
+                                this.$message({
+                                    showClose: true,
+                                    message: '操作成功',
+                                    type: 'success',
+                                    onClose: () => {
+                                        this.getCourseForm()
+                                    }
+                                });
+                                this.updatecourse = false;
+                            }
+                            else if(res.data==='FAILED')
+                            {
+                                this.$message({
+                                    showClose: true,
+                                    message: '操作失败',
+                                    type: 'error',
+                                });
+                            }
+                        }
+                    )
+                }
+                else{
+                    this.$nextTick(() => {
+                        this.scrollToTop(this.$refs.ruleForm1.$el)
+                    })
+                }
+            })
         },
         handleChange(file) {
             this.fileTemp = file.raw
@@ -209,10 +293,30 @@ export default {
                 }
             })
         },
-        editHandle(id){
-            this.$axios.get('/sys/menu/info/'+id).then(res=>{
-                this.ruleForm=res.data.data;
-                this.dialogVisible=true;
+        editHandle(obj){
+            this.updatecourse=true;
+            this.ruleForm1=obj;
+        },
+        delHandle(id){
+            this.$axios.delete("/api/course/"+id).then(res=> {
+                if(res.data==='SUCCESS'){
+                    this.$message({
+                        showClose: true,
+                        message: '操作成功',
+                        type: 'success',
+                        onClose: () => {
+                            this.getCourseForm()
+                        }
+                    });
+                }
+                else if(res.data==='FAILED')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '操作失败',
+                        type: 'error',
+                    });
+                }
             })
         },
         scrollToTop (node) {
@@ -221,13 +325,4 @@ export default {
         }
     }
 }
-import { computed, ref } from 'vue'
-import request from "@/utils/request";
-const search = ref('')
-const filterTableData = computed(() =>
-    tableData.filter(
-        (data) =>
-            !search.value ||
-            data.name.toLowerCase().includes(search.value.toLowerCase())
-    )
-)
+

@@ -1,6 +1,7 @@
 package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.Major;
 import com.example.lab.service.MajorService;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,18 @@ public class MajorController {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(majors, HttpStatus.OK);
+    }
+
+    // 获取该专业下的所有课程
+    @GetMapping(value = "/courses")
+    public ResponseEntity<Set<Course>> findCoursesInMajor(@RequestParam(value = "majorId") Integer majorId) {
+        Major major = majorService.findMajorByMajorId(majorId);
+        if (major == null) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        } else if (major.getCourses().isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(major.getCourses(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/getbyid/{majorId}")

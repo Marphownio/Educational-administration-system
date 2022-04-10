@@ -44,18 +44,17 @@ public class SchoolController {
         return new ResponseEntity<>(schools, HttpStatus.OK);
     }
 
+    // 获取该学院下的所有专业
     @GetMapping(value = "/majors")
     public ResponseEntity<Set<Major>> findMajorsInSchool(@RequestParam(value = "schoolId") Integer schoolId) {
         School school = schoolService.findSchoolBySchoolId(schoolId);
         if (school == null) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        } else if (school.getMajors() == null) {
+        } else if (school.getMajors().isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(school.getMajors(), HttpStatus.OK);
     }
-
-
 
     @GetMapping(value = "/getbyid/{schoolId}")
     public ResponseEntity<School> findSchoolById(@PathVariable("schoolId") Integer schoolId){

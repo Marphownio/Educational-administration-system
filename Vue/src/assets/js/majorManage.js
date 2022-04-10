@@ -8,11 +8,21 @@ export default {
         Nav
     },
     data(){
+        let numbercheck=(rule,value,callback)=>{
+            if(isNaN(value))
+            {
+                callback(new Error('输入只能为数字'));
+                return false;
+            }
+            else return true;
+        };
         return{
             depatment:'',
             depss:{},
-            dialogVisible1:false,
-            dialogVisible2:false,
+            addschool:false,
+            addmajor:false,
+            updateschool:false,
+            updatemajor:false,
             ruleForm1:{
                 schoolId: '',
                 schoolName: '',
@@ -21,7 +31,7 @@ export default {
             ruleForm2:{
                 majorId: '',
                 majorName: '',
-                school: '',
+                schoolId: '',
                 introduction:'',
             },
             editRules1 :({
@@ -31,6 +41,7 @@ export default {
                         message: '请输入学院代码',
                         trigger: 'blur'
                     },
+                    {validator: numbercheck,trigger: 'blur'}
                 ],
                 schoolName: [
                     {
@@ -47,8 +58,9 @@ export default {
                         message: '请输入专业代码',
                         trigger: 'blur'
                     },
+                    {validator: numbercheck,trigger: 'blur'}
                 ],
-                school: [
+                schoolId: [
                     {
                         required: true,
                         message: '请选择所属学院',
@@ -67,7 +79,9 @@ export default {
                 {},
             ],
             tableData2:[
-                {},
+                {
+
+                },
             ]
         }
     },
@@ -92,24 +106,31 @@ export default {
         getSchoolForm(){
             request.get("/school/list").then(res=>{
                 this.tableData1=res;
+                console.log(res);
             })
         },
         getMajorForm(){
             request.get("/major/list").then(res=>{
                 this.tableData2=res;
-                for(let i=0;i<Object.keys(res).length;i++)
+                for(let i=0;i<Object.keys(this.tableData2).length;i++)
                 {
-                    this.tableData2[i].school=res[i].school.schoolName;
+                    if(this.tableData2[i].school!==null){
+                        this.tableData2[i].schoolName=this.tableData2[i].school.schoolName;
+                        this.tableData2[i].schoolId=this.tableData2[i].school.schoolId;
+                }
                 }
             })
         },
-        submitForm1() {
+        submitaddschool() {
             this.$refs.ruleForm1.validate(valid => {
                 if (valid) {
                     let params = new URLSearchParams();
                     params.append('schoolId', this.ruleForm1.schoolId);
                     params.append('schoolName', this.ruleForm1.schoolName);
-                    params.append('introduction', this.ruleForm1.introduction);
+                    if(this.ruleForm1.introduction==='')
+                        params.append('introduction', "该学院暂无介绍");
+                    else
+                        params.append('introduction', this.ruleForm1.introduction);
                     this.$axios({
                         method: 'post',
                         url: '/api/school/add',
@@ -126,7 +147,7 @@ export default {
                                     this.getDep();
                                 }
                             });
-                            this.dialogVisible1 = false;
+                            this.addschool = false;
                         }
                         else if(res.data==='EXIST')
                         {
@@ -154,20 +175,68 @@ export default {
                 }
             })
         },
-        submitForm2() {
+        submitupdateschool() {
+            this.$refs.ruleForm1.validate(valid => {
+                if (valid) {
+                    let params = new URLSearchParams();
+                    params.append('schoolId', this.ruleForm1.schoolId);
+                    params.append('schoolName', this.ruleForm1.schoolName);
+                    if(this.ruleForm1.introduction==='')
+                        params.append('introduction', "该学院暂无介绍");
+                    else
+                        params.append('introduction', this.ruleForm1.introduction);
+                    this.$axios({
+                        method: 'put',
+                        url: '/api/school/update',
+                        data: params
+                    }).then(res => {
+                            if(res.data==='SUCCESS')
+                            {
+                                this.$message({
+                                    showClose: true,
+                                    message: '操作成功',
+                                    type: 'success',
+                                    onClose: () => {
+                                        this.getSchoolForm();
+                                        this.getDep();
+                                    }
+                                });
+                                this.updateschool = false;
+                            }
+                            else if(res.data==='FAILED')
+                            {
+                                this.$message({
+                                    showClose: true,
+                                    message: '操作失败',
+                                    type: 'error',
+                                });
+                            }
+                        }
+                    )
+                }
+                else {
+                    this.$nextTick(() => {
+                        this.scrollToTop(this.$refs.ruleForm1.$el)
+                    })
+                }
+            })
+        },
+        submitaddmajor() {
             this.$refs.ruleForm2.validate(valid => {
                 if (valid) {
                     let params = new URLSearchParams();
                     params.append('majorId', this.ruleForm2.majorId);
                     params.append('majorName', this.ruleForm2.majorName);
-                    params.append('school', JSON.parse(this.ruleForm2.school));
-                    params.append('introduction', this.ruleForm2.introduction);
+                    params.append('school', JSON.parse(this.ruleForm2.schoolId));
+                    if(this.ruleForm2.introduction==='')
+                        params.append('introduction', "该专业暂无介绍");
+                    else
+                        params.append('introduction', this.ruleForm2.introduction);
                     this.$axios({
                         method: 'post',
                         url: '/api/major/add',
                         data: params
                     }).then(res => {
-                        console.log(res);
                         if(res.data==='SUCCESS'){
                             this.$message({
                                 showClose: true,
@@ -177,7 +246,7 @@ export default {
                                     this.getMajorForm()
                                 }
                             });
-                            this.dialogVisible2 = false;
+                            this.addmajor = false;
                         }
                         else if(res.data==='EXIST')
                         {
@@ -204,23 +273,90 @@ export default {
                 }
             })
         },
+        submitupdatemajor() {
+            this.$refs.ruleForm2.validate(valid => {
+                if (valid) {
+                    let params = new URLSearchParams();
+                    params.append('majorId', this.ruleForm2.majorId);
+                    params.append('majorName', this.ruleForm2.majorName);
+                    params.append('school', JSON.parse(this.ruleForm2.schoolId));
+                    if(this.ruleForm2.introduction==='')
+                        params.append('introduction', "该专业暂无介绍");
+                    else
+                        params.append('introduction', this.ruleForm2.introduction);
+                    this.$axios({
+                        method: 'put',
+                        url: '/api/major/update',
+                        data: params
+                    }).then(res => {
+                            console.log(res);
+                            if(res.data==='SUCCESS'){
+                                this.$message({
+                                    showClose: true,
+                                    message: '操作成功',
+                                    type: 'success',
+                                    onClose: () => {
+                                        this.getMajorForm()
+                                    }
+                                });
+                                this.updatemajor = false;
+                            }
+                            else if(res.data==='FAILED')
+                            {
+                                this.$message({
+                                    showClose: true,
+                                    message: '操作失败',
+                                    type: 'error',
+                                });
+                            }
+                        }
+                    )
+                } else {
+                    this.$nextTick(() => {
+                        this.scrollToTop(this.$refs.ruleForm2.$el)
+                    })
+                }
+            })
+        },
+        editHandle1(obj){
+            this.updateschool=true;
+            this.ruleForm1=obj;
+        },
+        delHandle1(id){
+            this.$axios.delete("/api/school/"+id).then(res=> {
+                this.$message({
+                    showClose: true,
+                    message: '操作成功',
+                    type: 'success',
+                    onClose: () => {
+                        this.getSchoolForm();
+                        this.getMajorForm();
+                        this.getDep();
+                    }
+                })
+            })
+        },
+        editHandle2(obj){
+            console.log(obj);
+            this.updatemajor=true;
+            this.ruleForm2=obj;
+        },
+        delHandle2(id){
+            this.$axios.delete("/api/major/"+id).then(res=> {
+                this.$message({
+                    showClose: true,
+                    message: '操作成功',
+                    type: 'success',
+                    onClose: () => {
+                        this.getMajorForm()
+                    }
+                })
+            })
+        },
         scrollToTop (node) {
             const ChildHasError = Array.from(node.querySelectorAll('.is-error'))
             if (!ChildHasError.length) throw new Error('有错误，但是找不到错误位置')
         }
     }
 }
-//const search = ref('')
-//const filterTableData = computed(() =>
-  //  tableData.filter(
-    //    (data) =>
-      //      !search.value ||
-        //    data.name.toLowerCase().includes(search.value.toLowerCase())
-  //  )
-//)
-/*const handleEdit = (index: number, row: User) => {
-    console.log(index, row)
-}
-const handleDelete = (index: number, row: User) => {
-    console.log(index, row)
-}*/
+

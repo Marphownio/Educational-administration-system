@@ -80,8 +80,8 @@
                 <el-form-item label="身份证号" prop="idNumber" ref="idNumber">
                     <el-input v-model="ruleForm.idNumber"></el-input>
                 </el-form-item>
-                <el-form-item label="学院" prop="schoolId">
-                    <el-select v-model="ruleForm.schoolId" placeholder="选择学院">
+                <el-form-item label="学院" prop="schoolId" >
+                    <el-select v-model="ruleForm.schoolId" placeholder="选择学院" @change="getMajor">
                         <el-option v-for="item in schooldata" :key="item.schoolName" :label="item.schoolName" :value="item.schoolId" />
                     </el-select>
                 </el-form-item>
@@ -137,7 +137,7 @@
                 <el-form-item label="身份证号" prop="idNumber" ref="idNumber">
                     <el-input v-model="ruleForm.idNumber"></el-input>
                 </el-form-item>
-                <el-form-item label="学院" prop="schoolId" >
+                <el-form-item label="学院" prop="schoolId" @change="getMajor">
                     <el-select v-model="ruleForm.schoolId" placeholder="选择学院">
                         <el-option v-for="item in schooldata" :key="item.schoolName" :label="item.schoolName" :value="item.schoolId" />
                     </el-select>

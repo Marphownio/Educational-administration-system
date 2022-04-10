@@ -15,7 +15,7 @@
     <div class="showlist">
         <el-form :inline="true" >
             <el-form-item>
-                <el-button type="primary" @click="dialogVisible1=true">添加课程</el-button><!--这个写法无法写入两个弹窗，需将课程申请换成方法（待完成）-->
+                <el-button type="primary" @click="addcourse=true">添加课程</el-button>
                 <el-upload
                         class="upload-demo"
                         action=""
@@ -24,28 +24,26 @@
                         :auto-upload="false">
                     <el-button type="primary" style="margin-left: 20px;margin-right: 20px;margin-top: 10px">通过csv文件添加</el-button>
                 </el-upload>
-                <el-button type="primary" @click="dialogVisible2=true">审核课程申请</el-button>
+                <el-button type="primary" @click="checkcourse=true">审核课程申请</el-button>
             </el-form-item>
         </el-form>
         <el-table :data="tableData" >
-            <el-table-column fixed prop="id" label="课程编号" width="120px"/>
-            <el-table-column prop="name" label="课程名称" width="120px" />
-            <el-table-column prop="college" label="开课院系" width="120px"/>
-            <el-table-column prop="major" label="学时" width="120px"/>
-            <el-table-column prop="idNumber" label="学分" width="120px"/>
-            <el-table-column prop="phoneNumber" label="任课教师" width="120px"/>
-            <el-table-column prop="email" label="课程介绍" width="120px"/>
-            <el-table-column prop="state" label="上课时间" width="120px"/>
-            <el-table-column prop="email" label="上课地点" width="120px"/>
-            <el-table-column prop="state" label="选课容量" width="120px"/>
-            <el-table-column fixed="right" prop="icon" label="操作" width="170px">
+            <el-table-column prop="courseId" label="课程代码" width="120px"/>
+            <el-table-column prop="courseName" label="课程名称" width="120px" />
+            <el-table-column prop="schoolName" label="开课院系" width="120px"/>
+            <el-table-column prop="schoolId" label="学院代码" width="120px"/>
+            <el-table-column prop="classHour" label="学时" width="120px"/>
+            <el-table-column prop="credit" label="学分" width="120px"/>
+            <el-table-column prop="teacherName" label="任课教师" width="120px"/>
+            <el-table-column prop="teacherId" label="教师工号" width="120px"/>
+            <el-table-column prop="classTime" label="上课时间" width="120px"/>
+            <el-table-column prop="classPlace" label="上课地点" width="120px"/>
+            <el-table-column prop="capacity" label="选课容量" width="120px"/>
+            <el-table-column prop="introduction" label="课程介绍" />
+            <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="170px">
                 <div>
                     <el-button @click="editHandle(scope.row)">编辑</el-button>
-                    <el-popconfirm title="确认删除吗？">
-                        <template #reference>
-                            <el-button type="danger">删除</el-button>
-                        </template>
-                    </el-popconfirm>
+                    <el-button type="danger" @click="delHandle(scope.row.courseId)">删除</el-button>
                 </div>
             </el-table-column>
         </el-table>
@@ -53,7 +51,7 @@
 
         <el-dialog
                 id="apply"
-                v-model="dialogVisible2"
+                v-model="checkcourse"
                 title="课程申请"
                 width="80%"
         >
@@ -65,19 +63,21 @@
                     <el-tag v-if="scope.row.request===3" type="danger" >删除</el-tag>
                 </template>
                 </el-table-column>
-                <el-table-column prop="id" label="课程编号" width="120px"/>
-                <el-table-column prop="name" label="课程名称" width="120px" />
-                <el-table-column prop="college" label="开课院系" width="120px"/>
-                <el-table-column prop="major" label="学时" width="120px"/>
-                <el-table-column prop="idNumber" label="学分" width="120px"/>
-                <el-table-column prop="phoneNumber" label="任课教师" width="120px"/>
-                <el-table-column prop="email" label="课程介绍" width="120px"/>
-                <el-table-column prop="state" label="上课时间" width="120px"/>
-                <el-table-column prop="email" label="上课地点" width="120px"/>
-                <el-table-column prop="state" label="选课容量" width="120px"/>
+                <el-table-column prop="courseId" label="课程代码" width="120px"/>
+                <el-table-column prop="courseName" label="课程名称" width="120px" />
+                <el-table-column prop="schoolName" label="开课院系" width="120px"/>
+                <el-table-column prop="schoolId" label="学院代码" width="120px"/>
+                <el-table-column prop="classHour" label="学时" width="120px"/>
+                <el-table-column prop="credit" label="学分" width="120px"/>
+                <el-table-column prop="teacherName" label="任课教师" width="120px"/>
+                <el-table-column prop="teacherId" label="教师工号" width="120px"/>
+                <el-table-column prop="classTime" label="上课时间" width="120px"/>
+                <el-table-column prop="classPlace" label="上课地点" width="120px"/>
+                <el-table-column prop="capacity" label="选课容量" width="120px"/>
+                <el-table-column prop="introduction" label="课程介绍" />
                 <el-table-column fixed="right" prop="icon" label="操作" width="170px">
                     <div>
-                        <el-button @click="editHandle(scope.row.id)">同意</el-button>
+                        <el-button >同意</el-button>
                         <el-button type="danger">拒绝</el-button>
                     </div>
                 </el-table-column>
@@ -86,7 +86,7 @@
 
         <el-dialog
                 id="add"
-                v-model="dialogVisible1"
+                v-model="addcourse"
                 title="添加课程"
                 width="600px"
         >
@@ -103,18 +103,18 @@
                 <el-form-item label="课程名" prop="courseName">
                     <el-input v-model="ruleForm1.courseName"></el-input>
                 </el-form-item>
-                <el-form-item label="开课院系" prop="school">
-                    <el-select v-model="ruleForm1.school" placeholder="选择学院">
+                <el-form-item label="开课院系" prop="schoolId">
+                    <el-select v-model="ruleForm1.schoolId" placeholder="选择学院">
                         <el-option v-for="item in schooldata" :key="item.schoolName" :label="item.schoolName" :value="item.schoolId" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="任课教师" prop="teacher">
-                    <el-select v-model="ruleForm1.teacher" placeholder="选择教师">
+                <el-form-item label="任课教师" prop="teacherId">
+                    <el-select v-model="ruleForm1.teacherId" placeholder="选择教师">
                         <el-option v-for="item in teacherdata" :key="item.username" :label="item.username" :value="item.userId" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="学时" prop="courseHour">
-                    <el-input v-model="ruleForm1.courseHour"></el-input>
+                <el-form-item label="学时" prop="classHour">
+                    <el-input v-model="ruleForm1.classHour"></el-input>
                 </el-form-item>
                 <el-form-item label="学分" prop="credit">
                     <el-input v-model="ruleForm1.credit"></el-input>
@@ -133,7 +133,61 @@
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm1" >添加</el-button>
+                    <el-button type="primary" @click="submitaddcourse" >添加</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+
+        <el-dialog
+                id="update"
+                v-model="updatecourse"
+                title="编辑课程信息"
+                width="600px"
+        >
+            <el-form
+                    ref="ruleForm"
+                    :model="ruleForm1"
+                    :rules="editRules1"
+                    label-width="120px"
+                    class="demo-ruleForm"
+            >
+                <el-form-item label="课程代码" prop="courseId">
+                    <el-input v-model="ruleForm1.courseId"></el-input>
+                </el-form-item>
+                <el-form-item label="课程名" prop="courseName">
+                    <el-input v-model="ruleForm1.courseName"></el-input>
+                </el-form-item>
+                <el-form-item label="开课院系" prop="schoolId">
+                    <el-select v-model="ruleForm1.schoolId" placeholder="选择学院">
+                        <el-option v-for="item in schooldata" :key="item.schoolName" :label="item.schoolName" :value="item.schoolId" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="任课教师" prop="teacherId">
+                    <el-select v-model="ruleForm1.teacherId" placeholder="选择教师">
+                        <el-option v-for="item in teacherdata" :key="item.username" :label="item.username" :value="item.userId" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="学时" prop="classHour">
+                    <el-input v-model="ruleForm1.classHour"></el-input>
+                </el-form-item>
+                <el-form-item label="学分" prop="credit">
+                    <el-input v-model="ruleForm1.credit"></el-input>
+                </el-form-item>
+                <el-form-item label="上课时间" prop="classTime">
+                    <el-input v-model="ruleForm1.classTime"></el-input>
+                </el-form-item>
+                <el-form-item label="上课地点" prop="classPlace">
+                    <el-input v-model="ruleForm1.classPlace"></el-input>
+                </el-form-item>
+                <el-form-item label="选课容量" prop="capacity">
+                    <el-input v-model="ruleForm1.capacity"></el-input>
+                </el-form-item>
+                <el-form-item label="课程介绍" prop="introduction">
+                    <el-input v-model="ruleForm1.introduction"></el-input>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button type="primary" @click="submitupdatecourse" >修改</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
