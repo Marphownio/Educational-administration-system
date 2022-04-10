@@ -13,6 +13,7 @@ export default {
             checkcourse:false,
             schooldata:[],
             teacherdata:[],
+            majordata:[],
             ruleForm1:{
                 introduction:''
             },
@@ -38,6 +39,13 @@ export default {
                     {
                         required: true,
                         message: '请选择开课院系',
+                        trigger: 'blur',
+                    },
+                ],
+                majorId: [
+                    {
+                        required: true,
+                        message: '请选择所属专业',
                         trigger: 'blur',
                     },
                 ],
@@ -110,12 +118,23 @@ export default {
     },
     mounted() {
         this.getSchool();
-        this.getTeacher()
+        this.getTeacher();
     },
     created(){
         this.getCourseForm();
     },
     methods:{
+        getMajor:function(){
+            request.get("/school/majors",{
+                params:{
+                    schoolId:this.ruleForm1.schoolId
+                }
+            }).then(res=>{
+                console.log(res);
+                this.majordata= res;
+            })
+            this.ruleForm1.majorId=null;
+        },
         getSchool:function(){
             request.get("/school/list").then(res=>{
                 this.schooldata= res;
@@ -142,17 +161,24 @@ export default {
                         this.tableData[i].teacherName=this.tableData[i].teacher.username;
                         this.tableData[i].teacherId=this.tableData[i].teacher.userId;
                     }
+                    if(this.tableData[i].major!==null)
+                    {
+
+                        this.tableData[i].majorName=this.tableData[i].major.majorName;
+                        this.tableData[i].majorId=this.tableData[i].major.majorId;
+                    }
                 }
             })
         },
         submitaddcourse(){
-            this.$refs.ruleForm.validate(valid=>{
+            this.$refs.ruleForm1.validate(valid=>{
                 if(valid){
                     let params = new URLSearchParams();
                     params.append('courseId', this.ruleForm1.courseId);
                     params.append('courseName', this.ruleForm1.courseName);
                     params.append('school', JSON.parse(this.ruleForm1.schoolId));
                     params.append('teacher', JSON.parse(this.ruleForm1.teacherId));
+                    params.append('major', JSON.parse(this.ruleForm1.majorId));
                     params.append('classHour', this.ruleForm1.classHour);
                     params.append('credit', this.ruleForm1.credit);
                     params.append('classTime', this.ruleForm1.classTime);
@@ -205,13 +231,14 @@ export default {
             })
         },
         submitupdatecourse(){
-            this.$refs.ruleForm.validate(valid=>{
+            this.$refs.ruleForm1.validate(valid=>{
                 if(valid){
                     let params = new URLSearchParams();
                     params.append('courseId', this.ruleForm1.courseId);
                     params.append('courseName', this.ruleForm1.courseName);
                     params.append('school', JSON.parse(this.ruleForm1.schoolId));
                     params.append('teacher', JSON.parse(this.ruleForm1.teacherId));
+                    params.append('major', JSON.parse(this.ruleForm1.majorId));
                     params.append('classHour', this.ruleForm1.classHour);
                     params.append('credit', this.ruleForm1.credit);
                     params.append('classTime', this.ruleForm1.classTime);

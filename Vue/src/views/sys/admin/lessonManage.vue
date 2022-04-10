@@ -32,6 +32,8 @@
             <el-table-column prop="courseName" label="课程名称" width="120px" />
             <el-table-column prop="schoolName" label="开课院系" width="120px"/>
             <el-table-column prop="schoolId" label="学院代码" width="120px"/>
+            <el-table-column prop="majorName" label="所属专业" width="120px"/>
+            <el-table-column prop="majorId" label="专业代码" width="120px"/>
             <el-table-column prop="classHour" label="学时" width="120px"/>
             <el-table-column prop="credit" label="学分" width="120px"/>
             <el-table-column prop="teacherName" label="任课教师" width="120px"/>
@@ -56,7 +58,7 @@
                 width="80%"
         >
             <el-table :data="applyData" >
-                <el-table-column fixed prop="request" label="请求" width="120px"><!--指的是“增加”、“删除”、“修改”之类的要求-->
+                <el-table-column fixed prop="request" label="请求" width="120px">
                 <template v-slot="scope">
                     <el-tag v-if="scope.row.request===1" type="success" >添加</el-tag>
                     <el-tag v-if="scope.row.request===2" >修改</el-tag>
@@ -67,6 +69,8 @@
                 <el-table-column prop="courseName" label="课程名称" width="120px" />
                 <el-table-column prop="schoolName" label="开课院系" width="120px"/>
                 <el-table-column prop="schoolId" label="学院代码" width="120px"/>
+                <el-table-column prop="majorName" label="所属专业" width="120px"/>
+                <el-table-column prop="majorId" label="专业代码" width="120px"/>
                 <el-table-column prop="classHour" label="学时" width="120px"/>
                 <el-table-column prop="credit" label="学分" width="120px"/>
                 <el-table-column prop="teacherName" label="任课教师" width="120px"/>
@@ -91,7 +95,7 @@
                 width="600px"
         >
             <el-form
-                    ref="ruleForm"
+                    ref="ruleForm1"
                     :model="ruleForm1"
                     :rules="editRules1"
                     label-width="120px"
@@ -104,8 +108,13 @@
                     <el-input v-model="ruleForm1.courseName"></el-input>
                 </el-form-item>
                 <el-form-item label="开课院系" prop="schoolId">
-                    <el-select v-model="ruleForm1.schoolId" placeholder="选择学院">
+                    <el-select v-model="ruleForm1.schoolId" placeholder="选择学院" @change="getMajor">
                         <el-option v-for="item in schooldata" :key="item.schoolName" :label="item.schoolName" :value="item.schoolId" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="所属专业" prop="schoolId">
+                    <el-select v-model="ruleForm1.majorId" placeholder="选择专业">
+                        <el-option v-for="item in majordata" :key="item.majorName" :label="item.majorName" :value="item.majorId" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="任课教师" prop="teacherId">
@@ -145,7 +154,7 @@
                 width="600px"
         >
             <el-form
-                    ref="ruleForm"
+                    ref="ruleForm1"
                     :model="ruleForm1"
                     :rules="editRules1"
                     label-width="120px"
@@ -158,8 +167,13 @@
                     <el-input v-model="ruleForm1.courseName"></el-input>
                 </el-form-item>
                 <el-form-item label="开课院系" prop="schoolId">
-                    <el-select v-model="ruleForm1.schoolId" placeholder="选择学院">
+                    <el-select v-model="ruleForm1.schoolId" placeholder="选择学院" @change="getMajor">
                         <el-option v-for="item in schooldata" :key="item.schoolName" :label="item.schoolName" :value="item.schoolId" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="所属专业" prop="majorId">
+                    <el-select v-model="ruleForm1.majorId" placeholder="选择专业">
+                        <el-option v-for="item in majordata" :key="item.majorName" :label="item.majorName" :value="item.majorId" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="任课教师" prop="teacherId">

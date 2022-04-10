@@ -182,6 +182,7 @@ export default {
                 console.log(res);
                 this.majordata= res;
             })
+            this.ruleForm.majorId=null;
         },
         getUserForm(){
             request.get("/user/list").then(res=>{
