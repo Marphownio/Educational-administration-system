@@ -3,6 +3,7 @@ package com.example.lab.pojo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,9 +13,11 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Proxy(lazy = false)
 public class School {
 
     @Id
+    @Column(name = "school_id")
     private Integer schoolId;
 
     private String schoolName;

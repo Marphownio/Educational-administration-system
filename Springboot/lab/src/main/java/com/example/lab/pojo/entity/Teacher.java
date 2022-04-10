@@ -3,6 +3,7 @@ package com.example.lab.pojo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Entity
 @Setter
 @Getter
+@Proxy(lazy = false)
 public class Teacher extends User {
 
     @OneToMany(mappedBy = "teacher", cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, fetch = FetchType.EAGER)

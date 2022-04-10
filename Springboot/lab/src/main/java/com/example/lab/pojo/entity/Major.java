@@ -3,6 +3,7 @@ package com.example.lab.pojo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,9 +13,11 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Proxy(lazy = false)
 public class Major {
 
     @Id
+    @Column(name = "major_id")
     private Integer majorId;
 
     private String majorName;
@@ -23,7 +26,7 @@ public class Major {
     private String introduction;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "schoolId", nullable = false)
+    @JoinColumn(name = "school_id", nullable = false)
     private School school;
 
     @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
@@ -34,11 +37,11 @@ public class Major {
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "school", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Teacher> teachers = new HashSet<>();
 
-    @OneToMany(mappedBy = "school", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Student> students = new HashSet<>();
 }

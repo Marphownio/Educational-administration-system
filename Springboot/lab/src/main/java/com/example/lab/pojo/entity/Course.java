@@ -3,6 +3,7 @@ package com.example.lab.pojo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,9 +13,11 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Proxy(lazy = false)
 public class Course {
 
     @Id
+    @Column(name = "course_id")
     private Integer courseId;
     // 课程名
     private String courseName;
@@ -33,26 +36,26 @@ public class Course {
     private String introduction;
 
     // 所属专业
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "majorId", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "major_id")
     private Major major;
 
     // 开课院系
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "schoolId", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "school_id")
     private School school;
 
     // 任课教师
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "teacherId", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "teacher_id", referencedColumnName = "user_id")
     private Teacher teacher;
 
     // 学生
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinTable(name = "Course_Students",
-            joinColumns = {@JoinColumn(name = "courseId", referencedColumnName = "courseId")},
-            inverseJoinColumns = {@JoinColumn(name = "studentId", referencedColumnName ="user_id")})
+            joinColumns = {@JoinColumn(name = "course_id", referencedColumnName = "course_id")},
+            inverseJoinColumns = {@JoinColumn(name = "student_id", referencedColumnName ="user_id")})
     private Set<Student> students = new HashSet<>();
 
 }
