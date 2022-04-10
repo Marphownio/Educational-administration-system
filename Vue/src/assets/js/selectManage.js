@@ -31,20 +31,19 @@ export default {
             })
         },
         openSelection(){
+            const _this=this;
             let CHANGE=true;
-            request.post("/admin/courseSelect/change",{
-                params:{
-                    change:CHANGE
-                }
-            }).then(res=> {
-                if(res==='SUCCESS')
-                {
+            let openform = new FormData();
+            openform.append('change', CHANGE);
+            request.post("/admin/courseSelect/change",openform)
+                .then(res=> {
+                if(res==='SUCCESS') {
                     this.$message({
                     showClose: true,
                     message: '操作成功',
                     type: 'success',
                 })
-            }
+                }
                 else{
                     this.$message({
                         showClose: false,
@@ -53,22 +52,23 @@ export default {
                     })
                 }
             })
+            _this.getStatus();
+            _this.$router.go(0)
         },
         closeSelection(){
+            const that=this;
             let CHANGE=false;
-            request.post("/admin/courseSelect/change",{
-                params:{
-                    change:CHANGE
-                }
-            }).then(res=> {
-                if(res==='SUCCESS')
-                {
+            let closeform = new FormData();
+            closeform.append('change', CHANGE);
+            request.post("/admin/courseSelect/change",closeform)
+                .then(res=> {
+                if(res==='SUCCESS') {
                     this.$message({
                         showClose: true,
                         message: '操作成功',
                         type: 'success',
                     })
-                }
+                    }
                 else{
                     this.$message({
                         showClose: false,
@@ -77,6 +77,8 @@ export default {
                     })
                 }
             })
+            that.getStatus();
+            that.$router.go(0)
         }
     }
 }

@@ -302,54 +302,6 @@ export default {
                 }
             })
         },
-        submitForm3(){
-            console.log(this.ruleForm);
-            this.$refs.ruleForm.validate(valid=>{
-                if(valid){
-                    let params = new URLSearchParams();
-                    params.append('userId', this.ruleForm.userId);
-                    params.append('role', this.ruleForm.role);
-                    params.append('school', JSON.parse(this.ruleForm.schoolId));
-                    params.append('major', JSON.parse(this.ruleForm.majorId));
-                    params.append('idNumber', this.ruleForm.idNumber);
-                    params.append('username', this.ruleForm.username);
-                    params.append('phoneNumber', this.ruleForm.phoneNumber);
-                    params.append('email', this.ruleForm.email);
-                    params.append('status', this.ruleForm.status);
-                    this.$axios({
-                        method: 'post',
-                        url:'/api/user/add',
-                        data:params,
-                    })/*.then(res=>{
-                        if(res.data==='EXIST')
-                        {
-                            this.$message({
-                                showClose: true,
-                                message: '用户Id'+this.ruleForm.userId+'已存在',
-                                type: 'error',
-                            });
-                        }
-                        if(res.data==='SUCCESS')
-                        {
-                            this.$message({
-                                showClose: true,
-                                message: '操作成功',
-                                type: 'success',
-                                onClose:()=>{
-                                    this.getUserForm()
-                                }
-                            });
-                            this.dialogVisible1=false;
-                        }
-                    })*/
-                }
-                else{
-                    this.$nextTick(() => {
-                        this.scrollToTop(this.$refs.ruleForm.$el)
-                    })
-                }
-            })
-        },
         handleChange(file) {
             this.fileTemp = file.raw
             if (this.fileTemp) {
@@ -369,21 +321,30 @@ export default {
             }
         },
         importcsv (obj) {
-            Papa.parse(obj, {
-                complete (results) {
-                    console.log(results)//调试查看csv文件的数据
-                    for (let i = 0; i < results.data.length; i++) {
-                        this.ruleForm.userId = results.data[i][0];
-                        this.ruleForm.role = results.data[i][1];
-                        this.ruleForm.username = results.data[i][2];
-                        this.ruleForm.status = results.data[i][3];
-                        this.ruleForm.schoolId = results.data[i][4];
-                        this.ruleForm.majorId=results.data[i][5];
-                        this.ruleForm.idNumber=results.data[i][6];
-                        this.ruleForm.phoneNumber=results.data[i][7];
-                        this.ruleForm.email=results.data[i][8];
-                        this.submitForm3();
-                    }
+            request.post("",obj).then(res=>{
+                if(res.data==='NOTFOUND')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '无法获取文件',
+                        type: 'fail',
+                    });
+                }
+                else if(res.data==='SUCCESS')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '操作成功',
+                        type: 'success',
+                    });
+                }
+                else if(res.data==='FAILED')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '操作失败',
+                        type: 'error',
+                    });
                 }
             })
         },
@@ -394,14 +355,30 @@ export default {
         },
         delHandle(id){
             this.$axios.delete("/api/user/"+id).then(res=> {
-                this.$message({
-                    showClose: true,
-                    message: '操作成功',
-                    type: 'success',
-                    onClose: () => {
-                        this.getUserForm()
-                    }
-                })
+                if(res.data==='NOTFOUND')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '无法获取文件',
+                        type: 'fail',
+                    });
+                }
+                else if(res.data==='SUCCESS')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '操作成功',
+                        type: 'success',
+                    });
+                }
+                else if(res.data==='FAILED')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '操作失败',
+                        type: 'error',
+                    });
+                }
             })
         },
         scrollToTop (node) {

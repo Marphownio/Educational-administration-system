@@ -93,16 +93,9 @@ export default {
                 ],
             }),
             tableData:[
-                {
-                    id: 1,
-                    name: '课程1',
-                },
-                {
-                    id: 2,
-                    name: '课程2',
-                },
+
             ],
-            applyData:[
+            applicationData:[
                 {
                     request:2,
                     id: 1,
@@ -122,15 +115,20 @@ export default {
     },
     created(){
         this.getCourseForm();
+        this.getapplicationData();
     },
     methods:{
+        getapplicationData(){
+            request.get("/application/list").then(res=>{
+                this.applicationData=res;
+            })
+        },
         getMajor:function(){
             request.get("/school/majors",{
                 params:{
                     schoolId:this.ruleForm1.schoolId
                 }
             }).then(res=>{
-                console.log(res);
                 this.majordata= res;
             })
             this.ruleForm1.majorId=null;
@@ -144,6 +142,34 @@ export default {
             request.get("/user/teacher/list").then(res=>{
                 this.teacherdata= res;
             })
+        },
+        passApplication(id){
+            request.delete("/admin/application",{
+                params:{
+                    applicationId:id,
+                    operation:true
+                }
+            })
+            this.$message({
+                showClose: true,
+                message: '操作成功',
+                type: 'success',
+            });
+            this.getapplicationData();
+        },
+        rejectApplication(id){
+            request.delete("/admin/application",{
+                params:{
+                    applicationId:id,
+                    operation:false
+                }
+            })
+            this.$message({
+                showClose: true,
+                message: '操作成功',
+                type: 'success',
+            });
+            this.getapplicationData();
         },
         getCourseForm(){
             request.get("/course/list").then(res=>{
@@ -184,10 +210,7 @@ export default {
                     params.append('classTime', this.ruleForm1.classTime);
                     params.append('classPlace', this.ruleForm1.classPlace);
                     params.append('capacity', this.ruleForm1.capacity);
-                    if(this.ruleForm1.introduction==='')
-                        params.append('introduction', "该课程暂无介绍");
-                    else
-                        params.append('introduction', this.ruleForm1.introduction);
+                    params.append('introduction', this.ruleForm1.introduction);
                     this.$axios({
                         method: 'post',
                         url:'/api/course/add',
@@ -198,11 +221,9 @@ export default {
                                 showClose: true,
                                 message: '操作成功',
                                 type: 'success',
-                                onClose: () => {
-                                    this.getCourseForm()
-                                }
                             });
                             this.addcourse = false;
+                            this.getCourseForm()
                         }
                         else if(res.data==='EXIST')
                         {
@@ -244,10 +265,7 @@ export default {
                     params.append('classTime', this.ruleForm1.classTime);
                     params.append('classPlace', this.ruleForm1.classPlace);
                     params.append('capacity', this.ruleForm1.capacity);
-                    if(this.ruleForm1.introduction==='')
-                        params.append('introduction', "该课程暂无介绍");
-                    else
-                        params.append('introduction', this.ruleForm1.introduction);
+                    params.append('introduction', this.ruleForm1.introduction);
                     this.$axios({
                         method: 'put',
                         url:'/api/course/update',
@@ -258,10 +276,8 @@ export default {
                                     showClose: true,
                                     message: '操作成功',
                                     type: 'success',
-                                    onClose: () => {
-                                        this.getCourseForm()
-                                    }
                                 });
+                                this.getCourseForm()
                                 this.updatecourse = false;
                             }
                             else if(res.data==='FAILED')
@@ -301,22 +317,30 @@ export default {
             }
         },
         importcsv (obj) {
-            Papa.parse(obj, {
-                complete (results) {
-                    console.log(results)//调试查看csv文件的数据
-                    let data = []
-                    //遍历csv文件中的数据，存放到data中
-                    for (let i = 0; i < results.data.length; i++) {
-                        let obj = {}
-                        obj.number = results.data[i][0]
-                        obj.name = results.data[i][1]
-                        obj.nameRemark = results.data[i][2]
-                        obj.index = results.data[i][3]
-                        data.push(obj)
-                    }
-                    data.splice(0, 1)//将数组第一位的表格名称去除
-                    console.log('data', data)
-                    this.tableData = data//将数据放入要展示的表格中
+            request.post("/user/batchimport",obj).then(res=>{
+                if(res.data==='NOTFOUND')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '无法获取文件',
+                        type: 'fail',
+                    });
+                }
+                else if(res.data==='SUCCESS')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '操作成功',
+                        type: 'success',
+                    });
+                }
+                else if(res.data==='FAILED')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '操作失败',
+                        type: 'error',
+                    });
                 }
             })
         },

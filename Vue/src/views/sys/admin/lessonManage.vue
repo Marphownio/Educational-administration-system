@@ -57,15 +57,15 @@
                 title="课程申请"
                 width="80%"
         >
-            <el-table :data="applyData" >
-                <el-table-column fixed prop="request" label="请求" width="120px">
+            <el-table :data="applicationData" >
+                <el-table-column fixed prop="type" label="请求" width="120px">
                 <template v-slot="scope">
-                    <el-tag v-if="scope.row.request===1" type="success" >添加</el-tag>
-                    <el-tag v-if="scope.row.request===2" >修改</el-tag>
-                    <el-tag v-if="scope.row.request===3" type="danger" >删除</el-tag>
+                    <el-tag v-if="scope.row.type==='ADD'" type="success" >添加</el-tag>
+                    <el-tag v-if="scope.row.type==='UPDATE'" >修改</el-tag>
+                    <el-tag v-if="scope.row.request==='DELETE'" type="danger" >删除</el-tag>
                 </template>
                 </el-table-column>
-                <el-table-column prop="courseId" label="课程代码" width="120px"/>
+                <el-table-column prop="applicationId" v-if="false" />
                 <el-table-column prop="courseName" label="课程名称" width="120px" />
                 <el-table-column prop="schoolName" label="开课院系" width="120px"/>
                 <el-table-column prop="schoolId" label="学院代码" width="120px"/>
@@ -79,10 +79,10 @@
                 <el-table-column prop="classPlace" label="上课地点" width="120px"/>
                 <el-table-column prop="capacity" label="选课容量" width="120px"/>
                 <el-table-column prop="introduction" label="课程介绍" />
-                <el-table-column fixed="right" prop="icon" label="操作" width="170px">
+                <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="170px">
                     <div>
-                        <el-button >同意</el-button>
-                        <el-button type="danger">拒绝</el-button>
+                        <el-button @click="passApplication(scope.row.applicationId)">同意</el-button>
+                        <el-button type="danger" @click="rejectApplication(scope.row.applicationId)">拒绝</el-button>
                     </div>
                 </el-table-column>
             </el-table>
