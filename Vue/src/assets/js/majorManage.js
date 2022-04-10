@@ -111,6 +111,8 @@ export default {
                         url: '/api/school/add',
                         data: params
                     }).then(res => {
+                        if(res.data==='SUCCESS')
+                        {
                             this.$message({
                                 showClose: true,
                                 message: '操作成功',
@@ -121,6 +123,7 @@ export default {
                                 }
                             });
                             this.dialogVisible1 = false;
+                        }
                         }
                     )
                 }
@@ -137,13 +140,15 @@ export default {
                     let params = new URLSearchParams();
                     params.append('majorId', this.ruleForm2.majorId);
                     params.append('majorName', this.ruleForm2.majorName);
-                    params.append('school', JSON.parse(this.ruleForm2.majorName));
+                    params.append('school', JSON.parse(this.ruleForm2.school));
                     params.append('introduction', this.ruleForm2.introduction);
                     this.$axios({
                         method: 'post',
                         url: '/api/major/add',
                         data: params
                     }).then(res => {
+                        console.log(res);
+                        if(res.data==='SUCCESS'){
                             this.$message({
                                 showClose: true,
                                 message: '操作成功',
@@ -154,6 +159,15 @@ export default {
                             });
                             this.dialogVisible2 = false;
                         }
+                        else if(res.data==='FAILED')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '操作失败',
+                                type: 'fail',
+                            });
+                        }
+                    }
                     )
                 } else {
                     this.$nextTick(() => {

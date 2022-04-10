@@ -342,10 +342,9 @@ export default {
         editHandle(obj){
             this.dialogVisible2=true;
             this.ruleForm=obj;
-            console.log(obj)
         },
         delHandle(id){
-            this.$axios.post("/user/"+id).then(res=> {
+            this.$axios.post("/user"+id).then(res=> {
                 this.$message({
                     showClose: true,
                     message: '操作成功',
