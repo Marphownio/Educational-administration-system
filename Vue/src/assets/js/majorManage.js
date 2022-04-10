@@ -17,6 +17,8 @@ export default {
             else return true;
         };
         return{
+            search1:'',
+            search2:'',
             depatment:'',
             depss:{},
             addschool:false,
@@ -82,6 +84,16 @@ export default {
                 {
 
                 },
+            ],
+            filterSchooldata:[
+                {
+
+                }
+            ],
+            filterMajordata:[
+                {
+
+                }
             ]
         }
     },
@@ -91,9 +103,29 @@ export default {
     created(){
         this.getSchoolForm();
         this.getMajorForm();
+        this.getForm1();
+        this.getForm2();
     },
 
     methods:{
+        getForm1(){
+            this.filterSchooldata=computed(() =>
+                this.tableData1.filter(
+                    (data) =>
+                        !this.search1 ||
+                        data.schoolName.toLowerCase().includes(this.search1.toLowerCase())
+                )
+            )
+        },
+        getForm2(){
+            this.filterMajordata=computed(() =>
+                this.tableData2.filter(
+                    (data) =>
+                        !this.search2 ||
+                        data.majorName.toLowerCase().includes(this.search2.toLowerCase())
+                )
+            )
+        },
         refresh(){
             this.ruleForm1={};
             this.ruleForm2={};
@@ -106,7 +138,6 @@ export default {
         getSchoolForm(){
             request.get("/school/list").then(res=>{
                 this.tableData1=res;
-                console.log(res);
             })
         },
         getMajorForm(){
@@ -145,6 +176,7 @@ export default {
                                 onClose: () => {
                                     this.getSchoolForm();
                                     this.getDep();
+                                    this.getForm1();
                                 }
                             });
                             this.addschool = false;
@@ -199,6 +231,7 @@ export default {
                                     onClose: () => {
                                         this.getSchoolForm();
                                         this.getDep();
+                                        this.getForm1();
                                     }
                                 });
                                 this.updateschool = false;
@@ -244,6 +277,7 @@ export default {
                                 type: 'success',
                                 onClose: () => {
                                     this.getMajorForm()
+                                    this.getForm2();
                                 }
                             });
                             this.addmajor = false;
@@ -297,6 +331,7 @@ export default {
                                     type: 'success',
                                     onClose: () => {
                                         this.getMajorForm()
+                                        this.getForm2();
                                     }
                                 });
                                 this.updatemajor = false;
@@ -332,6 +367,8 @@ export default {
                         this.getSchoolForm();
                         this.getMajorForm();
                         this.getDep();
+                        this.getForm1();
+                        this.getForm2();
                     }
                 })
             })
@@ -349,6 +386,7 @@ export default {
                     type: 'success',
                     onClose: () => {
                         this.getMajorForm()
+                        this.getForm2();
                     }
                 })
             })

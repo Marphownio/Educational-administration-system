@@ -8,8 +8,8 @@
 
     <Nav></Nav>
     <div class="showList">
-        <li style="list-style-type:none"><el-button @click="openSelection" class="open" >开放选课</el-button></li>
-        <li style="list-style-type:none"><el-button @click="closeSelection" class="close" >关闭选课</el-button></li>
+        <li style="list-style-type:none"><el-button @click="openSelection" class="open" :disabled="isDisabled1">开放选课</el-button></li>
+        <li style="list-style-type:none"><el-button @click="closeSelection" class="close" :disabled="isDisabled2">关闭选课</el-button></li>
     </div>
     </body>
 </template>

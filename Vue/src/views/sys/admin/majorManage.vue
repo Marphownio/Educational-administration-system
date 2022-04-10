@@ -8,20 +8,20 @@
     <div class="void">
         <span></span>
     </div>
-    <div class="showlist">
+    <div class="showlists">
         <el-form :inline="true" >
             <el-form-item>
                 <el-button type="primary" @click="addschool=true">添加学院</el-button>
                 <el-button type="primary" @click="addmajor=true">添加专业</el-button>
             </el-form-item>
         </el-form>
-        <el-table :data="tableData1" style="width: 100%; margin-bottom: 20px" row-key="number" border default-expand-all>
+        <el-table :data="filterSchooldata" style="width: 100%; margin-bottom: 20px" row-key="number" border default-expand-all>
             <el-table-column prop="schoolId" label="学院代码" sortable width="140px" />
             <el-table-column prop="schoolName" label="学院名" sortable width="140px" />
             <el-table-column prop="introduction" label="描述信息" sortable  />
             <el-table-column  align="right" width="420px">
                 <template #header>
-                    <el-input v-model="search" size="small" placeholder="输入学院名称" width="100px"/>
+                    <el-input v-model="search1" @change="getForm1" size="small" placeholder="输入学院名称" width="100px"/>
                 </template>
                 <template v-slot="scope">
                     <el-button @click="editHandle1(scope.row)">编辑</el-button>
@@ -29,7 +29,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-table :data="tableData2" style="width: 100%; margin-bottom: 20px" row-key="number" border default-expand-all>
+        <el-table :data="filterMajordata" style="width: 100%; margin-bottom: 20px" row-key="number" border default-expand-all>
             <el-table-column prop="majorId" label="专业代码" sortable width="140px" />
             <el-table-column prop="majorName" label="专业名" sortable width="140px" />
             <el-table-column prop="schoolName" label="所属学院" sortable width="140px" />
@@ -37,7 +37,7 @@
             <el-table-column prop="introduction" label="描述信息" sortable  />
             <el-table-column  align="right" width="420px">
                 <template #header>
-                    <el-input v-model="search" size="small" placeholder="输入学院名称" width="100px"/>
+                    <el-input v-model="search2" @change="getForm2" size="small" placeholder="输入专业名称" width="100px"/>
                 </template>
                 <template v-slot="scope">
                     <el-button @click="editHandle2(scope.row)">编辑</el-button>
