@@ -1,18 +1,20 @@
 #personal_infor{
-    margin-left: 150px;
+    margin-left: 50px;
     margin-top: 50px;
     display: flex;
     border-radius: 15px;
+    flex-direction: column;
     justify-content: center;
-    width:80%;
+    width:1000px;
     background-color: rgba(238, 237, 237, 0.698);
 }
 .item{
     text-align:center;
 }
 .descriptions {
+    text-align:center;
     border-radius: 15px;
-    width: 90%;
+    min-width: 90%;
     margin: 20px;
 }
 .verify{

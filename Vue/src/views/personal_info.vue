@@ -17,7 +17,9 @@
   >
     <el-descriptions-item class="item" label="姓名">{{this.PersonalData.name}}</el-descriptions-item>
     <el-descriptions-item class="item" label="学/工号">{{this.PersonalData.id}}</el-descriptions-item>
-    <el-descriptions-item class="item" label="身份">{{this.PersonalData.role}}</el-descriptions-item>
+    <el-descriptions-item class="item" label="身份">
+      <el-tag size="small">{{this.PersonalData.role}}</el-tag>
+    </el-descriptions-item>
     <el-descriptions-item class="item" label="学院">{{this.PersonalData.college}}</el-descriptions-item>
     <el-descriptions-item class="item" label="专业">{{this.PersonalData.major}}</el-descriptions-item>
     <el-descriptions-item class="item" label="身份证号">{{this.PersonalData.idNumber}}</el-descriptions-item>
