@@ -8,6 +8,8 @@ export default {
         return{
             dialogVisible1:false,
             dialogVisible2:false,
+            schooldata:[],
+            teacherdata:[],
             ruleForm1:{},
             ruleForm2:{
 
@@ -103,7 +105,7 @@ export default {
     },
     created(){
         this.getSchool();
-        //this.getUser();
+        this.getTeacher();
     },
     methods:{
         getSchool:function(){
@@ -111,9 +113,9 @@ export default {
                 this.schooldata= res;
             })
         },
-        getUser:function(){
-            request.get("//list").then(res=>{
-                this.majordata= res;
+        getTeacher:function(){
+            request.get("/user/teacher/list").then(res=>{
+                this.teacherdata= res;
             })
         },
         getCourseForm(){

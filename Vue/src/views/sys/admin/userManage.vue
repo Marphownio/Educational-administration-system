@@ -30,21 +30,23 @@
             <el-table-column fixed prop="userId" label="学号/工号" width="120px"/>
             <el-table-column prop="role" label="身份" width="120px" />
             <el-table-column prop="username" label="姓名" width="120px" />
-            <el-table-column prop="school" label="学院" width="120px"/>
-            <el-table-column prop="major" label="专业" width="120px"/>
+            <el-table-column v-slot="scope" prop="status" label="状态" width="120px">
+                <el-tag v-if="scope.row.status===true&&scope.row.role==='STUDENT'" type="success">在读</el-tag>
+                <el-tag v-if="scope.row.status===true&&scope.row.role==='TEACHER'" type="success">在岗</el-tag>
+                <el-tag v-if="scope.row.status===false&&scope.row.role==='STUDENT'" type="info" >已毕业</el-tag>
+                <el-tag v-if="scope.row.status===false&&scope.row.role==='TEACHER'" type="info">已离职</el-tag>
+            </el-table-column>
+            <el-table-column prop="schoolName" label="学院" width="120px"/>
+            <el-table-column prop="schoolId" label="学院代码" />
+            <el-table-column prop="majorName" label="专业" width="120px"/>
+            <el-table-column prop="majorId" label="专业代码" />
             <el-table-column prop="idNumber" label="身份证号" width="180px"/>
             <el-table-column prop="phoneNumber" label="手机号" width="120px"/>
             <el-table-column prop="email" label="邮箱" width="180px"/>
-            <el-table-column v-slot="scope" prop="state" label="状态" width="120px">
-                <el-tag v-if="scope.row.state===true&&scope.row.role==='STUDENT'" type="success">在读</el-tag>
-                <el-tag v-if="scope.row.state===true&&scope.row.role==='TEACHER'" type="success">在岗</el-tag>
-                <el-tag v-if="scope.row.state===false&&scope.row.role==='STUDENT'" type="info" >已毕业</el-tag>
-                <el-tag v-if="scope.row.state===false&&scope.row.role==='TEACHER'" type="info">已离职</el-tag>
-            </el-table-column>
             <el-table-column v-slot="scope"  fixed="right" prop="icon" label="操作" width="170px">
             <div>
                 <el-button @click="editHandle(scope.row)">编辑</el-button>
-                <el-button type="danger" @click="delHandle(scope.row)">删除</el-button>
+                <el-button type="danger" @click="delHandle(scope.row.userId)">删除</el-button>
             </div>
             </el-table-column>
         </el-table>
@@ -78,14 +80,14 @@
                 <el-form-item label="身份证号" prop="idNumber" ref="idNumber">
                     <el-input v-model="ruleForm.idNumber"></el-input>
                 </el-form-item>
-                <el-form-item label="学院" prop="school">
-                    <el-select v-model="ruleForm.school" placeholder="选择学院">
-                        <el-option v-for="item in schooldata" :key="item.schoolId" :label="item.schoolName" :value="item.schoolId" />
+                <el-form-item label="学院" prop="schoolId">
+                    <el-select v-model="ruleForm.schoolId" placeholder="选择学院">
+                        <el-option v-for="item in schooldata" :key="item.schoolName" :label="item.schoolName" :value="item.schoolId" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="专业" prop="major">
-                    <el-select  v-model="ruleForm.major" placeholder="选择专业">
-                        <el-option v-for="item in majordata" :key="item.id" :label="item.majorName" :value="item.majorId" />
+                <el-form-item label="专业" prop="majorId">
+                    <el-select  v-model="ruleForm.majorId" placeholder="选择专业">
+                        <el-option v-for="item in majordata" :key="item.majorName" :label="item.majorName" :value="item.majorId" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="是否在校/在岗" prop="status">
@@ -135,14 +137,14 @@
                 <el-form-item label="身份证号" prop="idNumber" ref="idNumber">
                     <el-input v-model="ruleForm.idNumber"></el-input>
                 </el-form-item>
-                <el-form-item label="学院">
-                    <el-select v-model="ruleForm.school" placeholder="选择学院">
-                        <el-option v-for="item in schooldata" :key="item.id" :label="item.schoolName" :value="item.schoolId" />
+                <el-form-item label="学院" prop="schoolId" >
+                    <el-select v-model="ruleForm.schoolId" placeholder="选择学院">
+                        <el-option v-for="item in schooldata" :key="item.schoolName" :label="item.schoolName" :value="item.schoolId" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="专业">
-                    <el-select  v-model="ruleForm.major" placeholder="选择专业">
-                        <el-option v-for="item in majordata" :key="item.id" :label="item.majorName" :value="item.majorId" />
+                <el-form-item label="专业" prop="majorId" >
+                    <el-select  v-model="ruleForm.majorId" placeholder="选择专业">
+                        <el-option v-for="item in majordata" :key="item.majorName" :label="item.majorName" :value="item.majorId" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="是否在校/在岗" prop="status">

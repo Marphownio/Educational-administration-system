@@ -1,6 +1,7 @@
 import Nav from "@/views/inc/Nav.vue";
 import Papa from "papaparse";
 import request from "@/utils/request";
+import {integer} from "mockjs/src/mock/random/basic";
 
 export default {
     name: "userManage",
@@ -70,7 +71,9 @@ export default {
                 userId:'',
                 role:'',
                 school:'',
+                schoolId:'',
                 major:'',
+                majorId:'',
                 username:'',
                 idNumber:'',
                 phoneNumber: '',
@@ -122,14 +125,14 @@ export default {
                         trigger: 'change',
                     },
                 ],
-                school: [
+                schoolId: [
                     {
                         required: true,
                         message: '请选择学院',
                         trigger: 'change',
                     },
                 ],
-                major: [
+                majorId: [
                     {
                         required: true,
                         message: '请选择专业',
@@ -142,7 +145,11 @@ export default {
                     userId:'',
                     role:'',
                     school:'',
+                    schoolName:'',
+                    schoolId:'',
                     major:'',
+                    majorName:'',
+                    majorId:'',
                     username:'',
                     idNumber:'',
                     phoneNumber: '',
@@ -176,25 +183,30 @@ export default {
         getUserForm(){
             request.get("/user/list").then(res=>{
                 this.tableData=res;
-                for(let i=0;i<Object.keys(res).length;i++)
+                for(let i=0;i<Object.keys(this.tableData).length;i++)
                 {
-                    if(res[i].school!==null)
+                    if(this.tableData[i].school!==null)
                     {
-                        this.tableData[i].school=res[i].school.schoolName;
-                        this.tableData[i].major=res[i].major.majorName;
+                        this.tableData[i].schoolName=this.tableData[i].school.schoolName;
+                        this.tableData[i].schoolId=this.tableData[i].school.schoolId;
+                    }
+                    if(this.tableData[i].major!==null)
+                    {
+                        this.tableData[i].majorName=this.tableData[i].major.majorName;
+                        this.tableData[i].majorId=this.tableData[i].major.majorId;
                     }
                 }
             })
         },
         submitForm1(){
-            console.log(this.ruleForm.email)
+            console.log(this.ruleForm);
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
                     let params = new URLSearchParams();
                     params.append('userId', this.ruleForm.userId);
                     params.append('role', this.ruleForm.role);
-                    params.append('school', JSON.parse(this.ruleForm.school));
-                    params.append('major', JSON.parse(this.ruleForm.major));
+                    params.append('school', JSON.parse(this.ruleForm.schoolId));
+                    params.append('major', JSON.parse(this.ruleForm.majorId));
                     params.append('idNumber', this.ruleForm.idNumber);
                     params.append('username', this.ruleForm.username);
                     params.append('phoneNumber', this.ruleForm.phoneNumber);
@@ -236,21 +248,13 @@ export default {
             })
         },
         submitForm2(){
-            console.log(this.ruleForm.school)
-            if(typeof this.ruleForm.school === "string")
-            {
-                console.log(1);
-                this.tableData.school=this.tableData.school.schoolId;
-            }
-            if(typeof this.tableData.major === "object")
-                this.tableData.major=this.tableData.major.majorId;
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
                     let params = new URLSearchParams();
                     params.append('userId', this.ruleForm.userId);
                     params.append('role', this.ruleForm.role);
-                    params.append('school', JSON.parse(this.ruleForm.school));
-                    params.append('major', JSON.parse(this.ruleForm.major));
+                    params.append('school', JSON.parse(this.ruleForm.schoolId));
+                    params.append('major', JSON.parse(this.ruleForm.majorId));
                     params.append('idNumber', this.ruleForm.idNumber);
                     params.append('username', this.ruleForm.username);
                     params.append('phoneNumber', this.ruleForm.phoneNumber);
@@ -346,11 +350,13 @@ export default {
             })
         },
         editHandle(obj){
+            console.log(obj);
             this.dialogVisible2=true;
             this.ruleForm=obj;
         },
         delHandle(id){
-            this.$axios.post("/user"+id).then(res=> {
+            console.log(id);
+            this.$axios.delete("/api/user/"+id).then(res=> {
                 this.$message({
                     showClose: true,
                     message: '操作成功',
