@@ -356,7 +356,7 @@ export default {
         },
         delHandle(id){
             console.log(id);
-            this.$axios.delete("/user/"+id).then(res=> {
+            this.$axios.delete("/api/user/"+id).then(res=> {
                 this.$message({
                     showClose: true,
                     message: '操作成功',
