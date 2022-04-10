@@ -122,10 +122,10 @@
                     label-width="120px"
                     class="demo-ruleForm"
             >
-                <el-form-item label="角色" prop="role">
-                    <el-radio-group v-model="ruleForm.role" >
+                <el-form-item label="角色" prop="role" >
+                    <el-radio-group v-model="ruleForm.role" style="pointer-events: none">
                         <el-radio label=TEACHER model-value="TEACHER" >教师</el-radio>
-                        <el-radio label=STUDENT model-value="STUDENT">学生</el-radio>
+                        <el-radio label=STUDENT model-value="STUDENT" >学生</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="姓名" prop="username">
@@ -137,8 +137,8 @@
                 <el-form-item label="身份证号" prop="idNumber" ref="idNumber">
                     <el-input v-model="ruleForm.idNumber"></el-input>
                 </el-form-item>
-                <el-form-item label="学院" prop="schoolId" @change="getMajor">
-                    <el-select v-model="ruleForm.schoolId" placeholder="选择学院">
+                <el-form-item label="学院" prop="schoolId" >
+                    <el-select v-model="ruleForm.schoolId" placeholder="选择学院" @change="getMajor">
                         <el-option v-for="item in schooldata" :key="item.schoolName" :label="item.schoolName" :value="item.schoolId" />
                     </el-select>
                 </el-form-item>

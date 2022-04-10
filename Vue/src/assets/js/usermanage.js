@@ -175,8 +175,12 @@ export default {
             })
         },
         getMajor:function(){
-            console.log(this.ruleForm)
-            request.get("/school/majors",this.ruleForm.schoolId).then(res=>{
+            request.get("/school/majors",{
+                params:{
+                    schoolId:this.ruleForm.schoolId
+                }
+            }).then(res=>{
+                console.log(res);
                 this.majordata= res;
             })
         },
