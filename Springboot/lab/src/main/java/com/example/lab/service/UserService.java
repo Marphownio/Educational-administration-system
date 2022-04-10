@@ -14,7 +14,7 @@ public interface UserService {
     ResultMessage addUser(User user);
 
     // 批量导入用户
-//    boolean BatchImportUser(String name, MultipartFile file);
+    ResultMessage BatchImportUser(MultipartFile file);
 
     // 删除用户
     ResultMessage deleteUser(Integer userId);

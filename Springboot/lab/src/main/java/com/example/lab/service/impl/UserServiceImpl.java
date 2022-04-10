@@ -8,11 +8,14 @@ import com.example.lab.pojo.entity.User;
 import com.example.lab.repository.StudentRepository;
 import com.example.lab.repository.TeacherRepository;
 import com.example.lab.repository.UserRepository;
+import com.example.lab.service.MajorService;
+import com.example.lab.service.SchoolService;
 import com.example.lab.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.*;
 import java.util.List;
 
 // 用户的增删改查服务
@@ -27,6 +30,12 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private StudentRepository studentRepository;
+
+    @Resource
+    private SchoolService schoolService;
+
+    @Resource
+    private MajorService majorService;
 
     @Override
     public ResultMessage addUser(User user) {
@@ -51,13 +60,41 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-//    @Resource
-//    private ReadExcel readExcel;
+    @Override
+    public ResultMessage BatchImportUser(MultipartFile file) {
+        User user = new User();
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
+            String line;
+            while((line = reader.readLine())!= null){
+                //csv文件是使用逗号作为分隔符的    但是如果密码中有逗号的话 就会导致错误  所以文件格式中 我们可以改变一下
+                //比如将分隔符换成在用户信息中不可能出现的字符
+                String []item = line.split(",");
+                System.out.println(item.length);
+                user.setUserId(new Integer(item[0]));
+                user.setPassword(item[1]);
+                user.setUsername(item[3]);
+                user.setIdNumber(item[4]);
+                user.setPhoneNumber(item[5]);
+                user.setEmail(item[6]);
+                //没有七是因为在添加的User肯定都是在校的状态 并且在实体类中以及赋了初始值 就可以不用再设定
+                user.setSchool(schoolService.findSchoolBySchoolName(item[8]));
+                user.setMajor(majorService.findMajorByMajorName(item[9]));
+                if (item[2].equals("TEACHER")){
+                    user.setRole(UserRole.TEACHER);
+                    teacherRepository.save(new Teacher(user));
+                }
+                else {
+                    user.setRole(UserRole.STUDENT);
+                    studentRepository.save(new Student(user));
+                }
+            }
 //
-//    @Override
-//    public boolean BatchImportUser(String name, MultipartFile file) {
-//        boolean b = false;
-//        //创建处理EXCEL
+        } catch (IOException e) {
+//            e.printStackTrace();
+                return ResultMessage.FAILED;
+        }
+        return ResultMessage.SUCCESS;
 //        ReadExcel readExcel=new ReadExcel();
 //        //解析excel，获取客户信息集合。
 //        List<User> customerList = readExcel.getExcelInfo(name ,file);
@@ -71,7 +108,7 @@ public class UserServiceImpl implements UserService {
 //            customerDoImpl.addCustomers(customer);
 //        }
 //        return b;
-//    }
+    }
 
     @Override
     public ResultMessage deleteUser(Integer userId) {
