@@ -1,0 +1,35 @@
+.el-dropdown-link {
+    cursor: pointer;
+    color: black;
+    display: flex;
+    align-items: center;
+}
+
+.nav1{
+    width: 100%;
+    position: relative;
+    height: 60px;
+    display: flex;
+    border-radius: 15px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255,255,255,0.5);
+}
+.nav1 .banner_area{
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+#role{
+    font-weight: 600;
+    font-size:large;
+}
+#shouye{
+    cursor: pointer;
+    font-weight: 600;
+    font-size:larger;
+}

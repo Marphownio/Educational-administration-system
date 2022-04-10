@@ -1,74 +1,30 @@
 <template>
-    <nav class="nav">
+    <nav class="nav1">
         <div class="banner_area">
-            <el-dropdown>
+          <div id="shouye" @click="mainpage()">首页</div>
+            <el-dropdown id="x">
                 <span class="el-dropdown-link">
-               {{userInfo.id}}|{{userInfo.name}}
+               <span id="role">{{this.navtable.id}}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;{{this.navtable.name}}&nbsp;
+                  {{this.navtable.role}}</span>
                     <el-icon class="el-icon--right">
                         <arrow-down />
                     </el-icon>
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item >个人中心</el-dropdown-item>
-                        <el-dropdown-item divided>退出登录</el-dropdown-item>
+                        <el-dropdown-item @click="profile()" >个人中心</el-dropdown-item>
+                        <el-dropdown-item @click="logout()" divided>退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
-            <router-link to="/">首页</router-link>
         </div>
     </nav>
 </template>
 
-<script>
-    import {ArrowDown} from "@element-plus/icons-vue";
-    export default {
-        name: "Nav",
-        components: {ArrowDown},
-        data()
-        {
-            return{
-                userInfo:{
-                    id:"",
-                    name:"",
-                }
-            }
-        },
-        create(){
-            this.getUserInfo()
-        },
-        methods:{
-            getUserInfo(){
-                this.$axios.get("/user/userInfo").then(res=>{
-                    this.userInfo=res.data.data()
-                })
-            }
-        }
-    }
+<script src="../../assets/js/nav.js" type="text/javascript">
+
 </script>
 
-<style scoped>
-    .el-dropdown-link {
-        cursor: pointer;
-        color: black;
-        display: flex;
-        align-items: center;
-    }
-
-    .nav{
-        width: 100%;
-        position: relative;
-        height: 60px;
-        background-color: rgb(255,255,255,0.3);
-    }
-    .nav .banner_area{
-        padding-top: 18px;
-        padding-right: 50px;
-        float:right;
-        display: flex;
-        width: 210px;
-        justify-content: space-around;
-        align-items: center;
-        transform: scale(1.2);
-    }
+<style>
+@import "../../assets/css/nav.css";
 </style>

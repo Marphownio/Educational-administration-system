@@ -109,7 +109,7 @@ export default {
         },
         getUserinfo(){
             request.get("/user/info").then(res=>{
-                console.log(res);
+                // console.log(res);
                 this.PersonalData.User=res;
                 this.PersonalData.name=res.username;
                 this.PersonalData.id=res.userId;
