@@ -1,12 +1,34 @@
 import Nav from "@/views/inc/Nav.vue";
 import request from "@/utils/request";
+import {getState} from "core-js/modules/web.url-search-params";
 
 export default {
     name: "selectManage",
     components:{
         Nav
     },
+    data:{
+        isDisabled:false,
+    },
+    created() {
+        this.getStatus();
+    },
     methods:{
+        Isdisable1(){
+            return this.isDisabled;
+        },
+        Isdisable2(){
+            return !(this.isDisabled);
+        },
+        getStatus(){
+            request.get("/admin/courseSelect/status").then(res=>{
+                console.log(res)
+                if(res ==='SUCCESS'){
+                    this.isDisabled=false;
+                }
+                else this.isDisabled=true;
+            })
+        },
         openSelection(){
             let CHANGE=true;
             request.post("/admin/courseSelect/change",{
@@ -20,9 +42,6 @@ export default {
                     showClose: true,
                     message: '操作成功',
                     type: 'success',
-                    onClose: () => {
-                        this.getUserForm()
-                    }
                 })
             }
                 else{
@@ -43,9 +62,6 @@ export default {
                         showClose: true,
                         message: '操作成功',
                         type: 'success',
-                        onClose: () => {
-                            this.getUserForm()
-                        }
                     })
                 }
                 else{
