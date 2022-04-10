@@ -1,7 +1,6 @@
 import Nav from "@/views/inc/Nav.vue";
 import Papa from "papaparse";
 import request from "@/utils/request";
-import {integer} from "mockjs/src/mock/random/basic";
 
 export default {
     name: "userManage",
@@ -203,7 +202,6 @@ export default {
             })
         },
         submitForm1(){
-            console.log(this.ruleForm);
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
                     let params = new URLSearchParams();
@@ -303,6 +301,54 @@ export default {
                 }
             })
         },
+        submitForm3(){
+            console.log(this.ruleForm);
+            this.$refs.ruleForm.validate(valid=>{
+                if(valid){
+                    let params = new URLSearchParams();
+                    params.append('userId', this.ruleForm.userId);
+                    params.append('role', this.ruleForm.role);
+                    params.append('school', JSON.parse(this.ruleForm.schoolId));
+                    params.append('major', JSON.parse(this.ruleForm.majorId));
+                    params.append('idNumber', this.ruleForm.idNumber);
+                    params.append('username', this.ruleForm.username);
+                    params.append('phoneNumber', this.ruleForm.phoneNumber);
+                    params.append('email', this.ruleForm.email);
+                    params.append('status', this.ruleForm.status);
+                    this.$axios({
+                        method: 'post',
+                        url:'/api/user/add',
+                        data:params,
+                    })/*.then(res=>{
+                        if(res.data==='EXIST')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '用户Id'+this.ruleForm.userId+'已存在',
+                                type: 'error',
+                            });
+                        }
+                        if(res.data==='SUCCESS')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '操作成功',
+                                type: 'success',
+                                onClose:()=>{
+                                    this.getUserForm()
+                                }
+                            });
+                            this.dialogVisible1=false;
+                        }
+                    })*/
+                }
+                else{
+                    this.$nextTick(() => {
+                        this.scrollToTop(this.$refs.ruleForm.$el)
+                    })
+                }
+            })
+        },
         handleChange(file) {
             this.fileTemp = file.raw
             if (this.fileTemp) {
@@ -325,31 +371,18 @@ export default {
             Papa.parse(obj, {
                 complete (results) {
                     console.log(results)//调试查看csv文件的数据
-                    let data = []
-                    //遍历csv文件中的数据，存放到data中
                     for (let i = 0; i < results.data.length; i++) {
-                        let obj = {}
-                        obj.number = results.data[i][0]
-                        obj.name = results.data[i][1]
-                        obj.nameRemark = results.data[i][2]
-                        obj.index = results.data[i][3]
-                        data.push(obj)
-                        this.$axios.post("/user/add",this.obj).then(res=>{
-                                this.$message({
-                                    showClose: true,
-                                    message: '操作成功',
-                                    type: 'success',
-                                    onClose:()=>{
-                                        this.getUserForm()
-                                    }
-                                });
-                                this.dialogVisible=false;
-                            }
-                        )
+                        this.ruleForm.userId = results.data[i][0];
+                        this.ruleForm.role = results.data[i][1];
+                        this.ruleForm.username = results.data[i][2];
+                        this.ruleForm.status = results.data[i][3];
+                        this.ruleForm.schoolId = results.data[i][4];
+                        this.ruleForm.majorId=results.data[i][5];
+                        this.ruleForm.idNumber=results.data[i][6];
+                        this.ruleForm.phoneNumber=results.data[i][7];
+                        this.ruleForm.email=results.data[i][8];
+                        this.submitForm3();
                     }
-                    data.splice(0, 1)//将数组第一位的表格名称去除
-                    console.log('data', data)
-                    this.tableData = data//将数据放入要展示的表格中
                 }
             })
         },
