@@ -1,6 +1,7 @@
 package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.entity.Major;
 import com.example.lab.pojo.entity.School;
 import com.example.lab.service.SchoolService;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,19 @@ public class SchoolController {
         }
         return new ResponseEntity<>(schools, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/majors")
+    public ResponseEntity<Set<Major>> findMajorsInSchool(@RequestParam(value = "schoolId") Integer schoolId) {
+        School school = schoolService.findSchoolBySchoolId(schoolId);
+        if (school == null) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        } else if (school.getMajors() == null) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(school.getMajors(), HttpStatus.OK);
+    }
+
+
 
     @GetMapping(value = "/getbyid/{schoolId}")
     public ResponseEntity<School> findSchoolById(@PathVariable("schoolId") Integer schoolId){
