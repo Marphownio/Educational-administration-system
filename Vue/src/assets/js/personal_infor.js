@@ -95,17 +95,27 @@ export default {
                 this.PersonalData.User=res;
                 this.PersonalData.name=res.username;
                 this.PersonalData.id=res.userId;
-                if(res.role=="STUDENT"){
+                if(res.role==="STUDENT"){
                     this.PersonalData.role="学生";
                 }
-                if(res.role=="TEACHER"){
+                if(res.role==="TEACHER"){
                     this.PersonalData.role="教师";
                 }
                 this.PersonalData.college=res.school.schoolName;
                 this.PersonalData.major=res.major.majorName;
                 this.PersonalData.idNumber=res.idNumber;
-                this.PersonalData.phoneNumber=res.phoneNumber;
-                this.PersonalData.email=res.email;
+                if(res.phoneNumber==="NULL"||res.phoneNumber==="null"||res.phoneNumber===""||res.phoneNumber===null){
+                    this.PersonalData.phoneNumber="暂无电话号码"
+                }
+                else {
+                    this.PersonalData.phoneNumber=res.phoneNumber;
+                }
+                if(res.email==="NULL"||res.email==="null"||res.email===""||res.email===null){
+                    this.PersonalData.email="暂无邮箱地址"
+                }
+                else {
+                    this.PersonalData.email=res.email;
+                }
                 if(res.status===true){
                     if(res.role==="STUDENT"){
                         this.PersonalData.status="在读";
@@ -141,17 +151,15 @@ export default {
                     for(let key in this.Userform) {
                         newPhoneformData.append(key,this.Userform[key]);
                     }
-                    // console.log(newPhoneformData);
                     request.put("/user/update",newPhoneformData)
                       .then(function (response) {
                               alert('手机号码修改成功!');
                               return true;
-                          // }
                       },function (err) {
-                          // console.log(err);
                           alert("手机号码修改失败! 请再次尝试");
-                      })
+                      });
                     this.getUserinfo();
+                    this.$router.go(0)
                 }
                 else {
                     return false;
@@ -175,16 +183,15 @@ export default {
                     for(let key in this.Userform) {
                         newemailformData.append(key,this.Userform[key]);
                     }
-                    console.log(newemailformData);
                     request.put("/user/update",newemailformData)
                         .then(function (response) {
                             alert('邮箱地址修改成功!');
                             return true;
-                            // }
                         },function (err) {
-                            console.log(err);
                             alert("邮箱地址修改失败! 请再次尝试");
                         })
+                        this.getUserinfo();
+                        this.$router.go(0)
                 }
                 else {
                     return false;

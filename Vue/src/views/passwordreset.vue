@@ -5,7 +5,7 @@
   </head>
   <body>
   <Nav></Nav>
-  <div>
+  <div id="formbiao">
   <el-form
       id="Preset"
       ref="rpwruleForm"
