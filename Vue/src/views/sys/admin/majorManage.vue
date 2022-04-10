@@ -46,7 +46,7 @@
         </el-table>
     </div>
 
-    <el-dialog v-model="dialogVisible1" title="添加学院" width="600px">
+    <el-dialog v-model="dialogVisible1" title="添加学院" width="600px" @close="refresh">
             <el-form
                     ref="ruleForm1"
                     :model="ruleForm1"
@@ -69,7 +69,7 @@
             </el-form>
         </el-dialog>
 
-    <el-dialog v-model="dialogVisible2" title="添加专业" width="600px">
+    <el-dialog v-model="dialogVisible2" title="添加专业" width="600px" @close="refresh">
         <el-form
                 ref="ruleForm2"
                 :model="ruleForm2"
@@ -80,9 +80,9 @@
             <el-form-item label="专业代码" prop="majorId">
                 <el-input v-model="ruleForm2.majorId"></el-input>
             </el-form-item>
-            <el-form-item label="所属学院">
-                <el-select v-model="ruleForm2.school" placeholder="所属学院">
-                    <el-option v-for="item in depss" :key="item.schoolName" :label="item.schoolName" :value="item.schoolId" />
+            <el-form-item label="所属学院" prop="school">
+                <el-select v-model="ruleForm2.school" placeholder="所属学院" >
+                    <el-option v-for="item in depss" :key="item.schoolId" :label="item.schoolName" :value="item.schoolId" />
                 </el-select>
             </el-form-item>
             <el-form-item label="专业名" prop="majorName">

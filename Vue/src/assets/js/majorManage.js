@@ -21,7 +21,7 @@ export default {
             ruleForm2:{
                 majorId: '',
                 majorName: '',
-                school: {schoolId:''},
+                school: '',
                 introduction:'',
             },
             editRules1 :({
@@ -52,7 +52,7 @@ export default {
                     {
                         required: true,
                         message: '请选择所属学院',
-                        trigger: 'blur'
+                        trigger: 'change',
                     }
                 ],
                 majorName: [
@@ -80,6 +80,10 @@ export default {
     },
 
     methods:{
+        refresh(){
+            this.ruleForm1={};
+            this.ruleForm2={};
+        },
         getDep:function(){
             request.get("/school/list").then(res=>{
                 this.depss= res;
@@ -124,6 +128,22 @@ export default {
                             });
                             this.dialogVisible1 = false;
                         }
+                        else if(res.data==='EXIST')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '该学院代码已存在',
+                                type: 'error',
+                            });
+                        }
+                        else if(res.data==='FAILED')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '操作失败',
+                                type: 'error',
+                            });
+                        }
                         }
                     )
                 }
@@ -159,12 +179,20 @@ export default {
                             });
                             this.dialogVisible2 = false;
                         }
+                        else if(res.data==='EXIST')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '该专业代码已存在',
+                                type: 'error',
+                            });
+                        }
                         else if(res.data==='FAILED')
                         {
                             this.$message({
                                 showClose: true,
                                 message: '操作失败',
-                                type: 'fail',
+                                type: 'error',
                             });
                         }
                     }
