@@ -103,14 +103,14 @@
                 <el-form-item label="课程名" prop="courseName">
                     <el-input v-model="ruleForm1.courseName"></el-input>
                 </el-form-item>
-                <el-form-item label="开课院系">
+                <el-form-item label="开课院系" prop="school">
                     <el-select v-model="ruleForm1.school" placeholder="选择学院">
-                        <el-option v-for="item in schooldata" :key="item.id" :label="item.schoolName" :value="item.schoolId" />
+                        <el-option v-for="item in schooldata" :key="item.schoolName" :label="item.schoolName" :value="item.schoolId" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="任课教师">
-                    <el-select v-model="ruleForm1.school" placeholder="选择教师">
-                        <el-option v-for="item in teacherdata" :key="item.id" :label="item.schoolName" :value="item.schoolId" />
+                <el-form-item label="任课教师" prop="teacher">
+                    <el-select v-model="ruleForm1.teacher" placeholder="选择教师">
+                        <el-option v-for="item in teacherdata" :key="item.username" :label="item.username" :value="item.userId" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="学时" prop="courseHour">
