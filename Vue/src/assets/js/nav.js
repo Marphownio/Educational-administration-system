@@ -52,7 +52,6 @@ export default {
             const _this=this;
             request.get("/user/info")
                 .then(function(res){
-                    console.log(res)
                     _this.navtable.User=res;
                     _this.navtable.id=res.userId;
                     _this.navtable.name=res.username;
@@ -61,6 +60,11 @@ export default {
                     }
                     else if(res.role==="STUDENT"){
                         _this.navtable.role="同学"
+                    }
+                    if(localStorage.getItem("token")==="1"){
+                        _this.navtable.id="000000";
+                        _this.navtable.name="管理员";
+                        _this.navtable.role=""
                     }
                     },function (err){
                         _this.navtable.id="000000";
