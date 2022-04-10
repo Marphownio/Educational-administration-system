@@ -91,7 +91,7 @@ export default {
     methods:{
         getUserinfo(){
             request.get("/user/info").then(res=>{
-                // console.log(res);
+                console.log(res);
                 this.PersonalData.User=res;
                 this.PersonalData.name=res.username;
                 this.PersonalData.id=res.userId;
@@ -104,13 +104,13 @@ export default {
                 this.PersonalData.college=res.school.schoolName;
                 this.PersonalData.major=res.major.majorName;
                 this.PersonalData.idNumber=res.idNumber;
-                if(res.phoneNumber==="NULL"||res.phoneNumber==="null"){
+                if(res.phoneNumber==="NULL"||res.phoneNumber==="null"||res.phoneNumber===""||res.phoneNumber===null){
                     this.PersonalData.phoneNumber="暂无电话号码"
                 }
                 else {
                     this.PersonalData.phoneNumber=res.phoneNumber;
                 }
-                if(res.email==="NULL"||res.email==="null"){
+                if(res.email==="NULL"||res.email==="null"||res.email===""||res.email===null){
                     this.PersonalData.email="暂无邮箱地址"
                 }
                 else {
@@ -159,6 +159,7 @@ export default {
                           alert("手机号码修改失败! 请再次尝试");
                       });
                     this.getUserinfo();
+                    this.$router.go(0)
                 }
                 else {
                     return false;
@@ -190,6 +191,7 @@ export default {
                             alert("邮箱地址修改失败! 请再次尝试");
                         })
                         this.getUserinfo();
+                        this.$router.go(0)
                 }
                 else {
                     return false;
