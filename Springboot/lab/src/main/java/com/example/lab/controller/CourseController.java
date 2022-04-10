@@ -8,6 +8,7 @@ import com.example.lab.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -74,5 +75,23 @@ public class CourseController {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(course, HttpStatus.OK);
+    }
+
+    @PostMapping("/batchimport")
+    public ResultMessage BatchImportCourse(@RequestParam(value = "filename",required = false) MultipartFile file) {
+        //判断文件是否为空
+        if(file == null) return ResultMessage.NOTFOUND;
+        //获取文件名
+        String name = file.getOriginalFilename();
+        //进一步判断文件是否为空（即判断其大小是否为0或其名称是否为null）
+        long size=file.getSize();
+        if (name == null || ("").equals(name) && size == 0) return ResultMessage.NOTFOUND;
+        //批量导入。参数：文件名，文件。
+        ResultMessage resultMessage = courseService.BatchImportCourse(file);
+        if(resultMessage == ResultMessage.SUCCESS){
+            return ResultMessage.SUCCESS;
+        }else{
+            return ResultMessage.FAILED;
+        }
     }
 }

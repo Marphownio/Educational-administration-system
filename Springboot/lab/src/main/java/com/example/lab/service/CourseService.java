@@ -2,6 +2,7 @@ package com.example.lab.service;
 
 import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.ResultMessage;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,5 +25,8 @@ public interface CourseService {
 
     // 通过名称查询课程
     Course findCourseByCourseName(String courseName);
+
+    //批量添加课程信息
+    ResultMessage BatchImportCourse(MultipartFile file);
 
 }
