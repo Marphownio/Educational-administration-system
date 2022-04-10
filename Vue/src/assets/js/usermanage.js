@@ -161,7 +161,6 @@ export default {
     },
     mounted() {
         this.getSchool();
-        this.getMajor();
     },
     created(){
         this.getUserForm();
@@ -176,7 +175,8 @@ export default {
             })
         },
         getMajor:function(){
-            request.get("/major/list").then(res=>{
+            console.log(this.ruleForm)
+            request.get("/school/majors",this.ruleForm.schoolId).then(res=>{
                 this.majordata= res;
             })
         },
