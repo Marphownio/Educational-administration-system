@@ -35,13 +35,19 @@ public class Application {
     @Column(nullable = false)
     private Integer majorId;
 
+    private String majorName;
+
     // 开课院系
     @Column(nullable = false)
     private Integer schoolId;
 
+    private String schoolName;
+
     // 任课教师
     @Column(nullable = false)
     private Integer teacherId;
+
+    private String teacherName;
 
     // 申请的处理方式
     @Column(nullable = false)
