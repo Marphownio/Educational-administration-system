@@ -19,7 +19,7 @@ export default {
                 classPlace:[{required: true, message: '请输入新上课地点', trigger: 'blur'}],
             }),
             dialogVisible:false,
-            applicationform:{
+            applicationform:{//12
                 applicationId: '',
                 courseName: '',
                 classHour:'',
@@ -56,44 +56,68 @@ export default {
                 classHour:[{required: true, message: '请输入课程学时', trigger: 'blur'} ],
                 credit:[{required: true, message: '请输入课程学分', trigger: 'blur'}  ],
                 teacherId:[{required: true, message: '请输入任课教师', trigger: 'blur'} ],
-                introduction:[{required: true, message: '请输入课程介绍', trigger: 'blur'}],
                 classTime:[{required: true, message: '请输入上课时间', trigger: 'blur'} ],
                 classPlace:[{required: true, message: '请输入上课地点', trigger: 'blur'} ],
                 capacity:[{required: true, message: '请输入选课容量', trigger: 'blur'}  ],
             }),
             dialogVisible1:false,
-            tableData : [
-                {//17
-                    courseId: '1',
-                    courseName: '1',
-                    classHour:'1',
-                    credit:'1',
-                    classTime:'1',
-                    classPlace:'1',
-                    introduction: '1',
-                    major:'1',
-                    majorName:'0',
-                    majorId:'2',
-                    school: '1',
-                    schoolName:'0',
-                    schoolId:'2',
-                    teacher:'1',
-                    teacherName:'0',
-                    teacherId:'3',
-                    capacity:'1',
-                },
-            ]
+            tableData :[],
+            schooldata:[],
+            teacherdata:[],
+            majordata:[],
         }
+    },
+    mounted() {
+        this.getSchool();
+        this.getTeacher();
+        this.getMajor();
     },
     created(){
        this.get_class_infor();
     },
     methods:{
+        getMajor:function(){
+            request.get("/school/majors",{
+                params:{
+                    schoolId:this.ruleForm1.schoolId
+                }
+            }).then(res=>{
+                console.log(res);
+                this.majordata= res;
+            })
+            this.ruleForm1.majorId=null;
+        },
+        getSchool:function(){
+            request.get("/school/list").then(res=>{
+                this.schooldata= res;
+            })
+        },
+        getTeacher:function(){
+            request.get("/user/teacher/list").then(res=>{
+                this.teacherdata= res;
+            })
+        },
         apply_new_class(){
             this.$refs.ruleForm1.validate((valid) => {
                 if (valid) {
-                    console.log(this.ruleForm1);
-                    request.post("/application/add",this.ruleForm1)
+                    this.applicationform.courseName=this.ruleForm1.courseName
+                    this.applicationform.classTime=this.ruleForm1.classTime
+                    this.applicationform.classPlace=this.ruleForm1.classPlace;
+                    this.applicationform.applicationId=this.ruleForm1.applicationId;
+                    this.applicationform.classHour=this.ruleForm1.classHour;
+                    this.applicationform.credit=this.ruleForm1.credit;
+                    this.applicationform.capacity=this.ruleForm1.capacity;
+                    this.applicationform.introduction=this.ruleForm1.introduction;
+                    this.applicationform.majorId=this.ruleForm1.majorId;
+                    this.applicationform.schoolId=this.ruleForm1.schoolId;
+                    this.applicationform.teacherId=this.ruleForm1.teacherId;
+                    this.applicationform.type="ADD";
+                    let applyclassform = new FormData();
+                    for(let key in this.applicationform) {
+                        applyclassform.append(key,this.applicationform[key]);
+                    }
+                    console.log(applyclassform);
+                    request.post("/application/add",applyclassform)
                         .then(function (response) {
                             alert("申请新课程成功！");
                         }, function (err) {
@@ -106,7 +130,7 @@ export default {
                 }
             })
         },
-        edit_class_inform(row){
+        edit_class_inform(row){//12
             this.dialogVisible=true;
             this.ruleForm.courseName=row.courseName;
             this.ruleForm.classTime=row.classTime;
@@ -116,9 +140,9 @@ export default {
             this.applicationform.credit=row.credit;
             this.applicationform.capacity=row.capacity;
             this.applicationform.introduction=row.introduction;
-            this.applicationform.majorId=row.majorId;
-            this.applicationform.schoolId=row.schoolId;
-            this.applicationform.teacherId=row.teacherId;
+            this.applicationform.majorId=row.major.majorId;
+            this.applicationform.schoolId=row.school.schoolId;
+            this.applicationform.teacherId=row.teacher.userId;
             this.applicationform.type="UPDATE";
         },
         submit_edit(){
@@ -127,8 +151,12 @@ export default {
                         this.applicationform.courseName=this.ruleForm.courseName;
                         this.applicationform.classTime=this.ruleForm.classTime;
                         this.applicationform.classPlace=this.ruleForm.classPlace;
-                        //console.log(this.applicationform);
-                        request.post("/application/add",this.applicationform)
+                        console.log(this.applicationform);
+                        let editclassform = new FormData();
+                        for(let key in this.applicationform) {
+                            editclassform.append(key,this.applicationform[key]);
+                        }
+                        request.post("/application/add",editclassform)
                             .then(function (response) {
                                 alert("课程编辑申请成功！");
                             }, function (err) {
@@ -145,23 +173,7 @@ export default {
         get_class_infor(){
             request.get("/course/list")
                 .then(res=>{
-                    this.tableData.courseId=res.courseId;
-                    this.tableData.courseName=res.courseName;
-                    this.tableData.classHour=res.classHour;
-                    this.tableData.credit=res.credit;
-                    this.tableData.classTime=res.classTime;
-                    this.tableData.classPlace=res.classPlace;
-                    this.tableData.introduction=res.introduction;
-                    this.tableData.capacity=res.capacity;
-                    this.tableData.major=res.major;
-                    this.tableData.majorName=res.major.majorName;
-                    this.tableData.majorId=res.major.majorId;
-                    this.tableData.school=res.school;
-                    this.tableData.schoolName=res.school.schoolName;
-                    this.tableData.schoolId=res.school.schoolId;
-                    this.tableData.teacher=res.teacher;
-                    this.tableData.teacherName=res.username;
-                    this.tableData.teacherId=res.userId;
+                    this.tableData=res;
                 },function (err) {
                         alert("课程信息获取失败！");
                         return false;
@@ -176,12 +188,15 @@ export default {
             this.applicationform.classPlace=row.classPlace;
             this.applicationform.capacity=row.capacity;
             this.applicationform.introduction=row.introduction;
-            this.applicationform.majorId=row.majorId;
-            this.applicationform.schoolId=row.schoolId;
-            this.applicationform.teacherId=row.teacherId;
+            this.applicationform.majorId=row.major.majorId;
+            this.applicationform.schoolId=row.school.schoolId;
+            this.applicationform.teacherId=row.teacher.userId;
             this.applicationform.type="DELETE";
-            //console.log(this.applicationform);
-            request.post("/application/add",this.applicationform)
+            let deleteclassform = new FormData();
+            for(let key in this.applicationform) {
+                deleteclassform.append(key,this.applicationform[key]);
+            }
+            request.post("/application/add",deleteclassform)
                 .then(function (response) {
                     alert("课程删除申请成功！")
                 }, function (err) {
