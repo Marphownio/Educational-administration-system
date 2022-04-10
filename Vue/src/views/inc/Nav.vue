@@ -2,13 +2,14 @@
     <nav class="nav1">
         <div class="banner_area">
           <div id="shouye" @click="mainpage()">首页</div>
-            <el-dropdown id="x">
+            <el-dropdown placement="bottom-end">
                 <span class="el-dropdown-link">
-               <span id="role">{{this.navtable.id}}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;{{this.navtable.name}}&nbsp;
-                  {{this.navtable.role}}</span>
-                    <el-icon class="el-icon--right">
+               <span id="role">{{this.navtable.id}}&nbsp;&nbsp;&nbsp;&nbsp;|
+                 <el-icon class="el-icon--right">
                         <arrow-down />
-                    </el-icon>
+                 </el-icon>&nbsp;&nbsp;{{this.navtable.name}}&nbsp;
+                  {{this.navtable.role}}</span>
+
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
