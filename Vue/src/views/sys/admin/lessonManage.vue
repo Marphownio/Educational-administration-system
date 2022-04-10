@@ -28,24 +28,22 @@
             </el-form-item>
         </el-form>
         <el-table :data="tableData" >
-            <el-table-column fixed prop="id" label="课程编号" width="120px"/>
-            <el-table-column prop="name" label="课程名称" width="120px" />
-            <el-table-column prop="college" label="开课院系" width="120px"/>
-            <el-table-column prop="major" label="学时" width="120px"/>
-            <el-table-column prop="idNumber" label="学分" width="120px"/>
-            <el-table-column prop="phoneNumber" label="任课教师" width="120px"/>
-            <el-table-column prop="email" label="课程介绍" width="120px"/>
-            <el-table-column prop="state" label="上课时间" width="120px"/>
-            <el-table-column prop="email" label="上课地点" width="120px"/>
-            <el-table-column prop="state" label="选课容量" width="120px"/>
-            <el-table-column fixed="right" prop="icon" label="操作" width="170px">
+            <el-table-column prop="courseId" label="课程代码" width="120px"/>
+            <el-table-column prop="courseName" label="课程名称" width="120px" />
+            <el-table-column prop="schoolName" label="开课院系" width="120px"/>
+            <el-table-column prop="schoolId" label="学院代码" width="120px"/>
+            <el-table-column prop="classHour" label="学时" width="120px"/>
+            <el-table-column prop="credit" label="学分" width="120px"/>
+            <el-table-column prop="teacherName" label="任课教师" width="120px"/>
+            <el-table-column prop="teacherId" label="教师工号" width="120px"/>
+            <el-table-column prop="classTime" label="上课时间" width="120px"/>
+            <el-table-column prop="classPlace" label="上课地点" width="120px"/>
+            <el-table-column prop="capacity" label="选课容量" width="120px"/>
+            <el-table-column prop="introduction" label="课程介绍" />
+            <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="170px">
                 <div>
                     <el-button @click="editHandle(scope.row)">编辑</el-button>
-                    <el-popconfirm title="确认删除吗？">
-                        <template #reference>
-                            <el-button type="danger">删除</el-button>
-                        </template>
-                    </el-popconfirm>
+                    <el-button type="danger" @click="delHandle(scope.row.courseId)">删除</el-button>
                 </div>
             </el-table-column>
         </el-table>
@@ -65,19 +63,21 @@
                     <el-tag v-if="scope.row.request===3" type="danger" >删除</el-tag>
                 </template>
                 </el-table-column>
-                <el-table-column prop="id" label="课程编号" width="120px"/>
-                <el-table-column prop="name" label="课程名称" width="120px" />
-                <el-table-column prop="college" label="开课院系" width="120px"/>
-                <el-table-column prop="major" label="学时" width="120px"/>
-                <el-table-column prop="idNumber" label="学分" width="120px"/>
-                <el-table-column prop="phoneNumber" label="任课教师" width="120px"/>
-                <el-table-column prop="email" label="课程介绍" width="120px"/>
-                <el-table-column prop="state" label="上课时间" width="120px"/>
-                <el-table-column prop="email" label="上课地点" width="120px"/>
-                <el-table-column prop="state" label="选课容量" width="120px"/>
+                <el-table-column prop="courseId" label="课程代码" width="120px"/>
+                <el-table-column prop="courseName" label="课程名称" width="120px" />
+                <el-table-column prop="schoolName" label="开课院系" width="120px"/>
+                <el-table-column prop="schoolId" label="学院代码" width="120px"/>
+                <el-table-column prop="classHour" label="学时" width="120px"/>
+                <el-table-column prop="credit" label="学分" width="120px"/>
+                <el-table-column prop="teacherName" label="任课教师" width="120px"/>
+                <el-table-column prop="teacherId" label="教师工号" width="120px"/>
+                <el-table-column prop="classTime" label="上课时间" width="120px"/>
+                <el-table-column prop="classPlace" label="上课地点" width="120px"/>
+                <el-table-column prop="capacity" label="选课容量" width="120px"/>
+                <el-table-column prop="introduction" label="课程介绍" />
                 <el-table-column fixed="right" prop="icon" label="操作" width="170px">
                     <div>
-                        <el-button @click="editHandle(scope.row.id)">同意</el-button>
+                        <el-button >同意</el-button>
                         <el-button type="danger">拒绝</el-button>
                     </div>
                 </el-table-column>
@@ -113,8 +113,8 @@
                         <el-option v-for="item in teacherdata" :key="item.username" :label="item.username" :value="item.userId" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="学时" prop="courseHour">
-                    <el-input v-model="ruleForm1.courseHour"></el-input>
+                <el-form-item label="学时" prop="classHour">
+                    <el-input v-model="ruleForm1.classHour"></el-input>
                 </el-form-item>
                 <el-form-item label="学分" prop="credit">
                     <el-input v-model="ruleForm1.credit"></el-input>
@@ -133,10 +133,11 @@
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm1" >添加</el-button>
+                    <el-button type="primary" @click="submitaddcourse" >添加</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
+
         <el-dialog
                 id="update"
                 v-model="updatecourse"
@@ -166,8 +167,8 @@
                         <el-option v-for="item in teacherdata" :key="item.username" :label="item.username" :value="item.userId" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="学时" prop="courseHour">
-                    <el-input v-model="ruleForm1.courseHour"></el-input>
+                <el-form-item label="学时" prop="classHour">
+                    <el-input v-model="ruleForm1.classHour"></el-input>
                 </el-form-item>
                 <el-form-item label="学分" prop="credit">
                     <el-input v-model="ruleForm1.credit"></el-input>
@@ -186,7 +187,7 @@
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm1" >添加</el-button>
+                    <el-button type="primary" @click="submitupdatecourse" >修改</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>

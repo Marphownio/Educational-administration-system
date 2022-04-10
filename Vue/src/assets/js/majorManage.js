@@ -237,7 +237,6 @@ export default {
                         url: '/api/major/add',
                         data: params
                     }).then(res => {
-                        console.log(res);
                         if(res.data==='SUCCESS'){
                             this.$message({
                                 showClose: true,
