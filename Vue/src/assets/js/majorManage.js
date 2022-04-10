@@ -158,10 +158,7 @@ export default {
                     let params = new URLSearchParams();
                     params.append('schoolId', this.ruleForm1.schoolId);
                     params.append('schoolName', this.ruleForm1.schoolName);
-                    if(this.ruleForm1.introduction==='')
-                        params.append('introduction', "该学院暂无介绍");
-                    else
-                        params.append('introduction', this.ruleForm1.introduction);
+                    params.append('introduction', this.ruleForm1.introduction);
                     this.$axios({
                         method: 'post',
                         url: '/api/school/add',
@@ -213,10 +210,7 @@ export default {
                     let params = new URLSearchParams();
                     params.append('schoolId', this.ruleForm1.schoolId);
                     params.append('schoolName', this.ruleForm1.schoolName);
-                    if(this.ruleForm1.introduction==='')
-                        params.append('introduction', "该学院暂无介绍");
-                    else
-                        params.append('introduction', this.ruleForm1.introduction);
+                    params.append('introduction', this.ruleForm1.introduction);
                     this.$axios({
                         method: 'put',
                         url: '/api/school/update',
@@ -261,10 +255,7 @@ export default {
                     params.append('majorId', this.ruleForm2.majorId);
                     params.append('majorName', this.ruleForm2.majorName);
                     params.append('school', JSON.parse(this.ruleForm2.schoolId));
-                    if(this.ruleForm2.introduction==='')
-                        params.append('introduction', "该专业暂无介绍");
-                    else
-                        params.append('introduction', this.ruleForm2.introduction);
+                    params.append('introduction', this.ruleForm2.introduction);
                     this.$axios({
                         method: 'post',
                         url: '/api/major/add',
@@ -314,10 +305,7 @@ export default {
                     params.append('majorId', this.ruleForm2.majorId);
                     params.append('majorName', this.ruleForm2.majorName);
                     params.append('school', JSON.parse(this.ruleForm2.schoolId));
-                    if(this.ruleForm2.introduction==='')
-                        params.append('introduction', "该专业暂无介绍");
-                    else
-                        params.append('introduction', this.ruleForm2.introduction);
+                    params.append('introduction', this.ruleForm2.introduction);
                     this.$axios({
                         method: 'put',
                         url: '/api/major/update',
