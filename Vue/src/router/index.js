@@ -89,4 +89,48 @@ const router = createRouter({
   routes
 })
 
+router.beforeEach((to,from,next)=>{
+    let token=localStorage.getItem("token");
+    if(to.path==="/"){
+      next();
+    }
+    else if(token&&token!=="0"){
+      //管理员身份
+      if(token==="1"){
+        if(to.path==="/index_admin"||to.path==="/majormanage"||to.path==="/usermanage"||to.path==="/lessonmanage"||to.path==="/timemanage"||to.path==="/classroommanage"||to.path==="/selectmanage"){
+          next();
+        }
+        else{
+          alert("没有权限访问目标页面！")
+          next(from);
+        }
+      }
+      //教师身份
+      if(token==="2"){
+        if(to.path==="/index_teacher"||to.path==="/resetpassword"||to.path==="/teaclassmanage"||to.path==="/personalinfo"){
+          next();
+        }
+        else{
+          alert("没有权限访问目标页面！")
+          next(from);
+        }
+      }
+      //学生身份
+      if(token==="3"){
+        if(to.path==="/index_stu"||to.path==="/classselection"||to.path==="/resetpassword"||to.path==="/personalinfo"){
+          next();
+        }
+        else{
+          alert("没有权限访问目标页面！")
+          next(from);
+        }
+      }
+    }
+    //未登录情况
+    else if(!token||token==="0"){
+      alert("没有权限！请先登录！")
+      next("/");
+    }
+})
+
 export default router

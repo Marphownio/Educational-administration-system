@@ -38,22 +38,27 @@ export default {
                             }
                             else if(response==="SUCCESS_LOGIN_ADMIN"){
                                 //管理员登录
+                                localStorage.setItem("token","1");
                                 return that.$router.push({path: '/index_admin'});
                             }
                             else if(response==="SUCCESS_LOGIN_TEACHER_RESETPASSWORD") {
                                 //教师登录首次
+                                localStorage.setItem("token","2");
                                 return that.$router.push({path: '/resetpassword'});
                             }
                             else if(response==="SUCCESS_LOGIN_TEACHER") {
                                 //教师登录
+                                localStorage.setItem("token","2");
                                 return that.$router.push({path: '/index_teacher'});
                             }
                             else if(response==="SUCCESS_LOGIN_STUDENT_RESETPASSWORD") {
                                 //学生登录首次
+                                localStorage.setItem("token","3");
                                 return that.$router.push({path: '/resetpassword'});
                             }
                             else if(response==="SUCCESS_LOGIN_STUDENT") {
                                 //学生登录
+                                localStorage.setItem("token","3");
                                 return that.$router.push({path: '/index_stu'});
                             }
                         })

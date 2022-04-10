@@ -24,6 +24,7 @@ export default {
                 .then(function(res){
                     if(res==="SUCCESS"){
                         alert("成功退出！");
+                        localStorage.removeItem("token");
                         return that.$router.push({path: '/'});
                     }if(res==="FAILED"){
                         alert("退出失败！")
