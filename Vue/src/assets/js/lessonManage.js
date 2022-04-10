@@ -6,8 +6,9 @@ export default {
     },
     data(){
         return{
-            dialogVisible1:false,
-            dialogVisible2:false,
+            addcourse:false,
+            updatecourse:false,
+            checkcourse:false,
             schooldata:[],
             teacherdata:[],
             ruleForm1:{},

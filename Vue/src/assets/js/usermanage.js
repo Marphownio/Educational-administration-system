@@ -355,7 +355,6 @@ export default {
             this.ruleForm=obj;
         },
         delHandle(id){
-            console.log(id);
             this.$axios.delete("/api/user/"+id).then(res=> {
                 this.$message({
                     showClose: true,
