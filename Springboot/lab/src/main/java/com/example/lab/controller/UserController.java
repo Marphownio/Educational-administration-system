@@ -27,8 +27,8 @@ public class UserController {
 
     // 获取当前用户信息
     @GetMapping(value = "/info")
-    public User getUserInfo(HttpSession httpSession) {
-        return  userService.findUserByUserId(((User)httpSession.getAttribute("user")).getUserId()) ;
+    public User getUserInfo(HttpSession session) {
+        return  userService.findUserByUserId(((User)session.getAttribute("user")).getUserId());
     }
 
     @PostMapping(value = "/add")

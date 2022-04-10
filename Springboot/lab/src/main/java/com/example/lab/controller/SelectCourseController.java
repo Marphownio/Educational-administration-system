@@ -1,8 +1,10 @@
 package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.UserRole;
 import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.Student;
+import com.example.lab.pojo.entity.User;
 import com.example.lab.service.CourseService;
 import com.example.lab.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.HashSet;
 import java.util.Set;
 
 import static com.example.lab.LabApplication.admin;
@@ -47,12 +50,22 @@ public class SelectCourseController {
     // 学生获取可选的课程
     @GetMapping(value = "/selectable")
     public ResponseEntity<Set<Course>> getSelectableCourse(HttpSession session) {
-        if (admin.getCourseSelectionSystem()) {
-            Student currentUser = (Student) session.getAttribute("user");
-            Set<Course> selectableCourses = currentUser.getMajor().getCourses();
-            if (selectableCourses == null) {
+        if (admin.getCourseSelectionSystem() && session.getAttribute("user") != null && ((User)session.getAttribute("user")).getRole() == UserRole.STUDENT) {
+            Student currentUser =  userService.findStudentByStudentId(((User)session.getAttribute("user")).getUserId());
+            Set<Course> courses = currentUser.getMajor().getCourses();
+            Set<Course> selectableCourses = new HashSet<>();
+
+            if (courses.isEmpty()) {
                 return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
             } else {
+                for (Course course : courses) {
+                    if (!currentUser.getCourses().contains(course)) {
+                        selectableCourses.add(course);
+                    }
+                }
+                if (selectableCourses.isEmpty()) {
+                    return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+                }
                 return new ResponseEntity<>(selectableCourses, HttpStatus.OK);
             }
         }
