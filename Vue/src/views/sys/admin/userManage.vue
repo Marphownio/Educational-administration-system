@@ -78,12 +78,12 @@
                 <el-form-item label="身份证号" prop="idNumber" ref="idNumber">
                     <el-input v-model="ruleForm.idNumber"></el-input>
                 </el-form-item>
-                <el-form-item label="学院">
+                <el-form-item label="学院" prop="school">
                     <el-select v-model="ruleForm.school" placeholder="选择学院">
                         <el-option v-for="item in schooldata" :key="item.schoolId" :label="item.schoolName" :value="item.schoolId" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="专业">
+                <el-form-item label="专业" prop="major">
                     <el-select  v-model="ruleForm.major" placeholder="选择专业">
                         <el-option v-for="item in majordata" :key="item.id" :label="item.majorName" :value="item.majorId" />
                     </el-select>

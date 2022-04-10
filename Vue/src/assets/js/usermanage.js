@@ -122,6 +122,20 @@ export default {
                         trigger: 'change',
                     },
                 ],
+                school: [
+                    {
+                        required: true,
+                        message: '请选择学院',
+                        trigger: 'change',
+                    },
+                ],
+                major: [
+                    {
+                        required: true,
+                        message: '请选择专业',
+                        trigger: 'change',
+                    },
+                ],
             }),
             tableData : [
                 {
@@ -152,16 +166,12 @@ export default {
         getSchool:function(){
             request.get("/school/list").then(res=>{
                 this.schooldata= res;
-                this.ruleForm.school=res[0];
             })
-            this.ruleForm.school=this.schooldata[0];
         },
         getMajor:function(){
             request.get("/major/list").then(res=>{
                 this.majordata= res;
-                this.ruleForm.major=res[0];
             })
-
         },
         getUserForm(){
             request.get("/user/list").then(res=>{
@@ -177,7 +187,7 @@ export default {
             })
         },
         submitForm1(){
-            console.log(this.ruleForm.school)
+            console.log(this.ruleForm.email)
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
                     let params = new URLSearchParams();
@@ -201,12 +211,8 @@ export default {
                             this.$message({
                             showClose: true,
                             message: '该用户已存在',
-                            type: 'fail',
-                            onClose:()=>{
-                                this.getUserForm()
-                            }
+                            type: 'error',
                             });
-                        this.dialogVisible1=false;
                         }
                         if(res.data==='SUCCESS')
                         {
