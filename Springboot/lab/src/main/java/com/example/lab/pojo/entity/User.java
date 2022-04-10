@@ -34,6 +34,7 @@ public class User {
     private String phoneNumber;
 
     private String email;
+
     private Boolean status = true;
 
     @ManyToOne

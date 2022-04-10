@@ -30,7 +30,9 @@ public class Student extends User {
         this.setUsername(user.getUsername());
         this.setIdNumber(user.getIdNumber());
         this.setPhoneNumber(user.getPhoneNumber());
+        this.setEmail(user.getEmail());
         this.setStatus(user.getStatus());
+
         this.setSchool(new School());
         this.setMajor(new Major());
         this.getSchool().setSchoolId(user.getSchool().getSchoolId());
