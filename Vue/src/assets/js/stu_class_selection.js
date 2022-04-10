@@ -20,11 +20,14 @@ export default {
                 request.get("/course/selectable")
                     .then(function(res){
                             that.selectableData=res;
-                            console.log(res);
-                    },function (err) {
-                    alert("课程信息获取失败！");
-                    return false;
-                })
+                            // console.log(res.HttpStatus);
+                    }
+                    ,function (err) {
+                        // console.log(err.HttpStatus);
+                        alert("当前选课未开放！");
+                        return false;
+                }
+                )
         },
         stu_select(courseId){
             console.log(courseId);
@@ -32,7 +35,7 @@ export default {
             xuankeform.append('courseId', courseId);
             request.post("/course/select",xuankeform)
                 .then(function (response) {
-                    console.log(response);
+                    //console.log(response);
                     if (response === "FAILED") {
                         alert("选课失败！请重新尝试");
                         return false;
