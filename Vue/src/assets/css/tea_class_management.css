@@ -4,7 +4,7 @@
     flex-flow: column;
     border-radius: 15px;
     background-color: rgba(238, 237, 237, 0.698);
-    width: 90%;
+    width: 95%;
     height:500px;
     padding: 20px;
     margin-left: 55px;
@@ -15,7 +15,7 @@
 #teaclassinformtable{
     width: 100%;
     display: block;
-    border-radius: 25px;
+    border-radius: 5px;
 }
 #teawelcomeinform{
     margin-top: 20px;

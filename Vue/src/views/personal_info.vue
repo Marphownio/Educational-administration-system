@@ -24,10 +24,10 @@
     <el-descriptions-item class="item" label="专业">{{this.PersonalData.major}}</el-descriptions-item>
     <el-descriptions-item class="item" label="身份证号">{{this.PersonalData.idNumber}}</el-descriptions-item>
     <el-descriptions-item class="item" label="手机号">{{this.PersonalData.phoneNumber}}
-      <el-button class="verify" type="primary" @click="dialogVisible1=true">修改</el-button>
+      <el-button class="verify" type="primary" @click="shownewphone()">修改</el-button>
     </el-descriptions-item>
     <el-descriptions-item class="item" label="邮箱">{{this.PersonalData.email}}
-      <el-button class="verify" type="primary" @click="dialogVisible2=true">修改</el-button>
+      <el-button class="verify" type="primary" @click="showemail()">修改</el-button>
     </el-descriptions-item>
     <el-descriptions-item class="item" label="状态">
         <el-tag size="small">{{this.PersonalData.status}}</el-tag>

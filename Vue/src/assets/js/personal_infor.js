@@ -89,6 +89,24 @@ export default {
         this.getUserinfo()
     },
     methods:{
+        shownewphone(){
+            this.dialogVisible1=true;
+            if(this.PersonalData.phoneNumber==="暂无电话号码"){
+                this.ruleForm1.newphonenumber="";
+            }
+            else{
+                this.ruleForm1.newphonenumber=this.PersonalData.phoneNumber;
+            }
+        },
+        showemail(){
+            this.dialogVisible2=true;
+            if(this.PersonalData.email==="暂无邮箱地址"){
+                this.ruleForm2.newemailaddress="";
+            }
+            else{
+                this.ruleForm2.newemailaddress=this.PersonalData.email;
+            }
+        },
         getUserinfo(){
             request.get("/user/info").then(res=>{
                 console.log(res);
