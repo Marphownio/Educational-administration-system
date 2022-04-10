@@ -62,7 +62,7 @@
                 <template v-slot="scope">
                     <el-tag v-if="scope.row.type==='ADD'" type="success" >添加</el-tag>
                     <el-tag v-if="scope.row.type==='UPDATE'" >修改</el-tag>
-                    <el-tag v-if="scope.row.request==='DELETE'" type="danger" >删除</el-tag>
+                    <el-tag v-if="scope.row.type==='DELETE'" type="danger" >删除</el-tag>
                 </template>
                 </el-table-column>
                 <el-table-column prop="applicationId" v-if="false" />
@@ -93,6 +93,7 @@
                 v-model="addcourse"
                 title="添加课程"
                 width="600px"
+                @close="refresh"
         >
             <el-form
                     ref="ruleForm1"
@@ -152,6 +153,7 @@
                 v-model="updatecourse"
                 title="编辑课程信息"
                 width="600px"
+                @close="refresh"
         >
             <el-form
                     ref="ruleForm1"
