@@ -20,7 +20,7 @@ a:hover {
 }
 body{
     background-size:cover;
-    background: url("../images/background.jpg") no-repeat fixed;
+    background: url('../images/background.jpg') no-repeat fixed;
     min-width: 1400px;
 }
 
