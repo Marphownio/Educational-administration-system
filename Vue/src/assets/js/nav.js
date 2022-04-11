@@ -27,7 +27,8 @@ export default {
                         alert("成功退出！");
                         tokenmanage.remove("token");
                         return that.$router.push({path: '/'});
-                    }if(res==="FAILED"){
+                    }
+                    else if(res==="FAILED"){
                         alert("退出失败！")
                         return false;
                     }

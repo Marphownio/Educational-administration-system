@@ -75,19 +75,21 @@ export default {
                     }
                     request.post("/resetPassword",formData)
                         .then(function (response) {
-                            if(response=="FAILED"){
+                            if(response==="FAILED"){
                                 //密码重置失败
                                 alert("密码重置失败！请重新尝试");
                                 return that.$router.push({path: '/resetpassword'});
                             }
-                            else if(response=="SUCCESS_LOGIN_TEACHER"){
+                            else if(response==="SUCCESS_LOGIN_TEACHER"){
                                 //教师密码重置成功
                                 alert("密码重置成功！");
+                                console.log(response)
                                 return that.$router.push({path: '/index_teacher'});
                             }
-                            else if(response=="SUCCESS_LOGIN_STUDENT"){
+                            else if(response==="SUCCESS_LOGIN_STUDENT"){
                                 //学生密码重置成功
                                 alert("密码重置成功！");
+                                console.log(response)
                                 return that.$router.push({path: '/index_stu'});
                             }
                         },function (err){
