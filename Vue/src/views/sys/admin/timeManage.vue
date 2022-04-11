@@ -1,7 +1,7 @@
 <template>
 <Nav></Nav>
     <body>
-    <div class="ShowList">
+    <div class="showlist">
 
     <el-table :data="tableData"
               :header-cell-style="{'text-align':'center'}"
