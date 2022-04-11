@@ -143,6 +143,7 @@ export default {
         getMajorForm(){
             request.get("/major/list").then(res=>{
                 this.tableData2=res;
+                console.log(this.tableData2)
                 for(let i=0;i<Object.keys(this.tableData2).length;i++)
                 {
                     if(this.tableData2[i].school!==null){
@@ -150,6 +151,7 @@ export default {
                         this.tableData2[i].schoolId=this.tableData2[i].school.schoolId;
                 }
                 }
+                console.log(Object.keys(this.tableData2).length)
                 if(this.tableData2){
                     this.getForm2();
                 }
@@ -357,6 +359,7 @@ export default {
                 })
                 this.getSchoolForm();
                 this.getMajorForm();
+                this.$router.go(0)
             })
         },
         editHandle2(obj){
@@ -372,6 +375,7 @@ export default {
                     type: 'success',
                 })
                 this.getMajorForm();
+                this.$router.go(0)
             })
         },
         scrollToTop (node) {
