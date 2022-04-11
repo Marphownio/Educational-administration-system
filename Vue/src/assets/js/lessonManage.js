@@ -358,7 +358,6 @@ export default {
             }).then(res=>{
                 this.majordata= res;
             })
-            console.log(this.ruleForm1);
         },
         delHandle(id){
             this.$axios.delete("/api/course/"+id).then(res=> {

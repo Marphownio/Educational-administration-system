@@ -103,8 +103,6 @@ export default {
     created(){
         this.getSchoolForm();
         this.getMajorForm();
-        this.getForm1();
-        this.getForm2();
     },
 
     methods:{
@@ -138,6 +136,8 @@ export default {
         getSchoolForm(){
             request.get("/school/list").then(res=>{
                 this.tableData1=res;
+                if(this.tableData1)
+                    this.getForm1();
             })
         },
         getMajorForm(){
@@ -150,6 +150,9 @@ export default {
                         this.tableData2[i].schoolId=this.tableData2[i].school.schoolId;
                 }
                 }
+                if(this.tableData2){
+                    this.getForm2();
+                }
             })
         },
         submitaddschool() {
@@ -158,7 +161,10 @@ export default {
                     let params = new URLSearchParams();
                     params.append('schoolId', this.ruleForm1.schoolId);
                     params.append('schoolName', this.ruleForm1.schoolName);
-                    params.append('introduction', this.ruleForm1.introduction);
+                    if(this.ruleForm1.introduction==='')
+                        params.append('introduction', '该学院暂无描述信息');
+                    else
+                        params.append('introduction', this.ruleForm1.introduction);
                     this.$axios({
                         method: 'post',
                         url: '/api/school/add',
@@ -170,12 +176,9 @@ export default {
                                 showClose: true,
                                 message: '操作成功',
                                 type: 'success',
-                                onClose: () => {
-                                    this.getSchoolForm();
-                                    this.getDep();
-                                    this.getForm1();
-                                }
                             });
+                            this.getSchoolForm();
+                            this.getDep();
                             this.addschool = false;
                         }
                         else if(res.data==='EXIST')
@@ -210,7 +213,10 @@ export default {
                     let params = new URLSearchParams();
                     params.append('schoolId', this.ruleForm1.schoolId);
                     params.append('schoolName', this.ruleForm1.schoolName);
-                    params.append('introduction', this.ruleForm1.introduction);
+                    if(this.ruleForm1.introduction==='')
+                        params.append('introduction', '该学院暂无描述信息');
+                    else
+                        params.append('introduction', this.ruleForm1.introduction);
                     this.$axios({
                         method: 'put',
                         url: '/api/school/update',
@@ -222,12 +228,9 @@ export default {
                                     showClose: true,
                                     message: '操作成功',
                                     type: 'success',
-                                    onClose: () => {
-                                        this.getSchoolForm();
-                                        this.getDep();
-                                        this.getForm1();
-                                    }
                                 });
+                                this.getSchoolForm();
+                                this.getDep();
                                 this.updateschool = false;
                             }
                             else if(res.data==='FAILED')
@@ -255,7 +258,10 @@ export default {
                     params.append('majorId', this.ruleForm2.majorId);
                     params.append('majorName', this.ruleForm2.majorName);
                     params.append('school', JSON.parse(this.ruleForm2.schoolId));
-                    params.append('introduction', this.ruleForm2.introduction);
+                    if(this.ruleForm2.introduction==='')
+                        params.append('introduction', '该专业暂无描述信息');
+                    else
+                        params.append('introduction', this.ruleForm2.introduction);
                     this.$axios({
                         method: 'post',
                         url: '/api/major/add',
@@ -266,11 +272,8 @@ export default {
                                 showClose: true,
                                 message: '操作成功',
                                 type: 'success',
-                                onClose: () => {
-                                    this.getMajorForm()
-                                    this.getForm2();
-                                }
                             });
+                            this.getMajorForm()
                             this.addmajor = false;
                         }
                         else if(res.data==='EXIST')
@@ -305,7 +308,10 @@ export default {
                     params.append('majorId', this.ruleForm2.majorId);
                     params.append('majorName', this.ruleForm2.majorName);
                     params.append('school', JSON.parse(this.ruleForm2.schoolId));
-                    params.append('introduction', this.ruleForm2.introduction);
+                    if(this.ruleForm2.introduction==='')
+                        params.append('introduction', '该专业暂无描述信息');
+                    else
+                        params.append('introduction', this.ruleForm2.introduction);
                     this.$axios({
                         method: 'put',
                         url: '/api/major/update',
@@ -317,11 +323,8 @@ export default {
                                     showClose: true,
                                     message: '操作成功',
                                     type: 'success',
-                                    onClose: () => {
-                                        this.getMajorForm()
-                                        this.getForm2();
-                                    }
                                 });
+                                this.getMajorForm()
                                 this.updatemajor = false;
                             }
                             else if(res.data==='FAILED')
@@ -351,14 +354,9 @@ export default {
                     showClose: true,
                     message: '操作成功',
                     type: 'success',
-                    onClose: () => {
-                        this.getSchoolForm();
-                        this.getMajorForm();
-                        this.getDep();
-                        this.getForm1();
-                        this.getForm2();
-                    }
                 })
+                this.getSchoolForm();
+                this.getMajorForm();
             })
         },
         editHandle2(obj){
@@ -372,11 +370,8 @@ export default {
                     showClose: true,
                     message: '操作成功',
                     type: 'success',
-                    onClose: () => {
-                        this.getMajorForm()
-                        this.getForm2();
-                    }
                 })
+                this.getMajorForm();
             })
         },
         scrollToTop (node) {
