@@ -111,8 +111,8 @@ public class CourseServiceImpl implements CourseService {
                 course.setCourseName(item[1]);
                 course.setClassHour(new Integer(item[2]));
                 course.setCredit(new Integer(item[3]));
-                course.setClassTime(item[4]);
-                course.setClassPlace(item[5]);
+//                course.setClassTime(item[4]);
+//                course.setClassPlace(item[5]);
                 course.setCapacity(item[6]);
                 course.setIntroduction(item[7]);
                 course.setMajor(majorService.findMajorByMajorName(item[8]));
