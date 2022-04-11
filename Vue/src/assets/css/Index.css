@@ -12,20 +12,20 @@ body{/*背景图*/
     height: 60px;
     background-color: rgb(255,255,255,0.3);
 }
-.nav .banner_area{
+.nav .bannerarea{
     padding-top:20px;
     float:right;
     padding-right:20px;
     vertical-align: middle;
 }
 
-.Huanyin{/*欢迎页*/
+.huanyin{/*欢迎页*/
     padding-left: 10%;
     font-size:40px;
     font-weight: 500;
 }
 
-.Dashboard{/*功能选择页面*/
+.dashboard{/*功能选择页面*/
     top:25%;
     margin: 0 auto;
     width: 1235px;
@@ -41,7 +41,7 @@ a{/*超链接*/
     font-weight: 600;
 }
 
-.table_head{/*功能选择页面的首行文字*/
+.tablehead{/*功能选择页面的首行文字*/
     line-height: 70px;
     font-size: 22px;
     font-weight: 700;
@@ -54,7 +54,7 @@ table{/*功能选择页面*/
     border-spacing: 15px;
 }
 
-.Choose{/*具体的功能按钮*/
+.choose{/*具体的功能按钮*/
     background-color: rgba(238, 237, 237, 0);
     width:1%;
     height: 180px;
@@ -64,13 +64,13 @@ table{/*功能选择页面*/
     line-height:180px;
 }
 
-.Choose a{
+.choose a{
     display:block;
     height: 180px;
     border-radius: 10px;
     text-align: center;
 }
 
-.Choose:hover{/*鼠标点击功能按钮后*/
+.choose:hover{/*鼠标点击功能按钮后*/
     background-color: rgba(255, 255, 255, 0.9);
 }

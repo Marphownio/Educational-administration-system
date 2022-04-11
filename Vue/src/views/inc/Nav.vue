@@ -1,6 +1,6 @@
 <template>
     <nav class="nav1">
-        <div class="banner_area">
+        <div class="bannerarea">
           <div id="shouye" @click="mainpage()">首页</div>
             <el-dropdown placement="bottom-end">
                 <span class="el-dropdown-link">
