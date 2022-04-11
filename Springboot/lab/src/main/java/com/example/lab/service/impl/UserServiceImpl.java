@@ -6,6 +6,7 @@ import com.example.lab.pojo.entity.*;
 import com.example.lab.repository.StudentRepository;
 import com.example.lab.repository.TeacherRepository;
 import com.example.lab.repository.UserRepository;
+import com.example.lab.service.CommonService;
 import com.example.lab.service.MajorService;
 import com.example.lab.service.SchoolService;
 import com.example.lab.service.UserService;
@@ -15,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.*;
 import java.util.List;
-import java.util.Objects;
 
 // 用户的增删改查服务
 @Service
@@ -36,19 +36,16 @@ public class UserServiceImpl implements UserService {
     @Resource
     private MajorService majorService;
 
+    @Resource
+    private CommonService commonService;
+
     @Override
     public ResultMessage addUser(User user) {
         if (findUserByUserId(user.getUserId()) != null) {
             return ResultMessage.EXIST;
-        } else if (user.getRole() == null || user.getRole() == UserRole.ADMIN || user.getSchool() == null || user.getMajor() == null) {
+        } else if (user.getRole() == null || user.getRole() == UserRole.ADMIN || !commonService.isMatch(user.getSchool(), user.getMajor())) {
             return ResultMessage.FAILED;
-        }
-        else {
-            School school = schoolService.findSchoolBySchoolId(user.getSchool().getSchoolId());
-            Major major = majorService.findMajorByMajorId(user.getMajor().getMajorId());
-            if (school == null || major ==null || !(Objects.equals(major.getSchool().getSchoolId(), school.getSchoolId()))) {
-                return ResultMessage.FAILED;
-            }
+        } else {
             try {
                 if (user.getRole() == UserRole.TEACHER) {
                     teacherRepository.save(new Teacher(user));

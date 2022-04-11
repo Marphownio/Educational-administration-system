@@ -3,8 +3,7 @@ package com.example.lab.service.impl;
 import com.example.lab.pojo.entity.Application;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.repository.ApplicationRepository;
-import com.example.lab.service.ApplicationService;
-import com.example.lab.service.CourseService;
+import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,10 +18,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Resource
     private CourseService courseService;
 
+    @Resource
+    private CommonService commonService;
+
     // 教师申请增删改课程
     @Override
     public ResultMessage addApplication(Application application) {
-        if (application.getType() == null || application.getSchool() == null || application.getMajor() == null || application.getTeacher() == null) {
+        if (application.getType() == null || application.getSchool() == null || !commonService.isMatch(application.getSchool(), application.getMajor())) {
             return ResultMessage.FAILED;
         }
         switch (application.getType()) {

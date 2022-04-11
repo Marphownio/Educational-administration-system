@@ -3,6 +3,7 @@ package com.example.lab.service.impl;
 import com.example.lab.pojo.entity.*;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.repository.CourseRepository;
+import com.example.lab.service.CommonService;
 import com.example.lab.service.CourseService;
 import com.example.lab.service.MajorService;
 import com.example.lab.service.SchoolService;
@@ -28,10 +29,15 @@ public class CourseServiceImpl implements CourseService {
     @Resource
     private SchoolService schoolService;
 
+    @Resource
+    private CommonService commonService;
+
     @Override
     public ResultMessage addCourse(Course course) {
         if (findCourseByCourseId(course.getCourseId()) != null) {
             return ResultMessage.EXIST;
+        } else if (course.getTeacher() == null || !commonService.isMatch(course.getSchool(), course.getMajor())) {
+            return ResultMessage.FAILED;
         }
         else {
             try {
