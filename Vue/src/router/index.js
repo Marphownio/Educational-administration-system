@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
+import {createRouter, createWebHashHistory} from 'vue-router'
 import HomeView from '../views/Login'
 import tokenmanage from "@/utils/Tokenmanage";
 import ALERTMSG from "@/assets/js/alert";
