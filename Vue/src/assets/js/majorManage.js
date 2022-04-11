@@ -1,5 +1,5 @@
 import Nav from "@/views/inc/Nav.vue";
-import { computed, ref } from 'vue'
+//import { computed, ref } from 'vue';
 import request from "@/utils/request";
 
 export default {
@@ -126,7 +126,9 @@ export default {
         },
         refresh(){
             this.ruleForm1={};
+            this.ruleForm1.introduction='';
             this.ruleForm2={};
+            this.ruleForm2.introduction='';
         },
         getDep:function(){
             request.get("/school/list").then(res=>{
@@ -143,7 +145,6 @@ export default {
         getMajorForm(){
             request.get("/major/list").then(res=>{
                 this.tableData2=res;
-                console.log(this.tableData2)
                 for(let i=0;i<Object.keys(this.tableData2).length;i++)
                 {
                     if(this.tableData2[i].school!==null){
@@ -151,7 +152,6 @@ export default {
                         this.tableData2[i].schoolId=this.tableData2[i].school.schoolId;
                 }
                 }
-                console.log(Object.keys(this.tableData2).length)
                 if(this.tableData2){
                     this.getForm2();
                 }

@@ -11,10 +11,10 @@ export default {
                     building:'二号教学楼',
                     classroom:'H201'
                 },
-               //该部分后续通过定义接口实现，定义接口后可定义树形结构、直接修改表单值
             ]
         }
     },
+
     methods:{
 
     }

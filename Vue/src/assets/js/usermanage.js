@@ -1,6 +1,7 @@
 import Nav from "@/views/inc/Nav.vue";
-import Papa from "papaparse";
+//import Papa from "papaparse";
 import request from "@/utils/request";
+
 
 export default {
     name: "userManage",
@@ -165,25 +166,25 @@ export default {
         this.getUserForm();
     },
     methods:{
-        refresh(){
+        "refresh"(){
           this.ruleForm= {};
         },
-        getSchool:function(){
+        "getSchool":function(){
             request.get("/school/list").then(res=>{
                 this.schooldata= res;
             })
         },
-        getMajor:function(){
+        "getMajor":function(){
             request.get("/school/majors",{
-                params:{
-                    schoolId:this.ruleForm.schoolId
+                "params":{
+                    "schoolId":this.ruleForm.schoolId
                 }
             }).then(res=>{
                 this.majordata= res;
             })
             this.ruleForm.majorId=null;
         },
-        getUserForm(){
+        "getUserForm"(){
             request.get("/user/list").then(res=>{
                 this.tableData=res;
                 for(let i=0;i<Object.keys(this.tableData).length;i++)
@@ -201,7 +202,7 @@ export default {
                 }
             })
         },
-        submitForm1(){
+        "submitForm1"(){
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
                     let params = new URLSearchParams();
@@ -215,25 +216,25 @@ export default {
                     params.append('email', this.ruleForm.email);
                     params.append('status', this.ruleForm.status);
                     this.$axios({
-                        method: 'post',
-                        url:'/api/user/add',
-                        data:params,
+                        "method": 'post',
+                        "url":'/api/user/add',
+                        "data":params,
 
                     }).then(res=>{
                         if(res.data==='EXIST')
                         {
                             this.$message({
-                            showClose: true,
-                            message: '该用户已存在',
-                            type: 'error',
+                            "showClose": true,
+                            "message": '该用户已存在',
+                            "type": 'error',
                             });
                         }
                         if(res.data==='SUCCESS')
                         {
                             this.$message({
-                                showClose: true,
-                                message: '操作成功',
-                                type: 'success',
+                                "showClose": true,
+                                "message": '操作成功',
+                                "type": 'success',
                             });
                             this.getUserForm()
                             this.dialogVisible1=false;
@@ -247,7 +248,7 @@ export default {
                 }
             })
         },
-        submitForm2(){
+        "submitForm2"(){
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
                     let params = new URLSearchParams();
@@ -261,17 +262,17 @@ export default {
                     params.append('email', this.ruleForm.email);
                     params.append('status', this.ruleForm.status);
                     this.$axios({
-                        method: 'put',
-                        url:'/api/user/update',
-                        data:params,
+                        "method": 'put',
+                        "url":'/api/user/update',
+                        "data":params,
 
                     }).then(res=>{
                         if(res.data==='NOTFOUND')
                         {
                             this.$message({
-                                showClose: true,
-                                message: '该用户不存在',
-                                type: 'fail',
+                                "showClose": true,
+                                "message": '该用户不存在',
+                                "type": 'fail',
                             });
                             this.getUserForm()
                             this.dialogVisible2=false;
@@ -279,9 +280,9 @@ export default {
                         if(res.data==='SUCCESS')
                         {
                             this.$message({
-                                showClose: true,
-                                message: '操作成功',
-                                type: 'success',
+                                "showClose": true,
+                                "message": '操作成功',
+                                "type": 'success',
                             });
                             this.getUserForm()
                             this.dialogVisible2=false;
@@ -296,85 +297,154 @@ export default {
             })
         },
         handleChange(file) {
-            this.fileTemp = file.raw
-            if (this.fileTemp) {
-                if ((this.fileTemp.type === '.csv') || (this.fileTemp.type === 'application/vnd.ms-excel')) {
-                    this.importcsv(file.raw)
+                this.fileTemp = file.raw
+                if (this.fileTemp) {
+                    if ((this.fileTemp.type === '.csv') || (this.fileTemp.type === 'application/vnd.ms-excel')) {
+                        request.post("/user/batchimport",)
+                    } else {
+                        this.$message({
+                            type: 'warning',
+                            message: '附件格式错误，请删除后重新上传！'
+                        })
+                    }
                 } else {
                     this.$message({
                         type: 'warning',
-                        message: '附件格式错误，请删除后重新上传！'
+                        message: '请上传附件！'
                     })
                 }
-            } else {
-                this.$message({
-                    type: 'warning',
-                    message: '请上传附件！'
-                })
-            }
-        },
-        importcsv (obj) {
-            request.post("",obj).then(res=>{
-                if(res.data==='NOTFOUND')
-                {
-                    this.$message({
-                        showClose: true,
-                        message: '无法获取文件',
-                        type: 'fail',
-                    });
-                }
-                else if(res.data==='SUCCESS')
-                {
-                    this.$message({
-                        showClose: true,
-                        message: '操作成功',
-                        type: 'success',
-                    });
-                }
-                else if(res.data==='FAILED')
-                {
-                    this.$message({
-                        showClose: true,
-                        message: '操作失败',
-                        type: 'error',
-                    });
-                }
-            })
-        },
-        editHandle(obj){
+            },
+        // submitForm3(){
+        //     console.log(this.ruleForm)
+        //     this.$refs.ruleForm.validate(valid=>{
+        //         console.log(this.ruleForm)
+        //         if(valid){
+        //             let params = new URLSearchParams();
+        //             params.append('userId', this.ruleForm.userId);
+        //             params.append('role', this.ruleForm.role);
+        //             params.append('school', JSON.parse(this.ruleForm.schoolId));
+        //             params.append('major', JSON.parse(this.ruleForm.majorId));
+        //             params.append('idNumber', this.ruleForm.idNumber);
+        //             params.append('username', this.ruleForm.username);
+        //             params.append('phoneNumber', this.ruleForm.phoneNumber);
+        //             params.append('email', this.ruleForm.email);
+        //             params.append('status', this.ruleForm.status);
+        //             this.$axios({
+        //                 method: 'post',
+        //                 url:'/api/user/add',
+        //                 data:params,
+        //
+        //             }).then(res=>{
+        //                 if(res.data==='EXIST')
+        //                 {
+        //                     this.$message({
+        //                         showClose: true,
+        //                         message: '该用户已存在',
+        //                         type: 'error',
+        //                     });
+        //                 }
+        //                 if(res.data==='FAILED')
+        //                 {
+        //                     this.$message({
+        //                         showClose: true,
+        //                         message: '添加失败',
+        //                         type: 'error',
+        //                     });
+        //                 }
+        //                 if(res.data==='SUCCESS')
+        //                 {
+        //                     this.$message({
+        //                         showClose: true,
+        //                         message: '操作成功',
+        //                         type: 'success',
+        //                     });
+        //                     this.getUserForm()
+        //                 }
+        //             })
+        //         }
+        //         else{
+        //             this.$nextTick(() => {
+        //                 this.scrollToTop(this.$refs.ruleForm.$el)
+        //             })
+        //         }
+        //     })
+        // },
+        // handleChange(file) {
+        //     this.fileTemp = file.raw
+        //     if (this.fileTemp) {
+        //         if ((this.fileTemp.type === '.csv') || (this.fileTemp.type === 'application/vnd.ms-excel')) {
+        //             this.importcsv(file.raw)
+        //         } else {
+        //             this.$message({
+        //                 type: 'warning',
+        //                 message: '附件格式错误，请删除后重新上传！'
+        //             })
+        //         }
+        //     } else {
+        //         this.$message({
+        //             type: 'warning',
+        //             message: '请上传附件！'
+        //         })
+        //     }
+        // },
+        // importcsv (obj) {
+        //     const _this=this
+        //     Papa.parse(obj, {
+        //         complete (results) {
+        //             for (let i = 1; i < results.data.length-1; i++) {  //i=0为标题栏，最后一行为空栏
+        //                 _this.ruleForm.userId = results.data[i][0]
+        //                 _this.ruleForm.role = results.data[i][1]
+        //                 _this.ruleForm.username = results.data[i][2]
+        //                 if(results.data[i][3]==='TRUE'||results.data[i][3]==='true')
+        //                     _this.ruleForm.status=true;
+        //                 else if(results.data[i][3]==='FALSE'||results.data[i][3]==='false')
+        //                     _this.ruleForm.status=false;
+        //                 _this.ruleForm.schoolId=parseInt(results.data[i][4])
+        //                 _this.ruleForm.majorId=parseInt(results.data[i][5])
+        //                 _this.ruleForm.idNumber=results.data[i][6]
+        //                 _this.ruleForm.phoneNumber=results.data[i][7]
+        //                 _this.ruleForm.email=results.data[i][8]
+        //                 console.log(i)
+        //                 console.log(_this.ruleForm);
+        //                 _this.submitForm3();
+        //             }
+        //         }
+        //     })
+        // },
+        "editHandle"(obj){
             this.dialogVisible2=true;
             this.ruleForm=obj;
         },
-        delHandle(id){
+        "delHandle"(id){
             this.$axios.delete("/api/user/"+id).then(res=> {
                 if(res.data==='NOTFOUND')
                 {
                     this.$message({
-                        showClose: true,
-                        message: '该用户不存在',
-                        type: 'fail',
+                        "showClose": true,
+                        "message": '该用户不存在',
+                        "type": 'fail',
                     });
                 }
                 else if(res.data==='SUCCESS')
                 {
                     this.$message({
-                        showClose: true,
-                        message: '操作成功',
-                        type: 'success',
+                        "showClose": true,
+                        "message": '操作成功',
+                        "type": 'success',
                     });
                     this.getUserForm()
                 }
                 else if(res.data==='FAILED')
                 {
                     this.$message({
-                        showClose: true,
-                        message: '操作失败',
-                        type: 'error',
+                        "showClose": true,
+                        "message": '操作失败',
+                        "type": 'error',
                     });
                 }
             })
         },
-        scrollToTop (node) {
+        "scrollToTop"(node) {
             const ChildHasError = Array.from(node.querySelectorAll('.is-error'))
             if (!ChildHasError.length) throw new Error('有错误，但是找不到错误位置')
         }

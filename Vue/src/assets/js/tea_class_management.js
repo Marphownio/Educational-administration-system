@@ -1,5 +1,6 @@
 import Nav from "@/views/inc/Nav.vue";
 import request from "@/utils/request";
+import ALERTMSG from "@/assets/js/alert";
 
 export default {
     name: "teaclassmanage",
@@ -100,6 +101,7 @@ export default {
         apply_new_class(){
             this.$refs.ruleForm1.validate((valid) => {
                 if (valid) {
+                    const that =this;
                     this.applicationform.courseName=this.ruleForm1.courseName
                     this.applicationform.classTime=this.ruleForm1.classTime
                     this.applicationform.classPlace=this.ruleForm1.classPlace;
@@ -116,12 +118,12 @@ export default {
                     for(let key in this.applicationform) {
                         applyclassform.append(key,this.applicationform[key]);
                     }
-                    console.log(applyclassform);
                     request.post("/application/add",applyclassform)
                         .then(function (response) {
-                            alert("申请新课程成功！");
+                            ALERTMSG.show(that,true,"申请新课程成功!","success");
+
                         }, function (err) {
-                            alert("申请新课程失败！请重新尝试！");
+                            ALERTMSG.show(that,true,"申请新课程失败！请重新尝试！","error");
                             return false;
                         });
                 }
@@ -148,6 +150,7 @@ export default {
         submit_edit(){
             this.$refs.ruleForm.validate((valid) => {
                     if (valid) {
+                        const that=this;
                         this.applicationform.courseName=this.ruleForm.courseName;
                         this.applicationform.classTime=this.ruleForm.classTime;
                         this.applicationform.classPlace=this.ruleForm.classPlace;
@@ -158,9 +161,9 @@ export default {
                         }
                         request.post("/application/add",editclassform)
                             .then(function (response) {
-                                alert("课程编辑申请成功！");
+                                ALERTMSG.show(that,true,"课程编辑申请成功!","success");
                             }, function (err) {
-                                alert("课程编辑申请失败！请重新尝试！");
+                                ALERTMSG.show(that,true,"课程编辑申请失败！请重新尝试！","error");
                                 return false;
                             });
                     }
@@ -171,15 +174,17 @@ export default {
 
         },
         get_class_infor(){
+            const that =this;
             request.get("/course/list")
                 .then(res=>{
                     this.tableData=res;
                 },function (err) {
-                        alert("课程信息获取失败！");
-                        return false;
+                    ALERTMSG.show(that,true,"课程信息获取失败！","error");
+                    return false;
                 });
         },
         tea_delete(row){
+            const that=this;
             this.applicationform.applicationId=row.courseId;
             this.applicationform.courseName=row.courseName;
             this.applicationform.classHour=row.classHour;
@@ -198,9 +203,9 @@ export default {
             }
             request.post("/application/add",deleteclassform)
                 .then(function (response) {
-                    alert("课程删除申请成功！")
+                    ALERTMSG.show(that,true,"课程删除申请成功！","success");
                 }, function (err) {
-                    alert("课程删除申请失败！请重新尝试！");
+                    ALERTMSG.show(that,true,"课程删除申请失败！请重新尝试！","error");
                     return false;
                 });
         },

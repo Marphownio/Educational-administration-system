@@ -97,14 +97,6 @@ export default {
             ],
             applicationData:[
                 {
-                    request:2,
-                    id: 1,
-                    name: '课程1',
-                },
-                {
-                    request:1,
-                    id: 2,
-                    name: '课程2',
                 },
             ]
         }
@@ -123,8 +115,26 @@ export default {
         },
         getapplicationData(){
             request.get("/application/list").then(res=>{
-                //console.log(res);
+                console.log(res);
                 this.applicationData=res;
+                for(let i=0;i<Object.keys(this.applicationData).length;i++)
+                {
+                    if(this.applicationData[i].school!==null)
+                    {
+                        this.applicationData[i].schoolName=this.applicationData[i].school.schoolName;
+                        this.applicationData[i].schoolId=this.applicationData[i].school.schoolId;
+                    }
+                    if(this.applicationData[i].major!==null)
+                    {
+                        this.applicationData[i].majorName=this.applicationData[i].major.majorName;
+                        this.applicationData[i].majorId=this.applicationData[i].major.majorId;
+                    }
+                    if(this.applicationData[i].teacher!==null)
+                    {
+                        this.applicationData[i].teacherName=this.applicationData[i].teacher.username;
+                        this.applicationData[i].teacherId=this.applicationData[i].teacher.userId;
+                    }
+                }
             })
         },
         getMajor:function(){

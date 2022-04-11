@@ -7,7 +7,7 @@
   <Nav></Nav>
   <div id="formbiao">
   <el-form
-      id="Preset"
+      id="presetform"
       ref="rpwruleForm"
       :model="rpwruleForm"
       :rules="rpweditRules"

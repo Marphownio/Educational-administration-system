@@ -26,7 +26,7 @@
                 </el-upload>
             </el-form-item>
         </el-form>
-        <el-table :data="tableData" >
+        <el-table id="eltable" :data="tableData" >
             <el-table-column fixed prop="userId" label="学号/工号" width="120px"/>
             <el-table-column prop="role" label="身份" width="120px" />
             <el-table-column prop="username" label="姓名" width="120px" />

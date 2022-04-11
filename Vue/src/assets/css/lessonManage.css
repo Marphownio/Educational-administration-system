@@ -20,7 +20,7 @@ a:hover {
 }
 body{
     background-size:cover;
-    background: url(../images/background.jpg) no-repeat fixed;
+    background: url('../images/background.jpg') no-repeat fixed;
     min-width: 1400px;
 }
 
@@ -35,26 +35,26 @@ body{
     padding: 15px;
 }
 
-.function_list{
+.functionlist{
     float:right;
     letter-spacing: 10px;
     margin-right: 50px;
     padding: 5px;
 }
 
-.role_list{
+.rolelist{
     float: left;
     margin-left: 50px;
     padding: 5px;
 }
 
-.showlist_header button{
+.showlistheader button{
     width: 70px;
     height:30px;
     background-color:wheat;
 }
 
-.showlist_header a{
+.showlistheader a{
     border: black 2px solid;
     background-color:wheat;
     display: inline-block;
@@ -63,7 +63,7 @@ body{
     margin: 0  auto;
 }
 
-.showlist_header{
+.showlistheader{
     height:40px;
     width: 1200px;
     border-bottom: 2px ;
@@ -71,7 +71,7 @@ body{
     border-bottom: solid;
 }
 
-.showlist_content{
+.showlistcontent{
     text-align: center;
     table-layout: fixed;
 }

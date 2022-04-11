@@ -1,5 +1,6 @@
 import request from "@/utils/request";
 import Nav from "@/views/inc/Nav";
+import ALERTMSG from "@/assets/js/alert";
 
 export default {
     name: "resetpasswords",
@@ -75,23 +76,23 @@ export default {
                     }
                     request.post("/resetPassword",formData)
                         .then(function (response) {
-                            if(response=="FAILED"){
+                            if(response==="FAILED"){
                                 //密码重置失败
-                                alert("密码重置失败！请重新尝试");
+                                ALERTMSG.show(that,true,"密码重置失败！请重新尝试!","error");
                                 return that.$router.push({path: '/resetpassword'});
                             }
-                            else if(response=="SUCCESS_LOGIN_TEACHER"){
+                            else if(response==="SUCCESS_LOGIN_TEACHER"){
                                 //教师密码重置成功
-                                alert("密码重置成功！");
+                                ALERTMSG.show(that,true,"密码重置成功!","success");
                                 return that.$router.push({path: '/index_teacher'});
                             }
-                            else if(response=="SUCCESS_LOGIN_STUDENT"){
+                            else if(response==="SUCCESS_LOGIN_STUDENT"){
                                 //学生密码重置成功
-                                alert("密码重置成功！");
+                                ALERTMSG.show(that,true,"密码重置成功!","success");
                                 return that.$router.push({path: '/index_stu'});
                             }
                         },function (err){
-                            alert("密码重置失败！请重新尝试");
+                            ALERTMSG.show(that,true,"密码重置失败！请重新尝试!","error");
                             return false;
                         })
                 }
