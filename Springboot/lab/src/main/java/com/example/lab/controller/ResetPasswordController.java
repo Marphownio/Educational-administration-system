@@ -22,11 +22,11 @@ public class ResetPasswordController {
 
         User user = userService.findUserByUserId(((User)session.getAttribute("user")).getUserId());
 
-        if(newPassword.equals(user.getUserPassword())) {
+        if(newPassword.equals(user.getPassword())) {
             return ResultMessage.FAILED;
         }
         else {
-            user.setUserPassword(newPassword);
+            user.setPassword(newPassword);
             try {
                 userService.updateUser(user);
                 ResultMessage resultMessage;

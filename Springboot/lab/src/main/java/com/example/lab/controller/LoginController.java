@@ -26,7 +26,7 @@ public class LoginController {
 
         ResultMessage resultMessage;
         if (userId.matches("^\\d{6}$") || userId.matches("^\\d{8}$")) {
-            if (admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getUserPassword())) {
+            if (admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getPassword())) {
                 session.setAttribute("user", admin);
                 resultMessage = ResultMessage.SUCCESS_LOGIN_ADMIN;
             }
@@ -35,16 +35,16 @@ public class LoginController {
                 Student student = userService.findStudentByStudentId(parseInt(userId));
                 if (teacher != null && student != null) {
                     resultMessage = ResultMessage.FAILED;
-                } else if (teacher != null && teacher.getUserPassword().equals(password) && teacher.getStatus()) {
+                } else if (teacher != null && teacher.getPassword().equals(password) && teacher.getStatus()) {
                     session.setAttribute("user", teacher);
-                    if (teacher.getUserPassword().equals("fudan123456")) {
+                    if (teacher.getPassword().equals("fudan123456")) {
                         resultMessage = ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD;
                     } else {
                         resultMessage = ResultMessage.SUCCESS_LOGIN_TEACHER;
                     }
-                } else if (student != null && student.getUserPassword().equals(password) && student.getStatus()) {
+                } else if (student != null && student.getPassword().equals(password) && student.getStatus()) {
                     session.setAttribute("user", student);
-                    if (student.getUserPassword().equals("fudan123456")) {
+                    if (student.getPassword().equals("fudan123456")) {
                         resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD;
                     } else {
                         resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT;

@@ -20,7 +20,7 @@ public class User {
     private Integer userId;
 
     @Column(length = 32)
-    private String userPassword = "fudan123456";
+    private String password = "fudan123456";
 
     @Column(nullable = false)
     private UserRole role;
