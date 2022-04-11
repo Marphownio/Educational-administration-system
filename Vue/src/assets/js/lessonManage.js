@@ -352,6 +352,7 @@ export default {
         editHandle(obj){
             this.updatecourse=true;
             this.ruleForm1=obj;
+            console.log(this.ruleForm1)
             request.get("/school/majors",{
                 params:{
                     schoolId:this.ruleForm1.schoolId

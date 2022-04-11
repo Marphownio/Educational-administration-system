@@ -30,7 +30,6 @@ public class User {
     @Column(length = 18, unique = true)
     private String idNumber;
 
-    @Column(length = 11)
     private String phoneNumber;
 
     private String email;
