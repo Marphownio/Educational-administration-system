@@ -22,20 +22,22 @@ public class MajorServiceImpl implements MajorService {
 
     @Override
     public ResultMessage addMajor(Major major) {
+        ResultMessage resultMessage;
         if (findMajorByMajorId(major.getMajorId()) != null) {
-            return ResultMessage.EXIST;
+            resultMessage = ResultMessage.EXIST;
         } else if(major.getSchool() == null || schoolService.findSchoolBySchoolId(major.getSchool().getSchoolId()) == null) {
-            return ResultMessage.FAILED;
+            resultMessage = ResultMessage.FAILED;
         }
         else {
             try {
                 majorRepository.save(major);
-                return ResultMessage.SUCCESS;
+                resultMessage = ResultMessage.SUCCESS;
             }
             catch (Exception exception) {
-                return ResultMessage.FAILED;
+                resultMessage = ResultMessage.FAILED;
             }
         }
+        return resultMessage;
     }
 
     @Override

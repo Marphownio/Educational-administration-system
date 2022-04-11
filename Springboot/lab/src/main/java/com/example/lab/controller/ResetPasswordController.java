@@ -29,14 +29,16 @@ public class ResetPasswordController {
             user.setPassword(newPassword);
             try {
                 userService.updateUser(user);
+                ResultMessage resultMessage;
                 switch (user.getRole()) {
                     case TEACHER:
-                        return ResultMessage.SUCCESS_LOGIN_TEACHER;
+                        resultMessage = ResultMessage.SUCCESS_LOGIN_TEACHER; break;
                     case STUDENT:
-                        return ResultMessage.SUCCESS_LOGIN_STUDENT;
+                        resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT; break;
                     default:
-                        return ResultMessage.FAILED;
+                        resultMessage = ResultMessage.FAILED; break;
                 }
+                return resultMessage;
             }
             catch (Exception exception) {
                 return ResultMessage.FAILED;

@@ -24,29 +24,35 @@ public class ApplicationServiceImpl implements ApplicationService {
     // 教师申请增删改课程
     @Override
     public ResultMessage addApplication(Application application) {
+        ResultMessage resultMessage;
         if (application.getType() == null || application.getSchool() == null || !commonService.isMatch(application.getSchool(), application.getMajor())) {
-            return ResultMessage.FAILED;
-        }
-        switch (application.getType()) {
-            case ADD:
-                if (courseService.findCourseByCourseId(application.getApplicationId()) != null) {
-                    return ResultMessage.EXIST;
+            resultMessage = ResultMessage.FAILED;
+        } else {
+            resultMessage = ResultMessage.SUCCESS;
+            switch (application.getType()) {
+                case ADD:
+                    if (courseService.findCourseByCourseId(application.getApplicationId()) != null) {
+                        resultMessage = ResultMessage.EXIST;
+                    }
+                    break;
+                case DELETE:
+                case UPDATE:
+                    if (courseService.findCourseByCourseId(application.getApplicationId()) == null) {
+                        resultMessage = ResultMessage.NOTFOUND;
+                    }
+                    break;
+                default:
+                    resultMessage = ResultMessage.FAILED; break;
+            }
+            if(resultMessage == ResultMessage.SUCCESS) {
+                try {
+                    applicationRepository.save(application);
+                } catch (Exception exception) {
+                    resultMessage = ResultMessage.FAILED;
                 }
-                break;
-            case DELETE:
-            case UPDATE:
-                if (courseService.findCourseByCourseId(application.getApplicationId()) == null) {
-                    return ResultMessage.NOTFOUND;
-                }
-                break;
+            }
         }
-        try {
-            applicationRepository.save(application);
-            return ResultMessage.SUCCESS;
-        }
-        catch (Exception exception){
-            return ResultMessage.FAILED;
-        }
+        return resultMessage;
     }
 
     // 教师取消申请或管理员处理完申请后将其删除

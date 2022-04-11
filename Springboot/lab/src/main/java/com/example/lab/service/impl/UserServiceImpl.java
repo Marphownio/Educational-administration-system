@@ -41,25 +41,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultMessage addUser(User user) {
+        ResultMessage resultMessage;
         if (findUserByUserId(user.getUserId()) != null) {
-            return ResultMessage.EXIST;
+            resultMessage = ResultMessage.EXIST;
         } else if (user.getRole() == null || user.getRole() == UserRole.ADMIN || !commonService.isMatch(user.getSchool(), user.getMajor())) {
-            return ResultMessage.FAILED;
+            resultMessage = ResultMessage.FAILED;
         } else {
             try {
                 if (user.getRole() == UserRole.TEACHER) {
                     teacherRepository.save(new Teacher(user));
-                    return ResultMessage.SUCCESS;
+                    resultMessage = ResultMessage.SUCCESS;
                 } else if (user.getRole() == UserRole.STUDENT) {
                     studentRepository.save(new Student(user));
-                    return ResultMessage.SUCCESS;
+                    resultMessage = ResultMessage.SUCCESS;
                 } else {
-                    return ResultMessage.FAILED;
+                    resultMessage = ResultMessage.FAILED;
                 }
             } catch (Exception exception) {
-                return ResultMessage.FAILED;
+                resultMessage = ResultMessage.FAILED;
             }
         }
+        return resultMessage;
     }
 
     @Override
@@ -98,50 +100,52 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultMessage deleteUser(Integer userId) {
+        ResultMessage resultMessage;
         if (findUserByUserId(userId) == null) {
-            return ResultMessage.NOTFOUND;
-        }
-        else {
+            resultMessage = ResultMessage.NOTFOUND;
+        } else {
             try {
                 if(findTeacherByTeacherId(userId) != null) {
                     teacherRepository.deleteById(userId);
-                    return ResultMessage.SUCCESS;
+                    resultMessage = ResultMessage.SUCCESS;
                 } else if (findStudentByStudentId(userId) != null) {
                     studentRepository.deleteById(userId);
-                    return ResultMessage.SUCCESS;
+                    resultMessage = ResultMessage.SUCCESS;
+                } else {
+                    resultMessage = ResultMessage.FAILED;
                 }
-                return ResultMessage.FAILED;
-            }
-            catch (Exception exception) {
-                return ResultMessage.FAILED;
+            } catch (Exception exception) {
+                resultMessage = ResultMessage.FAILED;
             }
         }
+        return resultMessage;
     }
 
     @Override
     public ResultMessage updateUser(User user) {
+        ResultMessage resultMessage;
         if (findUserByUserId(user.getUserId()) == null) {
-            return ResultMessage.NOTFOUND;
-        }
-        else {
+            resultMessage = ResultMessage.NOTFOUND;
+        } else {
             if (user.getSchool() == null || user.getMajor() == null || user.getSchool().getMajors().contains(user.getMajor())) {
-                return ResultMessage.FAILED;
-            }
-            try {
-                if (user.getRole() == UserRole.TEACHER) {
-                    teacherRepository.save(new Teacher(user));
-                    return ResultMessage.SUCCESS;
-                } else if (user.getRole() == UserRole.STUDENT) {
-                    studentRepository.save(new Student(user));
-                    return ResultMessage.SUCCESS;
-                } else {
-                    return ResultMessage.FAILED;
+                resultMessage = ResultMessage.FAILED;
+            } else {
+                try {
+                    if (user.getRole() == UserRole.TEACHER) {
+                        teacherRepository.save(new Teacher(user));
+                        resultMessage = ResultMessage.SUCCESS;
+                    } else if (user.getRole() == UserRole.STUDENT) {
+                        studentRepository.save(new Student(user));
+                        resultMessage = ResultMessage.SUCCESS;
+                    } else {
+                        resultMessage = ResultMessage.FAILED;
+                    }
+                } catch (Exception exception) {
+                    resultMessage = ResultMessage.FAILED;
                 }
             }
-            catch (Exception exception) {
-                return ResultMessage.FAILED;
-            }
         }
+        return resultMessage;
     }
 
     // 查询全部用户

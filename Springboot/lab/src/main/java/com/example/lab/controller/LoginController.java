@@ -24,33 +24,40 @@ public class LoginController {
     @PostMapping(value = "/login")
     public ResultMessage login(@RequestParam(value = "loginid") String userId, @RequestParam(value = "loginpw") String password , HttpSession session) {
 
+        ResultMessage resultMessage;
         if (userId.matches("^\\d{6}$") || userId.matches("^\\d{8}$")) {
             if (admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getPassword())) {
                 session.setAttribute("user", admin);
-                return ResultMessage.SUCCESS_LOGIN_ADMIN;
-            } else {
+                resultMessage = ResultMessage.SUCCESS_LOGIN_ADMIN;
+            }
+            else {
                 Teacher teacher = userService.findTeacherByTeacherId(parseInt(userId));
                 Student student = userService.findStudentByStudentId(parseInt(userId));
-                if(teacher != null && student != null) {
-                    return ResultMessage.FAILED;
-                }
-                if (teacher != null && teacher.getPassword().equals(password) && teacher.getStatus()) {
+                if (teacher != null && student != null) {
+                    resultMessage = ResultMessage.FAILED;
+                } else if (teacher != null && teacher.getPassword().equals(password) && teacher.getStatus()) {
                     session.setAttribute("user", teacher);
                     if (teacher.getPassword().equals("fudan123456")) {
-                        return ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD;
+                        resultMessage = ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD;
                     } else {
-                        return ResultMessage.SUCCESS_LOGIN_TEACHER;
+                        resultMessage = ResultMessage.SUCCESS_LOGIN_TEACHER;
                     }
                 } else if (student != null && student.getPassword().equals(password) && student.getStatus()) {
                     session.setAttribute("user", student);
                     if (student.getPassword().equals("fudan123456")) {
-                        return ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD;
+                        resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD;
                     } else {
-                        return ResultMessage.SUCCESS_LOGIN_STUDENT;
+                        resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT;
                     }
+                }
+                else {
+                    resultMessage = ResultMessage.FAILED;
                 }
             }
         }
-        return ResultMessage.FAILED;
+        else {
+            resultMessage = ResultMessage.FAILED;
+        }
+        return resultMessage;
     }
 }
