@@ -35,7 +35,7 @@ public interface UserService {
     User findUserByUserId(Integer userId);
 
     // 通过名称查询用户
-    User findUserByUserName(String username);
+    List<User> findUserByUserName(String username);
 
     // 通过id查询教师
     Teacher findTeacherByTeacherId(Integer teacherId);

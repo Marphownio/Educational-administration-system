@@ -165,8 +165,8 @@ public class UserServiceImpl implements UserService {
 
     // 通过姓名查询用户
     @Override
-    public User findUserByUserName(String username) {
-        return userRepository.findByUsername(username);
+    public List<User> findUserByUserName(String username) {
+        return userRepository.findAllByUsername(username);
     }
 
     // 通过id查询教师

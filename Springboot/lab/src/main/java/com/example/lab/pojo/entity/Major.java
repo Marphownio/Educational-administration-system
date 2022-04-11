@@ -20,6 +20,7 @@ public class Major {
     @Column(name = "major_id")
     private Integer majorId;
 
+    @Column(unique = true)
     private String majorName;
 
     @Column(length = 1024)

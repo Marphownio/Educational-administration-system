@@ -1,7 +1,6 @@
 package com.example.lab.service.impl;
 
 import com.example.lab.pojo.ApplicationType;
-import com.example.lab.pojo.UserRole;
 import com.example.lab.pojo.entity.*;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.service.*;
@@ -14,15 +13,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Resource
     private CourseService courseService;
-
-    @Resource
-    private MajorService majorService;
-
-    @Resource
-    private SchoolService schoolService;
-
-    @Resource
-    private UserService userService;
 
     @Resource
     private ApplicationService applicationService;
@@ -40,13 +30,6 @@ public class AdminServiceImpl implements AdminService {
         }
         Course course = new Course();
         if (application.getType() != ApplicationType.DELETE) {
-//            School school = schoolService.findSchoolBySchoolId(application.getSchoolId());
-//            Major major = majorService.findMajorByMajorId(application.getMajorId());
-//            Teacher teacher = userService.findTeacherByTeacherId(application.getTeacherId());
-//            if (school == null || major == null || teacher == null || teacher.getRole() != UserRole.TEACHER) {
-//               return ResultMessage.FAILED;
-//            }
-
             course.setCourseId(application.getApplicationId());
             course.setCourseName(application.getCourseName());
             course.setClassHour(application.getClassHour());
@@ -55,7 +38,6 @@ public class AdminServiceImpl implements AdminService {
             course.setClassPlace(application.getClassPlace());
             course.setCapacity(application.getCapacity());
             course.setIntroduction(application.getIntroduction());
-
             course.setSchool(application.getSchool());
             course.setMajor(application.getMajor());
             course.setTeacher(application.getTeacher());

@@ -27,12 +27,13 @@ public class User {
 
     private String username;
 
-    @Column(length = 18)
+    @Column(length = 18, unique = true)
     private String idNumber;
 
-    @Column(length = 11)
+    @Column(length = 11, unique = true)
     private String phoneNumber;
 
+    @Column(unique = true)
     private String email;
 
     private Boolean status = true;

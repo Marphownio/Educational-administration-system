@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static com.example.lab.LabApplication.admin;
@@ -113,11 +114,11 @@ public class UserController {
 
     // 通过姓名查询用户
     @GetMapping(value = "/getbyname/{username}")
-    public ResponseEntity<User> findUserByUserName(@PathVariable("username") String username) {
-        User user = userService.findUserByUserName(username);
-        if (user == null) {
+    public ResponseEntity<Set<User>> findUserByUserName(@PathVariable("username") String username) {
+        Set<User> users = new HashSet<>(userService.findUserByUserName(username));
+        if (users.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }

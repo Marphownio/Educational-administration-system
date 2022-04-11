@@ -1,6 +1,5 @@
 package com.example.lab.service.impl;
 
-import com.example.lab.pojo.UserRole;
 import com.example.lab.pojo.entity.*;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.repository.CourseRepository;

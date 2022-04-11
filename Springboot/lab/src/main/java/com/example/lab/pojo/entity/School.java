@@ -20,6 +20,7 @@ public class School {
     @Column(name = "school_id")
     private Integer schoolId;
 
+    @Column(unique = true)
     private String schoolName;
 
     @Column(length = 1024)
