@@ -25,12 +25,16 @@ public class Course {
     private Integer classHour;
     // 学分
     private Integer credit;
-    // 上课时间
-    private String classTime;
-    // 上课地点
-    private String classPlace;
+
+    // 课程安排，一个课程一星期可能包含多次课，一节课对应一个安排
+    @JsonIgnore
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "course_id")
+    private Set<ClassArrangement> classArrangements = new HashSet<>();
+
     // 选课容量
     private String capacity;
+
     // 课程介绍
     @Column(length = 1024)
     private String introduction;
