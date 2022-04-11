@@ -55,7 +55,7 @@ table{/*功能选择页面*/
 }
 
 .Choose{/*具体的功能按钮*/
-    background-color: rgba(238, 237, 237, 0.698);
+    background-color: rgba(238, 237, 237, 0);
     width:1%;
     height: 180px;
     border-radius: 10px;

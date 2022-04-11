@@ -76,9 +76,9 @@ body{
     table-layout: fixed;
 }
 
-el-table{
+#eltable{
     border: gray;
-    stripe:true;
+    /*stripe:true;*/
     height:200px;
     table-layout:auto;
 }
