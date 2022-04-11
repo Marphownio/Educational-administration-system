@@ -33,6 +33,7 @@ public class Application {
 
     // 选课容量
     private String capacity;
+
     // 课程介绍
     private String introduction;
 

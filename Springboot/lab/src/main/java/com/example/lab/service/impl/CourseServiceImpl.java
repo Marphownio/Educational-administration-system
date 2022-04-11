@@ -70,18 +70,22 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public ResultMessage updateCourse(Course course) {
+        ResultMessage resultMessage;
         if (findCourseByCourseId(course.getCourseId()) == null) {
-            return ResultMessage.NOTFOUND;
+            resultMessage = ResultMessage.NOTFOUND;
+        } else if (course.getTeacher() == null || !commonService.isMatch(course.getSchool(), course.getMajor())) {
+            resultMessage = ResultMessage.FAILED;
         }
         else {
             try {
                 courseRepository.save(course);
-                return ResultMessage.SUCCESS;
+                resultMessage = ResultMessage.SUCCESS;
             }
             catch (Exception exception) {
-                return ResultMessage.FAILED;
+                resultMessage = ResultMessage.FAILED;
             }
         }
+        return resultMessage;
     }
 
     @Override

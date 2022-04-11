@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
         if (findUserByUserId(user.getUserId()) == null) {
             resultMessage = ResultMessage.NOTFOUND;
         } else {
-            if (user.getSchool() == null || user.getMajor() == null || user.getSchool().getMajors().contains(user.getMajor())) {
+            if (!commonService.isMatch(user.getSchool(), user.getMajor())) {
                 resultMessage = ResultMessage.FAILED;
             } else {
                 try {
