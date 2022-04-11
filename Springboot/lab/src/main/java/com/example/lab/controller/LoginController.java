@@ -35,16 +35,16 @@ public class LoginController {
                 Student student = userService.findStudentByStudentId(parseInt(userId));
                 if (teacher != null && student != null) {
                     resultMessage = ResultMessage.FAILED;
-                } else if (teacher != null && teacher.getPassword().equals(password) && teacher.getStatus()) {
+                } else if (teacher != null && teacher.getUserPassword().equals(password) && teacher.getStatus()) {
                     session.setAttribute("user", teacher);
-                    if (teacher.getPassword().equals("fudan123456")) {
+                    if (teacher.getUserPassword().equals("fudan123456")) {
                         resultMessage = ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD;
                     } else {
                         resultMessage = ResultMessage.SUCCESS_LOGIN_TEACHER;
                     }
-                } else if (student != null && student.getPassword().equals(password) && student.getStatus()) {
+                } else if (student != null && student.getUserPassword().equals(password) && student.getStatus()) {
                     session.setAttribute("user", student);
-                    if (student.getPassword().equals("fudan123456")) {
+                    if (student.getUserPassword().equals("fudan123456")) {
                         resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD;
                     } else {
                         resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT;

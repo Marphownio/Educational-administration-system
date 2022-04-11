@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
                 //比如将分隔符换成在用户信息中不可能出现的字符
                 String []item = line.split(",");
                 user.setUserId(new Integer(item[0]));
-                user.setPassword(item[1]);
+                user.setUserPassword(item[1]);
                 user.setUsername(item[3]);
                 user.setIdNumber(item[4]);
                 user.setPhoneNumber(item[5]);
