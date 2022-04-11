@@ -1,5 +1,5 @@
 import Nav from "@/views/inc/Nav.vue";
-import Papa from "papaparse";
+//import Papa from "papaparse";
 import request from "@/utils/request";
 
 

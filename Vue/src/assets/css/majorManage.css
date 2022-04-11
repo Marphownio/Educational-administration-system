@@ -21,7 +21,7 @@ a:hover {
 body{
     min-width: 1400px;
     background-size:cover;
-    background: url(../images/background.jpg) no-repeat fixed;
+    background: url("../images/background.jpg") no-repeat fixed;
 }
 
 .showlists{
