@@ -300,7 +300,26 @@ export default {
                 this.fileTemp = file.raw
                 if (this.fileTemp) {
                     if ((this.fileTemp.type === '.csv') || (this.fileTemp.type === 'application/vnd.ms-excel')) {
-                        request.post("/user/batchimport",)
+                        request.post("/user/batchimport",this.fileTemp).then(res=>{
+                            if(res.data==='FAILED')
+                            {
+                                this.$message({
+                                    "showClose": true,
+                                    "message": '上传失败',
+                                    "type": 'fail',
+                                });
+                                this.getUserForm()
+                            }
+                            if(res.data==='SUCCESS')
+                            {
+                                this.$message({
+                                    "showClose": true,
+                                    "message": '操作成功',
+                                    "type": 'success',
+                                });
+                                this.getUserForm()
+                            }
+                        })
                     } else {
                         this.$message({
                             type: 'warning',
