@@ -25,7 +25,7 @@ public class Student extends User {
     // 通过用户产生一个学生
     public Student(User user) {
         this.setUserId(user.getUserId());
-        this.setPassword(user.getPassword());
+        this.setUserPassword(user.getUserPassword());
         this.setRole(user.getRole());
         this.setUsername(user.getUsername());
         this.setIdNumber(user.getIdNumber());

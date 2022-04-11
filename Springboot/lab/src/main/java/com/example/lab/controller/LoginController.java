@@ -26,7 +26,7 @@ public class LoginController {
 
         ResultMessage resultMessage;
         if (userId.matches("^\\d{6}$") || userId.matches("^\\d{8}$")) {
-            if (admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getPassword())) {
+            if (admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getUserPassword())) {
                 session.setAttribute("user", admin);
                 resultMessage = ResultMessage.SUCCESS_LOGIN_ADMIN;
             }
