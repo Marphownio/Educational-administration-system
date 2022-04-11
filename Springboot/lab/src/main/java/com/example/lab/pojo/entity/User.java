@@ -30,10 +30,9 @@ public class User {
     @Column(length = 18, unique = true)
     private String idNumber;
 
-    @Column(length = 11, unique = true)
+    @Column(length = 11)
     private String phoneNumber;
 
-    @Column(unique = true)
     private String email;
 
     private Boolean status = true;
