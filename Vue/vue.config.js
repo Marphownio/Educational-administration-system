@@ -1,7 +1,7 @@
-const { defineConfig } = require('@vue/cli-service')
-module.exports = defineConfig({
-  transpileDependencies: true
-})
+// const { defineConfig } = require('@vue/cli-service')
+// module.exports = defineConfig({
+//   transpileDependencies: true
+// })
 module.exports = {
   devServer: {                //记住，别写错了devServer//设置本地默认端口  选填
     port: 80,

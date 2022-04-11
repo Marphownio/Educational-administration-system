@@ -135,7 +135,7 @@ router.beforeEach((to,from,next)=>{
       }
     }
     //未登录情况
-    else if(!token){
+    else{
       alert("没有权限！请先登录！")
       next("/");
     }
