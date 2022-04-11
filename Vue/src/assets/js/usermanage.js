@@ -2,6 +2,7 @@ import Nav from "@/views/inc/Nav.vue";
 import Papa from "papaparse";
 import request from "@/utils/request";
 
+
 export default {
     name: "userManage",
     components:{
@@ -295,6 +296,60 @@ export default {
                 }
             })
         },
+        submitForm3(){
+            console.log(this.ruleForm)
+            this.$refs.ruleForm.validate(valid=>{
+                if(valid){
+                    let params = new URLSearchParams();
+                    params.append('userId', vm.userId);
+                    params.append('role', vm.role);
+                    params.append('school', JSON.parse(vm.schoolId));
+                    params.append('major', JSON.parse(vm.majorId));
+                    params.append('idNumber', vm.idNumber);
+                    params.append('username', vm.username);
+                    params.append('phoneNumber', vm.phoneNumber);
+                    params.append('email', vm.email);
+                    params.append('status', vm.status);
+                    this.$axios({
+                        method: 'post',
+                        url:'/api/user/add',
+                        data:params,
+
+                    }).then(res=>{
+                        if(res.data==='EXIST')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '该用户已存在',
+                                type: 'error',
+                            });
+                        }
+                        if(res.data==='FAILED')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '添加失败',
+                                type: 'error',
+                            });
+                        }
+                        if(res.data==='SUCCESS')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '操作成功',
+                                type: 'success',
+                            });
+                            this.getUserForm()
+                        }
+                    })
+                }
+                else{
+                    this.$nextTick(() => {
+                        this.scrollToTop(this.$refs.ruleForm.$el)
+                    })
+                }
+            })
+        },
         handleChange(file) {
             this.fileTemp = file.raw
             if (this.fileTemp) {
@@ -314,30 +369,29 @@ export default {
             }
         },
         importcsv (obj) {
-            request.post("",obj).then(res=>{
-                if(res.data==='NOTFOUND')
-                {
-                    this.$message({
-                        showClose: true,
-                        message: '无法获取文件',
-                        type: 'fail',
-                    });
-                }
-                else if(res.data==='SUCCESS')
-                {
-                    this.$message({
-                        showClose: true,
-                        message: '操作成功',
-                        type: 'success',
-                    });
-                }
-                else if(res.data==='FAILED')
-                {
-                    this.$message({
-                        showClose: true,
-                        message: '操作失败',
-                        type: 'error',
-                    });
+            const _this=this
+            console.log(typeof this.ruleForm.userId)
+            Papa.parse(obj, {
+                complete (results) {
+                    console.log(results)//这个是csv文件的数据
+                    for (let i = 1; i < results.data.length-1; i++) {  //i=0为标题栏，最后一行为空栏
+                        console.log(typeof _this.ruleForm.userId)
+                        _this.ruleForm.userId = results.data[i][0]
+                        _this.ruleForm.role = results.data[i][1]
+                        _this.ruleForm.username = results.data[i][2]
+                        if(results.data[i][3]==='TRUE'||results.data[i][3]==='true')
+                            _this.ruleForm.status=true;
+                        else if(results.data[i][3]==='FALSE'||results.data[i][3]==='false')
+                            _this.ruleForm.status=false;
+                        _this.ruleForm.schoolId=parseInt(results.data[i][4])
+                        _this.ruleForm.majorId=parseInt(results.data[i][5])
+                        _this.ruleForm.idNumber=results.data[i][6]
+                        if(_this.ruleForm.phoneNumber!=='')
+                            _this.ruleForm.phoneNumber=parseInt(results.data[i][7])
+                        else _this.ruleForm.phoneNumber=results.data[i][7]
+                        _this.ruleForm.email=results.data[i][8]
+                        _this.submitForm3();
+                    }
                 }
             })
         },

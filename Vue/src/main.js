@@ -12,4 +12,5 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 
 const app=createApp(App)
 app.config.globalProperties.$axios=axios;
-app.use(tokenmanage).use(store).use(router).use(ElementPlus).use(Papa).mount('#app')
+app.config.globalProperties.Papa = Papa;
+app.use(tokenmanage).use(store).use(router).use(ElementPlus).mount('#app')
