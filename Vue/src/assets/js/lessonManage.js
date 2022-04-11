@@ -316,7 +316,26 @@ export default {
             this.fileTemp = file.raw
             if (this.fileTemp) {
                 if ((this.fileTemp.type === '.csv') || (this.fileTemp.type === 'application/vnd.ms-excel')) {
-                    this.importcsv(file.raw)
+                    request.post("/course/batchimport",this.fileTemp).then(res=>{
+                        if(res.data==='FAILED')
+                        {
+                            this.$message({
+                                "showClose": true,
+                                "message": '上传失败',
+                                "type": 'fail',
+                            });
+                            this.getUserForm()
+                        }
+                        if(res.data==='SUCCESS')
+                        {
+                            this.$message({
+                                "showClose": true,
+                                "message": '操作成功',
+                                "type": 'success',
+                            });
+                            this.getUserForm()
+                        }
+                    })
                 } else {
                     this.$message({
                         type: 'warning',
@@ -329,34 +348,6 @@ export default {
                     message: '请上传附件！'
                 })
             }
-        },
-        importcsv (obj) {
-            request.post("/user/batchimport",obj).then(res=>{
-                if(res.data==='NOTFOUND')
-                {
-                    this.$message({
-                        showClose: true,
-                        message: '无法获取文件',
-                        type: 'fail',
-                    });
-                }
-                else if(res.data==='SUCCESS')
-                {
-                    this.$message({
-                        showClose: true,
-                        message: '操作成功',
-                        type: 'success',
-                    });
-                }
-                else if(res.data==='FAILED')
-                {
-                    this.$message({
-                        showClose: true,
-                        message: '操作失败',
-                        type: 'error',
-                    });
-                }
-            })
         },
         editHandle(obj){
             this.updatecourse=true;
