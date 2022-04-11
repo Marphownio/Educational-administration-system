@@ -1,6 +1,7 @@
 import Nav from "@/views/inc/Nav.vue";
 //import Papa from "papaparse";
 import request from "@/utils/request";
+import {parse} from "qs";
 
 
 export default {
@@ -203,6 +204,7 @@ export default {
             })
         },
         "submitForm1"(){
+            console.log(typeof  this.ruleForm.phoneNumber)
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
                     let params = new URLSearchParams();
