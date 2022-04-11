@@ -19,6 +19,10 @@ public class Teacher extends User {
     @JsonIgnore
     private Set<Course> courses = new HashSet<>();
 
+    @OneToMany(mappedBy = "teacher", cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Application> applications = new HashSet<>();
+
     // 通过用户产生一个教师
     public Teacher(User user) {
         this.setUserId(user.getUserId());
@@ -29,7 +33,6 @@ public class Teacher extends User {
         this.setPhoneNumber(user.getPhoneNumber());
         this.setEmail(user.getEmail());
         this.setStatus(user.getStatus());
-
         this.setSchool(new School());
         this.setMajor(new Major());
         this.getSchool().setSchoolId(user.getSchool().getSchoolId());

@@ -19,10 +19,8 @@ a:hover {
     height:100px;
 }
 body{
-    background: url(../images/background.jpg);
-    background-repeat:no-repeat;
     background-size:cover;
-    background-attachment:fixed;
+    background: url(../images/background.jpg) no-repeat fixed;
 }
 
 .ShowList{

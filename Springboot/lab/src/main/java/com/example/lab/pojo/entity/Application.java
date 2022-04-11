@@ -14,7 +14,6 @@ public class Application {
 
     // 申请id、课程id
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer applicationId;
     // 课程名
     private String courseName;
@@ -32,22 +31,19 @@ public class Application {
     private String introduction;
 
     // 所属专业
-    @Column(nullable = false)
-    private Integer majorId;
-
-    private String majorName;
+    @ManyToOne
+    @JoinColumn(name = "school_id", nullable = false)
+    private School school;
 
     // 开课院系
-    @Column(nullable = false)
-    private Integer schoolId;
-
-    private String schoolName;
+    @ManyToOne
+    @JoinColumn(name = "major_id", nullable = false)
+    private Major major;
 
     // 任课教师
-    @Column(nullable = false)
-    private Integer teacherId;
-
-    private String teacherName;
+    @ManyToOne
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private Teacher teacher;
 
     // 申请的处理方式
     @Column(nullable = false)

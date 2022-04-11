@@ -3,10 +3,8 @@
 }/*禁止复制页面文字*/
 
 body{/*背景图*/
-    background: url(../images/background.jpg);
-    background-repeat:no-repeat;
     background-size:cover;
-    background-attachment:fixed;
+    background: url(../images/background.jpg) no-repeat fixed;
 }
 .nav{
     width: 100%;
