@@ -35,7 +35,11 @@ export default {
         },
         profile(){
             const that=this;
-            if(that.navtable.User.password==="fudan123456"){
+            if(tokenmanage.get("token")==="0"||tokenmanage.get("token")===null){
+                alert("登录过期！请重新登录！")
+                return that.$router.push({path: '/'});
+            }
+            else if(that.navtable.User.password==="fudan123456"&&tokenmanage.get("token")!=="1"){
                 alert("请先完成密码重置！")
                 return false;
             }
@@ -75,7 +79,11 @@ export default {
         },
         mainpage(){
             const that=this;
-            if(that.navtable.User.password==="fudan123456"){
+            if(tokenmanage.get("token")==="0"||tokenmanage.get("token")===null){
+                alert("登录过期！请重新登录！")
+                return that.$router.push({path: '/'});
+            }
+            if(that.navtable.User.password==="fudan123456"&&tokenmanage.get("token")!=="1"){
                 alert("请先完成密码重置！")
                 return false;
             }

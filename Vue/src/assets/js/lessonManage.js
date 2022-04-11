@@ -123,7 +123,7 @@ export default {
         },
         getapplicationData(){
             request.get("/application/list").then(res=>{
-                console.log(res);
+                //console.log(res);
                 this.applicationData=res;
             })
         },
