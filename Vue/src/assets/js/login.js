@@ -1,5 +1,6 @@
 import request from "@/utils/request";
 import tokenmanage from "@/utils/Tokenmanage";
+import ALERTMSG from "@/assets/js/alert";
 
 export default {
     name: "login",
@@ -34,7 +35,7 @@ export default {
                         .then(function (response) {
                             if(response==="FAILED"){
                                 //登录失败
-                                alert("用户名或密码错误! 请重新输入");
+                                ALERTMSG.show(that,true,"用户名或密码错误! 请重新输入!","error")
                                 return that.$router.push({path: '/'});
                             }
                             else if(response==="SUCCESS_LOGIN_ADMIN"){

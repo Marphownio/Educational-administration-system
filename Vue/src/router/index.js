@@ -1,6 +1,7 @@
 import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
 import HomeView from '../views/Login'
 import tokenmanage from "@/utils/Tokenmanage";
+import ALERTMSG from "@/assets/js/alert";
 
 const routes = [
   {
@@ -93,6 +94,7 @@ const router = createRouter({
 
 
 router.beforeEach((to,from,next)=>{
+    const that=this;
     let token=tokenmanage.get("token");
     if(to.path==="/"){
       next();
@@ -100,7 +102,7 @@ router.beforeEach((to,from,next)=>{
     else if(token){
       //token过期
       if(token==="0"){
-        alert("登录过期！请重新登录！");
+        ALERTMSG.show(that,true,"登录过期！请重新登录！","warning");
         next("/");
       }
       //管理员身份
@@ -109,7 +111,7 @@ router.beforeEach((to,from,next)=>{
           next();
         }
         else{
-          alert("没有权限访问目标页面！")
+          ALERTMSG.show(that,true,"没有权限访问目标页面！","warning");
           next(from);
         }
       }
@@ -119,7 +121,7 @@ router.beforeEach((to,from,next)=>{
           next();
         }
         else{
-          alert("没有权限访问目标页面！")
+          ALERTMSG.show(that,true,"没有权限访问目标页面！","warning");
           next(from);
         }
       }
@@ -129,14 +131,14 @@ router.beforeEach((to,from,next)=>{
           next();
         }
         else{
-          alert("没有权限访问目标页面！")
+          ALERTMSG.show(that,true,"没有权限访问目标页面！","warning");
           next(from);
         }
       }
     }
     //未登录情况
     else{
-      alert("没有权限！请先登录！")
+      ALERTMSG.show(that,true,"没有权限访问！请先登录！","error");
       next("/");
     }
 })

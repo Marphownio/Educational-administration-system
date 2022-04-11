@@ -1,5 +1,6 @@
 import Nav from "@/views/inc/Nav.vue";
 import request from "@/utils/request";
+import ALERTMSG from "@/assets/js/alert";
 export default {
     name: "personal_infor",
     components:{
@@ -155,6 +156,7 @@ export default {
         submit_check1() {
             this.$refs.ruleForm1.validate((valid) => {
                 if (valid) {
+                    const that=this;
                     this.Userform.phoneNumber=this.ruleForm1.newphonenumber;
                     this.Userform.userId=this.PersonalData.User.userId;
                     this.Userform.password=this.PersonalData.User.password;
@@ -171,10 +173,10 @@ export default {
                     }
                     request.put("/user/update",newPhoneformData)
                       .then(function (response) {
-                              alert('手机号码修改成功!');
+                          ALERTMSG.show(that,true,"手机号码修改成功!","success");
                               return true;
                       },function (err) {
-                          alert("手机号码修改失败! 请再次尝试");
+                          ALERTMSG.show(that,true,"手机号码修改失败! 请再次尝试","error");
                       });
                     this.getUserinfo();
                     this.$router.go(0)
@@ -187,6 +189,7 @@ export default {
         submit_check2() {
             this.$refs.ruleForm2.validate((valid) => {
                 if (valid) {
+                    const that =this;
                     this.Userform.email=this.ruleForm2.newemailaddress;
                     this.Userform.userId=this.PersonalData.User.userId;
                     this.Userform.password=this.PersonalData.User.password;
@@ -203,10 +206,10 @@ export default {
                     }
                     request.put("/user/update",newemailformData)
                         .then(function (response) {
-                            alert('邮箱地址修改成功!');
+                            ALERTMSG.show(that,true,"邮箱地址修改成功!","success");
                             return true;
                         },function (err) {
-                            alert("邮箱地址修改失败! 请再次尝试");
+                            ALERTMSG.show(that,true,"邮箱地址修改失败! 请再次尝试!","error");
                         })
                         this.getUserinfo();
                         this.$router.go(0)

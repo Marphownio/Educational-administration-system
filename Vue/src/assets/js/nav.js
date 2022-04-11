@@ -1,6 +1,7 @@
 import {ArrowDown} from "@element-plus/icons-vue";
 import request from "@/utils/request";
 import tokenmanage from "@/utils/Tokenmanage";
+import ALERTMSG from "@/assets/js/alert";
 export default {
     name: "Nav",
     components: {ArrowDown},
@@ -24,12 +25,12 @@ export default {
             request.post("/logout")
                 .then(function(res){
                     if(res==="SUCCESS"){
-                        alert("成功退出！");
+                        ALERTMSG.show(that,true,"成功退出！","success");
                         tokenmanage.remove("token");
                         return that.$router.push({path: '/'});
                     }
                     else if(res==="FAILED"){
-                        alert("退出失败！")
+                        ALERTMSG.show(that,true,"退出失败！","error");
                         return false;
                     }
                 })
@@ -37,11 +38,11 @@ export default {
         profile(){
             const that=this;
             if(tokenmanage.get("token")==="0"||tokenmanage.get("token")===null){
-                alert("登录过期！请重新登录！")
+                ALERTMSG.show(that,true,"登录过期！请重新登录！","error");
                 return that.$router.push({path: '/'});
             }
             else if(that.navtable.User.password==="fudan123456"&&tokenmanage.get("token")!=="1"){
-                alert("请先完成密码重置！")
+                ALERTMSG.show(that,true,"请先完成密码重置！","warning");
                 return false;
             }
             else if(that.navtable.User.role==="TEACHER"){
@@ -81,11 +82,11 @@ export default {
         mainpage(){
             const that=this;
             if(tokenmanage.get("token")==="0"||tokenmanage.get("token")===null){
-                alert("登录过期！请重新登录！")
+                ALERTMSG.show(that,true,"登录过期！请重新登录！","error");
                 return that.$router.push({path: '/'});
             }
             if(that.navtable.User.password==="fudan123456"&&tokenmanage.get("token")!=="1"){
-                alert("请先完成密码重置！")
+                ALERTMSG.show(that,true,"请先完成密码重置！","warning");
                 return false;
             }
             else if(that.navtable.User.role==="TEACHER"){
