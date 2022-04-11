@@ -6,7 +6,7 @@
 
   <body>
   <Nav></Nav>
-  <div id="personal_infor">
+  <div id="personalinfor">
   <el-descriptions
       class="descriptions"
       title="您的信息"
