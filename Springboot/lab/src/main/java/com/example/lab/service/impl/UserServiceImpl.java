@@ -70,7 +70,6 @@ public class UserServiceImpl implements UserService {
                 //csv文件是使用逗号作为分隔符的    但是如果密码中有逗号的话 就会导致错误  所以文件格式中 我们可以改变一下
                 //比如将分隔符换成在用户信息中不可能出现的字符
                 String []item = line.split(",");
-                System.out.println(item.length);
                 user.setUserId(new Integer(item[0]));
                 user.setPassword(item[1]);
                 user.setUsername(item[3]);
@@ -89,25 +88,10 @@ public class UserServiceImpl implements UserService {
                     studentRepository.save(new Student(user));
                 }
             }
-//
         } catch (IOException e) {
-//            e.printStackTrace();
                 return ResultMessage.FAILED;
         }
         return ResultMessage.SUCCESS;
-//        ReadExcel readExcel=new ReadExcel();
-//        //解析excel，获取客户信息集合。
-//        List<User> customerList = readExcel.getExcelInfo(name ,file);
-//
-//        if(customerList != null){
-//            b = true;
-//        }
-//
-//        //迭代添加客户信息（注：实际上这里也可以直接将customerList集合作为参数，在Mybatis的相应映射文件中使用foreach标签进行批量添加。）
-//        for(Customer customer:customerList){
-//            customerDoImpl.addCustomers(customer);
-//        }
-//        return b;
     }
 
     @Override

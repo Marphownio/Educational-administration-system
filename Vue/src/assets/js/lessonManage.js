@@ -118,8 +118,12 @@ export default {
         this.getapplicationData();
     },
     methods:{
+        refresh(){
+            this.ruleForm1= {};
+        },
         getapplicationData(){
             request.get("/application/list").then(res=>{
+                //console.log(res);
                 this.applicationData=res;
             })
         },
@@ -347,6 +351,13 @@ export default {
         editHandle(obj){
             this.updatecourse=true;
             this.ruleForm1=obj;
+            request.get("/school/majors",{
+                params:{
+                    schoolId:this.ruleForm1.schoolId
+                }
+            }).then(res=>{
+                this.majordata= res;
+            })
         },
         delHandle(id){
             this.$axios.delete("/api/course/"+id).then(res=> {

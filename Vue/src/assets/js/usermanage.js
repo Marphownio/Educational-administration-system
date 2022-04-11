@@ -179,7 +179,6 @@ export default {
                     schoolId:this.ruleForm.schoolId
                 }
             }).then(res=>{
-                console.log(res);
                 this.majordata= res;
             })
             this.ruleForm.majorId=null;
@@ -235,10 +234,8 @@ export default {
                                 showClose: true,
                                 message: '操作成功',
                                 type: 'success',
-                                onClose:()=>{
-                                    this.getUserForm()
-                                }
                             });
+                            this.getUserForm()
                             this.dialogVisible1=false;
                         }
                     })
@@ -275,10 +272,8 @@ export default {
                                 showClose: true,
                                 message: '该用户不存在',
                                 type: 'fail',
-                                onClose:()=>{
-                                    this.getUserForm()
-                                }
                             });
+                            this.getUserForm()
                             this.dialogVisible2=false;
                         }
                         if(res.data==='SUCCESS')
@@ -287,10 +282,8 @@ export default {
                                 showClose: true,
                                 message: '操作成功',
                                 type: 'success',
-                                onClose:()=>{
-                                    this.getUserForm()
-                                }
                             });
+                            this.getUserForm()
                             this.dialogVisible2=false;
                         }
                     })
@@ -349,7 +342,6 @@ export default {
             })
         },
         editHandle(obj){
-            console.log(obj);
             this.dialogVisible2=true;
             this.ruleForm=obj;
         },
@@ -359,7 +351,7 @@ export default {
                 {
                     this.$message({
                         showClose: true,
-                        message: '无法获取文件',
+                        message: '该用户不存在',
                         type: 'fail',
                     });
                 }
@@ -370,6 +362,7 @@ export default {
                         message: '操作成功',
                         type: 'success',
                     });
+                    this.getUserForm()
                 }
                 else if(res.data==='FAILED')
                 {
