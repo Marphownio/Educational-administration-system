@@ -241,6 +241,14 @@ export default {
                             this.getUserForm()
                             this.dialogVisible1=false;
                         }
+                        if(res.data==='FAILED')
+                        {
+                            this.$message({
+                                "showClose": true,
+                                "message": '添加失败，请检查身份证号是否与已有用户相同',
+                                "type": 'danger',
+                            });
+                        }
                     })
                 }
                 else{
