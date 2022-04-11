@@ -14,10 +14,10 @@ import java.util.List;
 public class ApplicationServiceImpl implements ApplicationService {
 
     @Resource
-    private CourseService courseService;
+    private ApplicationRepository applicationRepository;
 
     @Resource
-    private ApplicationRepository applicationRepository;
+    private CourseService courseService;
 
     // 教师申请增删改课程
     @Override

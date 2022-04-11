@@ -4,6 +4,7 @@ import com.example.lab.pojo.entity.Major;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.repository.MajorRepository;
 import com.example.lab.service.MajorService;
+import com.example.lab.service.SchoolService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,10 +17,15 @@ public class MajorServiceImpl implements MajorService {
     @Resource
     private MajorRepository majorRepository;
 
+    @Resource
+    private SchoolService schoolService;
+
     @Override
     public ResultMessage addMajor(Major major) {
         if (findMajorByMajorId(major.getMajorId()) != null) {
             return ResultMessage.EXIST;
+        } else if(major.getSchool() == null || schoolService.findSchoolBySchoolId(major.getSchool().getSchoolId()) == null) {
+            return ResultMessage.FAILED;
         }
         else {
             try {

@@ -26,7 +26,7 @@ public class ApplicationController {
 
     // 教师取消申请
     @RequestMapping(value = "cancel")
-    public ResultMessage cancelApplication(Integer applicationId) {
+    public ResultMessage cancelApplication(@RequestParam(value = "applicationId") Integer applicationId) {
         return applicationService.deleteApplication(applicationId);
     }
 
