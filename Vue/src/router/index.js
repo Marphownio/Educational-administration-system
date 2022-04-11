@@ -1,5 +1,6 @@
 import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
 import HomeView from '../views/Login'
+import tokenmanage from "@/utils/Tokenmanage";
 
 const routes = [
   {
@@ -89,12 +90,19 @@ const router = createRouter({
   routes
 })
 
+
+
 router.beforeEach((to,from,next)=>{
-    let token=localStorage.getItem("token");
+    let token=tokenmanage.get("token");
     if(to.path==="/"){
       next();
     }
-    else if(token&&token!=="0"){
+    else if(token){
+      //token过期
+      if(token==="0"){
+        alert("登录过期！请重新登录！");
+        next("/");
+      }
       //管理员身份
       if(token==="1"){
         if(to.path==="/index_admin"||to.path==="/majormanage"||to.path==="/usermanage"||to.path==="/lessonmanage"||to.path==="/timemanage"||to.path==="/classroommanage"||to.path==="/selectmanage"){
@@ -127,7 +135,7 @@ router.beforeEach((to,from,next)=>{
       }
     }
     //未登录情况
-    else if(!token||token==="0"){
+    else if(!token){
       alert("没有权限！请先登录！")
       next("/");
     }

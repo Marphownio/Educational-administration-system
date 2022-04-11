@@ -1,5 +1,6 @@
 import {ArrowDown} from "@element-plus/icons-vue";
 import request from "@/utils/request";
+import tokenmanage from "@/utils/Tokenmanage";
 export default {
     name: "Nav",
     components: {ArrowDown},
@@ -24,7 +25,7 @@ export default {
                 .then(function(res){
                     if(res==="SUCCESS"){
                         alert("成功退出！");
-                        localStorage.removeItem("token");
+                        tokenmanage.remove("token");
                         return that.$router.push({path: '/'});
                     }if(res==="FAILED"){
                         alert("退出失败！")
@@ -61,7 +62,7 @@ export default {
                     else if(res.role==="STUDENT"){
                         _this.navtable.role="同学"
                     }
-                    if(localStorage.getItem("token")==="1"){
+                    if(tokenmanage.get("token")==="1"){
                         _this.navtable.id="000000";
                         _this.navtable.name="管理员";
                         _this.navtable.role=""
