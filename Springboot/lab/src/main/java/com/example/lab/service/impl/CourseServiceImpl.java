@@ -119,23 +119,32 @@ public class CourseServiceImpl implements CourseService {
             studentReader.readLine();
             while((line = reader.readLine())!= null){
                 String []item = line.split(",");
-                course.setCourseId(Integer.valueOf(item[0]));
-                course.setCourseName(item[1]);
-                course.setClassHour(Integer.valueOf(item[2]));
-                course.setCredit(Integer.valueOf(item[3]));
-//                course.setClassTime(item[4]);
-//                course.setClassPlace(item[5]);
-                course.setCapacity(item[6]);
-                course.setIntroduction(item[7]);
-                course.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[8])));
-                course.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[9])));
-                course.setTeacher( userService.findTeacherByTeacherId(Integer.valueOf(item[10])));
-                String []student = item[11].split("\n");
-                for (String s : student) {
-                    course.getStudents().add(userService.findStudentByStudentId(Integer.valueOf(s)));
+                if (    item[0].equals("") || item[8].equals("") || item[9].equals("")||
+                        item.length <11 || !commonService.isMatchSchoolAndMajor(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])),majorService.findMajorByMajorId(Integer.valueOf(item[9])))){}
+                else {
+                    course.setCourseId(Integer.valueOf(item[0]));
+                    course.setCourseName(item[1]);
+                    course.setClassHour(Integer.valueOf(item[2]));
+                    course.setCredit(Integer.valueOf(item[3]));
+                    course.setCourseTime(item[4]);
+                    course.setCoursePlace(item[5]);
+                    course.setCapacity(item[6]);
+                    course.setIntroduction(item[7]);
+                    course.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[8])));
+                    course.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[9])));
+                    course.setTeacher( userService.findTeacherByTeacherId(Integer.valueOf(item[10])));
+                    if (item.length > 11){
+                        String []student = item[11].split("\n");
+                        for (String s : student) {
+                            course.getStudents().add(userService.findStudentByStudentId(Integer.valueOf(s)));
+                        }
+                    }
+                    courseRepository.save(course);
                 }
-                courseRepository.save(course);
+
             }
+            reader.close();
+            studentReader.close();
         } catch (IOException e) {
             return ResultMessage.FAILED;
         }
