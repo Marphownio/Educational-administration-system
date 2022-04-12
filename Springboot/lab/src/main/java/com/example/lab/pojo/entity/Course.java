@@ -27,10 +27,12 @@ public class Course {
     private Integer credit;
 
     // 课程安排，一个课程一星期可能包含多次课，一节课对应一个安排
-    @JsonIgnore
-    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "course_id")
-    private Set<ClassArrangement> classArrangements = new HashSet<>();
+//    @JsonIgnore
+//    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "course_id")
+//    private Set<ClassArrangement> classArrangements = new HashSet<>();
+
+    //实际上对于教室管理的增删改查就是对于安排进行操作
 
     // 选课容量
     private String capacity;

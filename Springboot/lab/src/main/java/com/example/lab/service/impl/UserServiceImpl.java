@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         ResultMessage resultMessage;
         if (findUserByUserId(user.getUserId()) != null) {
             resultMessage = ResultMessage.EXIST;
-        } else if (user.getRole() == null || user.getRole() == UserRole.ADMIN || !commonService.isMatch(user.getSchool(), user.getMajor())) {
+        } else if (user.getRole() == null || user.getRole() == UserRole.ADMIN || !commonService.isMatchSchoolAndMajor(user.getSchool(), user.getMajor())) {
             resultMessage = ResultMessage.FAILED;
         } else {
             try {
@@ -70,27 +70,23 @@ public class UserServiceImpl implements UserService {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
             String line;
+            //首行列标题
+            reader.readLine();
             while((line = reader.readLine())!= null){
                 //csv文件是使用逗号作为分隔符的    但是如果密码中有逗号的话 就会导致错误  所以文件格式中 我们可以改变一下
                 //比如将分隔符换成在用户信息中不可能出现的字符
                 String []item = line.split(",");
-                user.setUserId(new Integer(item[0]));
+                user.setUserId(Integer.valueOf(item[0]));
                 user.setPassword(item[1]);
                 user.setUsername(item[3]);
                 user.setIdNumber(item[4]);
                 user.setPhoneNumber(item[5]);
                 user.setEmail(item[6]);
-                //没有七是因为在添加的User肯定都是在校的状态 并且在实体类中以及赋了初始值 就可以不用再设定
-                user.setSchool(schoolService.findSchoolBySchoolName(item[8]));
-                user.setMajor(majorService.findMajorByMajorName(item[9]));
-                if (item[2].equals("TEACHER")){
-                    user.setRole(UserRole.TEACHER);
-                    teacherRepository.save(new Teacher(user));
-                }
-                else {
-                    user.setRole(UserRole.STUDENT);
-                    studentRepository.save(new Student(user));
-                }
+                user.setStatus(Boolean.valueOf(item[7]));
+                user.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])));
+                user.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[9])));
+                user.setRole(UserRole.valueOf(item[2]));
+                addUser(user);
             }
         } catch (IOException e) {
                 return ResultMessage.FAILED;
@@ -127,7 +123,7 @@ public class UserServiceImpl implements UserService {
         if (findUserByUserId(user.getUserId()) == null) {
             resultMessage = ResultMessage.NOTFOUND;
         } else {
-            if (!commonService.isMatch(user.getSchool(), user.getMajor())) {
+            if (!commonService.isMatchSchoolAndMajor(user.getSchool(), user.getMajor())) {
                 resultMessage = ResultMessage.FAILED;
             } else {
                 try {

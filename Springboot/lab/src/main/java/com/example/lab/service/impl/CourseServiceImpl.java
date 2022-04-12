@@ -7,6 +7,7 @@ import com.example.lab.service.CommonService;
 import com.example.lab.service.CourseService;
 import com.example.lab.service.MajorService;
 import com.example.lab.service.SchoolService;
+import com.example.lab.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,12 +33,15 @@ public class CourseServiceImpl implements CourseService {
     @Resource
     private CommonService commonService;
 
+    @Resource
+    private UserService userService;
+
     @Override
     public ResultMessage addCourse(Course course) {
         ResultMessage resultMessage;
         if (findCourseByCourseId(course.getCourseId()) != null) {
             resultMessage = ResultMessage.EXIST;
-        } else if (course.getTeacher() == null || !commonService.isMatch(course.getSchool(), course.getMajor())) {
+        } else if (course.getTeacher() == null || !commonService.isMatchSchoolAndMajor(course.getSchool(), course.getMajor())) {
             resultMessage = ResultMessage.FAILED;
         }
         else {
@@ -73,7 +77,7 @@ public class CourseServiceImpl implements CourseService {
         ResultMessage resultMessage;
         if (findCourseByCourseId(course.getCourseId()) == null) {
             resultMessage = ResultMessage.NOTFOUND;
-        } else if (course.getTeacher() == null || !commonService.isMatch(course.getSchool(), course.getMajor())) {
+        } else if (course.getTeacher() == null || !commonService.isMatchSchoolAndMajor(course.getSchool(), course.getMajor())) {
             resultMessage = ResultMessage.FAILED;
         }
         else {
@@ -108,19 +112,28 @@ public class CourseServiceImpl implements CourseService {
         Course course = new Course();
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
+            BufferedReader studentReader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
             String line;
+            //首行列标题
+            reader.readLine();
+            studentReader.readLine();
             while((line = reader.readLine())!= null){
                 String []item = line.split(",");
-                course.setCourseId(new Integer(item[0]));
+                course.setCourseId(Integer.valueOf(item[0]));
                 course.setCourseName(item[1]);
-                course.setClassHour(new Integer(item[2]));
-                course.setCredit(new Integer(item[3]));
+                course.setClassHour(Integer.valueOf(item[2]));
+                course.setCredit(Integer.valueOf(item[3]));
 //                course.setClassTime(item[4]);
 //                course.setClassPlace(item[5]);
                 course.setCapacity(item[6]);
                 course.setIntroduction(item[7]);
-                course.setMajor(majorService.findMajorByMajorName(item[8]));
-                course.setSchool(schoolService.findSchoolBySchoolName(item[9]));
+                course.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[8])));
+                course.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[9])));
+                course.setTeacher( userService.findTeacherByTeacherId(Integer.valueOf(item[10])));
+                String []student = item[11].split("\n");
+                for (String s : student) {
+                    course.getStudents().add(userService.findStudentByStudentId(Integer.valueOf(s)));
+                }
                 courseRepository.save(course);
             }
         } catch (IOException e) {

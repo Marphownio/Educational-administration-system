@@ -25,7 +25,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public ResultMessage addApplication(Application application) {
         ResultMessage resultMessage;
-        if (application.getType() == null || application.getSchool() == null || !commonService.isMatch(application.getSchool(), application.getMajor())) {
+        if (application.getType() == null || application.getSchool() == null || !commonService.isMatchSchoolAndMajor(application.getSchool(), application.getMajor())) {
             resultMessage = ResultMessage.FAILED;
         } else {
             resultMessage = ResultMessage.SUCCESS;

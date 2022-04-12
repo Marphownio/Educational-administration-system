@@ -53,12 +53,13 @@ public class UserController {
         long size=file.getSize();
         if (name == null || ("").equals(name) && size == 0) return ResultMessage.NOTFOUND;
         //批量导入。参数：文件名，文件。
-        ResultMessage resultMessage = userService.BatchImportUser(file);
-        if(resultMessage == ResultMessage.SUCCESS){
-            return ResultMessage.SUCCESS;
-        }else{
+        try {
+            return userService.BatchImportUser(file);
+        }catch (NumberFormatException e){
+            System.out.println(e.getMessage());
             return ResultMessage.FAILED;
         }
+
     }
 
     @DeleteMapping(value = "/{userId}")

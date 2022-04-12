@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,7 +27,8 @@ public class ClassArrangement {
 
     private DayOfWeek dayOfWeek;
 
-    @OneToOne
-    @JoinColumn(name = "class_time_id")
-    private ClassTime classTime;
+    @OneToMany
+    @JoinColumn(name = "class_arrangement_id")
+    private Set<ClassTime> classTime;
+
 }
