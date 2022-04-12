@@ -18,10 +18,11 @@
                 <el-button type="primary" @click="addcourse=true">添加课程</el-button>
                 <el-upload
                         class="upload-demo"
-                        action=""
-                        :on-change="handleChange"
+                        :action="'http://localhost/api/course/batchimport'"
+                        method="post"
+                        enctype=“multipart/form-data”
                         accept=".csv"
-                        :auto-upload="false">
+                        >
                     <el-button type="primary" style="margin-left: 20px;margin-right: 20px;margin-top: 10px">通过csv文件添加</el-button>
                 </el-upload>
                 <el-button type="primary" @click="checkcourse=true">审核课程申请</el-button>
