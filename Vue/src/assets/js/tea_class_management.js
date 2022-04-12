@@ -28,9 +28,12 @@ export default {
                 courseTime:'',
                 coursePlace:'',
                 introduction: '',
-                majorId:'',
-                schoolId: '',
-                teacherId:'',
+                // majorId:'',
+                major:'',//实际传过去的值是id
+                school:'',//实际传过去的值是id
+                teacher:'',//实际传过去的值是id
+                // schoolId: '',
+                // teacherId:'',
                 capacity:'',
                 type:''//ADD,DELETE,UPDATE
             },
@@ -110,9 +113,9 @@ export default {
                     this.applicationform.credit=this.ruleForm1.credit;
                     this.applicationform.capacity=this.ruleForm1.capacity;
                     this.applicationform.introduction=this.ruleForm1.introduction;
-                    this.applicationform.majorId=this.ruleForm1.majorId;
-                    this.applicationform.schoolId=this.ruleForm1.schoolId;
-                    this.applicationform.teacherId=this.ruleForm1.teacherId;
+                    this.applicationform.major=this.ruleForm1.majorId;
+                    this.applicationform.school=this.ruleForm1.schoolId;
+                    this.applicationform.teacher=this.ruleForm1.teacherId;
                     this.applicationform.type="ADD";
                     let applyclassform = new FormData();
                     for(let key in this.applicationform) {
@@ -142,9 +145,9 @@ export default {
             this.applicationform.credit=row.credit;
             this.applicationform.capacity=row.capacity;
             this.applicationform.introduction=row.introduction;
-            this.applicationform.majorId=row.major.majorId;
-            this.applicationform.schoolId=row.school.schoolId;
-            this.applicationform.teacherId=row.teacher.userId;
+            this.applicationform.major=row.major.majorId;
+            this.applicationform.school=row.school.schoolId;
+            this.applicationform.teacher=row.teacher.userId;
             this.applicationform.type="UPDATE";
         },
         submit_edit(){
@@ -192,9 +195,9 @@ export default {
             this.applicationform.coursePlace=row.coursePlace;
             this.applicationform.capacity=row.capacity;
             this.applicationform.introduction=row.introduction;
-            this.applicationform.majorId=row.major.majorId;
-            this.applicationform.schoolId=row.school.schoolId;
-            this.applicationform.teacherId=row.teacher.userId;
+            this.applicationform.major=row.major.majorId;
+            this.applicationform.school=row.school.schoolId;
+            this.applicationform.teacher=row.teacher.userId;
             this.applicationform.type="DELETE";
             let deleteclassform = new FormData();
             for(let key in this.applicationform) {
