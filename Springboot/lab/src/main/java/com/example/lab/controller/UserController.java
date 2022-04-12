@@ -46,6 +46,7 @@ public class UserController {
     @PostMapping("/batchimport")
     public ResultMessage BatchImportUser(MultipartFile file) {
         //判断文件是否为空
+        System.out.println(file);
         if(file == null) return ResultMessage.NOTFOUND;
         //获取文件名
         String name = file.getOriginalFilename();
