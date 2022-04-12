@@ -306,10 +306,17 @@ export default {
             })
         },
         handleChange(file) {
+            console.log(file);
                 this.fileTemp = file.raw
                 if (this.fileTemp) {
                     if ((this.fileTemp.type === '.csv') || (this.fileTemp.type === 'application/vnd.ms-excel')) {
-                        request.post("/user/batchimport",this.fileTemp).then(res=>{
+                        let params = new URLSearchParams();
+                        params.append('filename', file);
+                        this.$axios({
+                            method: 'post',
+                            url: '/api/user/batchimport',
+                            data: params
+                        }).then(res=>{
                             if(res.data==='FAILED')
                             {
                                 this.$message({
