@@ -32,7 +32,11 @@ public class Course {
 //    @JoinColumn(name = "course_id")
 //    private Set<ClassArrangement> classArrangements = new HashSet<>();
 
-    //实际上对于教室管理的增删改查就是对于安排进行操作
+    //上课时间
+    private String courseTime;
+
+    //上课地点
+    private String coursePlace;
 
     // 选课容量
     private String capacity;

@@ -35,6 +35,8 @@ public class AdminServiceImpl implements AdminService {
             course.setClassHour(application.getClassHour());
             course.setCredit(application.getCredit());
 //            course.setClassArrangements(application.getClassArrangements());
+            course.setCourseTime(application.getCourseTime());
+            course.setCoursePlace(application.getCoursePlace());
             course.setCapacity(application.getCapacity());
             course.setIntroduction(application.getIntroduction());
             course.setSchool(application.getSchool());

@@ -26,10 +26,16 @@ public class Application {
     private Integer credit;
 
     // 课程安排，一个课程一星期可能包含多次课，一节课对应一个安排
-    @JsonIgnore
-    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "course_id")
-    private Set<ClassArrangement> classArrangements = new HashSet<>();
+//    @JsonIgnore
+//    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "course_id")
+//    private Set<ClassArrangement> classArrangements = new HashSet<>();
+
+    //上课时间
+    private String courseTime;
+
+    //上课地点
+    private String coursePlace;
 
     // 选课容量
     private String capacity;
