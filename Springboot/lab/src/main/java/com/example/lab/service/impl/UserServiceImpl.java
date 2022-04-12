@@ -68,13 +68,11 @@ public class UserServiceImpl implements UserService {
     public ResultMessage BatchImportUser(MultipartFile file) {
         User user = new User();
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
             String line;
+            BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
             //首行列标题
             reader.readLine();
             while((line = reader.readLine())!= null){
-                //csv文件是使用逗号作为分隔符的    但是如果密码中有逗号的话 就会导致错误  所以文件格式中 我们可以改变一下
-                //比如将分隔符换成在用户信息中不可能出现的字符
                 String []item = line.split(",");
                 user.setUserId(Integer.valueOf(item[0]));
                 user.setPassword(item[1]);
