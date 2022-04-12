@@ -119,8 +119,8 @@ public class CourseServiceImpl implements CourseService {
             studentReader.readLine();
             while((line = reader.readLine())!= null){
                 String []item = line.split(",");
-                if (    item[0].equals("") || item[8].equals("") || item[9].equals("")||
-                        item.length <11 || !commonService.isMatchSchoolAndMajor(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])),majorService.findMajorByMajorId(Integer.valueOf(item[9])))){}
+                if (    item[0].equals("") || item.length < 9 || item[8].equals("") || item[9].equals("")||item[8] == null || item[9] == null ||
+                         !commonService.isMatchSchoolAndMajor(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])),majorService.findMajorByMajorId(Integer.valueOf(item[9])))){}
                 else {
                     course.setCourseId(Integer.valueOf(item[0]));
                     course.setCourseName(item[1]);
