@@ -309,14 +309,14 @@ export default {
                 this.fileTemp = file.raw
                 if (this.fileTemp) {
                     if ((this.fileTemp.type === '.csv') || (this.fileTemp.type === 'application/vnd.ms-excel')) {
-                        // request.post("/user/batchimport",this.fileTemp)
-                        let params = new URLSearchParams();
-                        params.append('filename', this.fileTemp);
-                        this.$axios({
-                            method: 'post',
-                            url: '/api/user/batchimport',
-                            data: params
-                        })
+                        request.post("/user/batchimport",this.fileTemp)
+                        // let params = new URLSearchParams();
+                        // params.append('filename', this.fileTemp);
+                        // this.$axios({
+                        //     method: 'post',
+                        //     url: '/api/user/batchimport',
+                        //     data: params
+                        // })
                         .then(res=>{
                             if(res.data==='FAILED')
                             {

@@ -18,10 +18,11 @@
                 <el-button type="primary" @click="dialogVisible1=true">添加用户</el-button>
                 <el-upload
                         class="upload-demo"
-                        action=""
-                        :on-change="handleChange"
+                        action="http://localhost/api/user/batchimport"
+                        method="post"
+                        enctype=“multipart/form-data”
                         accept=".csv"
-                        :auto-upload="false">
+                        >
                     <el-button type="primary" style="margin-left: 20px;margin-right: 20px;margin-top: 10px">通过csv文件添加</el-button>
                 </el-upload>
             </el-form-item>
