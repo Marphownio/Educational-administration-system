@@ -88,8 +88,10 @@ public class UserServiceImpl implements UserService {
                 user.setRole(UserRole.valueOf(item[2]));
                 addUser(user);
             }
+            reader.close();
         } catch (IOException e) {
                 return ResultMessage.FAILED;
+        }finally {
         }
         return ResultMessage.SUCCESS;
     }
