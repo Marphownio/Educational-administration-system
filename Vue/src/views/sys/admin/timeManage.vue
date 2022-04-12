@@ -65,7 +65,7 @@
           class="demo-ruleForm"
       >
         <el-form-item label="课次:" prop="classTimeId">
-          <el-input v-model="ruleForm2.classTimeId"></el-input>
+          <el-input v-model="ruleForm2.classTimeId" readonly></el-input>
         </el-form-item>
         <el-form-item label="课堂时间:" prop="time">
           <el-input v-model="ruleForm2.time"></el-input>

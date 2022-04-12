@@ -56,7 +56,7 @@ export default {
                     else{
                         return false;
                     }
-                this.$router.go(0)
+                // this.$router.go(0)
         })
         },
         getinfor:function(){
@@ -88,7 +88,7 @@ export default {
                 else{
                     return false;
                 }
-                this.$router.go(0)
+                // this.$router.go(0)
             })
         },
         deletetime(row){
@@ -101,7 +101,7 @@ export default {
                     ALERTMSG.show(that,true,"课次删除失败！请重新尝试！","error");
                     return false;
                 });
-            this.$router.go(0)
+            // this.$router.go(0)
         }
 
     }
