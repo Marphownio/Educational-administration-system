@@ -70,14 +70,14 @@ export default {
                         trigger: 'change',
                     },
                 ],
-                classTime:[
+                courseTime:[
                     {
                         required: true,
                         message: '请输入上课时间',
                         trigger: 'blur',
                     },
                 ],
-                classPlace:[
+                coursePlace:[
                     {
                         required: true,
                         message: '请输入上课地点',
@@ -221,8 +221,8 @@ export default {
                     params.append('major', JSON.parse(this.ruleForm1.majorId));
                     params.append('classHour', this.ruleForm1.classHour);
                     params.append('credit', this.ruleForm1.credit);
-                    params.append('classTime', this.ruleForm1.classTime);
-                    params.append('classPlace', this.ruleForm1.classPlace);
+                    params.append('courseTime', this.ruleForm1.courseTime);
+                    params.append('coursePlace', this.ruleForm1.coursePlace);
                     params.append('capacity', this.ruleForm1.capacity);
                     params.append('introduction', this.ruleForm1.introduction);
                     this.$axios({
@@ -276,8 +276,8 @@ export default {
                     params.append('major', JSON.parse(this.ruleForm1.majorId));
                     params.append('classHour', this.ruleForm1.classHour);
                     params.append('credit', this.ruleForm1.credit);
-                    params.append('classTime', this.ruleForm1.classTime);
-                    params.append('classPlace', this.ruleForm1.classPlace);
+                    params.append('courseTime', this.ruleForm1.courseTime);
+                    params.append('coursePlace', this.ruleForm1.coursePlace);
                     params.append('capacity', this.ruleForm1.capacity);
                     params.append('introduction', this.ruleForm1.introduction);
                     this.$axios({
