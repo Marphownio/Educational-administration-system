@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 // 用户的增删改查服务
@@ -68,28 +69,34 @@ public class UserServiceImpl implements UserService {
     public ResultMessage BatchImportUser(MultipartFile file) {
         User user = new User();
         try {
+            Boolean numberFormatException = false;
             String line;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "GBK"));
             //首行列标题
             reader.readLine();
             while((line = reader.readLine())!= null){
                 String []item = line.split(",");
-                user.setUserId(Integer.valueOf(item[0]));
-                user.setPassword(item[1]);
-                user.setUsername(item[3]);
-                user.setIdNumber(item[4]);
-                user.setPhoneNumber(item[5]);
-                user.setEmail(item[6]);
-                user.setStatus(Boolean.valueOf(item[7]));
-                user.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])));
-                user.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[9])));
-                user.setRole(UserRole.valueOf(item[2]));
-                addUser(user);
+                if (item[2] == null || item.length <10
+                    || !commonService.isMatchSchoolAndMajor(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])),majorService.findMajorByMajorId(Integer.valueOf(item[9])))
+                ){
+                }
+                else {
+                    user.setUserId(Integer.valueOf(item[0]));
+                    user.setPassword(item[1]);
+                    user.setUsername(item[3]);
+                    user.setIdNumber(item[4]);
+                    user.setPhoneNumber(item[5]);
+                    user.setEmail(item[6]);
+                    user.setStatus(Boolean.valueOf(item[7]));
+                    user.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])));
+                    user.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[9])));
+                    user.setRole(UserRole.valueOf(item[2]));
+                    addUser(user);
+                }
             }
             reader.close();
         } catch (IOException e) {
                 return ResultMessage.FAILED;
-        }finally {
         }
         return ResultMessage.SUCCESS;
     }
