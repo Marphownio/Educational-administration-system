@@ -34,7 +34,6 @@ export default {
             xuankeform.append('courseId', courseId);
             request.post("/course/select",xuankeform)
                 .then(function (response) {
-                    //console.log(response);
                     if (response === "FAILED") {
                         ALERTMSG.show(that,true,"选课失败！请重新尝试!","error");
                         that.getclassinfo();

@@ -28,12 +28,9 @@ export default {
                 courseTime:'',
                 coursePlace:'',
                 introduction: '',
-                // majorId:'',
                 major:'',//实际传过去的值是id
                 school:'',//实际传过去的值是id
                 teacher:'',//实际传过去的值是id
-                // schoolId: '',
-                // teacherId:'',
                 capacity:'',
                 type:''//ADD,DELETE,UPDATE
             },
