@@ -1,8 +1,7 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
 import HomeView from '../views/Login'
 import tokenmanage from "@/utils/Tokenmanage";
-import ALERTMSG from "@/assets/js/alert";
-
+import { ElMessage } from 'element-plus'
 const routes = [
   {
     path: '/',
@@ -102,7 +101,11 @@ router.beforeEach((to,from,next)=>{
     else if(token){
       //token过期
       if(token==="0"){
-        ALERTMSG.show(that,true,"登录过期！请重新登录！","warning");
+        ElMessage({
+          dangerouslyUseHTMLString: true,
+          type:"warning",
+          message: '<strong>登录过期！请重新登录！</strong>',
+        })
         next("/");
       }
       //管理员身份
@@ -111,7 +114,11 @@ router.beforeEach((to,from,next)=>{
           next();
         }
         else{
-          ALERTMSG.show(that,true,"没有权限访问目标页面！","warning");
+          ElMessage({
+            dangerouslyUseHTMLString: true,
+            type:"error",
+            message: '<strong>没有权限访问目标页面！</strong>',
+          })
           next(from);
         }
       }
@@ -121,7 +128,11 @@ router.beforeEach((to,from,next)=>{
           next();
         }
         else{
-          ALERTMSG.show(that,true,"没有权限访问目标页面！","warning");
+          ElMessage({
+            dangerouslyUseHTMLString: true,
+            type:"error",
+            message: '<strong>没有权限访问目标页面！</strong>',
+          })
           next(from);
         }
       }
@@ -131,14 +142,22 @@ router.beforeEach((to,from,next)=>{
           next();
         }
         else{
-          ALERTMSG.show(that,true,"没有权限访问目标页面！","warning");
+          ElMessage({
+            dangerouslyUseHTMLString: true,
+            type:"error",
+            message: '<strong>没有权限访问目标页面！</strong>',
+          })
           next(from);
         }
       }
     }
     //未登录情况
     else{
-      ALERTMSG.show(that,true,"没有权限访问！请先登录！","error");
+      ElMessage({
+        dangerouslyUseHTMLString: true,
+        type:"error",
+        message: '<strong>没有权限访问！请先登录！</strong>',
+      })
       next("/");
     }
 })

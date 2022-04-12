@@ -174,12 +174,12 @@ export default {
                     request.put("/user/update",newPhoneformData)
                       .then(function (response) {
                           ALERTMSG.show(that,true,"手机号码修改成功!","success");
+                          that.getUserinfo();
                               return true;
                       },function (err) {
                           ALERTMSG.show(that,true,"手机号码修改失败! 请再次尝试","error");
+                          that.getUserinfo();
                       });
-                    this.getUserinfo();
-                    this.$router.go(0)
                 }
                 else {
                     return false;
@@ -207,12 +207,13 @@ export default {
                     request.put("/user/update",newemailformData)
                         .then(function (response) {
                             ALERTMSG.show(that,true,"邮箱地址修改成功!","success");
+                            that.getUserinfo();
                             return true;
                         },function (err) {
                             ALERTMSG.show(that,true,"邮箱地址修改失败! 请再次尝试!","error");
+                            that.getUserinfo();
                         })
-                        this.getUserinfo();
-                        this.$router.go(0)
+
                 }
                 else {
                     return false;

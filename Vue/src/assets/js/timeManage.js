@@ -48,15 +48,16 @@ export default {
                         request.post("/classTime/add",applytimeform)
                             .then(function (response) {
                                 ALERTMSG.show(that,true,"课次新增成功!","success");
+                                that.getinfor();
                                 }, function (err) {
                                 ALERTMSG.show(that,true,"课次新增失败！请重新尝试！","error");
+                                that.getinfor();
                                 return false;
                             });
                     }
                     else{
                         return false;
                     }
-                // this.$router.go(0)
         })
         },
         getinfor:function(){
@@ -80,15 +81,16 @@ export default {
                     request.put("/classTime/update",edittimeform)
                         .then(function (response) {
                             ALERTMSG.show(that,true,"课次修改成功!","success");
+                            that.getinfor();
                         }, function (err) {
                             ALERTMSG.show(that,true,"课次修改失败！请重新尝试！","error");
+                            that.getinfor();
                             return false;
                         });
                 }
                 else{
                     return false;
                 }
-                // this.$router.go(0)
             })
         },
         deletetime(row){
@@ -97,11 +99,12 @@ export default {
             request.delete("/classTime/delete/"+timeid)
                 .then(function (response) {
                     ALERTMSG.show(that,true,"课次删除成功!","success");
+                    that.getinfor();
                 }, function (err) {
                     ALERTMSG.show(that,true,"课次删除失败！请重新尝试！","error");
+                    that.getinfor();
                     return false;
                 });
-            // this.$router.go(0)
         }
 
     }

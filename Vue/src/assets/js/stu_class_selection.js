@@ -24,6 +24,7 @@ export default {
                     }
                     ,function (err) {
                             ALERTMSG.show(that,true,"当前选课未开放!","warning");
+                            that.getclassinfo();
                             return false;
                 }
                 )
@@ -37,15 +38,19 @@ export default {
                     //console.log(response);
                     if (response === "FAILED") {
                         ALERTMSG.show(that,true,"选课失败！请重新尝试!","error");
+                        that.getclassinfo();
                         return false;
                     } else if (response === "NOT_OPEN") {
                         ALERTMSG.show(that,true,"当前选课未开放!","warning");
+                        that.getclassinfo();
                         return false;
                     } else if (response === "SUCCESS") {
                         ALERTMSG.show(that,true,"选课成功!","success");
+                        that.getclassinfo();
                     }
                 },function (err) {
                     ALERTMSG.show(that,true,"选课失败！请重新尝试!","error");
+                    that.getclassinfo();
                     return false;
                     }
         )

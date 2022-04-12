@@ -4,7 +4,7 @@ let tokenmanage={
         let obj = {
             data: value,
             time: Date.now(),
-            expire: 3600000000 //一个小时
+            expire: 3600000 //一个小时
         };
         if(this.get(key)!==null){
             this.remove(key);
