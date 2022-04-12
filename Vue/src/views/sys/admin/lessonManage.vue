@@ -38,8 +38,8 @@
             <el-table-column prop="credit" label="学分" width="120px"/>
             <el-table-column prop="teacherName" label="任课教师" width="120px"/>
             <el-table-column prop="teacherId" label="教师工号" width="120px"/>
-            <el-table-column prop="classTime" label="上课时间" width="120px"/>
-            <el-table-column prop="classPlace" label="上课地点" width="120px"/>
+            <el-table-column prop="courseTime" label="上课时间" width="120px"/>
+            <el-table-column prop="coursePlace" label="上课地点" width="120px"/>
             <el-table-column prop="capacity" label="选课容量" width="120px"/>
             <el-table-column prop="introduction" label="课程介绍" />
             <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="170px">
@@ -75,8 +75,8 @@
                 <el-table-column prop="credit" label="学分" width="120px"/>
                 <el-table-column prop="teacherName" label="任课教师" width="120px"/>
                 <el-table-column prop="teacherId" label="教师工号" width="120px"/>
-                <el-table-column prop="classTime" label="上课时间" width="120px"/>
-                <el-table-column prop="classPlace" label="上课地点" width="120px"/>
+                <el-table-column prop="courseTime" label="上课时间" width="120px"/>
+                <el-table-column prop="coursePlace" label="上课地点" width="120px"/>
                 <el-table-column prop="capacity" label="选课容量" width="120px"/>
                 <el-table-column prop="introduction" label="课程介绍" />
                 <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="170px">
@@ -129,11 +129,11 @@
                 <el-form-item label="学分" prop="credit">
                     <el-input v-model="ruleForm1.credit"></el-input>
                 </el-form-item>
-                <el-form-item label="上课时间" prop="classTime">
-                    <el-input v-model="ruleForm1.classTime"></el-input>
+                <el-form-item label="上课时间" prop="courseTime">
+                    <el-input v-model="ruleForm1.courseTime"></el-input>
                 </el-form-item>
-                <el-form-item label="上课地点" prop="classPlace">
-                    <el-input v-model="ruleForm1.classPlace"></el-input>
+                <el-form-item label="上课地点" prop="coursePlace">
+                    <el-input v-model="ruleForm1.coursePlace"></el-input>
                 </el-form-item>
                 <el-form-item label="选课容量" prop="capacity">
                     <el-input v-model="ruleForm1.capacity"></el-input>
@@ -189,11 +189,11 @@
                 <el-form-item label="学分" prop="credit">
                     <el-input v-model="ruleForm1.credit"></el-input>
                 </el-form-item>
-                <el-form-item label="上课时间" prop="classTime">
-                    <el-input v-model="ruleForm1.classTime"></el-input>
+                <el-form-item label="上课时间" prop="courseTime">
+                    <el-input v-model="ruleForm1.courseTime"></el-input>
                 </el-form-item>
-                <el-form-item label="上课地点" prop="classPlace">
-                    <el-input v-model="ruleForm1.classPlace"></el-input>
+                <el-form-item label="上课地点" prop="coursePlace">
+                    <el-input v-model="ruleForm1.coursePlace"></el-input>
                 </el-form-item>
                 <el-form-item label="选课容量" prop="capacity">
                     <el-input v-model="ruleForm1.capacity"></el-input>
