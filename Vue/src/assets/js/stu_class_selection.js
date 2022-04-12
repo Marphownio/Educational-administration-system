@@ -24,7 +24,6 @@ export default {
                     }
                     ,function (err) {
                             ALERTMSG.show(that,true,"当前选课未开放!","warning");
-                            that.getclassinfo();
                             return false;
                 }
                 )

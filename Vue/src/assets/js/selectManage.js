@@ -1,5 +1,6 @@
 import Nav from "@/views/inc/Nav.vue";
 import request from "@/utils/request";
+import ALERTMSG from "@/assets/js/alert";
 
 export default {
     name: "selectManage",
@@ -31,29 +32,21 @@ export default {
             })
         },
         openSelection(){
-            const _this=this;
+            const that=this;
             let CHANGE=true;
             let openform = new FormData();
             openform.append('change', CHANGE);
             request.post("/admin/courseSelect/change",openform)
                 .then(res=> {
                 if(res==='SUCCESS') {
-                    this.$message({
-                    showClose: true,
-                    message: '操作成功',
-                    type: 'success',
-                })
+                    ALERTMSG.show(that,true,"操作成功!","success");
+                    that.getStatus();
                 }
                 else{
-                    this.$message({
-                        showClose: false,
-                        message: '操作失败',
-                        type: 'danger',
-                    })
+                    ALERTMSG.show(that,true,"选课失败!请再次尝试","error");
+                    that.getStatus();
                 }
             })
-            _this.getStatus();
-            _this.$router.go(0)
         },
         closeSelection(){
             const that=this;
@@ -63,22 +56,14 @@ export default {
             request.post("/admin/courseSelect/change",closeform)
                 .then(res=> {
                 if(res==='SUCCESS') {
-                    this.$message({
-                        showClose: true,
-                        message: '操作成功',
-                        type: 'success',
-                    })
+                    ALERTMSG.show(that,true,"操作成功!","success");
+                    that.getStatus();
                     }
                 else{
-                    this.$message({
-                        showClose: false,
-                        message: '操作失败',
-                        type: 'danger',
-                    })
+                    ALERTMSG.show(that,true,"选课失败!请再次尝试","error");
+                    that.getStatus();
                 }
             })
-            that.getStatus();
-            that.$router.go(0)
         }
     }
 }
