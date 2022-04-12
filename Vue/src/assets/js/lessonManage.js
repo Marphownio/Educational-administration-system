@@ -368,10 +368,8 @@ export default {
                         showClose: true,
                         message: '操作成功',
                         type: 'success',
-                        onClose: () => {
-                            this.getCourseForm()
-                        }
                     });
+                    this.getCourseForm()
                 }
                 else if(res.data==='FAILED')
                 {

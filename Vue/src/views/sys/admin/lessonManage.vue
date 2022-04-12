@@ -18,7 +18,8 @@
                 <el-button type="primary" @click="addcourse=true">添加课程</el-button>
                 <el-upload
                         class="upload-demo"
-                        :action="'http://localhost/api/course/batchimport'"
+                        action="http://localhost/api/course/batchimport"
+                        :on-success="getCourseForm"
                         method="post"
                         enctype=“multipart/form-data”
                         accept=".csv"
