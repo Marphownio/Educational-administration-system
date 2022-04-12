@@ -83,7 +83,7 @@ export default {
                     schoolId:this.ruleForm1.schoolId
                 }
             }).then(res=>{
-                console.log(res);
+                // console.log(res);
                 this.majordata= res;
             })
             this.ruleForm1.majorId=null;
@@ -154,7 +154,6 @@ export default {
                         this.applicationform.courseName=this.ruleForm.courseName;
                         this.applicationform.courseTime=this.ruleForm.courseTime;
                         this.applicationform.coursePlace=this.ruleForm.coursePlace;
-                        console.log(this.applicationform);
                         let editclassform = new FormData();
                         for(let key in this.applicationform) {
                             editclassform.append(key,this.applicationform[key]);
