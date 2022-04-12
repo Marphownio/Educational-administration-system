@@ -44,7 +44,7 @@ public class UserController {
 
     // 批量导入用户
     @PostMapping("/batchimport")
-    public ResultMessage BatchImportUser(@RequestParam(value = "filename",required = false) MultipartFile file) {
+    public ResultMessage BatchImportUser(MultipartFile file) {
         //判断文件是否为空
         if(file == null) return ResultMessage.NOTFOUND;
         //获取文件名
