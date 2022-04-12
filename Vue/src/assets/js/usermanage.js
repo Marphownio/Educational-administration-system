@@ -1,7 +1,6 @@
 import Nav from "@/views/inc/Nav.vue";
 //import Papa from "papaparse";
 import request from "@/utils/request";
-import {parse} from "qs";
 
 
 export default {
