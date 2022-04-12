@@ -18,8 +18,8 @@
       <el-table-column prop="credit" label="学分" width="60px"/>
       <el-table-column prop="teacher.username" label="任课教师" width="90px"/>
       <el-table-column prop="introduction" label="课程介绍" width="150px"/>
-      <el-table-column prop="classTime" label="上课时间" width="150px"/>
-      <el-table-column prop="classPlace" label="上课地点" width="90px"/>
+      <el-table-column prop="courseTime" label="上课时间" width="150px"/>
+      <el-table-column prop="coursePlace" label="上课地点" width="90px"/>
       <el-table-column prop="capacity" label="选课容量" width="60px"/>
       <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="100px">
         <div >

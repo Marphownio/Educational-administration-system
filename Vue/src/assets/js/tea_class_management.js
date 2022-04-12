@@ -11,13 +11,13 @@ export default {
         return{
             ruleForm:{
                 courseName: '',
-                classTime:'',
-                classPlace:'',
+                courseTime:'',
+                coursePlace:'',
             },
             editRules:({
                 courseName:[{required: true, message: '请输入新课程名称', trigger: 'blur'}],
-                classTime:[{required: true, message: '请输入新上课时间', trigger: 'blur'}],
-                classPlace:[{required: true, message: '请输入新上课地点', trigger: 'blur'}],
+                courseTime:[{required: true, message: '请输入新上课时间', trigger: 'blur'}],
+                coursePlace:[{required: true, message: '请输入新上课地点', trigger: 'blur'}],
             }),
             dialogVisible:false,
             applicationform:{//12
@@ -25,8 +25,8 @@ export default {
                 courseName: '',
                 classHour:'',
                 credit:'',
-                classTime:'',
-                classPlace:'',
+                courseTime:'',
+                coursePlace:'',
                 introduction: '',
                 majorId:'',
                 schoolId: '',
@@ -40,8 +40,8 @@ export default {
                 courseName: '',
                 classHour:'',
                 credit:'',
-                classTime:'',
-                classPlace:'',
+                courseTime:'',
+                coursePlace:'',
                 introduction: '',
                 majorId:'',
                 schoolId: '',
@@ -57,8 +57,8 @@ export default {
                 classHour:[{required: true, message: '请输入课程学时', trigger: 'blur'} ],
                 credit:[{required: true, message: '请输入课程学分', trigger: 'blur'}  ],
                 teacherId:[{required: true, message: '请输入任课教师', trigger: 'blur'} ],
-                classTime:[{required: true, message: '请输入上课时间', trigger: 'blur'} ],
-                classPlace:[{required: true, message: '请输入上课地点', trigger: 'blur'} ],
+                courseTime:[{required: true, message: '请输入上课时间', trigger: 'blur'} ],
+                coursePlace:[{required: true, message: '请输入上课地点', trigger: 'blur'} ],
                 capacity:[{required: true, message: '请输入选课容量', trigger: 'blur'}  ],
             }),
             dialogVisible1:false,
@@ -103,8 +103,8 @@ export default {
                 if (valid) {
                     const that =this;
                     this.applicationform.courseName=this.ruleForm1.courseName
-                    this.applicationform.classTime=this.ruleForm1.classTime
-                    this.applicationform.classPlace=this.ruleForm1.classPlace;
+                    this.applicationform.courseTime=this.ruleForm1.courseTime
+                    this.applicationform.coursePlace=this.ruleForm1.coursePlace;
                     this.applicationform.applicationId=this.ruleForm1.applicationId;
                     this.applicationform.classHour=this.ruleForm1.classHour;
                     this.applicationform.credit=this.ruleForm1.credit;
@@ -135,8 +135,8 @@ export default {
         edit_class_inform(row){//12
             this.dialogVisible=true;
             this.ruleForm.courseName=row.courseName;
-            this.ruleForm.classTime=row.classTime;
-            this.ruleForm.classPlace=row.classPlace;
+            this.ruleForm.courseTime=row.courseTime;
+            this.ruleForm.coursePlace=row.coursePlace;
             this.applicationform.applicationId=row.courseId;
             this.applicationform.classHour=row.classHour;
             this.applicationform.credit=row.credit;
@@ -152,8 +152,8 @@ export default {
                     if (valid) {
                         const that=this;
                         this.applicationform.courseName=this.ruleForm.courseName;
-                        this.applicationform.classTime=this.ruleForm.classTime;
-                        this.applicationform.classPlace=this.ruleForm.classPlace;
+                        this.applicationform.courseTime=this.ruleForm.courseTime;
+                        this.applicationform.coursePlace=this.ruleForm.coursePlace;
                         console.log(this.applicationform);
                         let editclassform = new FormData();
                         for(let key in this.applicationform) {
@@ -189,8 +189,8 @@ export default {
             this.applicationform.courseName=row.courseName;
             this.applicationform.classHour=row.classHour;
             this.applicationform.credit=row.credit;
-            this.applicationform.classTime=row.classTime;
-            this.applicationform.classPlace=row.classPlace;
+            this.applicationform.courseTime=row.courseTime;
+            this.applicationform.coursePlace=row.coursePlace;
             this.applicationform.capacity=row.capacity;
             this.applicationform.introduction=row.introduction;
             this.applicationform.majorId=row.major.majorId;

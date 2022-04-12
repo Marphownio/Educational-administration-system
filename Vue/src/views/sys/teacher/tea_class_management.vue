@@ -29,8 +29,8 @@
       <el-table-column prop="teacher.userId" label="教师Id" v-if="false" width="0"/>
       <el-table-column prop="teacher" label="教师类" v-if="false" width="0"/><el-table-column prop="teacher.userId" label="教师Id" v-if="false" width="0"/>
       <el-table-column prop="introduction" label="课程介绍" width="150px"/>
-      <el-table-column prop="classTime" label="上课时间" width="120px"/>
-      <el-table-column prop="classPlace" label="上课地点" width="80px"/>
+      <el-table-column prop="courseTime" label="上课时间" width="120px"/>
+      <el-table-column prop="coursePlace" label="上课地点" width="80px"/>
       <el-table-column prop="capacity" label="选课容量" width="80px"/>
       <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="170px">
         <el-button type="primary" @click="edit_class_inform(scope.row)">编辑</el-button>
@@ -61,11 +61,11 @@
       <el-form-item label="课程名称:" prop="courseName">
         <el-input v-model="ruleForm.courseName"></el-input>
       </el-form-item>
-      <el-form-item label="上课时间:" prop="classTime">
-        <el-input v-model="ruleForm.classTime"></el-input>
+      <el-form-item label="上课时间:" prop="courseTime">
+        <el-input v-model="ruleForm.courseTime"></el-input>
       </el-form-item>
-      <el-form-item label="上课教室:" prop="classPlace">
-        <el-input v-model="ruleForm.classPlace"></el-input>
+      <el-form-item label="上课教室:" prop="coursePlace">
+        <el-input v-model="ruleForm.coursePlace"></el-input>
       </el-form-item>
 
       <el-form-item>
@@ -115,11 +115,11 @@
       <el-form-item label="学分:" prop="credit">
         <el-input v-model="ruleForm1.credit"></el-input>
       </el-form-item>
-      <el-form-item label="上课时间:" prop="classTime">
-        <el-input v-model="ruleForm1.classTime"></el-input>
+      <el-form-item label="上课时间:" prop="courseTime">
+        <el-input v-model="ruleForm1.courseTime"></el-input>
       </el-form-item>
-      <el-form-item label="上课地点:" prop="classPlace">
-        <el-input v-model="ruleForm1.classPlace"></el-input>
+      <el-form-item label="上课地点:" prop="coursePlace">
+        <el-input v-model="ruleForm1.coursePlace"></el-input>
       </el-form-item>
       <el-form-item label="选课容量:" prop="capacity">
         <el-input v-model="ruleForm1.capacity"></el-input>
