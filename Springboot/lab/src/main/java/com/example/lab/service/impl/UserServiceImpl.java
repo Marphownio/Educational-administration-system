@@ -75,23 +75,47 @@ public class UserServiceImpl implements UserService {
             //首行列标题
             reader.readLine();
             while((line = reader.readLine())!= null){
+                System.out.println(line);
                 String []item = line.split(",");
                 if (item[2] == null || item.length <10
                     || !commonService.isMatchSchoolAndMajor(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])),majorService.findMajorByMajorId(Integer.valueOf(item[9])))
                 ){
                 }
                 else {
-                    user.setUserId(Integer.valueOf(item[0]));
-                    user.setPassword(item[1]);
-                    user.setUsername(item[3]);
-                    user.setIdNumber(item[4]);
-                    user.setPhoneNumber(item[5]);
-                    user.setEmail(item[6]);
-                    user.setStatus(Boolean.valueOf(item[7]));
-                    user.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])));
-                    user.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[9])));
-                    user.setRole(UserRole.valueOf(item[2]));
-                    addUser(user);
+                    if(item[0].length()!=0&&item[1].length()!=0&&item[2].length()!=0&&item[3].length()!=0&&item[4].length()!=0&&item[7].length()!=0)
+                    {
+                        boolean number1=false,number2 = false,number3=false,charcheck=false,statuscheck=false;
+                        if(item[2].equals("TEACHER")||item[2].equals("STUDENT"))
+                        {
+                            if(UserRole.valueOf(item[2])==UserRole.TEACHER&&item[0].length()==8)
+                                number1=item[0].matches("^[0-9]*$");
+                            else if(UserRole.valueOf(item[2])==UserRole.STUDENT&&item[0].length()==6)
+                                number1=item[0].matches("^[0-9]*$");
+                        }
+                        if(item[4].length()==18)
+                            number2=item[4].matches("^[0-9]*$");
+                        if(item[5].length()==11)
+                            number3=item[5].matches("^[0-9]*$");
+                        else if(item[5].length()==0)
+                            number3=true;
+                        charcheck=item[3].matches("^[a-zA-Z\u4e00-\u9fa5]+$");
+                        if(item[7].equals("TRUE")||item[7].equals("FALSE"))
+                            statuscheck=true;
+                        if(number1&&number2&&number3&&charcheck)
+                        {
+                            user.setUserId(Integer.valueOf(item[0]));
+                            user.setPassword(item[1]);
+                            user.setUsername(item[3]);
+                            user.setIdNumber(item[4]);
+                            user.setPhoneNumber(item[5]);
+                            user.setEmail(item[6]);
+                            user.setStatus(Boolean.valueOf(item[7]));
+                            user.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])));
+                            user.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[9])));
+                            user.setRole(UserRole.valueOf(item[2]));
+                            addUser(user);
+                        }
+                    }
                 }
             }
             reader.close();

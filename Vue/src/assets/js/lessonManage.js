@@ -7,6 +7,14 @@ export default {
         Nav
     },
     data(){
+        let numbercheck=(rule,value,callback)=>{
+            if(isNaN(value))
+            {
+                callback(new Error('输入只能为数字'));
+                return false;
+            }
+            else return true;
+        };
         return{
             addcourse:false,
             updatecourse:false,
@@ -27,6 +35,7 @@ export default {
                         message: '请输入课程代码',
                         trigger: 'blur'
                     },
+                    {validator: numbercheck,trigger: 'blur'}
                 ],
                 courseName: [
                     {
@@ -62,6 +71,7 @@ export default {
                         message: '请输入学时',
                         trigger: 'blur',
                     },
+                    {validator: numbercheck,trigger: 'blur'}
                 ],
                 credit: [
                     {
@@ -69,6 +79,7 @@ export default {
                         message: '请选择学分',
                         trigger: 'change',
                     },
+                    {validator: numbercheck,trigger: 'blur'}
                 ],
                 courseTime:[
                     {

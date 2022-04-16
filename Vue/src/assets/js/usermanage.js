@@ -169,6 +169,9 @@ export default {
         "refresh"(){
           this.ruleForm= {};
         },
+        fresh(){
+            this.$router.go(0);
+        },
         "getSchool":function(){
             request.get("/school/list").then(res=>{
                 this.schooldata= res;
