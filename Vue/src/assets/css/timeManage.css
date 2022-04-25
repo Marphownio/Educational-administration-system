@@ -38,5 +38,18 @@ body{
 .edit{
     margin-top: 40px;
 }
+.deletedia{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.deletedia h1{
+    margin-bottom: 50px;
+}
+.settime{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 
 
