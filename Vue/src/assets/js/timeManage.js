@@ -324,7 +324,8 @@ export default {
             }
             if(that.ruleForm2.startTimeHour==that.ruleForm2.endTimeHour){
                 if(that.ruleForm2.endTimeMin!=''&&that.ruleForm2.startTimeMin>=that.ruleForm2.endTimeMin){
-                    that.ruleForm2.endTimeMin='';
+                    // console.log(that.ruleForm2.endTimeMin);
+                    that.ruleForm2.endTimeMin=null;
                 }
             }
 
