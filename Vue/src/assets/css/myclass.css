@@ -1,0 +1,26 @@
+#chosenclassform{
+    margin-top: 25px;
+    width:90%;
+}
+#welcom{
+    width: 100%;
+    margin-top: 30px;
+    height: 50px;
+    font-size: xx-large;
+    font-weight: 500;
+}
+#chosenclassform el-table-column{
+    width:13%;
+}
+#chosenclassform el-table-column:nth-child(1){
+    width:9%;
+}
+#chosenclassinfor{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height:800px;
+    background-color: rgba(238, 237, 237, 0.698);
+    margin-top: 50px;
+    width:1300px;
+}

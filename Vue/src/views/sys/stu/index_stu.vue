@@ -15,10 +15,10 @@
         <router-link to="/classselection">选课</router-link>
       </td>
       <td style="text-align:center" class="choose">
-        <router-link to="/resetpassword" > 重置密码 </router-link>
+        <router-link to="/myclass" > 我的课表 </router-link>
       </td>
       <td style="text-align:center" class="choose">
-        <router-link to="/index_stu" > 敬请期待 </router-link>
+        <router-link to="/resetpassword" > 重置密码 </router-link>
       </td>
     </tr>
   </table>

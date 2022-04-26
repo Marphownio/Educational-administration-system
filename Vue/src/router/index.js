@@ -78,6 +78,11 @@ const routes = [
     name: 'Resetpassword',
     component: () => import('../views/passwordreset.vue')
   },
+  {
+    path: '/myclass',
+    name: 'mycalss',
+    component: () => import('../views/sys/stu/myclass.vue')
+  },
   // {
   //   path: '*',
   //   name: 'NotFound',
@@ -138,7 +143,7 @@ router.beforeEach((to,from,next)=>{
       }
       //学生身份
       if(token==="3"){
-        if(to.path==="/index_stu"||to.path==="/classselection"||to.path==="/resetpassword"||to.path==="/personalinfo"){
+        if(to.path==="/index_stu"||to.path==="/classselection"||to.path==="/resetpassword"||to.path==="/personalinfo"||to.path==="/myclass"){
           next();
         }
         else{
