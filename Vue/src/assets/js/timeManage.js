@@ -37,11 +37,11 @@ export default {
                 {value: '22', label: '22',}, {value: '23', label: '23',},
             ],
             minutes1:[
-                {value: '0', label: '0',}, {value: '1', label: '1',},
-                {value: '2', label: '2',}, {value: '3', label: '3',},
-                {value: '4', label: '4',}, {value: '5', label: '5',},
-                {value: '6', label: '6',}, {value: '7', label: '7',},
-                {value: '8', label: '8',}, {value: '9', label: '9',},
+                {value: '00', label: '00',}, {value: '01', label: '01',},
+                {value: '02', label: '02',}, {value: '03', label: '03',},
+                {value: '04', label: '04',}, {value: '05', label: '05',},
+                {value: '06', label: '06',}, {value: '07', label: '07',},
+                {value: '08', label: '08',}, {value: '09', label: '09',},
                 {value: '10', label: '10',}, {value: '11', label: '11',},
                 {value: '12', label: '12',}, {value: '13', label: '13',},
                 {value: '14', label: '14',}, {value: '15', label: '15',},
@@ -69,11 +69,11 @@ export default {
                 {value: '58', label: '58',}, {value: '59', label: '59',},
             ],
             minutes2:[
-                {value: '0', label: '0',}, {value: '1', label: '1',},
-                {value: '2', label: '2',}, {value: '3', label: '3',},
-                {value: '4', label: '4',}, {value: '5', label: '5',},
-                {value: '6', label: '6',}, {value: '7', label: '7',},
-                {value: '8', label: '8',}, {value: '9', label: '9',},
+                {value: '00', label: '00',}, {value: '01', label: '01',},
+                {value: '02', label: '02',}, {value: '03', label: '03',},
+                {value: '04', label: '04',}, {value: '05', label: '05',},
+                {value: '06', label: '06',}, {value: '07', label: '07',},
+                {value: '08', label: '08',}, {value: '09', label: '09',},
                 {value: '10', label: '10',}, {value: '11', label: '11',},
                 {value: '12', label: '12',}, {value: '13', label: '13',},
                 {value: '14', label: '14',}, {value: '15', label: '15',},
@@ -196,12 +196,12 @@ export default {
             }
             //startmin
             if(that.ruleForm1.startTimeHour==that.lastclass.endHour){
-                for(let i=0;i<=that.lastclass.endMin;i++){
+                for(let i=0;i<=Number(that.lastclass.endMin);i++){
                     that.minutes1[i].disabled=true;
                 }
             }
             if(that.ruleForm1.startTimeHour==that.ruleForm1.endTimeHour&&that.ruleForm1.endTimeMin!==''){
-                for(let i=that.ruleForm1.endTimeMin;i<that.minutes1.length;i++){
+                for(let i=Number(that.ruleForm1.endTimeMin);i<that.minutes1.length;i++){
                     that.minutes1[i].disabled=true;
                 }
             }
@@ -211,14 +211,13 @@ export default {
             }
             //endmin
             if(that.ruleForm1.endTimeHour==that.ruleForm1.startTimeHour){
-                for(let i=0;i<=that.ruleForm1.startTimeMin;i++){
+                for(let i=0;i<=Number(that.ruleForm1.startTimeMin);i++){
                     that.minutes2[i].disabled=true;
                 }
             }
-            // console.log(that.ruleForm1);
             if(that.ruleForm1.startTimeHour==that.ruleForm1.endTimeHour){
                 if(that.ruleForm1.endTimeMin!=''&&that.ruleForm1.startTimeMin>=that.ruleForm1.endTimeMin){
-                    console.log("");
+                    // console.log("");
                     that.ruleForm1.endTimeMin='';
                 }
             }
@@ -291,12 +290,12 @@ export default {
             }
             //startmin
             if(that.ruleForm2.startTimeHour==that.lastclass.endHour){
-                for(let i=0;i<=that.lastclass.endMin;i++){
+                for(let i=0;i<=Number(that.lastclass.endMin);i++){
                     that.minutes1[i].disabled=true;
                 }
             }
             if(that.ruleForm2.startTimeHour==that.ruleForm2.endTimeHour&&that.ruleForm2.endTimeMin!==''){
-                for(let i=that.ruleForm2.endTimeMin;i<that.minutes1.length;i++){
+                for(let i=Number(that.ruleForm2.endTimeMin);i<that.minutes1.length;i++){
                     that.minutes1[i].disabled=true;
                 }
             }
@@ -312,12 +311,12 @@ export default {
             }
             //endmin
             if(that.ruleForm2.endTimeHour==that.ruleForm2.startTimeHour){
-                for(let i=0;i<=that.ruleForm2.startTimeMin;i++){
+                for(let i=0;i<=Number(that.ruleForm2.startTimeMin);i++){
                     that.minutes2[i].disabled=true;
                 }
             }
             if(that.ruleForm2.endTimeHour==that.nextclass.startHour){
-                for(let i=that.ruleForm2.endTimeMin;i<that.minutes2.length;i++){
+                for(let i=Number(that.ruleForm2.endTimeMin);i<that.minutes2.length;i++){
                     that.minutes2[i].disabled=true;
                 }
             }

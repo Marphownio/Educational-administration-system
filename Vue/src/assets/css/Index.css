@@ -2,6 +2,11 @@
     user-select: none;
 }/*禁止复制页面文字*/
 
+.huanyin{
+    margin-top: 35px;
+    margin-bottom: 35px;
+}
+
 body{/*背景图*/
     background-size:cover;
     background: url('../images/background.jpg') no-repeat fixed;
@@ -43,7 +48,7 @@ a{/*超链接*/
 
 .tablehead{/*功能选择页面的首行文字*/
     line-height: 70px;
-    font-size: 22px;
+    font-size: 30px;
     font-weight: 700;
     padding-left: 30px;
     border-bottom: 2px solid silver;

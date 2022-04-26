@@ -3,8 +3,8 @@
   <p class="huanyin">欢迎使用教务系统！</p>
   <table class="dashboard">
     <tr>
-      <td class="table_head" colspan="4">
-        服务功能:
+      <td class="tablehead" colspan="4">
+&nbsp;&nbsp;&nbsp;&nbsp;服务功能:
       </td>
     </tr>
     <tr>

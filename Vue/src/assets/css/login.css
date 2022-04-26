@@ -2,6 +2,7 @@
     user-select: none;
 }/*禁止复制网页*/
 body{
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
