@@ -6,6 +6,9 @@
     <el-table
         :data="classtimetable"
         id="chosenclassform"
+        border-collapse: collapse
+        :row-style="{height:'100px'}"
+        :cell-style="{padding:'0px'}"
         border>
       <el-table-column align="center" prop="classTimeId,startTimeHour,startTimeMin,endTimeHour,endTimeMin" label="课次" width="155px">
         <template v-slot="scope">
@@ -119,6 +122,5 @@
 </script>
 
 
-<style  scoped>
-@import "../../../assets/css/myclass.css";
+<style src="../../../assets/css/myclass.css" scoped>
 </style>

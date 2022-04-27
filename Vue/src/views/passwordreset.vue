@@ -37,6 +37,5 @@
 </script>
 
 
-<style scoped>
-@import "../assets/css/resetPassword.css";
+<style src="../assets/css/resetPassword.css" scoped>
 </style>

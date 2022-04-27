@@ -1,7 +1,6 @@
 *{
     user-select: none;
 }
-
 a:link {
     color: #000000;
     text-decoration: none;
@@ -18,12 +17,6 @@ a:hover {
 .void{
     height:100px;
 }
-body{
-    background-size:cover;
-    background: url('../images/background.jpg') no-repeat fixed;
-    min-width: 1400px;
-}
-
 .showlistw{
     top:25%;
     margin: 0 auto;

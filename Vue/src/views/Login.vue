@@ -36,6 +36,5 @@
 </script>
 
 
-<style scoped>
-@import "../assets/css/login.css";
+<style src="../assets/css/login.css" scoped>
 </style>

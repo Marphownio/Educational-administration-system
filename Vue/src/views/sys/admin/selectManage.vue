@@ -18,6 +18,5 @@
 
 </script>
 
-<style scoped>
-  @import "../../../assets/css/selectManage.css";
+<style src="../../../assets/css/selectManage.css" scoped>
 </style>

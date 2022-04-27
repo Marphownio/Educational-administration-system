@@ -18,11 +18,6 @@ a:hover {
 .void{
     height:100px;
 }
-body{
-    background-size:cover;
-    background: url('../images/background.jpg') no-repeat fixed;
-    min-width: 1400px;
-}
 
 .showlist{
     top:25%;

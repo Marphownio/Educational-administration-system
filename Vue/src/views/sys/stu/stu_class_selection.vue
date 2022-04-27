@@ -40,6 +40,5 @@
 
 </script>
 
-<style>
-@import "../../../assets/css/stu_class_selection.css";
+<style src="../../../assets/css/stu_class_selection.css" scoped>
 </style>

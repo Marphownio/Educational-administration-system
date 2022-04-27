@@ -218,6 +218,5 @@
 
 </script>
 
-<style scoped>
-    @import "../../../assets/css/lessonManage.css";
+<style src="../../../assets/css/lessonManage.css" scoped>
 </style>

@@ -9,11 +9,13 @@
   <Nav></Nav>
   <span id="teawelcomeinform">当前课程信息：</span>
   <div id="teaclassinform">
+    <div id="thisBtn">
       <el-form id="requirebtn" :inline="true" >
         <el-form-item>
           <el-button type="primary" @click="dialogVisible1=true">申请新课程</el-button>
         </el-form-item>
       </el-form>
+    </div>
     <el-table id="teaclassinformtable" :data="tableData" >
       <el-table-column prop="courseId" label="课程编号" width="80px"/>
       <el-table-column prop="courseName" label="课程名称" width="80px" />
@@ -143,6 +145,5 @@
 
 </script>
 
-<style>
-@import "../../../assets/css/tea_class_management.css";
+<style src="../../../assets/css/tea_class_management.css" scoped>
 </style>

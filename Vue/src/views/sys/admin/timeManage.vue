@@ -213,6 +213,5 @@
 </script>
 
 
-<style  scoped>
-   @import "../../../assets/css/timeManage.css";
+<style src="../../../assets/css/timeManage.css" scoped>
 </style>

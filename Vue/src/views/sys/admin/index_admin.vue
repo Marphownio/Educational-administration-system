@@ -63,6 +63,5 @@
     }
 </script>
 
-<style scoped>
-@import "../../../assets/css/Index.css";
+<style src="../../../assets/css/Index.css" scoped>
 </style>

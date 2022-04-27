@@ -87,6 +87,5 @@
 
 </script>
 
-<style scoped>
-@import "../assets/css/personal_infor.css";
+<style src="../assets/css/personal_infor.css" scoped>
 </style>

@@ -150,6 +150,5 @@
 </template>
 <script  src="../../../assets/js/majorManage.js"></script>
 
-<style  scoped >
-    @import "../../../assets/css/majorManage.css";
+<style src="../../../assets/css/majorManage.css" scoped>
 </style>

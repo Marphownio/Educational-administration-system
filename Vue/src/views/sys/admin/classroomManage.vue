@@ -125,6 +125,5 @@
 
 </script>
 
-<style  scoped>
-    @import "../../../assets/css/classroomManage.css";
+<style src="../../../assets/css/classroomManage.css"  scoped>
 </style>

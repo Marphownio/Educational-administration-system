@@ -176,6 +176,5 @@
 
 </script>
 
-<style scoped>
-    @import "../../../assets/css/userManage.css";
+<style src="../../../assets/css/userManage.css" scoped>
 </style>

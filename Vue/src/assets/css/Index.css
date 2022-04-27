@@ -7,10 +7,6 @@
     margin-bottom: 35px;
 }
 
-body{/*背景图*/
-    background-size:cover;
-    background: url('../images/background.jpg') no-repeat fixed;
-}
 .nav{
     width: 100%;
     position: relative;
