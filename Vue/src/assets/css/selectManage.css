@@ -28,6 +28,7 @@ a:hover {
     border-radius: 15px;
 }
 .showlist {
+    margin-bottom: 50px;
     width: 77%;
     display: flex;
     flex-direction: row;

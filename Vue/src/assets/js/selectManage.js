@@ -9,12 +9,20 @@ export default {
     },
     data(){
        return{
+           dialogVisible0:false,
            isDisabled1:true,
            isDisabled2:false,
            currentTime:[{
                currentYear:'2022',
                currentTerm:'2',
            }],
+           formInLine:{
+               newCurrentYear:'',
+               newCurrentTerm:'',
+           },
+           editFormInLine:({
+
+           }),
            activities:[
                {
                    content: '学期开始',
@@ -60,6 +68,13 @@ export default {
         this.getStatus();
     },
     methods:{
+        showdialog(){
+            const that=this;
+            that.dialogVisible0=true;
+            that.formInLine.newCurrentYear=that.currentTime[0].currentYear;
+            that.formInLine.newCurrentTerm=that.currentTime[0].currentTerm;
+
+        },
         getStatus(){
             request.get("/admin/courseSelect/status").then(res=>{
                 console.log(res)

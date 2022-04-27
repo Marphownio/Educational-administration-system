@@ -15,7 +15,7 @@
             <el-table-column align="center" prop="currentYear" label="当前学年" />
             <el-table-column align="center" prop="currentTerm" label="当前学期" />
             <el-table-column align="center" label="操作">
-                <el-button type="primary">修改学年学期</el-button>
+                <el-button @click="showdialog()" type="primary">修改学年学期</el-button>
             </el-table-column>
           </el-table>
       <div class="showlist">
@@ -35,12 +35,33 @@
         <div>
           <el-button type="primary">进入下一阶段</el-button>
         </div>
-
-        <!--        <li style="list-style-type:none"><el-button @click="openSelection" class="open" :disabled="isDisabled1">开放选课</el-button></li>-->
-<!--        <li style="list-style-type:none"><el-button @click="closeSelection" class="close" :disabled="isDisabled2">关闭选课</el-button></li>-->
       </div>
     </div>
+    <el-dialog
+        v-model="dialogVisible0"
+        title="设置学年学期"
+        width="600px"
+    >
+      <el-form :inline=true
+               :model="formInLine"
+               :rules="editFormInLine"
+               label-width="100px"
+               class="demo-form-inline">
+        <el-form-item label="设置学年" prop="newCurrentYear">
+          <el-input v-model="formInLine.newCurrentYear"/>
+        </el-form-item>
+        <el-form-item label="设置学期" prop="newCurrentTerm">
+          <el-select v-model="formInLine.newCurrentTerm" placeholder="选择学期">
+            <el-option label="第一学期" value="1" />
+            <el-option label="第二学期" value="2" />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="">确认修改</el-button>
+        </el-form-item>
+      </el-form>
 
+    </el-dialog>
     </body>
 </template>
 
