@@ -11,7 +11,50 @@ export default {
        return{
            isDisabled1:true,
            isDisabled2:false,
+           currentTime:[{
+               currentYear:'2022',
+               currentTerm:'2',
+           }],
+           activities:[
+               {
+                   content: '学期开始',
+                   size: 'normal ',
+                   type: 'primary',
+                   color: '#3581E1',
+               },
+               {
+                   content: '一轮选课开始',
+                   size: 'normal ',
+                   type: 'primary',
+                   color: '#3581E1',
+               },
+               {
+                   content: '一轮选课结束',
+                   size: 'normal ',
+                   type: 'primary',
+                   color: '#3581E1',
+               },
+               {
+                   content: '二轮选课开始',
+                   size: 'large',
+                   type: 'primary',
+                   color: '#0bbd87',
+               },
+               {
+                   content: '二轮选课结束',
+                   size: 'normal ',
+                   type: 'primary',
+                   color: '#D3D3D3',
+               },
+               {
+                   content: '学期结束',
+                   size: 'normal ',
+                   type: 'primary',
+                   color: '#D3D3D3',
+               },
+           ]
        }
+
     },
     created() {
         this.getStatus();

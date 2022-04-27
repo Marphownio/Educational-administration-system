@@ -18,7 +18,7 @@
           <router-link to="/lessonmanage" > 课程管理 </router-link>
       </td>
       <td style="text-align:center" class="choose">
-          <router-link to="/selectmanage" > 选课管理 </router-link>
+          <router-link to="/selectmanage" > 学期管理 </router-link>
       </td>
     </tr>
     <tr>

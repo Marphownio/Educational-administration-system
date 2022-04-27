@@ -14,15 +14,28 @@ a:hover {
     color: #999999;
     text-decoration: underline;
 }
-
+#setFrame{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 50px;
+    border-radius: 25px;
+    background-color: rgb(255,255,255,0.7);
+}
+#showCurrentTime{
+    margin-top: 20px;
+    border-radius: 15px;
+}
 .showlist {
-    top:25%;
-    margin: 100px auto;
-    width: 535px;
-    height:500px;
-    background-color:white;
-    box-shadow: 0 0 10px 10px rgb(226 234 242 / 50%);
-    border-radius: 40px;
+    width: 77%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 30px;
+    background-color:rgb(255,255,255,0.7);
+    border-radius: 10px;
     padding: 15px;
     text-align: center;
 }
