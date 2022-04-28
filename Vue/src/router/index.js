@@ -59,6 +59,11 @@ const routes = [
     component: () => import('../views/sys/admin/classroomManage.vue')
   },
   {
+    path: '/applicationmanage',
+    name: 'Applicationmanage',
+    component: () => import('../views/sys/admin/applicationManage.vue')
+  },
+  {
     path: '/personalinfo',
     name: 'personalinfo',
     component: () => import('../views/personal_info.vue')
@@ -115,7 +120,7 @@ router.beforeEach((to,from,next)=>{
       }
       //管理员身份
       if(token==="1"){
-        if(to.path==="/index_admin"||to.path==="/majormanage"||to.path==="/usermanage"||to.path==="/lessonmanage"||to.path==="/timemanage"||to.path==="/classroommanage"||to.path==="/selectmanage"){
+        if(to.path==="/index_admin"||to.path==="/majormanage"||to.path==="/usermanage"||to.path==="/lessonmanage"||to.path==="/timemanage"||to.path==="/classroommanage"||to.path==="/selectmanage"||to.path==="/applicationmanage"){
           next();
         }
         else{

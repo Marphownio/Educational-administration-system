@@ -29,7 +29,7 @@
           <router-link to="/classroommanage" > 教室管理 </router-link>
       </td>
       <td style="text-align:center" class="choose">
-        <a href="" >评教</a>
+        <router-link to="/applicationmanage" >选课申请管理</router-link>
       </td>
       <td style="text-align:center" class="choose">
         <a href="">查看课表</a>
