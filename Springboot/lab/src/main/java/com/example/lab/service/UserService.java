@@ -6,6 +6,7 @@ import com.example.lab.pojo.entity.Teacher;
 import com.example.lab.pojo.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface UserService {
@@ -14,7 +15,7 @@ public interface UserService {
     ResultMessage addUser(User user);
 
     // 批量导入用户
-    ResultMessage BatchImportUser(MultipartFile file);
+    ResultMessage BatchImportUser( MultipartFile file);
 
     // 删除用户
     ResultMessage deleteUser(Integer userId);
