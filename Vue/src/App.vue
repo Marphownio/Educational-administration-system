@@ -1,6 +1,7 @@
 <template>
-
-  <router-view/>
+  <div id="app">
+    <router-view></router-view>
+  </div>
 </template>
 
 <style>
@@ -18,6 +19,12 @@ body{
   background-image: url('./assets/images/background.jpg');
   background-attachment: fixed;
   background-repeat:no-repeat;
+}
+#app{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width:100%;
 }
 </style>
 <script>

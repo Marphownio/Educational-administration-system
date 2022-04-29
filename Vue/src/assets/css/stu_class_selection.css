@@ -1,18 +1,26 @@
 #classinform{
     margin-top: 20px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
     border-radius: 15px;
-    background-color: rgba(238, 237, 237, 0.698);
-    width: 100%;
+    background-color: rgba(238, 237, 237,0);
+    width:98%;
     height:500px;
 }
 #classinformtable{
-
-    width: 95%;
+    width: 64%;
     display: block;
     border-radius: 15px;
+}
+#chosenclassform{
+    background-color: rgba(238, 237, 237, 0.698);
+    width:35%;
+    border-radius: 15px;
+}
+#chosenclassform el-table-column{
+    width:12.5%;
 }
 #welcomeinform{
     margin-top: 20px;
