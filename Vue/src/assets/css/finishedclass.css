@@ -1,0 +1,20 @@
+#welc{
+    margin-left:-60%;
+    font-weight:400;
+    font-size:xx-large;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#finidhedclassbody{
+    width:90%;
+    background-color: rgba(238, 237, 237,0.698);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#finishedClass{
+    margin-top: 15px;
+    width: 90%;
+    border-radius: 15px;
+}

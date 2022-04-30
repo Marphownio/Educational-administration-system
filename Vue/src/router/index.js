@@ -88,6 +88,11 @@ const routes = [
     name: 'mycalss',
     component: () => import('../views/sys/stu/myclass.vue')
   },
+  {
+    path: '/finishedclass',
+    name: 'finishedclass',
+    component: () => import('../views/sys/stu/finishedClass.vue')
+  },
   // {
   //   path: '*',
   //   name: 'NotFound',
@@ -148,7 +153,7 @@ router.beforeEach((to,from,next)=>{
       }
       //学生身份
       if(token==="3"){
-        if(to.path==="/index_stu"||to.path==="/classselection"||to.path==="/resetpassword"||to.path==="/personalinfo"||to.path==="/myclass"){
+        if(to.path==="/index_stu"||to.path==="/finishedclass"||to.path==="/classselection"||to.path==="/resetpassword"||to.path==="/personalinfo"||to.path==="/myclass"){
           next();
         }
         else{

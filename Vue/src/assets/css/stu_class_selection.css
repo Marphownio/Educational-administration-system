@@ -1,23 +1,103 @@
 #classinform{
     margin-top: 20px;
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
     border-radius: 15px;
-    background-color: rgba(238, 237, 237,0);
-    width:98%;
-    height:500px;
+    background-color: rgba(238, 237, 237,0.698);
+    width:90%;
+}
+.classid{
+    font-weight: 700;
+    font-size: x-small;
+}
+.classname{
+    font-weight: 700;
+    font-size: medium;
+}
+.classteacher{
+    font-weight: 500;
+    font-size: small;
+}
+.classroom{
+    font-weight: 500;
+    font-size: x-small;
+}
+#classtimeData{
+    margin-top: 20px;
 }
 #classinformtable{
-    width: 64%;
+    width: 95%;
     display: block;
     border-radius: 15px;
 }
+.classshowtime{
+    background-color:wheat;
+}
 #chosenclassform{
-    background-color: rgba(238, 237, 237, 0.698);
-    width:35%;
-    border-radius: 15px;
+    width:100%;
+}
+#filterbtn{
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+.colortext{
+    font-weight: 700;
+}
+.samples{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#showcolor{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.colors1{
+    background-color: #B0C4DE;
+    display: block;
+    height: 20px;
+    width:20px;
+}
+.colors2{
+    background-color: #409EFF;
+    display: block;
+    height: 20px;
+    width:20px;
+}
+.colors3{
+    background-color:  #c45656;
+    display: block;
+    height: 20px;
+    width:20px;
+}
+.xxh{
+    margin-top: -20px;
+    text-align: center;
+    line-height: 5px;
+    font-weight: 700;
+    font-size: x-large;
+}
+.xxh1{
+    text-align: center;
+    line-height: 5px;
+    font-weight: 600;
+    font-size: medium;
+}
+.xxh2{
+    text-align: center;
+    line-height: 5px;
+    font-weight: 400;
+    font-size: medium;
 }
 #chosenclassform el-table-column{
     width:12.5%;
@@ -27,5 +107,5 @@
     font-weight: 400;
     display: block;
     font-size: xx-large;
-    margin-left: -700px;
+    margin-left: -1000px;
 }

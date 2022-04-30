@@ -21,6 +21,20 @@
         <router-link to="/resetpassword" > 重置密码 </router-link>
       </td>
     </tr>
+    <tr>
+      <td style="text-align:center" class="choose">
+        <router-link to="/finishedclass">已修课程</router-link>
+      </td>
+      <td style="text-align:center" class="choose">
+        <router-link to="">敬请期待</router-link>
+      </td>
+      <td style="text-align:center" class="choose">
+        <router-link to="" > 敬请期待 </router-link>
+      </td>
+      <td style="text-align:center" class="choose">
+        <router-link to="" > 敬请期待 </router-link>
+      </td>
+    </tr>
   </table>
 </template>
 

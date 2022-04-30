@@ -83,28 +83,14 @@ export default {
         }, 300); // 定时时间
     },
     created(){
-        this.getClassInform();
+        // this.getClassInform();
 
     },
     methods:{
-        test(){
-            console.log(document.querySelectorAll(".Sunday"));
-        },
         getClassInform(){
 
         },
-        Culculate(Times,currentTime){
-            let Together=1;
-            for(let i=currentTime;i<Times.length-1;i++){
-                if(Times[i+1]-Times[i]==1){
-                    Together++;
-                }
-            }
-            return Together;
-
-        },
         fillInClassInForm:function(){
-            let name=[".Monday",".Tuesday",".Wednesday",".Thursday",".Friday",".Saturday",".Sunday"]
             let MondayObj=document.querySelectorAll(".Monday");
             let TuesdayObj=document.querySelectorAll(".Tuesday");
             let WednesdayObj=document.querySelectorAll(".Wednesday");
@@ -118,7 +104,6 @@ export default {
             let currentClassDay;
             let currentClassDayTimeObj;
             let ci;
-            let together;
             let inform;
             console.log(SundayObj.length);
             for(let i=0;i<that.classinfortable.length;i++){
@@ -128,11 +113,6 @@ export default {
                     currentClassDayTimeObj=currentClass.classtime[j].classci;
                     ci=0
                     for(ci;ci<currentClassDayTimeObj.length;){
-                        // together=that.Culculate(currentClassDayTimeObj,ci);
-                        // console.log(together);
-                        // if(together>1){
-                        //     week[currentClassDay-1][ci].style.rowspan=together;
-                        // }
                         week[currentClassDay-1][currentClassDayTimeObj[ci]-1].parentElement.parentElement.style.backgroundColor="#B0C4DE";
                         inform=week[currentClassDay-1][currentClassDayTimeObj[ci]-1].firstElementChild;
                         inform.innerText=currentClass.classid;
@@ -146,7 +126,6 @@ export default {
 
                     }
 
-                    // week[currentClassDay-1].
 
                 }
             }
