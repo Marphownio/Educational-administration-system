@@ -1,5 +1,7 @@
 import Nav from "@/views/inc/Nav.vue";
 import request from "@/utils/request";
+import {reactive} from "vue";
+
 
 export default {
     name: "userManage",
@@ -13,6 +15,11 @@ export default {
                 callback(new Error('输入只能为数字'));
                 return false;
             }
+            else if(value<=0)
+            {
+                callback(new Error('输入需大于0'));
+                return false;
+            }
             else return true;
         };
         return{
@@ -22,8 +29,46 @@ export default {
             schooldata:[],
             teacherdata:[],
             majordata:[],
-            ruleForm1:{
-                introduction:''
+            buildingData:[],
+            classroomData:[],
+            dayofweekData:[
+                {
+                    name:"周一",
+                    value:"MONDAY"
+                },
+                {
+                    name:"周二",
+                    value:"TUESDAY"
+                },
+                {
+                    name:"周三",
+                    value:"WEDNESDAY"
+                },
+                {
+                    name:"周四",
+                    value:"THURSDAY"
+                },
+                {
+                    name:"周五",
+                    value:"FRIDAY"
+                },
+                {
+                    name:"周六",
+                    value:"SATURDAY"
+                },
+                {
+                    name:"周日",
+                    value:"SUNDAY"
+                }
+            ],
+            ruleForm1: {
+                arrangement: [{
+                    classArrangementId: '',
+                    buildingId: '',
+                    classroomId:'',
+                    classTimeId:'',
+                    dayofweek:''
+                }]
             },
             ruleForm2:{
 
@@ -81,17 +126,17 @@ export default {
                     },
                     {validator: numbercheck,trigger: 'blur'}
                 ],
-                courseTime:[
+                classroomId:[
                     {
                         required: true,
-                        message: '请输入上课时间',
+                        message: '请输入上课教室',
                         trigger: 'blur',
                     },
                 ],
-                coursePlace:[
+                buildingId:[
                     {
                         required: true,
-                        message: '请输入上课地点',
+                        message: '请输入教学楼',
                         trigger: 'blur',
                     },
                 ],
@@ -101,6 +146,7 @@ export default {
                         message: '请输入选课容量',
                         trigger: 'blur',
                     },
+                    {validator: numbercheck,trigger: 'blur'}
                 ],
             }),
             tableData:[
@@ -109,12 +155,17 @@ export default {
             applicationData:[
                 {
                 },
+            ],
+            timeData:[
+
             ]
         }
     },
     mounted() {
         this.getSchool();
         this.getTeacher();
+        this.getBuilding();
+        this.getTime();
     },
     created(){
         this.getCourseForm();
@@ -126,7 +177,6 @@ export default {
         },
         getapplicationData(){
             request.get("/application/list").then(res=>{
-                console.log(res);
                 this.applicationData=res;
                 for(let i=0;i<Object.keys(this.applicationData).length;i++)
                 {
@@ -147,6 +197,26 @@ export default {
                     }
                 }
             })
+        },
+        getTime:function(){
+          request.get("/classTime/list").then(res=>{
+              this.timeData=res;
+          })
+        },
+        getBuilding:function(){
+            request.get("/building/list").then(res=>{
+                this.buildingData=res;
+            })
+        },
+        getClassroom:function(index,id){
+            request.get("/building/classrooms",{
+                params:{
+                    buildingId:id
+                }
+            }).then(res=>{
+                this.classroomData[index]= res;
+            })
+            this.ruleForm1.arrangement[index].classroomId=null;
         },
         getMajor:function(){
             request.get("/school/majors",{
@@ -219,6 +289,20 @@ export default {
                         this.tableData[i].majorId=this.tableData[i].major.majorId;
                     }
                 }
+            })
+        },
+        remove(item){
+            const index = this.ruleForm1.arrangement.indexOf(item)
+            if (index !== -1) {
+                this.ruleForm1.arrangement.splice(index, 1)
+            }
+        },
+        addarrangement(){
+            this.ruleForm1.arrangement.push({
+                buildingId: '',
+                classroomId: '',
+                classtimeId:'',
+                dayofweek:''
             })
         },
         submitaddcourse(){
