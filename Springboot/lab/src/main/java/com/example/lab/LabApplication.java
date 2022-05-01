@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class LabApplication {
 
-    public static Admin admin = new Admin();
+    public static final Admin admin = new Admin();
 
     public static void main(String[] args) {
         admin.setPassword("fudan_admin");

@@ -1,8 +1,10 @@
 package com.example.lab.pojo;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class Admin {
 
     private Integer userId = 0;
