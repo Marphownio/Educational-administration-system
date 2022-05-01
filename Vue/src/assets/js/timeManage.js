@@ -101,10 +101,7 @@ export default {
                 {value: '58', label: '58',}, {value: '59', label: '59',},
             ],
             number:'',
-            tableDatatime:[
-                {
-                },
-            ],
+            tableDatatime:[{},],
             dialogVisible1:false,
             applyform:{
                 classTimeId:'',
@@ -159,16 +156,36 @@ export default {
     },
     methods:{
         getlastinfor(index){
-
+            const that=this;
+            if(index=='0'){
+                that.lastclass.endHour='-1'
+                that.lastclass.endMin='-1'
+            }
+            else{
+                that.lastclass.endHour=that.tableDatatime[index-1].endTimeHour;
+                that.lastclass.endMin=that.tableDatatime[index-1].endTimeMin;
+            }
         },
         getnextinfor(index){
-
+            const that=this;
+            if(index==that.number+1){
+                that.nextclass.startHour='25'
+                that.nextclass.startMin='60'
+            }
+            else{
+                that.nextclass.startHour=that.tableDatatime[index-1].startTimeHour;
+                that.nextclass.startMin=that.tableDatatime[index-1].startTimeMin;
+            }
         },
         applynew(){
             const that=this;
             that.dialogVisible1=true;
             that.ruleForm1.classTimeId=that.number+1;
-            that.getlastinfor(that.ruleForm1.classTimeId);
+            that.ruleForm1.startTimeHour='';
+            that.ruleForm1.startTimeMin='';
+            that.ruleForm1.endTimeHour='';
+            that.ruleForm1.endTimeMin='';
+            that.getlastinfor(that.ruleForm1.classTimeId-1);
             that.apllytimeedit();
         },
         apllytimeedit(){
@@ -234,11 +251,9 @@ export default {
                             .then(function (response) {
                                 ALERTMSG.show(that,true,"课次新增成功!","success");
                                 that.getinfor();
-                                that.getSummaries();
                                 }, function (err) {
                                 ALERTMSG.show(that,true,"课次新增失败！请重新尝试！","error");
                                 that.getinfor();
-                                that.getSummaries();
                                 return false;
                             });
                     }
@@ -250,11 +265,16 @@ export default {
         getinfor:function(){
             request.get("/classTime/list").then(res=>{
                 this.tableDatatime= res;
-            })
+            });
+            this.getSummaries();
         },
-        getSummaries(param){
-            const { columns, data } = param;
-            this.number=data.length;
+        getSummaries(){
+            if(this.tableDatatime.length==null){
+                this.number='0';
+            }
+            else {
+                this.number=this.tableDatatime.length;
+            }
         },
         openedit(row,index){
             this.dialogVisible2=true;
@@ -262,9 +282,9 @@ export default {
             this.ruleForm2.startTimeHour=row.startTimeHour;
             this.ruleForm2.startTimeMin=row.startTimeMin;
             this.ruleForm2.endTimeHour=row.endTimeHour;
-            this.ruleForm2.endTimeMin=row.startTimeMin;
-            this.getlastinfor(index);
-            this.getnextinfor(index);
+            this.ruleForm2.endTimeMin=row.endTimeMin;
+            this.getlastinfor(index-1);
+            this.getnextinfor(index+1);
             this.edittime();
         },
         edittime(){
@@ -303,7 +323,7 @@ export default {
             for(let i=0;i<that.ruleForm2.startTimeHour;i++){
                 that.hours2[i].disabled=true;
             }
-            for(let i=that.nextclass.startHour;i<that.hours2.length;i++){
+            for(let i=Number(that.nextclass.startHour);i<that.hours2.length;i++){
                 if(i==that.nextclass.startHour){
                     continue;
                 }
@@ -316,13 +336,12 @@ export default {
                 }
             }
             if(that.ruleForm2.endTimeHour==that.nextclass.startHour){
-                for(let i=Number(that.ruleForm2.endTimeMin);i<that.minutes2.length;i++){
+                for(let i=Number(that.nextclass.startMin);i<that.minutes2.length;i++){
                     that.minutes2[i].disabled=true;
                 }
             }
             if(that.ruleForm2.startTimeHour==that.ruleForm2.endTimeHour){
                 if(that.ruleForm2.endTimeMin!=''&&that.ruleForm2.startTimeMin>=that.ruleForm2.endTimeMin){
-                    // console.log(that.ruleForm2.endTimeMin);
                     that.ruleForm2.endTimeMin=null;
                 }
             }
@@ -368,11 +387,9 @@ export default {
                 .then(function (response) {
                     ALERTMSG.show(that,true,"课次删除成功!","success");
                     that.getinfor();
-                    that.getSummaries();
                 }, function (err) {
                     ALERTMSG.show(that,true,"课次删除失败！请重新尝试！","error");
                     that.getinfor();
-                    that.getSummaries();
                     return false;
                 });
         },
