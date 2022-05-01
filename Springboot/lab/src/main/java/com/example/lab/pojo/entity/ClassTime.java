@@ -15,6 +15,8 @@ public class ClassTime {
     @Id
     private Integer classTimeId;
 
-    private String startTime;
-    private String endTime;
+    private Integer startTimeHour;
+    private Integer startTimeMin;
+    private Integer endTimeHour;
+    private Integer endTimeMin;
 }
