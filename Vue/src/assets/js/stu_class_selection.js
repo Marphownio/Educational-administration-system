@@ -9,36 +9,7 @@ export default {
     },
     data(){
         return{
-            classtimetable:[
-                {
-                    classTimeId:'1',
-                    startTimeHour:'8',
-                    startTimeMin:'00',
-                    endTimeHour:'8',
-                    endTimeMin:'45',
-                },
-                {
-                    classTimeId:"2",
-                    startTimeHour:'8',
-                    startTimeMin:'55',
-                    endTimeHour:'9',
-                    endTimeMin:'40',
-                },
-                {
-                    classTimeId:"3",
-                    startTimeHour:'9',
-                    startTimeMin:'55',
-                    endTimeHour:'10',
-                    endTimeMin:'40',
-                },
-                {
-                    classTimeId:"4",
-                    startTimeHour:'10',
-                    startTimeMin:'50',
-                    endTimeHour:'11',
-                    endTimeMin:'35',
-                },
-            ],
+            schooltimetable:[],
             classinfortable1:[
                 {
                     classid:'MATH0001',
@@ -140,8 +111,14 @@ export default {
     mounted() {},
     created(){
         this.search1();
+        this.getSchooltimetable();
     },
     methods:{
+        getSchooltimetable:function(){
+            request.get("/classTime/list").then(res=>{
+                this.schooltimetable= res;
+            });
+        },
         search1(){
             this.selectableData1=computed(() =>
                 this.selectableData.filter(

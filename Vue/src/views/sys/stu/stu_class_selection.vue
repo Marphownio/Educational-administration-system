@@ -66,7 +66,8 @@
         <el-table-column align="center" v-slot="scope" fixed="right" prop="icon" label="操作">
             <el-popconfirm  @confirm="stu_select(scope.row.courseId)"  title="确认选课吗？">
               <template #reference>
-                <el-button type="primary">选课</el-button>
+                <el-button v-if="scope.row.capacity>scope.row.yixuan" type="primary">选课</el-button>
+                <el-button v-else type="danger">提交选课申请</el-button>
               </template>
             </el-popconfirm>
         </el-table-column>
@@ -95,7 +96,7 @@
       </div>
     </div>
     <el-table
-        :data="classtimetable"
+        :data="schooltimetable"
         id="chosenclassform"
         border-collapse: collapse
         :row-style="{height:'70px'}"
