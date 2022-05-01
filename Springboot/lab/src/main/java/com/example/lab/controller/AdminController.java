@@ -37,7 +37,7 @@ public class AdminController {
     // 获取当前选课系统是否开启
     @GetMapping(value = "/courseSelect/status")
     public ResultMessage getCourseSelectionSystem() {
-        if (admin.getCourseSelectionSystem()) {
+        if (Boolean.TRUE.equals(admin.getCourseSelectionSystem())) {
             return ResultMessage.SUCCESS;
         }
         else {

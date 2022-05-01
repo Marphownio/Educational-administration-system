@@ -49,10 +49,11 @@ public class UserServiceImpl implements UserService {
         ResultMessage resultMessage;
         if (findUserByUserId(user.getUserId()) != null) {
             resultMessage = ResultMessage.EXIST;
-        } else if (user.getRole() == null || user.getRole() == UserRole.ADMIN || !commonService.isMatchSchoolAndMajor(user.getSchool(), user.getMajor())) {
+        } else if (user.getRole() == null || user.getRole() == UserRole.ADMIN || Boolean.TRUE.equals(!commonService.isMatchSchoolAndMajor(user.getSchool(), user.getMajor()))) {
             resultMessage = ResultMessage.FAILED;
         } else {
             try {
+                user.setPassword("fudan123456");
                 if (user.getRole() == UserRole.TEACHER) {
                     teacherRepository.save(new Teacher(user));
                     resultMessage = ResultMessage.SUCCESS;
@@ -155,7 +156,7 @@ public class UserServiceImpl implements UserService {
                             list.add(wrong +",状态输入不正确\n");
                             continue;
                         }
-                        if(commonService.isMatchSchoolAndMajor(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])),majorService.findMajorByMajorId(Integer.valueOf(item[9]))))
+                        if(Boolean.TRUE.equals(commonService.isMatchSchoolAndMajor(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])),majorService.findMajorByMajorId(Integer.valueOf(item[9])))))
                             match=true;
                         if(!match)
                         {
