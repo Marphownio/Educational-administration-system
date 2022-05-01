@@ -17,7 +17,7 @@ public class Application {
 
     // 申请id
     @Id
-    private Integer id;
+    private Integer applicationId;
 
     // 课程id
     private Integer courseId;
