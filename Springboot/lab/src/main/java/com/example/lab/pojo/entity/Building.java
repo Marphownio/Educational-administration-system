@@ -23,7 +23,7 @@ public class Building {
     private String buildingName;
 
     // 教学楼中的所有教室
-    @OneToMany(mappedBy = "building", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch= FetchType.EAGER)
+    @OneToMany(mappedBy = "building", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch= FetchType.EAGER)
     @JsonIgnore
     private Set<Classroom> classrooms = new HashSet<>();
 

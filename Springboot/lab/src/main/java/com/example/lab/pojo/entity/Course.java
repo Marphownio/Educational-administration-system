@@ -9,28 +9,15 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-// 课程类
 @Entity
 @Getter
 @Setter
 @Proxy(lazy = false)
-public class Course {
+public class Course extends KindCourse {
 
-    @Id
-    @Column(name = "course_id")
+    // 课程编号
+    @Column(name = "course_id", unique = true)
     private Integer courseId;
-    // 课程名
-    private String courseName;
-    // 学时
-    private Integer classHour;
-    // 学分
-    private Integer credit;
-
-    // 课程安排，一个课程一星期可能包含多次课，一节课对应一个安排
-//    @JsonIgnore
-//    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "course_id")
-//    private Set<ClassArrangement> classArrangements = new HashSet<>();
 
     //上课时间
     private String courseTime;
@@ -41,19 +28,15 @@ public class Course {
     // 选课容量
     private String capacity;
 
+    // 课程安排，一个课程一星期可能包含多次课，一节课对应一个安排
+    @JsonIgnore
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "class_arrangement_id")
+    private Set<ClassArrangement> classArrangements = new HashSet<>();
+
     // 课程介绍
     @Column(length = 1024)
     private String introduction;
-
-    // 所属专业
-    @ManyToOne
-    @JoinColumn(name = "major_id")
-    private Major major;
-
-    // 开课院系
-    @ManyToOne
-    @JoinColumn(name = "school_id")
-    private School school;
 
     // 任课教师
     @ManyToOne

@@ -3,7 +3,6 @@ package com.example.lab.service.impl;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.entity.ClassTime;
 import com.example.lab.repository.ClassTimeRepository;
-import com.example.lab.repository.ClassroomRepository;
 import com.example.lab.service.ClassTimeService;
 import org.springframework.stereotype.Service;
 

@@ -35,27 +35,33 @@ public class LoginController {
                 Student student = userService.findStudentByStudentId(parseInt(userId));
                 if (teacher != null && student != null) {
                     resultMessage = ResultMessage.FAILED;
-                } else if (teacher != null && teacher.getPassword().equals(password) && teacher.getStatus()) {
-                    session.setAttribute("user", teacher);
-                    if (teacher.getPassword().equals("fudan123456")) {
-                        resultMessage = ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD;
+                } else if (teacher != null && teacher.getPassword().equals(password)) {
+                    if (teacher.getStatus()) {
+                        session.setAttribute("user", teacher);
+                        if (teacher.getPassword().equals("fudan123456")) {
+                            resultMessage = ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD;
+                        } else {
+                            resultMessage = ResultMessage.SUCCESS_LOGIN_TEACHER;
+                        }
                     } else {
-                        resultMessage = ResultMessage.SUCCESS_LOGIN_TEACHER;
+                        resultMessage = ResultMessage.FAILED_DIMISSION;
                     }
-                } else if (student != null && student.getPassword().equals(password) && student.getStatus()) {
-                    session.setAttribute("user", student);
-                    if (student.getPassword().equals("fudan123456")) {
-                        resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD;
+                } else if (student != null && student.getPassword().equals(password)) {
+                    if (student.getStatus()) {
+                        session.setAttribute("user", student);
+                        if (student.getPassword().equals("fudan123456")) {
+                            resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD;
+                        } else {
+                            resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT;
+                        }
                     } else {
-                        resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT;
+                        resultMessage = ResultMessage.FAILED_LEFT;
                     }
-                }
-                else {
+                } else {
                     resultMessage = ResultMessage.FAILED;
                 }
             }
-        }
-        else {
+        } else {
             resultMessage = ResultMessage.FAILED;
         }
         return resultMessage;

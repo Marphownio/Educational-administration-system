@@ -31,13 +31,13 @@ public class ApplicationServiceImpl implements ApplicationService {
             resultMessage = ResultMessage.SUCCESS;
             switch (application.getType()) {
                 case ADD:
-                    if (courseService.findCourseByCourseId(application.getApplicationId()) != null) {
+                    if (courseService.findCourseByCourseId(application.getCourseId()) != null) {
                         resultMessage = ResultMessage.EXIST;
                     }
                     break;
                 case DELETE:
                 case UPDATE:
-                    if (courseService.findCourseByCourseId(application.getApplicationId()) == null) {
+                    if (courseService.findCourseByCourseId(application.getCourseId()) == null) {
                         resultMessage = ResultMessage.NOTFOUND;
                     }
                     break;

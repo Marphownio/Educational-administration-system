@@ -30,19 +30,19 @@ public class Major {
     @JoinColumn(name = "school_id", nullable = false)
     private School school;
 
-    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "major", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
     @JsonIgnore
     private Set<Course> courses = new HashSet<>();
 
-    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "major", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "major", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Teacher> teachers = new HashSet<>();
 
-    @OneToMany(mappedBy = "major", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "major", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Student> students = new HashSet<>();
 }
