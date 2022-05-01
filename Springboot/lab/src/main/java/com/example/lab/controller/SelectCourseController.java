@@ -1,5 +1,6 @@
 package com.example.lab.controller;
 
+import com.example.lab.pojo.CourseSelectionStatus;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.UserRole;
 import com.example.lab.pojo.entity.Course;
@@ -32,7 +33,7 @@ public class SelectCourseController {
     // 学生选课
     @PostMapping(value = "/select")
     public ResultMessage selectCourse(@RequestParam("courseId") Integer courseId, HttpSession session) {
-        if (Boolean.TRUE.equals(admin.getCourseSelectionSystem())) {
+        if (admin.getCourseSelectionStatus() == CourseSelectionStatus.DURING_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.DURING_SECOND) {
             try {
                 Student currentUser = userService.findStudentByStudentId(((Student) session.getAttribute("user")).getUserId());
                 Course course = courseService.findCourseByCourseId(courseId);
@@ -51,7 +52,8 @@ public class SelectCourseController {
     // 学生获取可选的课程
     @GetMapping(value = "/selectable")
     public ResponseEntity<Set<Course>> getSelectableCourse(HttpSession session) {
-        if (Boolean.TRUE.equals(admin.getCourseSelectionSystem() && session.getAttribute("user") != null) && ((User)session.getAttribute("user")).getRole() == UserRole.STUDENT) {
+        if (admin.getCourseSelectionStatus() == CourseSelectionStatus.DURING_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.DURING_SECOND
+                && session.getAttribute("user") != null && ((User)session.getAttribute("user")).getRole() == UserRole.STUDENT) {
             Student currentUser =  userService.findStudentByStudentId(((User)session.getAttribute("user")).getUserId());
 
             Set<Course> selectableCourses = new HashSet<>();

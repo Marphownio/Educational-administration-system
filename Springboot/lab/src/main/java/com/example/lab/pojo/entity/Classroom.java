@@ -17,6 +17,9 @@ public class Classroom {
     @Column(name = "classroom_id")
     private Integer classroomId;
 
+    // 教室容量
+    private Integer capacity;
+
     // 该教室所属教学楼
     @ManyToOne
     @JoinColumn(name = "building_id", nullable = false)

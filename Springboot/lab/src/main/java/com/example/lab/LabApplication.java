@@ -13,6 +13,7 @@ public class LabApplication {
     public static final Admin admin = new Admin();
 
     public static void main(String[] args) {
+        admin.setUserId(0);
         admin.setPassword("fudan_admin");
         SpringApplication.run(LabApplication.class, args);
     }

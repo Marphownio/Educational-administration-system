@@ -24,7 +24,7 @@ public class CourseCategoryServiceImpl implements CourseCategoryService {
         ResultMessage resultMessage;
         if (findCourseCategoryByCourseCategoryId(courseCategory.getCourseCategoryId()) != null) {
             resultMessage = ResultMessage.EXIST;
-        } else if (!commonService.isMatchSchoolAndMajor(courseCategory.getSchool(), courseCategory.getMajor())) {
+        } else if (Boolean.FALSE.equals(commonService.isMatchSchoolAndMajor(courseCategory.getSchool(), courseCategory.getMajor()))) {
             resultMessage = ResultMessage.FAILED;
         } else {
             try {
@@ -59,7 +59,7 @@ public class CourseCategoryServiceImpl implements CourseCategoryService {
         ResultMessage resultMessage;
         if (findCourseCategoryByCourseCategoryId(courseCategory.getCourseCategoryId()) == null) {
             resultMessage = ResultMessage.NOTFOUND;
-        } else if (!commonService.isMatchSchoolAndMajor(courseCategory.getSchool(), courseCategory.getMajor())) {
+        } else if (Boolean.FALSE.equals(commonService.isMatchSchoolAndMajor(courseCategory.getSchool(), courseCategory.getMajor()))) {
             resultMessage = ResultMessage.FAILED;
         } else {
             try {

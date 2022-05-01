@@ -21,7 +21,10 @@ public class Course {
     private Integer courseId;
 
     // 选课容量
-    private String capacity;
+    private Integer capacity;
+
+    // 学年学期
+    private String academicYearTerm;
 
     // 课程介绍
     @Column(length = 1024)

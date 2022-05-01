@@ -27,7 +27,7 @@ public class Application {
     private Integer courseId;
 
     // 选课容量
-    private String capacity;
+    private Integer capacity;
 
     // 课程介绍
     @Column(length = 1024)

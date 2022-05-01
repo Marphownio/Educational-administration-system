@@ -7,11 +7,11 @@ import lombok.Setter;
 @Setter
 public class Admin {
 
-    private Integer userId = 0;
+    private Integer userId;
     private String password;
     private UserRole role = UserRole.ADMIN;
 
     // 选课系统开关
-    private Boolean courseSelectionSystem = true;
+    private CourseSelectionStatus courseSelectionStatus = CourseSelectionStatus.CLOSE;
 
 }

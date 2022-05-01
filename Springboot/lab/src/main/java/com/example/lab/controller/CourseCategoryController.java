@@ -1,5 +1,6 @@
 package com.example.lab.controller;
 
+import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.entity.CourseCategory;
 import com.example.lab.service.CourseCategoryService;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,16 @@ public class CourseCategoryController {
 
     @Resource
     private CourseCategoryService courseCategoryService;
+
+    @DeleteMapping(value = "/{courseCategoryId}")
+    public ResultMessage deleteCourse(@PathVariable("courseCategoryId") Integer courseCategoryId){
+        return courseCategoryService.deleteCourseCategory(courseCategoryId);
+    }
+
+    @PutMapping(value = "/update")
+    public ResultMessage updateCourse(CourseCategory courseCategory){
+        return courseCategoryService.updateCourseCategory(courseCategory);
+    }
 
     @GetMapping(value = "/list")
     public ResponseEntity<Set<CourseCategory>> findAllCourseCategories(){

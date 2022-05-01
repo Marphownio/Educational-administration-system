@@ -1,5 +1,6 @@
 package com.example.lab.controller;
 
+import com.example.lab.pojo.CourseSelectionStatus;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.service.AdminService;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +25,9 @@ public class AdminController {
 
     // 管理员改变选课开关
     @PostMapping(value = "/courseSelect/change")
-    public ResultMessage changeCourseSelection(@RequestParam("change") Boolean change) {
+    public ResultMessage changeCourseSelection(@RequestParam("change") CourseSelectionStatus change) {
         try {
-            admin.setCourseSelectionSystem(change);
+            admin.setCourseSelectionStatus(change);
             return ResultMessage.SUCCESS;
         }
         catch (Exception exception) {
@@ -36,12 +37,7 @@ public class AdminController {
 
     // 获取当前选课系统是否开启
     @GetMapping(value = "/courseSelect/status")
-    public ResultMessage getCourseSelectionSystem() {
-        if (Boolean.TRUE.equals(admin.getCourseSelectionSystem())) {
-            return ResultMessage.SUCCESS;
-        }
-        else {
-            return ResultMessage.FAILED;
-        }
+    public CourseSelectionStatus getCourseSelectionSystem() {
+        return admin.getCourseSelectionStatus();
     }
 }
