@@ -18,12 +18,12 @@
       <el-table-column prop="classTimeId" v-if="false"/>
       <el-table-column prop="startTimeHour,startTimeMin" label="开始时间">
         <template v-slot="scope">
-          {{ scope.row.startTimeHour }}:{{ scope.row.startTimeMin }}
+          {{ scope.row.startTimeHour }}:<span v-if="scope.row.startTimeMin<10">0</span>{{ scope.row.startTimeMin }}
         </template>
       </el-table-column>
       <el-table-column prop="endTimeHour,endTimeMin" label="结束时间">
         <template v-slot="scope">
-          {{ scope.row.endTimeHour }}:{{ scope.row.endTimeMin }}
+          {{ scope.row.endTimeHour }}:<span v-if="scope.row.endTimeMin<10">0</span>{{ scope.row.endTimeMin }}
         </template>
       </el-table-column>>
       <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="180px">
