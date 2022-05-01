@@ -107,7 +107,7 @@ export default {
                     },
                     {
                         day:'1',
-                        cishu:'1',
+                        cishu:'2',
                     },]
 
                 },
@@ -122,7 +122,7 @@ export default {
                             cishu:'1',
                         },
                         {
-                            day:'1',
+                            day:'7',
                             cishu:'3',
                         },]
 
@@ -142,9 +142,6 @@ export default {
         this.search1();
     },
     methods:{
-        showqq(){
-            console.log(this.search11);
-        },
         search1(){
             this.selectableData1=computed(() =>
                 this.selectableData.filter(
@@ -173,11 +170,13 @@ export default {
                 )
             );
         },
-        openit(row){
+        openit(currentRow){
             const that=this;
             that.dialogVisible1=true;
             setTimeout(function() {
-                that.fillInClassInForm2()
+                that.cleanTable();
+                that.fillInClassInForm2();
+                that.findTarget(currentRow);
             }, 300); // 定时时间
         },
         getclassinfo(){
@@ -216,6 +215,53 @@ export default {
                     return false;
                     }
             )
+        },
+        conflictTest(day,cishu){
+            // const that=this;
+            // let currentArragement
+            // for(let i=0;i<that.classinfortable1.length;i++){
+            //     for(let j=0;j<that.classinfortable1[i].classtime.length;i++){
+            //         currentArragement=that.classinfortable1[i].classtime[j];
+            //         if(currentArragement.day==day&&)
+            //     }
+            // }
+
+        },
+        cleanTable(){
+            let MondayObj=document.querySelectorAll(".Monday");
+            let TuesdayObj=document.querySelectorAll(".Tuesday");
+            let WednesdayObj=document.querySelectorAll(".Wednesday");
+            let ThursdayObj=document.querySelectorAll(".Thursday");
+            let FridayObj=document.querySelectorAll(".Friday");
+            let SaturdayObj=document.querySelectorAll(".Saturday");
+            let SundayObj=document.querySelectorAll(".Sunday");
+            let week=[MondayObj,TuesdayObj,WednesdayObj,ThursdayObj,FridayObj,SaturdayObj,SundayObj];
+            for(let i=0;i<week.length;i++) {
+                for(let j=0;j<week[i].length;j++){
+                    week[i][j].parentElement.parentElement.style.backgroundColor="#FFFFFF";
+                }
+            }
+        },
+        findTarget(currentRow){
+            let MondayObj=document.querySelectorAll(".Monday");
+            let TuesdayObj=document.querySelectorAll(".Tuesday");
+            let WednesdayObj=document.querySelectorAll(".Wednesday");
+            let ThursdayObj=document.querySelectorAll(".Thursday");
+            let FridayObj=document.querySelectorAll(".Friday");
+            let SaturdayObj=document.querySelectorAll(".Saturday");
+            let SundayObj=document.querySelectorAll(".Sunday");
+            let week=[MondayObj,TuesdayObj,WednesdayObj,ThursdayObj,FridayObj,SaturdayObj,SundayObj];
+            const that=this;
+            let currentClass;
+            for(let i=0;i<currentRow.classTime.length;i++){
+                currentClass=currentRow.classTime[i];
+                if(that.conflictTest()==1){
+                    week[currentClass.day-1][currentClass.cishu-1].parentElement.parentElement.style.backgroundColor="#c45656";
+                }
+                else{
+                    week[currentClass.day-1][currentClass.cishu-1].parentElement.parentElement.style.backgroundColor="#409EFF";
+                }
+            }
         },
         fillInClassInForm2:function(){
             let MondayObj=document.querySelectorAll(".Monday");
