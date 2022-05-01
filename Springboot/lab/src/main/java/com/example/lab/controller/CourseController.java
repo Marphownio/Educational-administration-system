@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 // 课程的增删改查
@@ -38,8 +37,8 @@ public class CourseController {
     }
 
     @GetMapping(value = "/list")
-    public ResponseEntity<List<Course>> findAllCourse(){
-        List<Course> courseList = new ArrayList<>(courseService.findAllCourse());
+    public ResponseEntity<Set<Course>> findAllCourse() {
+        Set<Course> courseList = new HashSet<>(courseService.findAllCourse());
         if (courseList.isEmpty()){
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
