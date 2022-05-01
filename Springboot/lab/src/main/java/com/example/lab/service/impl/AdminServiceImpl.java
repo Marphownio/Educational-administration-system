@@ -30,11 +30,13 @@ public class AdminServiceImpl implements AdminService {
         }
         Course course = new Course();
         if (application.getType() != ApplicationType.DELETE) {
-            course.setCourseId(application.getApplicationId());
+            course.setCourseId(application.getCourseId());
             course.setCourseName(application.getCourseName());
             course.setClassHour(application.getClassHour());
             course.setCredit(application.getCredit());
-//            course.setClassArrangements(application.getClassArrangements());
+
+            course.setClassArrangements(application.getClassArrangements());
+
             course.setCourseTime(application.getCourseTime());
             course.setCoursePlace(application.getCoursePlace());
             course.setCapacity(application.getCapacity());
@@ -48,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
             case ADD:
                 resultMessage = courseService.addCourse(course); break;
             case DELETE:
-                resultMessage = courseService.deleteCourse(application.getApplicationId()); break;
+                resultMessage = courseService.deleteCourse(application.getCourseId()); break;
             case UPDATE:
                 resultMessage = courseService.updateCourse(course); break;
             default:

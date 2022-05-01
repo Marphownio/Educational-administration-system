@@ -15,9 +15,13 @@ import java.util.Set;
 @Setter
 public class Application {
 
-    // 申请id、课程id
+    // 申请id
     @Id
-    private Integer applicationId;
+    private Integer id;
+
+    // 课程id
+    private Integer courseId;
+
     // 课程名
     private String courseName;
     // 学时
@@ -26,10 +30,10 @@ public class Application {
     private Integer credit;
 
     // 课程安排，一个课程一星期可能包含多次课，一节课对应一个安排
-//    @JsonIgnore
-//    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "course_id")
-//    private Set<ClassArrangement> classArrangements = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "course_id")
+    private Set<ClassArrangement> classArrangements = new HashSet<>();
 
     //上课时间
     private String courseTime;

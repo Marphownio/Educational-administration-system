@@ -15,6 +15,6 @@ public class ClassTime {
     @Id
     private Integer classTimeId;
 
-    // 从几点到几点，如果有更好的类型，可以更改
-    private String time;
+    private String startTime;
+    private String endTime;
 }
