@@ -15,7 +15,7 @@ import java.util.Set;
 @Proxy(lazy = false)
 public class Student extends User {
 
-    @ManyToMany(cascade = {CascadeType.REFRESH ,CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinTable(name = "Course_Students",
             joinColumns = {@JoinColumn(name = "student_id", referencedColumnName = "user_id")},

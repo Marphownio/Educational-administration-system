@@ -20,16 +20,6 @@ public class Course {
     @Column(name = "course_id")
     private Integer courseId;
 
-    // 该课程所属课程类的编号
-    private Integer classCourse;
-
-    // 课程名
-    private String courseName;
-
-    // 学时
-    private Integer classHour;
-    // 学分
-    private Integer credit;
     // 选课容量
     private String capacity;
 
@@ -37,21 +27,10 @@ public class Course {
     @Column(length = 1024)
     private String introduction;
 
-    // 所属专业
+    // 该课程所属课程类
     @ManyToOne
-    @JoinColumn(name = "major_id")
-    private Major major;
-
-    // 面向开放的专业
-    @JsonIgnore
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "major_id")
-    private Set<Major> openToMajors = new HashSet<>();
-
-    // 所属院系
-    @ManyToOne
-    @JoinColumn(name = "school_id")
-    private School school;
+    @JoinColumn(name = "course_category_id")
+    private CourseCategory courseCategory;
 
     // 课程安排，一个课程一星期可能包含多次课，一节课对应一个安排
     @JsonIgnore
@@ -71,5 +50,4 @@ public class Course {
             joinColumns = {@JoinColumn(name = "course_id", referencedColumnName = "course_id")},
             inverseJoinColumns = {@JoinColumn(name = "student_id", referencedColumnName ="user_id")})
     private Set<Student> students = new HashSet<>();
-
 }

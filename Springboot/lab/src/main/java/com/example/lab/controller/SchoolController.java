@@ -48,9 +48,7 @@ public class SchoolController {
     @GetMapping(value = "/majors")
     public ResponseEntity<Set<Major>> findMajorsInSchool(@RequestParam(value = "schoolId") Integer schoolId) {
         School school = schoolService.findSchoolBySchoolId(schoolId);
-        if (school == null) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        } else if (school.getMajors().isEmpty()) {
+        if (school == null || school.getMajors().isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(school.getMajors(), HttpStatus.OK);

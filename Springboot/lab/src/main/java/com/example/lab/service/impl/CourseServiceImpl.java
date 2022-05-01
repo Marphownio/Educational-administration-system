@@ -41,7 +41,7 @@ public class CourseServiceImpl implements CourseService {
         ResultMessage resultMessage;
         if (findCourseByCourseId(course.getCourseId()) != null) {
             resultMessage = ResultMessage.EXIST;
-        } else if (course.getTeacher() == null || !commonService.isMatchSchoolAndMajor(course.getSchool(), course.getMajor())) {
+        } else if (course.getTeacher() == null || !commonService.isMatchSchoolAndMajor(course.getCourseCategory().getSchool(), course.getCourseCategory().getMajor())) {
             resultMessage = ResultMessage.FAILED;
         }
         else {
@@ -77,7 +77,7 @@ public class CourseServiceImpl implements CourseService {
         ResultMessage resultMessage;
         if (findCourseByCourseId(course.getCourseId()) == null) {
             resultMessage = ResultMessage.NOTFOUND;
-        } else if (course.getTeacher() == null || !commonService.isMatchSchoolAndMajor(course.getSchool(), course.getMajor())) {
+        } else if (course.getTeacher() == null || !commonService.isMatchSchoolAndMajor(course.getCourseCategory().getSchool(), course.getCourseCategory().getMajor())) {
             resultMessage = ResultMessage.FAILED;
         }
         else {
@@ -102,10 +102,10 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findById(courseId).orElse(null);
     }
 
-    @Override
-    public Course findCourseByCourseName(String courseName) {
-        return courseRepository.findByCourseName(courseName);
-    }
+//    @Override
+//    public Course findCourseByCourseName(String courseName) {
+//        return courseRepository.findByCourseName(courseName);
+//    }
 
     @Override
     public ResultMessage BatchImportCourse(MultipartFile file) {
@@ -129,13 +129,13 @@ public class CourseServiceImpl implements CourseService {
                         if(number)
                         {
                             course.setCourseId(Integer.valueOf(item[0]));
-                            course.setCourseName(item[1]);
-                            course.setClassHour(Integer.valueOf(item[2]));
-                            course.setCredit(Integer.valueOf(item[3]));
+//                            course.setCourseName(item[1]);
+//                            course.setClassHour(Integer.valueOf(item[2]));
+//                            course.setCredit(Integer.valueOf(item[3]));
                             course.setCapacity(item[6]);
                             course.setIntroduction(item[7]);
-                            course.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[8])));
-                            course.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[9])));
+//                            course.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[8])));
+//                            course.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[9])));
                             course.setTeacher( userService.findTeacherByTeacherId(Integer.valueOf(item[10])));
                             if (item.length > 11){
                                 String []student = item[11].split("\n");

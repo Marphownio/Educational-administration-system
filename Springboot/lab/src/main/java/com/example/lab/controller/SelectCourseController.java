@@ -3,6 +3,7 @@ package com.example.lab.controller;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.UserRole;
 import com.example.lab.pojo.entity.Course;
+import com.example.lab.pojo.entity.CourseCategory;
 import com.example.lab.pojo.entity.Student;
 import com.example.lab.pojo.entity.User;
 import com.example.lab.service.CourseService;
@@ -31,7 +32,7 @@ public class SelectCourseController {
     // 学生选课
     @PostMapping(value = "/select")
     public ResultMessage selectCourse(@RequestParam("courseId") Integer courseId, HttpSession session) {
-        if (admin.getCourseSelectionSystem()) {
+        if (Boolean.TRUE.equals(admin.getCourseSelectionSystem())) {
             try {
                 Student currentUser = userService.findStudentByStudentId(((Student) session.getAttribute("user")).getUserId());
                 Course course = courseService.findCourseByCourseId(courseId);
@@ -50,19 +51,19 @@ public class SelectCourseController {
     // 学生获取可选的课程
     @GetMapping(value = "/selectable")
     public ResponseEntity<Set<Course>> getSelectableCourse(HttpSession session) {
-        if (admin.getCourseSelectionSystem() && session.getAttribute("user") != null && ((User)session.getAttribute("user")).getRole() == UserRole.STUDENT) {
+        if (Boolean.TRUE.equals(admin.getCourseSelectionSystem() && session.getAttribute("user") != null) && ((User)session.getAttribute("user")).getRole() == UserRole.STUDENT) {
             Student currentUser =  userService.findStudentByStudentId(((User)session.getAttribute("user")).getUserId());
-            Set<Course> courses = currentUser.getMajor().getCourses();
+
             Set<Course> selectableCourses = new HashSet<>();
 
-            if (courses.isEmpty()) {
+            for (CourseCategory courseCategory : currentUser.getMajor().getSelectableCourseCategories()) {
+                selectableCourses.addAll(courseCategory.getCourses());
+            }
+
+            if (selectableCourses.isEmpty()) {
                 return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
             } else {
-                for (Course course : courses) {
-                    if (!currentUser.getCourses().contains(course)) {
-                        selectableCourses.add(course);
-                    }
-                }
+                selectableCourses.removeIf(course -> !currentUser.getCourses().contains(course));
                 if (selectableCourses.isEmpty()) {
                     return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
                 }

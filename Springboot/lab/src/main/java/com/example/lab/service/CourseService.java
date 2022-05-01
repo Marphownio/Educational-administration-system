@@ -23,8 +23,8 @@ public interface CourseService {
     // 通过id查询课程
     Course findCourseByCourseId(Integer courseId);
 
-    // 通过名称查询课程
-    Course findCourseByCourseName(String courseName);
+//    // 通过名称查询课程
+//    Course findCourseByCourseName(String courseName);
 
     //批量添加课程信息
     ResultMessage BatchImportCourse(MultipartFile file);

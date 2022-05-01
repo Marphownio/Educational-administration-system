@@ -2,6 +2,7 @@ package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.entity.Course;
+import com.example.lab.pojo.entity.CourseCategory;
 import com.example.lab.pojo.entity.Major;
 import com.example.lab.service.MajorService;
 import org.springframework.http.HttpStatus;
@@ -48,12 +49,14 @@ public class MajorController {
     @GetMapping(value = "/courses")
     public ResponseEntity<Set<Course>> findCoursesInMajor(@RequestParam(value = "majorId") Integer majorId) {
         Major major = majorService.findMajorByMajorId(majorId);
-        if (major == null) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        } else if (major.getCourses().isEmpty()) {
+        if (major == null || major.getCourseCategories().isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(major.getCourses(), HttpStatus.OK);
+        Set<Course> courses = new HashSet<>();
+        for (CourseCategory courseCategory : major.getCourseCategories()) {
+            courses.addAll(courseCategory.getCourses());
+        }
+        return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 
     @GetMapping(value = "/getbyid/{majorId}")

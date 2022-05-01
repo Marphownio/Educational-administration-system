@@ -32,7 +32,7 @@ public class School {
 
     @OneToMany(mappedBy = "school", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
-    private Set<Course> courses = new HashSet<>();
+    private Set<CourseCategory> courseCategories = new HashSet<>();
 
     @OneToMany(mappedBy = "school", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
