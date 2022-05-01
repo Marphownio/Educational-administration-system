@@ -290,7 +290,6 @@ export default {
         edittime(){
             const that=this;
             //initial
-            console.log(that.nextclass);
             for(let i=0;i<that.hours1.length;i++){
                 that.hours1[i].disabled=false;
                 that.hours2[i].disabled=false;
@@ -343,7 +342,6 @@ export default {
             }
             if(that.ruleForm2.startTimeHour==that.ruleForm2.endTimeHour){
                 if(that.ruleForm2.endTimeMin!=''&&that.ruleForm2.startTimeMin>=that.ruleForm2.endTimeMin){
-                    // console.log(that.ruleForm2.endTimeMin);
                     that.ruleForm2.endTimeMin=null;
                 }
             }
