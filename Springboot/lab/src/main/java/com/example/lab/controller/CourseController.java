@@ -55,7 +55,7 @@ public class CourseController {
         return new ResponseEntity<>(course.getStudents(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getbyid/{courseId}")
+    @GetMapping(value = "/{courseId}")
     public ResponseEntity<Course> findCourseByCourseId(@PathVariable("courseId") Integer courseId){
         Course course = courseService.findCourseByCourseId(courseId);
         if (course == null) {
@@ -63,15 +63,6 @@ public class CourseController {
         }
         return new ResponseEntity<>(course, HttpStatus.OK);
     }
-
-//    @GetMapping(value = "/getbyname/{courseName}")
-//    public ResponseEntity<Course> findCourseByCourseName(@PathVariable("courseName") String courseName){
-//        Course course = courseService.findCourseByCourseName(courseName);
-//        if (course == null) {
-//            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-//        }
-//        return new ResponseEntity<>(course, HttpStatus.OK);
-//    }
 
     @PostMapping("/batchimport")
     public ResultMessage BatchImportCourse(@RequestParam(value = "file",required = false) MultipartFile file) {

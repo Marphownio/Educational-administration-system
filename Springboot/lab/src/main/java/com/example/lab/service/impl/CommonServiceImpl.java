@@ -4,10 +4,7 @@ import com.example.lab.pojo.entity.Building;
 import com.example.lab.pojo.entity.Classroom;
 import com.example.lab.pojo.entity.Major;
 import com.example.lab.pojo.entity.School;
-import com.example.lab.service.BuildingAndClassroomService;
-import com.example.lab.service.CommonService;
-import com.example.lab.service.MajorService;
-import com.example.lab.service.SchoolService;
+import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,7 +20,10 @@ public class CommonServiceImpl implements CommonService {
     private MajorService majorService;
 
     @Resource
-    private BuildingAndClassroomService buildingAndClassroomService;
+    private BuildingService buildingService;
+
+    @Resource
+    private ClassroomService classroomService;
 
     // 判断学院和专业是否匹配
     @Override
@@ -43,8 +43,8 @@ public class CommonServiceImpl implements CommonService {
             return false;
         }
         else {
-            Building getBuilding = buildingAndClassroomService.findBuildingById(building.getBuildingId());
-            Classroom getClassroom = buildingAndClassroomService.findClassroomById(classroom.getClassroomId());
+            Building getBuilding = buildingService.findBuildingById(building.getBuildingId());
+            Classroom getClassroom = classroomService.findClassroomById(classroom.getClassroomId());
             return getBuilding != null && getClassroom != null && Objects.equals(classroom.getBuilding().getBuildingId(),building.getBuildingId());
         }
     }
