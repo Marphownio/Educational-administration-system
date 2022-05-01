@@ -14,6 +14,7 @@ public class Classroom {
 
     // 教室编号
     @Id
+    @Column(name = "classroom_id")
     private Integer classroomId;
 
     // 该教室所属教学楼

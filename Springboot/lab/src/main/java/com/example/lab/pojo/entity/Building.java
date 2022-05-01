@@ -17,6 +17,7 @@ public class Building {
 
     // 教学楼编号
     @Id
+    @Column(name = "building_id")
     private Integer buildingId;
 
     // 教学楼名称
