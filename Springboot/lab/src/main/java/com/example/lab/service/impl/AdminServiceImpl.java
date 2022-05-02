@@ -23,9 +23,12 @@ public class AdminServiceImpl implements AdminService {
     @Resource
     private TeacherApplicationService teacherApplicationService;
 
+    @Resource
+    private StudentApplicationService studentApplicationService;
+
     // 管理员处理教师对课程的请求
     @Override
-    public ResultMessage processCourseApplication(Integer applicationId, Boolean operation) {
+    public ResultMessage processTeacherApplication(Integer applicationId, Boolean operation) {
 
         if (Boolean.FALSE.equals(operation)) {
             return teacherApplicationService.deleteTeacherApplication(applicationId);
@@ -70,6 +73,25 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public ResultMessage processStudentApplication(Integer applicationId, Boolean operation) {
+        if (Boolean.FALSE.equals(operation)){
+            return teacherApplicationService.deleteTeacherApplication(applicationId);
+        }
+        StudentApplication studentApplication = studentApplicationService.findStudentApplicationById(applicationId);
+        if (studentApplication == null) {
+            return ResultMessage.FAILED;
+        }
+        try{
+            studentApplication.getCourse().setCapacity(studentApplication.getCourse().getCapacity() + 1);
+            studentApplication.getCourse().getStudents().add(studentApplication.getStudent());
+            studentApplication.getStudent().getCourses().add(studentApplication.getCourse());
+            return ResultMessage.SUCCESS;
+        } catch (Exception e) {
+            return ResultMessage.FAILED;
+        }
+    }
+
+    @Override
     public ResultMessage changeCourseSelectionStatus() {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
         try {
@@ -86,6 +108,7 @@ public class AdminServiceImpl implements AdminService {
                 case END_TERM:
                     admin.setCourseSelectionStatus(CourseSelectionStatus.START_TERM);
                     // TODO: 学年学期自增
+                    // TODO: 学期结束学生课程变已修课程
                     break;
             }
         }

@@ -2,7 +2,7 @@ package com.example.lab.service.impl;
 
 import com.example.lab.pojo.entity.TeacherApplication;
 import com.example.lab.pojo.ResultMessage;
-import com.example.lab.repository.ApplicationRepository;
+import com.example.lab.repository.TeacherApplicationRepository;
 import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public class TeacherApplicationServiceImpl implements TeacherApplicationService {
 
     @Resource
-    private ApplicationRepository applicationRepository;
+    private TeacherApplicationRepository teacherApplicationRepository;
 
     @Resource
     private CourseService courseService;
@@ -46,7 +46,7 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
             }
             if(resultMessage == ResultMessage.SUCCESS) {
                 try {
-                    applicationRepository.save(application);
+                    teacherApplicationRepository.save(application);
                 } catch (Exception exception) {
                     resultMessage = ResultMessage.FAILED;
                 }
@@ -63,7 +63,7 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         }
         else {
             try {
-                applicationRepository.deleteById(applicationId);
+                teacherApplicationRepository.deleteById(applicationId);
                 return ResultMessage.SUCCESS;
             }
             catch (Exception exception) {
@@ -75,12 +75,12 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
     // 管理员获取所有申请
     @Override
     public List<TeacherApplication> findAllTeacherApplication() {
-        return applicationRepository.findAll();
+        return teacherApplicationRepository.findAll();
     }
 
     // 通过id查找申请
     @Override
     public TeacherApplication findTeacherApplicationById(Integer applicationId) {
-        return applicationRepository.findById(applicationId).orElse(null);
+        return teacherApplicationRepository.findById(applicationId).orElse(null);
     }
 }

@@ -22,6 +22,10 @@ public class Student extends User {
             inverseJoinColumns = {@JoinColumn(name = "course_id", referencedColumnName ="course_id")})
     private Set<Course> courses = new HashSet<>();
 
+    @OneToMany(mappedBy = "student", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<StudentApplication> studentApplications = new HashSet<>();
+
     // 通过用户产生一个学生
     public Student(User user) {
         this.setUserId(user.getUserId());
@@ -32,7 +36,6 @@ public class Student extends User {
         this.setPhoneNumber(user.getPhoneNumber());
         this.setEmail(user.getEmail());
         this.setStatus(user.getStatus());
-
         this.setSchool(new School());
         this.setMajor(new Major());
         this.getSchool().setSchoolId(user.getSchool().getSchoolId());
