@@ -1,6 +1,7 @@
 package com.example.lab.service;
 
 import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.CourseCategory;
 
 import java.util.List;
@@ -18,6 +19,9 @@ public interface CourseCategoryService {
 
     // 查询全部种类的课程
     List<CourseCategory> findAllCourseCategory();
+
+    // 查询一类课程中指定学年学期的课程
+    List<Course> findCourseByTermInCourseCategory(CourseCategory courseCategory, String academicYear, String term);
 
     // 通过id查询一类课程
     CourseCategory findCourseCategoryByCourseCategoryId(Integer courseCategoryId);

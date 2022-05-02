@@ -20,11 +20,11 @@ public interface CourseService {
     // 查询全部课程
     List<Course> findAllCourse();
 
+    // 查询指定指定学期的所有课程
+    List<Course> findCourseByTerm(String academicYear, String term);
+
     // 通过id查询课程
     Course findCourseByCourseId(Integer courseId);
-
-//    // 通过名称查询课程
-//    Course findCourseByCourseName(String courseName);
 
     //批量添加课程信息
     ResultMessage BatchImportCourse(MultipartFile file);

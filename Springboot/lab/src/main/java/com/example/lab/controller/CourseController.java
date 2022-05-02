@@ -36,9 +36,20 @@ public class CourseController {
         return courseService.updateCourse(course);
     }
 
+    // 获取所有课程
     @GetMapping(value = "/list")
     public ResponseEntity<Set<Course>> findAllCourse() {
         Set<Course> courseList = new HashSet<>(courseService.findAllCourse());
+        if (courseList.isEmpty()){
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(courseList ,HttpStatus.OK);
+    }
+
+    // 获取指定学年学期的所有课程
+    @GetMapping(value= "/list/{academicYear}/{term}")
+    public ResponseEntity<Set<Course>> findCourseThisTerm(@PathVariable("academicYear") String academicYear, @PathVariable("term") String term) {
+        Set<Course> courseList = new HashSet<>(courseService.findCourseByTerm(academicYear, term));
         if (courseList.isEmpty()){
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }

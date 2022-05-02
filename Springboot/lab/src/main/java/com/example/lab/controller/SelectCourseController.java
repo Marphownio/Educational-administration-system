@@ -7,6 +7,7 @@ import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.CourseCategory;
 import com.example.lab.pojo.entity.Student;
 import com.example.lab.pojo.entity.User;
+import com.example.lab.service.CourseCategoryService;
 import com.example.lab.service.CourseService;
 import com.example.lab.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -28,12 +29,15 @@ public class SelectCourseController {
     private CourseService courseService;
 
     @Resource
+    private CourseCategoryService courseCategoryService;
+
+    @Resource
     private UserService userService;
 
     // 学生选课
     @PostMapping(value = "/select")
     public ResultMessage selectCourse(@RequestParam("courseId") Integer courseId, HttpSession session) {
-        if (admin.getCourseSelectionStatus() == CourseSelectionStatus.DURING_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.DURING_SECOND) {
+        if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND) {
             try {
                 Student currentUser = userService.findStudentByStudentId(((Student) session.getAttribute("user")).getUserId());
                 Course course = courseService.findCourseByCourseId(courseId);
@@ -52,16 +56,13 @@ public class SelectCourseController {
     // 学生获取可选的课程
     @GetMapping(value = "/selectable")
     public ResponseEntity<Set<Course>> getSelectableCourse(HttpSession session) {
-        if (admin.getCourseSelectionStatus() == CourseSelectionStatus.DURING_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.DURING_SECOND
+        if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND
                 && session.getAttribute("user") != null && ((User)session.getAttribute("user")).getRole() == UserRole.STUDENT) {
             Student currentUser =  userService.findStudentByStudentId(((User)session.getAttribute("user")).getUserId());
-
             Set<Course> selectableCourses = new HashSet<>();
-
             for (CourseCategory courseCategory : currentUser.getMajor().getSelectableCourseCategories()) {
-                selectableCourses.addAll(courseCategory.getCourses());
+                selectableCourses.addAll(courseCategoryService.findCourseByTermInCourseCategory(courseCategory, admin.getAcademicYear(), admin.getTerm()));
             }
-
             if (selectableCourses.isEmpty()) {
                 return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
             } else {

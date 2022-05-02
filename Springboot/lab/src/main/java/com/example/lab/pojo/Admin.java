@@ -11,7 +11,10 @@ public class Admin {
     private String password;
     private UserRole role = UserRole.ADMIN;
 
-    // 选课系统开关
-    private CourseSelectionStatus courseSelectionStatus = CourseSelectionStatus.CLOSE;
+    // 选课系统状态
+    private CourseSelectionStatus courseSelectionStatus;
 
+    // 系统学年学期
+    private String academicYear;
+    private String term;
 }

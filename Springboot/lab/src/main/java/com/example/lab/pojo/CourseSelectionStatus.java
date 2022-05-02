@@ -1,9 +1,10 @@
 package com.example.lab.pojo;
 
 public enum CourseSelectionStatus {
-    CLOSE,
-    BEFORE_FIRST,
-    DURING_FIRST,
-    BEFORE_SECOND,
-    DURING_SECOND
+    START_TERM,
+    START_FIRST,
+    END_FIRST,
+    START_SECOND,
+    END_SECOND,
+    END_TERM
 }

@@ -62,4 +62,5 @@ public class AdminServiceImpl implements AdminService {
             return ResultMessage.FAILED;
         }
     }
+
 }

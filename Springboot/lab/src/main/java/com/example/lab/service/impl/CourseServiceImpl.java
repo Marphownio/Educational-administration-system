@@ -15,7 +15,9 @@ import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 // 课程的增删改查服务
 @Service
@@ -43,8 +45,12 @@ public class CourseServiceImpl implements CourseService {
             resultMessage = ResultMessage.EXIST;
         } else if (course.getTeacher() == null || !commonService.isMatchSchoolAndMajor(course.getCourseCategory().getSchool(), course.getCourseCategory().getMajor())) {
             resultMessage = ResultMessage.FAILED;
-        }
-        else {
+        } else {
+            for (ClassArrangement classArrangement : course.getClassArrangements()) {
+                if (course.getCapacity() > classArrangement.getClassroom().getCapacity()) {
+                    return ResultMessage.FAILED;
+                }
+            }
             try {
                 courseRepository.save(course);
                 resultMessage = ResultMessage.SUCCESS;
@@ -98,14 +104,20 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public List<Course> findCourseByTerm(String academicYear, String term) {
+        List<Course> courses = new ArrayList<>();
+        for (Course course : courseRepository.findAll()) {
+            if (Objects.equals(course.getAcademicYear(), academicYear) && Objects.equals(course.getTerm(), term)) {
+                courses.add(course);
+            }
+        }
+        return courses;
+    }
+
+    @Override
     public Course findCourseByCourseId(Integer courseId) {
         return courseRepository.findById(courseId).orElse(null);
     }
-
-//    @Override
-//    public Course findCourseByCourseName(String courseName) {
-//        return courseRepository.findByCourseName(courseName);
-//    }
 
     @Override
     public ResultMessage BatchImportCourse(MultipartFile file) {
