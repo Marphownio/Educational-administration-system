@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,6 +31,6 @@ public class ClassArrangement {
 
     @OneToMany
     @JoinColumn(name = "class_arrangement_id")
-    private Set<ClassTime> classTime;
+    private Set<ClassTime> classTime = new HashSet<>();
 
 }

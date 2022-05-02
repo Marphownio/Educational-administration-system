@@ -6,4 +6,9 @@ public interface AdminService {
 
     // 管理员处理教师对课程的请求
     ResultMessage processCourseApplication(Integer applicationId, Boolean operation);
+
+    // 更改选课系统状态
+    ResultMessage changeCourseSelectionStatus();
+
+    ResultMessage firstScreening();
 }

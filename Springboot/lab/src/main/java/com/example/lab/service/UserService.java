@@ -6,7 +6,6 @@ import com.example.lab.pojo.entity.Teacher;
 import com.example.lab.pojo.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface UserService {

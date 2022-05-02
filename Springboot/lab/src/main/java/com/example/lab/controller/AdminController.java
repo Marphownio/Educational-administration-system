@@ -25,24 +25,8 @@ public class AdminController {
 
     // 管理员改变选课系统状态
     @PostMapping(value = "/courseSelect/next")
-    public ResultMessage changeCourseSelection() {
-        try {
-            switch (admin.getCourseSelectionStatus()) {
-                case START_TERM:    admin.setCourseSelectionStatus(CourseSelectionStatus.START_FIRST);  break;
-                case START_FIRST:   admin.setCourseSelectionStatus(CourseSelectionStatus.END_FIRST);    break;
-                case END_FIRST:     admin.setCourseSelectionStatus(CourseSelectionStatus.START_SECOND); break;
-                case START_SECOND:  admin.setCourseSelectionStatus(CourseSelectionStatus.END_SECOND);   break;
-                case END_SECOND:    admin.setCourseSelectionStatus(CourseSelectionStatus.END_TERM);     break;
-                case END_TERM:
-                    admin.setCourseSelectionStatus(CourseSelectionStatus.START_TERM);
-                    // TODO: 学年学期自增
-                    break;
-            }
-            return ResultMessage.SUCCESS;
-        }
-        catch (Exception exception) {
-            return ResultMessage.FAILED;
-        }
+    public ResultMessage changeCourseSelectionStatus() {
+        return adminService.changeCourseSelectionStatus();
     }
 
     // 获取当前选课系统状态
