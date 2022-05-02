@@ -2,6 +2,7 @@ import Nav from "@/views/inc/Nav.vue";
 import request from "@/utils/request";
 import ALERTMSG from "@/assets/js/alert";
 import {computed} from "vue";
+import tokenmanage from "@/utils/Tokenmanage";
 export default {
     name: "classselection",
     components:{
@@ -65,6 +66,9 @@ export default {
             ],
             teachingBuildings:[],
             teachingRooms:[],
+            selectableDataShow:[{}],
+            selectableData1:[{}],
+            selectableData2:[{}],
             selectableData:[
                 {
                 courseId:'MATH101',
@@ -79,14 +83,18 @@ export default {
                     {
                         day:'1',
                         cishu:'2',
-                    },]
-
+                    },
+                ],
+                yixuan:'5',
+                capacity:'50',
                 },
                 {
                     courseId:'MATH102',
                     courseName:'高等代数',
                     teacher:'张三五',
                     credit:'2',
+                    yixuan:'50',
+                    capacity:'50',
                     classTime:[
                         {
                             day:'2',
@@ -102,45 +110,83 @@ export default {
             search11:'',
             search22:'',
             search33:'',
-            selectableData1:[
-                {},
-            ],
             dialogVisible1:false,
+            applyForSelectVisiable:false,
+            applyForSelectFormRules:({
+                applyReason: [
+                    {required: true, message: '请输入申请理由', trigger: 'blur',},
+                ]
+            }),
+            applyForSelectForm:{
+                applyClassId:'',
+                applyClassName:'',
+                applyStudentId:'',
+                applyStudentName:'',
+                applyReason:'',
+            },
+            userTable:{
+                User:'',
+                id:'',
+                name:'',
+            }
         }
     },
-    mounted() {},
+    mounted(){},
     created(){
-        this.search1();
+        //
+        this.search();
         this.getSchooltimetable();
     },
     methods:{
+        toSubmitApply(){
+            const that=this;
+            request.post("")
+                .then(function(res){
+                        ALERTMSG.show(that,true,"选课申请提交成功!","warning");
+                        return true;
+                    }
+                    ,function (err) {
+                        ALERTMSG.show(that,true,"提交申请失败!请再次尝试！","error");
+                        return false;
+                    }
+                )
+        },
+        getUserInfo(){
+            const that=this;
+            request.get("/user/info")
+                .then(function(res){
+                        that.applyForSelectForm.applyStudentId=res.userId;
+                        that.applyForSelectForm.applyStudentName=res.username;})
+        },
+        applyStudentSelectOpen(row){
+            const that=this;
+            that.getUserInfo();
+            that.applyForSelectVisiable=true;
+            that.applyForSelectForm.applyClassId=row.courseId;
+            that.applyForSelectForm.applyClassName=row.courseName;
+        },
         getSchooltimetable:function(){
             request.get("/classTime/list").then(res=>{
                 this.schooltimetable= res;
             });
         },
-        search1(){
-            this.selectableData1=computed(() =>
+        search(){
+            this.selectableData1 = computed(() =>
                 this.selectableData.filter(
                     (data) =>
                         !this.search11 ||
                         data.courseId.toLowerCase().includes(this.search11.toLowerCase())
                 )
             );
-
-        },
-        search2(){
-            this.selectableData1=computed(() =>
-                this.selectableData.filter(
+            this.selectableData2 = computed(() =>
+                this.selectableData1.filter(
                     (data) =>
                         !this.search22 ||
                         data.courseName.toLowerCase().includes(this.search22.toLowerCase())
                 )
             );
-        },
-        search3(){
-            this.selectableData1=computed(() =>
-                this.selectableData.filter(
+            this.selectableDataShow = computed(() =>
+                this.selectableData2.filter(
                     (data) =>
                         !this.search33 ||
                         data.teacher.toLowerCase().includes(this.search33.toLowerCase())
