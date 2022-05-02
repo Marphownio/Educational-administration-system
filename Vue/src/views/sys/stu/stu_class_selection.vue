@@ -11,17 +11,17 @@
   <div id="classinform">
     <div id="filterbtn">
       <el-button type="primary" @click="">设置筛选信息</el-button>
-      <el-button  type="danger"  @click="showqq">取消筛选条件</el-button>
+      <el-button  type="danger"  @click="">取消筛选条件</el-button>
     </div>
 
         <el-table
             id="classinformtable"
-            :data="selectableData1"
+            :data="selectableDataShow"
         >
           <el-table-column align="center" label="课程编号">
             <el-table-column align="center" width="130px" prop="courseId">
               <template #header>
-                <el-input  v-model="search11" @change="search1()" size="small" placeholder="搜索课程编号" />
+                <el-input  v-model="search11" @change="search()" size="small" placeholder="搜索课程编号" />
               </template>
               <template v-slot="scope">
                 {{scope.row.courseId}}
@@ -31,7 +31,7 @@
           <el-table-column align="center" label="课程名称">
             <el-table-column align="center" prop="courseName" width="130px">
               <template #header>
-                <el-input v-model="search22" size="small" @change="search2()" placeholder="搜索课程名称" />
+                <el-input v-model="search22" size="small" @change="search()" placeholder="搜索课程名称" />
               </template>
               <template v-slot="scope">
                 {{scope.row.courseName}}
@@ -45,7 +45,7 @@
           <el-table-column align="center" label="任课教师">
             <el-table-column align="center" prop="teacher" width="130px">
               <template #header>
-                <el-input v-model="search33" size="small" @change="search3()" placeholder="搜索任课教师" />
+                <el-input v-model="search33" size="small" @change="search()" placeholder="搜索任课教师" />
               </template>
               <template v-slot="scope">
                 {{scope.row.teacher}}
@@ -56,28 +56,71 @@
           <el-table-column v-slot="scope" align="center" label="时间及地点" width="100px">
               <el-button plain @click="openit(scope.row)">详情</el-button>
           </el-table-column>
-          <el-table-column align="center" prop="" label="已选/可选">
+          <el-table-column align="center" prop="capacity,yixuan" label="已选/可选">
             <template v-slot="scope">
               <div>
-                {{}}/{{}}
+                {{scope.row.yixuan}}/{{scope.row.capacity}}
               </div>
             </template>
           </el-table-column>
         <el-table-column align="center" v-slot="scope" fixed="right" prop="icon" label="操作">
+          <div v-if="scope.row.capacity>scope.row.yixuan">
             <el-popconfirm  @confirm="stu_select(scope.row.courseId)"  title="确认选课吗？">
               <template #reference>
-                <el-button type="primary">选课</el-button>
+                <el-button type="primary" plain>&nbsp;选&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;课&nbsp;</el-button>
               </template>
             </el-popconfirm>
+          </div>
+          <div v-else>
+            <el-button @click="applyStudentSelectOpen(scope.row)" type="success" plain>选课申请</el-button>
+          </div>
+
         </el-table-column>
       </el-table>
   </div>
 
 
   <el-dialog
+      v-model="applyForSelectVisiable"
+      width="40%"
+      title="提交选课申请"
+  >
+      <el-form
+          :model="applyForSelectForm"
+          :rules="applyForSelectFormRules"
+          label-width="80px">
+        <div class="flexItems">
+          <el-form-item label="课程编号:">
+            <el-input v-model="applyForSelectForm.applyClassId" readonly/>
+          </el-form-item>
+          <el-form-item label="课程名称:">
+            <el-input v-model="applyForSelectForm.applyClassId" readonly/>
+          </el-form-item>
+        </div>
+        <div class="flexItems">
+          <el-form-item label="申请人:">
+            <el-input v-model="applyForSelectForm.applyStudentName" readonly/>
+          </el-form-item>
+          <el-form-item label="学号:">
+            <el-input v-model="applyForSelectForm.applyStudentId" readonly/>
+          </el-form-item>
+        </div>
+          <el-form-item label="申请理由:" prop="applyReason">
+            <el-input :rows="8" style="margin-left:10px;width:96%;" v-model="applyForSelectForm.applyReason" type="textarea" />
+          </el-form-item>
+        <div class="flexItems">
+          <el-form-item>
+            <el-button type="primary" @click="toSubmitApply">确认提交</el-button>
+            <el-button type="danger" @click="cancleApply">取消提交</el-button>
+          </el-form-item>
+        </div>
+      </el-form>
+  </el-dialog>
+
+
+  <el-dialog
       v-model="dialogVisible1"
       width="70%"
-      :before-close="handleClose"
   >
     <p class="xxh">您的课程时间表</p>
     <div id="showcolor">
@@ -95,7 +138,7 @@
       </div>
     </div>
     <el-table
-        :data="classtimetable"
+        :data="schooltimetable"
         id="chosenclassform"
         border-collapse: collapse
         :row-style="{height:'70px'}"

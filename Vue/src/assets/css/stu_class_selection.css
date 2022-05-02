@@ -109,3 +109,9 @@
     font-size: xx-large;
     margin-left: -1000px;
 }
+.flexItems{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}

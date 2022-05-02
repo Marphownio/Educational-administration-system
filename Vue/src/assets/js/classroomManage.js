@@ -68,9 +68,10 @@ export default {
             buildingData:[
 
             ],
-            classroomData:[
+            classroomDataraw:[
 
             ],
+            classroomData:[],
             filterclassroomdata:[
 
             ]
@@ -100,13 +101,16 @@ export default {
             })
         },
         getClassroomForm(){
-            request.get("/building/classroomlist").then(res=>{
-                this.classroomData=res;
-                for(let i=0;i<Object.keys(this.classroomData).length;i++)
+            request.get("/classroom/list").then(res=>{
+                this.classroomDataraw=res;
+                this.classroomData=this.classroomDataraw;
+                for(let i=0;i<Object.keys(this.classroomDataraw).length;i++)
                 {
-                    if(this.classroomData[i].building!==null){
-                        this.classroomData[i].buildingName=this.classroomData[i].building.buildingName;
-                        this.classroomData[i].buildingId=this.classroomData[i].building.buildingId;
+                    if(this.classroomDataraw[i].building!==null)
+                    {
+
+                        this.classroomData[i].buildingId=this.classroomDataraw[i].building.buildingId;
+                        this.classroomData[i].buildingName=this.classroomDataraw[i].building.buildingName;
                     }
                 }
                 if(this.classroomData){
@@ -208,7 +212,7 @@ export default {
                     params.append('building', JSON.parse(this.ruleForm2.buildingId));
                     this.$axios({
                         method: 'post',
-                        url: '/api/building/addclassroom',
+                        url: '/api/classroom/add',
                         data: params
                     }).then(res => {
                             if(res.data==='SUCCESS'){
@@ -253,7 +257,7 @@ export default {
                     params.append('building', JSON.parse(this.ruleForm2.buildingId));
                     this.$axios({
                         method: 'put',
-                        url: '/api/building/updateclassroom',
+                        url: '/api/classroom/update',
                         data: params
                     }).then(res => {
                             console.log(res);
@@ -304,7 +308,7 @@ export default {
             this.ruleForm2=obj;
         },
         delHandle2(id){
-            this.$axios.delete("/api/building/deleteclassroom/"+id).then(res=> {
+            this.$axios.delete("/api/classroom/"+id).then(res=> {
                 this.$message({
                     showClose: true,
                     message: '操作成功',

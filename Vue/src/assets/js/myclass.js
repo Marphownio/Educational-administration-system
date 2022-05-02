@@ -8,36 +8,7 @@ export default {
     },
     data(){
         return {
-                classtimetable:[
-                    {
-                        classTimeId:'1',
-                        startTimeHour:'8',
-                        startTimeMin:'00',
-                        endTimeHour:'8',
-                        endTimeMin:'45',
-                    },
-                    {
-                        classTimeId:"2",
-                        startTimeHour:'8',
-                        startTimeMin:'55',
-                        endTimeHour:'9',
-                        endTimeMin:'40',
-                    },
-                    {
-                        classTimeId:"3",
-                        startTimeHour:'9',
-                        startTimeMin:'55',
-                        endTimeHour:'10',
-                        endTimeMin:'40',
-                    },
-                    {
-                        classTimeId:"4",
-                        startTimeHour:'10',
-                        startTimeMin:'50',
-                        endTimeHour:'11',
-                        endTimeMin:'35',
-                    },
-                ],
+                classtimetable:[],
             classinfortable:[
                 {
                     classid:'MATH0001',
@@ -83,12 +54,14 @@ export default {
         }, 300); // 定时时间
     },
     created(){
-        // this.getClassInform();
+        this.getTimeinfor();
 
     },
     methods:{
-        getClassInform(){
-
+        getTimeinfor:function(){
+            request.get("/classTime/list").then(res=>{
+                this.classtimetable= res;
+            });
         },
         fillInClassInForm:function(){
             let MondayObj=document.querySelectorAll(".Monday");
@@ -123,10 +96,7 @@ export default {
                         inform=inform.nextElementSibling;
                         inform.innerText=currentClass.classroom;
                         ci=ci+1;
-
                     }
-
-
                 }
             }
         }

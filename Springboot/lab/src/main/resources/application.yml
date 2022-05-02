@@ -14,7 +14,7 @@ spring:
 server:
   tomcat:
     uri-encoding: UTF-8
-  port: 8081
+  port: 8080
   servlet:
     session:
       timeout: 0
