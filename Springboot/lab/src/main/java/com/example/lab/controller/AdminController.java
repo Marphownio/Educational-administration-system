@@ -20,7 +20,13 @@ public class AdminController {
     @DeleteMapping(value = "/teacher/application")
     public ResultMessage processCourseApplication(@RequestParam(value = "applicationId") Integer applicationId,
                                                   @RequestParam(value = "operation") Boolean operation) {
-        return adminService.processCourseApplication(applicationId, operation);
+        return adminService.processTeacherApplication(applicationId, operation);
+    }
+
+    @DeleteMapping(value = "/student/application")
+    public ResultMessage processStudentApplication(@RequestParam(value = "applicationId") Integer applicationId,
+                                                   @RequestParam(value = "operation") Boolean operation){
+        return adminService.processStudentApplication(applicationId,operation);
     }
 
     // 管理员改变选课系统状态
