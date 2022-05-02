@@ -1,6 +1,6 @@
 package com.example.lab.service.impl;
 
-import com.example.lab.pojo.entity.Application;
+import com.example.lab.pojo.entity.TeacherApplication;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.repository.ApplicationRepository;
 import com.example.lab.service.*;
@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class ApplicationServiceImpl implements ApplicationService {
+public class TeacherApplicationServiceImpl implements TeacherApplicationService {
 
     @Resource
     private ApplicationRepository applicationRepository;
@@ -23,7 +23,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     // 教师申请增删改课程
     @Override
-    public ResultMessage addApplication(Application application) {
+    public ResultMessage addTeacherApplication(TeacherApplication application) {
         ResultMessage resultMessage;
         if (application.getType() == null || !commonService.isMatchSchoolAndMajor(application.getCourseCategory().getSchool(), application.getCourseCategory().getMajor())) {
             resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT;
@@ -57,8 +57,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     // 教师取消申请或管理员处理完申请后将其删除
     @Override
-    public ResultMessage deleteApplication(Integer applicationId) {
-        if (findApplicationById(applicationId) == null) {
+    public ResultMessage deleteTeacherApplication(Integer applicationId) {
+        if (findTeacherApplicationById(applicationId) == null) {
             return ResultMessage.NOTFOUND;
         }
         else {
@@ -74,13 +74,13 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     // 管理员获取所有申请
     @Override
-    public List<Application> findAllApplication() {
+    public List<TeacherApplication> findAllTeacherApplication() {
         return applicationRepository.findAll();
     }
 
     // 通过id查找申请
     @Override
-    public Application findApplicationById(Integer applicationId) {
+    public TeacherApplication findTeacherApplicationById(Integer applicationId) {
         return applicationRepository.findById(applicationId).orElse(null);
     }
 }

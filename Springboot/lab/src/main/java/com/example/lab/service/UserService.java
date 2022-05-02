@@ -39,6 +39,7 @@ public interface UserService {
 
     // 通过id查询教师
     Teacher findTeacherByTeacherId(Integer teacherId);
+    
     // 通过id查询学生
     Student findStudentByStudentId(Integer studentId);
 }

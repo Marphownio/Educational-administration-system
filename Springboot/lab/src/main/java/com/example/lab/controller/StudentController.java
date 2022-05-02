@@ -22,8 +22,8 @@ import java.util.Set;
 import static com.example.lab.LabApplication.admin;
 
 @RestController
-@RequestMapping(value = "/course")
-public class SelectCourseController {
+@RequestMapping(value = "/student")
+public class StudentController {
 
     @Resource
     private CourseService courseService;
@@ -34,8 +34,18 @@ public class SelectCourseController {
     @Resource
     private UserService userService;
 
+    // 查询全部学生
+    @GetMapping(value = "/list")
+    public ResponseEntity<Set<Student>> findAllStudent() {
+        Set<Student> students = new HashSet<>(userService.findAllStudent());
+        if (students.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(students, HttpStatus.OK);
+    }
+
     // 学生选课
-    @PostMapping(value = "/select")
+    @PostMapping(value = "/course/select")
     public ResultMessage selectCourse(@RequestParam("courseId") Integer courseId, HttpSession session) {
         if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND) {
             try {
@@ -54,7 +64,7 @@ public class SelectCourseController {
     }
 
     // 学生获取可选的课程
-    @GetMapping(value = "/selectable")
+    @GetMapping(value = "/course/selectable")
     public ResponseEntity<Set<Course>> getSelectableCourse(HttpSession session) {
         if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND
                 && session.getAttribute("user") != null && ((User)session.getAttribute("user")).getRole() == UserRole.STUDENT) {

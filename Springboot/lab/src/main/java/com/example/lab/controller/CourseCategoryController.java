@@ -18,7 +18,7 @@ public class CourseCategoryController {
     @Resource
     private CourseCategoryService courseCategoryService;
 
-    @DeleteMapping(value = "/{courseCategoryId}")
+    @DeleteMapping(value = "/delete/{courseCategoryId}")
     public ResultMessage deleteCourse(@PathVariable("courseCategoryId") Integer courseCategoryId){
         return courseCategoryService.deleteCourseCategory(courseCategoryId);
     }

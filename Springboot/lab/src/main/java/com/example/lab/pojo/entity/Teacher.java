@@ -21,7 +21,7 @@ public class Teacher extends User {
 
     @OneToMany(mappedBy = "teacher", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
-    private Set<Application> applications = new HashSet<>();
+    private Set<TeacherApplication> teacherApplications = new HashSet<>();
 
     // 通过用户产生一个教师
     public Teacher(User user) {

@@ -2,7 +2,6 @@ package com.example.lab.service;
 
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.entity.Building;
-import com.example.lab.pojo.entity.Classroom;
 
 import java.util.List;
 

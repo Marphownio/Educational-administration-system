@@ -10,12 +10,12 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-// 申请
+// 教师的申请
 @Entity
 @Getter
 @Setter
 @Proxy(lazy = false)
-public class Application {
+public class TeacherApplication {
 
     // 申请id
     @Id

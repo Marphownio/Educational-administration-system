@@ -25,7 +25,7 @@ public class SchoolController {
         return schoolService.addSchool(school);
     }
 
-    @DeleteMapping(value = "/{schoolId}")
+    @DeleteMapping(value = "/delete/{schoolId}")
     public ResultMessage deleteMajor(@PathVariable("schoolId") Integer schoolId) {
         return schoolService.deleteSchool(schoolId);
     }

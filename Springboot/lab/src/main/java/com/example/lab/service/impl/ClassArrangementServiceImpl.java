@@ -24,7 +24,7 @@ public class ClassArrangementServiceImpl implements ClassArrangementService {
             return ResultMessage.EXIST;
         }
         else {
-            if (!commonService.isMatchBuildingAndClassroom(classArrangement.getBuilding(),classArrangement.getClassroom())){
+            if (Boolean.FALSE.equals(commonService.isMatchBuildingAndClassroom(classArrangement.getBuilding(),classArrangement.getClassroom()))){
                 return ResultMessage.FAILED;
             }
             else {

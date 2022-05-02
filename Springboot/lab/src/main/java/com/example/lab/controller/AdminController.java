@@ -17,7 +17,7 @@ public class AdminController {
     private AdminService adminService;
 
     // 管理员处理教师对课程的请求
-    @DeleteMapping(value = "/application")
+    @DeleteMapping(value = "/teacher/application")
     public ResultMessage processCourseApplication(@RequestParam(value = "applicationId") Integer applicationId,
                                                   @RequestParam(value = "operation") Boolean operation) {
         return adminService.processCourseApplication(applicationId, operation);
@@ -35,7 +35,7 @@ public class AdminController {
         return admin.getCourseSelectionStatus();
     }
 
-    // 设定当前学年学期
+    // 设定学年学期
     @PutMapping(value = "/academicYearAndTerm/set")
     public ResultMessage setAcademicYearAndTerm(@RequestParam("academicYear") String academicYear, @RequestParam("term") String term) {
         try {

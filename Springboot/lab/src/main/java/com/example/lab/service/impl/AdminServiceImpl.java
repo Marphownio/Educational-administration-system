@@ -21,16 +21,16 @@ public class AdminServiceImpl implements AdminService {
     private CourseService courseService;
 
     @Resource
-    private ApplicationService applicationService;
+    private TeacherApplicationService teacherApplicationService;
 
     // 管理员处理教师对课程的请求
     @Override
     public ResultMessage processCourseApplication(Integer applicationId, Boolean operation) {
 
         if (Boolean.FALSE.equals(operation)) {
-            return applicationService.deleteApplication(applicationId);
+            return teacherApplicationService.deleteTeacherApplication(applicationId);
         }
-        Application application = applicationService.findApplicationById(applicationId);
+        TeacherApplication application = teacherApplicationService.findTeacherApplicationById(applicationId);
         if (application == null) {
             return ResultMessage.FAILED;
         }
@@ -62,7 +62,7 @@ public class AdminServiceImpl implements AdminService {
                 resultMessage = ResultMessage.FAILED; break;
         }
         if (resultMessage == ResultMessage.SUCCESS) {
-            return applicationService.deleteApplication(applicationId);
+            return teacherApplicationService.deleteTeacherApplication(applicationId);
         }
         else {
             return ResultMessage.FAILED;

@@ -34,7 +34,7 @@ public class ClassTimeController {
         return classTimeService.findAllClassTime();
     }
 
-    @GetMapping(value = "/getbyid/{classTimeId}")
+    @GetMapping(value = "/{classTimeId}")
     public ClassTime findClassTimeById(@PathVariable("classTimeId")Integer classTimeId){
         return classTimeService.findClassTimeById(classTimeId);
     }

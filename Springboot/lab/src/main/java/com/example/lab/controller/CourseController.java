@@ -26,7 +26,7 @@ public class CourseController {
         return courseService.addCourse(course);
     }
 
-    @DeleteMapping(value = "/{courseId}")
+    @DeleteMapping(value = "/delete/{courseId}")
     public ResultMessage deleteCourse(@PathVariable("courseId") Integer courseId){
         return courseService.deleteCourse(courseId);
     }
@@ -56,7 +56,7 @@ public class CourseController {
         return new ResponseEntity<>(courseList ,HttpStatus.OK);
     }
 
-    // 获取该课程下的所有学生
+    // 获取指定课程下的所有学生
     @GetMapping(value = "/students")
     public ResponseEntity<Set<Student>> findStudentsInCourse(@RequestParam(value = "courseId") Integer courseId) {
         Course course = courseService.findCourseByCourseId(courseId);

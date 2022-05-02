@@ -6,7 +6,7 @@ import com.example.lab.pojo.entity.ClassTime;
 import java.util.List;
 
 public interface ClassTimeService {
-    //增删改查
+
     ResultMessage addClassTime(ClassTime classTime);
 
     ResultMessage deleteClassTime(Integer classTimeId);

@@ -26,7 +26,7 @@ public class MajorController {
         return majorService.addMajor(major);
     }
 
-    @DeleteMapping(value = "/{majorId}")
+    @DeleteMapping(value = "/delete/{majorId}")
     public ResultMessage deleteMajor(@PathVariable("majorId") Integer majorId){
         return majorService.deleteMajor(majorId);
     }

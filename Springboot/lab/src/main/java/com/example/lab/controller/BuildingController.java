@@ -19,7 +19,7 @@ public class BuildingController {
     @Resource
     private BuildingService buildingService;
 
-    @PostMapping(value = "/addBuilding")
+    @PostMapping(value = "/add")
     public ResultMessage addBuilding(Building building){
         return buildingService.addBuilding(building);
     }
@@ -39,7 +39,7 @@ public class BuildingController {
         return buildingService.findAllBuilding();
     }
 
-    @GetMapping(value = "/getbyid/{buildingId}")
+    @GetMapping(value = "/{buildingId}")
     public Building findBuildingById(@PathVariable("buildingId")Integer buildingId){
         return buildingService.findBuildingById(buildingId);
     }

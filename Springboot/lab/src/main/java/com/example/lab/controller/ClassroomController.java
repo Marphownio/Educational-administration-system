@@ -20,7 +20,7 @@ public class ClassroomController {
         return classroomService.addClassroom(classroom);
     }
 
-    @DeleteMapping(value = "/{classroomId}")
+    @DeleteMapping(value = "/delete/{classroomId}")
     public ResultMessage deleteClassroom(@PathVariable("classroomId") Integer classroomId){
         return classroomService.deleteClassroom(classroomId);
     }
