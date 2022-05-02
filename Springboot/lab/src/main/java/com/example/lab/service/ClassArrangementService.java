@@ -6,6 +6,7 @@ import com.example.lab.pojo.entity.ClassArrangement;
 import java.util.List;
 
 public interface ClassArrangementService {
+
     ResultMessage addClassArrangement(ClassArrangement classArrangement);
 
     ResultMessage deleteClassArrangement(Integer classArrangementId);

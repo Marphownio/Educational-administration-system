@@ -35,7 +35,7 @@ public class TeacherApplicationController {
     public ResponseEntity<Set<TeacherApplication>> findAllApplication() {
         Set<TeacherApplication> applications = new HashSet<>(teacherApplicationService.findAllTeacherApplication());
         if (applications.isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(applications ,HttpStatus.OK);
     }

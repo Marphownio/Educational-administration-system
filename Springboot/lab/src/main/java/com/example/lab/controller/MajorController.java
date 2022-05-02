@@ -40,7 +40,7 @@ public class MajorController {
     public ResponseEntity<Set<Major>> findAllMajor(){
         Set<Major> majors = new HashSet<>(majorService.findAllMajor());
         if (majors.isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(majors, HttpStatus.OK);
     }
@@ -50,7 +50,7 @@ public class MajorController {
     public ResponseEntity<Set<Course>> findCoursesInMajor(@RequestParam(value = "majorId") Integer majorId) {
         Major major = majorService.findMajorByMajorId(majorId);
         if (major == null || major.getCourseCategories().isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
         Set<Course> courses = new HashSet<>();
         for (CourseCategory courseCategory : major.getCourseCategories()) {
@@ -63,7 +63,7 @@ public class MajorController {
     public ResponseEntity<Major> findMajorByMajorId(@PathVariable("majorId") Integer majorId){
         Major major = majorService.findMajorByMajorId(majorId);
         if (major == null) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new Major(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(major, HttpStatus.OK);
     }
@@ -72,7 +72,7 @@ public class MajorController {
     public ResponseEntity<Major> findMajorByMajorName(@PathVariable("majorName") String majorName){
         Major major = majorService.findMajorByMajorName(majorName);
         if (major == null) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new Major(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(major, HttpStatus.OK);
     }

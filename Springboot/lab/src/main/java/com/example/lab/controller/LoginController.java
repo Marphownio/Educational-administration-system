@@ -36,7 +36,7 @@ public class LoginController {
                 if (teacher != null && student != null) {
                     resultMessage = ResultMessage.FAILED;
                 } else if (teacher != null && teacher.getPassword().equals(password)) {
-                    if (teacher.getStatus()) {
+                    if (Boolean.TRUE.equals(teacher.getStatus())) {
                         session.setAttribute("user", teacher);
                         if (teacher.getPassword().equals("fudan123456")) {
                             resultMessage = ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD;
@@ -47,7 +47,7 @@ public class LoginController {
                         resultMessage = ResultMessage.FAILED_DIMISSION;
                     }
                 } else if (student != null && student.getPassword().equals(password)) {
-                    if (student.getStatus()) {
+                    if (Boolean.TRUE.equals(student.getStatus())) {
                         session.setAttribute("user", student);
                         if (student.getPassword().equals("fudan123456")) {
                             resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD;

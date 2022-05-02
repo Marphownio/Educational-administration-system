@@ -32,7 +32,7 @@ public class CourseCategoryController {
     public ResponseEntity<Set<CourseCategory>> findAllCourseCategories(){
         Set<CourseCategory> courseCategories = new HashSet<>(courseCategoryService.findAllCourseCategory());
         if (courseCategories.isEmpty()){
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(courseCategories ,HttpStatus.OK);
     }

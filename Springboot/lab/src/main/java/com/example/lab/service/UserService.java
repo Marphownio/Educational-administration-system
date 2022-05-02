@@ -14,7 +14,7 @@ public interface UserService {
     ResultMessage addUser(User user);
 
     // 批量导入用户
-    ResultMessage BatchImportUser( MultipartFile file);
+    ResultMessage batchImportUser( MultipartFile file);
 
     // 删除用户
     ResultMessage deleteUser(Integer userId);
@@ -39,7 +39,7 @@ public interface UserService {
 
     // 通过id查询教师
     Teacher findTeacherByTeacherId(Integer teacherId);
-    
+
     // 通过id查询学生
     Student findStudentByStudentId(Integer studentId);
 }

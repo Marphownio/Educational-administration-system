@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -71,7 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResultMessage BatchImportUser(MultipartFile file) {
+    public ResultMessage batchImportUser(MultipartFile file) {
         User user = new User();
         try {
             Boolean numberFormatException = false;

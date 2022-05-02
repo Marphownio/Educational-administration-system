@@ -38,16 +38,11 @@ public class AdminServiceImpl implements AdminService {
         if (application.getType() != ApplicationType.DELETE) {
             course.setCourseId(application.getCourseId());
 
-//            course.setCourseName(application.getCourseName());
-//            course.setClassHour(application.getClassHour());
-//            course.setCredit(application.getCredit());
-
+            // TODO
             course.setClassArrangements(application.getClassArrangements());
 
             course.setCapacity(application.getCapacity());
             course.setIntroduction(application.getIntroduction());
-//            course.setSchool(application.getSchool());
-//            course.setMajor(application.getMajor());
             course.setTeacher(application.getTeacher());
         }
         ResultMessage resultMessage;

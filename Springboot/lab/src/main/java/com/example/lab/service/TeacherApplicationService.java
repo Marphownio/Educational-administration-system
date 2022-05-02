@@ -16,5 +16,6 @@ public interface TeacherApplicationService {
     // 管理员查询所有申请
     List<TeacherApplication> findAllTeacherApplication();
 
+    // 通过id查询申请
     TeacherApplication findTeacherApplicationById(Integer applicationId);
 }

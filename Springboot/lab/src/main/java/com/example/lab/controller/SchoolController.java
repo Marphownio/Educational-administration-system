@@ -39,7 +39,7 @@ public class SchoolController {
     public ResponseEntity<Set<School>> findAllSchool() {
         Set<School> schools = new HashSet<>(schoolService.findAllSchool());
         if (schools.isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(schools, HttpStatus.OK);
     }
@@ -49,7 +49,7 @@ public class SchoolController {
     public ResponseEntity<Set<Major>> findMajorsInSchool(@RequestParam(value = "schoolId") Integer schoolId) {
         School school = schoolService.findSchoolBySchoolId(schoolId);
         if (school == null || school.getMajors().isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(school.getMajors(), HttpStatus.OK);
     }
@@ -58,7 +58,7 @@ public class SchoolController {
     public ResponseEntity<School> findSchoolById(@PathVariable("schoolId") Integer schoolId){
         School school = schoolService.findSchoolBySchoolId(schoolId);
         if (school == null) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new School(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(school, HttpStatus.OK);
     }
@@ -67,7 +67,7 @@ public class SchoolController {
     public ResponseEntity<School> findSchoolBySchoolName(@PathVariable("schoolName") String schoolName){
         School school = schoolService.findSchoolBySchoolName(schoolName);
         if (school == null) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new School(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(school, HttpStatus.OK);
     }

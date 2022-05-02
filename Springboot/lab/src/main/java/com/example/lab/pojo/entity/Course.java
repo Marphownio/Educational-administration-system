@@ -15,17 +15,20 @@ import java.util.Set;
 @Proxy(lazy = false)
 public class Course {
 
-    // 课程编号
+    // 课程id
     @Id
     @Column(name = "course_id")
     private Integer courseId;
 
-    // 选课容量
-    private Integer capacity;
+    // 课程编号
+    private Integer courseNumber;
 
     // 学年学期
     private String academicYear;
     private String term;
+
+    // 选课容量
+    private Integer capacity;
 
     // 课程介绍
     @Column(length = 1024)

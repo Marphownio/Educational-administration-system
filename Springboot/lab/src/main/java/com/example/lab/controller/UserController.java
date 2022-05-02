@@ -42,9 +42,8 @@ public class UserController {
 
     // 批量导入用户
     @PostMapping("/batchimport")
-    public ResultMessage BatchImportUser(@RequestParam(value = "file",required = false) MultipartFile file) {
+    public ResultMessage batchImportUser(@RequestParam(value = "file",required = false) MultipartFile file) {
         //判断文件是否为空
-        System.out.println(file);
         if(file == null) return ResultMessage.NOTFOUND;
         //获取文件名
         String name = file.getOriginalFilename();
@@ -53,9 +52,8 @@ public class UserController {
         if (name == null || ("").equals(name) && size == 0) return ResultMessage.NOTFOUND;
         //批量导入。参数：文件名，文件。
         try {
-            return userService.BatchImportUser(file);
+            return userService.batchImportUser(file);
         }catch (NumberFormatException e){
-            System.out.println(e.getMessage());
             return ResultMessage.FAILED;
         }
 
@@ -76,7 +74,7 @@ public class UserController {
     public ResponseEntity<Set<User>> findAllUser() {
         Set<User> users = new HashSet<>(userService.findAllUser());
         if (users.isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
@@ -86,7 +84,7 @@ public class UserController {
     public ResponseEntity<User> findUserByUserId(@PathVariable("userId") Integer userId) {
         User user = userService.findUserByUserId(userId);
         if (user == null) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new User(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -96,7 +94,7 @@ public class UserController {
     public ResponseEntity<Set<User>> findUserByUserName(@PathVariable("username") String username) {
         Set<User> users = new HashSet<>(userService.findUserByUserName(username));
         if (users.isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(users, HttpStatus.OK);
     }

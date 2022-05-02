@@ -27,6 +27,6 @@ public interface CourseService {
     Course findCourseByCourseId(Integer courseId);
 
     //批量添加课程信息
-    ResultMessage BatchImportCourse(MultipartFile file);
+    ResultMessage batchImportCourse(MultipartFile file);
 
 }

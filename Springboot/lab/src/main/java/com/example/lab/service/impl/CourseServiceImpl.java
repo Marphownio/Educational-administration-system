@@ -120,7 +120,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResultMessage BatchImportCourse(MultipartFile file) {
+    public ResultMessage batchImportCourse(MultipartFile file) {
         Course course = new Course();
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));

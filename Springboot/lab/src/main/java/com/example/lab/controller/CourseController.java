@@ -41,7 +41,7 @@ public class CourseController {
     public ResponseEntity<Set<Course>> findAllCourse() {
         Set<Course> courseList = new HashSet<>(courseService.findAllCourse());
         if (courseList.isEmpty()){
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(courseList ,HttpStatus.OK);
     }
@@ -51,7 +51,7 @@ public class CourseController {
     public ResponseEntity<Set<Course>> findCourseThisTerm(@PathVariable("academicYear") String academicYear, @PathVariable("term") String term) {
         Set<Course> courseList = new HashSet<>(courseService.findCourseByTerm(academicYear, term));
         if (courseList.isEmpty()){
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(courseList ,HttpStatus.OK);
     }
@@ -61,7 +61,7 @@ public class CourseController {
     public ResponseEntity<Set<Student>> findStudentsInCourse(@RequestParam(value = "courseId") Integer courseId) {
         Course course = courseService.findCourseByCourseId(courseId);
         if (course == null || course.getStudents().isEmpty()) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(course.getStudents(), HttpStatus.OK);
     }
@@ -70,13 +70,13 @@ public class CourseController {
     public ResponseEntity<Course> findCourseByCourseId(@PathVariable("courseId") Integer courseId){
         Course course = courseService.findCourseByCourseId(courseId);
         if (course == null) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(new Course(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(course, HttpStatus.OK);
     }
 
     @PostMapping("/batchimport")
-    public ResultMessage BatchImportCourse(@RequestParam(value = "file",required = false) MultipartFile file) {
+    public ResultMessage batchImportCourse(@RequestParam(value = "file",required = false) MultipartFile file) {
         //判断文件是否为空
         if(file == null) return ResultMessage.NOTFOUND;
         //获取文件名
@@ -85,7 +85,7 @@ public class CourseController {
         long size=file.getSize();
         if (name == null || ("").equals(name) && size == 0) return ResultMessage.NOTFOUND;
         //批量导入。参数：文件名，文件。
-        ResultMessage resultMessage = courseService.BatchImportCourse(file);
+        ResultMessage resultMessage = courseService.batchImportCourse(file);
         if(resultMessage == ResultMessage.SUCCESS){
             return ResultMessage.SUCCESS;
         }else{

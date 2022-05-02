@@ -8,6 +8,7 @@ import com.example.lab.service.CommonService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -57,16 +58,19 @@ public class ClassArrangementServiceImpl implements ClassArrangementService {
 
     @Override
     public ResultMessage updateClassArrangement(ClassArrangement classArrangement) {
+        // TODO
         return ResultMessage.FAILED;
     }
 
     @Override
     public List<ClassArrangement> findAllClassArrangement() {
-        return null;
+        // TODO
+        return new ArrayList<>();
     }
 
     @Override
     public ClassArrangement findClassArrangementById(Integer classArrangementId) {
+        // TODO
         return null;
     }
 }
