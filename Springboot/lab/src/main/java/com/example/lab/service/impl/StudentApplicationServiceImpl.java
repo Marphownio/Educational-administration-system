@@ -8,12 +8,14 @@ import com.example.lab.repository.StudentApplicationRepository;
 import com.example.lab.service.CourseService;
 import com.example.lab.service.StudentApplicationService;
 import com.example.lab.service.UserService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
+@Service
 public class StudentApplicationServiceImpl implements StudentApplicationService {
+
     @Resource
     private StudentApplicationRepository studentApplicationRepository;
 

@@ -23,6 +23,7 @@ public class AdminController {
         return adminService.processTeacherApplication(applicationId, operation);
     }
 
+    // 管理员处理学生对课程的请求
     @DeleteMapping(value = "/student/application")
     public ResultMessage processStudentApplication(@RequestParam(value = "applicationId") Integer applicationId,
                                                    @RequestParam(value = "operation") Boolean operation){

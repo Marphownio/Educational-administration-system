@@ -67,6 +67,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
+    // 管理员处理学生对课程的请求
     @Override
     public ResultMessage processStudentApplication(Integer applicationId, Boolean operation) {
         if (Boolean.FALSE.equals(operation)){
