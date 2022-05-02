@@ -104,7 +104,7 @@ public class StudentController {
     }
 
     // 查看指定学生所有已修课程
-    @GetMapping(value = "/courses/completed")
+    @GetMapping(value = "/courses/completed/all")
     public ResponseEntity<Set<Course>> findAllCoursesCompleted(@RequestParam(value = "studentId") Integer studentId) {
         Student student = userService.findStudentByStudentId(studentId);
         Set<Course> courses = new HashSet<>();
@@ -119,19 +119,27 @@ public class StudentController {
         return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 
-    // 查看指定学生所有已选/在读课程
-    @GetMapping(value = "/courses/studying")
-    public ResponseEntity<Set<Course>> findAllCoursesStudying(@RequestParam(value = "studentId") Integer studentId) {
+    // 查看指定学生在指定学年学期的课程
+    @GetMapping(value = "/courses/specified")
+    public ResponseEntity<Set<Course>> findAllCoursesSpecified(@RequestParam(value = "studentId") Integer studentId,
+                                                               @RequestParam(value = "academicYear") String academicYear,
+                                                               @RequestParam(value = "term") String term) {
         Student student = userService.findStudentByStudentId(studentId);
         Set<Course> courses = new HashSet<>();
         if (student == null) {
             return new ResponseEntity<>(courses, HttpStatus.NO_CONTENT);
         }
         courses.addAll(student.getCourses());
-        courses.removeIf(course -> !Objects.equals(course.getAcademicYear(), admin.getAcademicYear()) || !Objects.equals(course.getTerm(), admin.getTerm()));
+        courses.removeIf(course -> Objects.equals(course.getAcademicYear(), academicYear) || Objects.equals(course.getTerm(), term));
         if (courses.isEmpty()) {
             return new ResponseEntity<>(courses, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(courses, HttpStatus.OK);
+    }
+
+    // 查看指定学生所有已选/在读课程
+    @GetMapping(value = "/courses/studying")
+    public ResponseEntity<Set<Course>> findAllCoursesStudying(@RequestParam(value = "studentId") Integer studentId) {
+        return findAllCoursesSpecified(studentId, admin.getAcademicYear(), admin.getTerm());
     }
 }
