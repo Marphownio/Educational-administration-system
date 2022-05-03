@@ -12,8 +12,15 @@
               :data="currentTime"
               style="width: 80%"
               id="showCurrentTime">
-            <el-table-column align="center" prop="currentYear" label="当前学年" />
-            <el-table-column align="center" prop="currentTerm" label="当前学期" />
+            <el-table-column align="center" prop="academicYear" label="当前学年" />
+            <el-table-column align="center" v-slot="scope" prop="term" label="当前学期">
+              <div v-if="scope.row.term==1">
+                第一学期
+              </div>
+              <div v-else>
+                第二学期
+              </div>
+            </el-table-column>
             <el-table-column align="center" label="操作">
                 <el-button @click="showdialog()" type="primary">修改学年学期</el-button>
             </el-table-column>
@@ -33,7 +40,7 @@
           </el-timeline>
         </div>
         <div>
-          <el-button type="primary">进入下一阶段</el-button>
+          <el-button @click="nextStatue()" type="primary">进入下一阶段</el-button>
         </div>
       </div>
     </div>
@@ -43,21 +50,22 @@
         width="600px"
     >
       <el-form :inline=true
+               ref="editRuleForm"
                :model="formInLine"
                :rules="editFormInLine"
                label-width="100px"
                class="demo-form-inline">
-        <el-form-item label="设置学年" prop="newCurrentYear">
-          <el-input v-model="formInLine.newCurrentYear"/>
+        <el-form-item label="设置学年" prop="academicYear" ref="academicYear">
+          <el-input v-model="formInLine.academicYear"/>
         </el-form-item>
-        <el-form-item label="设置学期" prop="newCurrentTerm">
-          <el-select v-model="formInLine.newCurrentTerm" placeholder="选择学期">
+        <el-form-item label="设置学期" prop="term" ref="term">
+          <el-select v-model="formInLine.term" placeholder="选择学期">
             <el-option label="第一学期" value="1" />
             <el-option label="第二学期" value="2" />
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="">确认修改</el-button>
+          <el-button type="primary" @click="setYearAndTerm">确认修改</el-button>
         </el-form-item>
       </el-form>
 

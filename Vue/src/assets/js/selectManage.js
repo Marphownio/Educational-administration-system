@@ -8,20 +8,37 @@ export default {
         Nav
     },
     data(){
+        let yearCheck=(rule, value, callback)=>{
+            if(1904<value&&value<2023){
+                callback();
+                return true;
+            }
+            else {
+                callback(new Error('请输入正确年份！'));
+                return false;
+            }
+        };
        return{
            dialogVisible0:false,
            isDisabled1:true,
            isDisabled2:false,
            currentTime:[{
-               currentYear:'2022',
-               currentTerm:'2',
-           }],
+               academicYear:'',
+               term:'',
+           },
+           ],
            formInLine:{
-               newCurrentYear:'',
-               newCurrentTerm:'',
+               academicYear:'',
+               term:'',
            },
            editFormInLine:({
-
+               academicYear: [
+                   {required: true, message: '请输入学年', trigger: 'blur',},
+                   {validator: yearCheck, trigger: 'blur',required: true },
+               ],
+               term:[
+                   {required: true, message: '请选择学期', trigger: 'blur',},
+               ],
            }),
            activities:[
                {
@@ -65,28 +82,63 @@ export default {
 
     },
     created() {
+        this.getYearAndTerm();
         this.getStatus();
     },
     methods:{
         showdialog(){
             const that=this;
             that.dialogVisible0=true;
-            that.formInLine.newCurrentYear=that.currentTime[0].currentYear;
-            that.formInLine.newCurrentTerm=that.currentTime[0].currentTerm;
+            that.formInLine.academicYear=that.currentTime[0].academicYear;
+            that.formInLine.term=that.currentTime[0].term;
+        },
+        getYearAndTerm(){
+            const that = this;
+            request.get("/admin/academicYearAndTerm").then(function(res){
+                let temp=String(res);
+                that.currentTime[0].academicYear=temp[0]+temp[1]+temp[2]+temp[3];
+                that.currentTime[0].term=temp[4];
+            },function (err){
+                ALERTMSG.show(that,true,"获取学年学期失败!","error");
+            })
+        },
+        nextStatue(){
+            const that = this;
+            request.post("/admin/courseSelect/next").then(function(res){
+                ALERTMSG.show(that,true,"阶段更改成功!","success");
+            },function (err){
+                ALERTMSG.show(that,true,"阶段更改失败!","error");
+            })
+        },
+        setYearAndTerm(){
+            const that = this;
+            this.$refs.editRuleForm.validate((valid) =>{
+                if(valid){
+                    let formData = new FormData();
+                    for(let key in that.formInLine) {
+                        formData.append(key,that.formInLine[key]);
+                    }
+                    request.put("/admin/academicYearAndTerm/set",formData).then(function(res){
+                        if(res =='SUCCESS'){
+                            that.getYearAndTerm();
+                            ALERTMSG.show(that,true,"学年学期设置成功!","success");
+                        }
+                    },function (err){
+                        ALERTMSG.show(that,true,"学年学期设置失败!","error");
+                    })
+                }
+                else{
+                    return false;
+                }
+            });
 
         },
         getStatus(){
+            const that=this;
             request.get("/admin/courseSelect/status").then(res=>{
                 console.log(res)
-                if(res ==='SUCCESS'){
-                    this.isDisabled1=true;
-                    this.isDisabled2=false;
-                }
-                else
-                {
-                    this.isDisabled1=false;
-                    this.isDisabled2=true;
-                }
+            },err=>{
+                ALERTMSG.show(that,true,"选课状态获取失败!","error");
             })
         },
         openSelection(){
