@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,6 +16,7 @@ public class CourseCategory {
 
     @Id
     @Column(name = "course_category_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer courseCategoryId;
 
     // 课程名
@@ -31,14 +31,6 @@ public class CourseCategory {
     @ManyToOne
     @JoinColumn(name = "major_id")
     private Major major;
-
-    // 面向开放的专业
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JsonIgnore
-    @JoinTable(name = "Major_CourseCategory",
-            joinColumns = {@JoinColumn(name = "course_category_id", referencedColumnName = "course_category_id")},
-            inverseJoinColumns = {@JoinColumn(name = "major_id", referencedColumnName ="major_id")})
-    private Set<Major> openToMajors = new HashSet<>();
 
     // 所属院系
     @ManyToOne

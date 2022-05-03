@@ -35,13 +35,13 @@ public class Major {
     @JsonIgnore
     private Set<CourseCategory> courseCategories = new HashSet<>();
 
-    // 该专业可选的所有种类的课程
+    // 该专业可选的所有课程
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
-    @JoinTable(name = "Major_CourseCategory",
+    @JoinTable(name = "Major_Course",
             joinColumns = {@JoinColumn(name = "major_id", referencedColumnName = "major_id")},
-            inverseJoinColumns = {@JoinColumn(name = "course_category_id", referencedColumnName ="course_category_id")})
-    private Set<CourseCategory> selectableCourseCategories = new HashSet<>();
+            inverseJoinColumns = {@JoinColumn(name = "course_id", referencedColumnName ="course_id")})
+    private Set<Course> selectableCourses = new HashSet<>();
 
     @OneToMany(mappedBy = "major", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
     @JsonIgnore

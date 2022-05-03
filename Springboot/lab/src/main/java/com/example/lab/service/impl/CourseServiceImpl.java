@@ -4,11 +4,7 @@ import com.example.lab.pojo.CourseSelectionStatus;
 import com.example.lab.pojo.entity.*;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.repository.CourseRepository;
-import com.example.lab.service.CommonService;
-import com.example.lab.service.CourseService;
-import com.example.lab.service.MajorService;
-import com.example.lab.service.SchoolService;
-import com.example.lab.service.UserService;
+import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,6 +37,9 @@ public class CourseServiceImpl implements CourseService {
     @Resource
     private UserService userService;
 
+    @Resource
+    private CourseCategoryService courseCategoryService;
+
     @Override
     public ResultMessage addCourse(Course course) {
         ResultMessage resultMessage;
@@ -55,8 +54,18 @@ public class CourseServiceImpl implements CourseService {
                 }
             }
             try {
-                courseRepository.save(course);
-                resultMessage = ResultMessage.SUCCESS;
+                if (courseCategoryService.findCourseCategoryByCourseCategoryId(course.getCourseCategory().getCourseCategoryId()) == null) {
+                   if (courseCategoryService.addCourseCategory(course.getCourseCategory()) == ResultMessage.SUCCESS) {
+                       courseRepository.save(course);
+                       resultMessage = ResultMessage.SUCCESS;
+
+                   } else {
+                       resultMessage = ResultMessage.FAILED;
+                   }
+                } else {
+                    courseRepository.save(course);
+                    resultMessage = ResultMessage.SUCCESS;
+                }
             }
             catch (Exception exception) {
                 resultMessage = ResultMessage.FAILED;
@@ -105,8 +114,18 @@ public class CourseServiceImpl implements CourseService {
                 }
             }
             try {
-                courseRepository.save(course);
-                resultMessage = ResultMessage.SUCCESS;
+                if (courseCategoryService.findCourseCategoryByCourseCategoryId(course.getCourseCategory().getCourseCategoryId()) == null) {
+                    if (courseCategoryService.addCourseCategory(course.getCourseCategory()) == ResultMessage.SUCCESS) {
+                        courseRepository.save(course);
+                        resultMessage = ResultMessage.SUCCESS;
+
+                    } else {
+                        resultMessage = ResultMessage.FAILED;
+                    }
+                } else {
+                    courseRepository.save(course);
+                    resultMessage = ResultMessage.SUCCESS;
+                }
             }
             catch (Exception exception) {
                 resultMessage = ResultMessage.FAILED;

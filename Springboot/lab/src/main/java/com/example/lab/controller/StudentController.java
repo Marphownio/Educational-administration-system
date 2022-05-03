@@ -27,9 +27,6 @@ public class StudentController {
     private CourseService courseService;
 
     @Resource
-    private CourseCategoryService courseCategoryService;
-
-    @Resource
     private UserService userService;
 
     // 查询全部学生
@@ -54,7 +51,7 @@ public class StudentController {
                 Set<Course> courseSet = courses.getBody();
                 if (courseSet != null && !courseSet.isEmpty()) {
                     for (Course course : courseSet) {
-                        // 已经选过同一类课程
+                        // 已经选过同类课程
                         if (course.getCourseCategory() == selectCourse.getCourseCategory()) {
                             return ResultMessage.EXIST;
                         }
@@ -97,17 +94,17 @@ public class StudentController {
         if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND
                 && session.getAttribute("user") != null && ((User)session.getAttribute("user")).getRole() == UserRole.STUDENT) {
             Student currentUser =  userService.findStudentByStudentId(((User)session.getAttribute("user")).getUserId());
-            Set<Course> selectableCourses = new HashSet<>();
-            // 本专业可选的课程种类
-            for (CourseCategory courseCategory : currentUser.getMajor().getSelectableCourseCategories()) {
-                selectableCourses.addAll(courseCategoryService.findCourseByTermInCourseCategory(courseCategory, admin.getAcademicYear(), admin.getTerm()));
-            }
+
+            // 本专业可选课程(已选课程的同类课程依然会出现，但在选择时不会通过)
+            Set<Course> selectableCourses = currentUser.getMajor().getSelectableCourses();
+
             if (selectableCourses.isEmpty()) {
                 return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
             } else {
                 // 去除已选/已修的课程
                 selectableCourses.removeIf(course -> !currentUser.getCourses().contains(course));
-                // 二轮选课，去除已经选满的课程
+
+                // 二轮选课时，去除已经选满的课程
                 if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND) {
                     selectableCourses.removeIf(course -> course.getCapacity() == course.getStudents().size());
                 }

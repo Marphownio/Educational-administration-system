@@ -39,13 +39,14 @@ public class AdminServiceImpl implements AdminService {
         }
         Course course = new Course();
         if (application.getType() != ApplicationType.DELETE) {
-            course.setCourseId(application.getCourseId());
-
-            // TODO
-            course.setClassArrangements(application.getClassArrangements());
-
+            course.setCourseNumber(application.getCourseNumber());
+            course.setAcademicYear(admin.getAcademicYear());
+            course.setTerm(admin.getTerm());
             course.setCapacity(application.getCapacity());
             course.setIntroduction(application.getIntroduction());
+            course.setCourseCategory(application.getCourseCategory());
+            course.setOpenToMajors(application.getOpenToMajors());
+            course.setClassArrangements(application.getClassArrangements());
             course.setTeacher(application.getTeacher());
         }
         ResultMessage resultMessage;
@@ -77,7 +78,7 @@ public class AdminServiceImpl implements AdminService {
         if (studentApplication == null) {
             return ResultMessage.FAILED;
         }
-        try{
+        try {
             studentApplication.getCourse().setCapacity(studentApplication.getCourse().getCapacity() + 1);
             studentApplication.getCourse().getStudents().add(studentApplication.getStudent());
             courseService.updateCourse(studentApplication.getCourse());
@@ -94,18 +95,12 @@ public class AdminServiceImpl implements AdminService {
             switch (admin.getCourseSelectionStatus()) {
                 case START_TERM:    admin.setCourseSelectionStatus(CourseSelectionStatus.START_FIRST);  break;
                 case START_FIRST:   admin.setCourseSelectionStatus(CourseSelectionStatus.END_FIRST);    break;
-                case END_FIRST:
-                    admin.setCourseSelectionStatus(CourseSelectionStatus.START_SECOND);
+                case END_FIRST:     admin.setCourseSelectionStatus(CourseSelectionStatus.START_SECOND);
                     // 第一轮选课结果筛选
-                    resultMessage = firstScreening();
-                    break;
+                    resultMessage = firstScreening(); break;
                 case START_SECOND:  admin.setCourseSelectionStatus(CourseSelectionStatus.END_SECOND);   break;
                 case END_SECOND:    admin.setCourseSelectionStatus(CourseSelectionStatus.END_TERM);     break;
-                case END_TERM:
-                    admin.setCourseSelectionStatus(CourseSelectionStatus.START_TERM);
-                    // TODO: 学年学期自增
-                    // TODO: 学期结束学生课程变已修课程
-                    break;
+                case END_TERM:      admin.setCourseSelectionStatus(CourseSelectionStatus.START_TERM);   break;
             }
         }
         catch (Exception exception) {
@@ -117,6 +112,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public ResultMessage firstScreening() {
         List<Course> courses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
+        // 备份，失败时回滚
         List<Course> backupCourses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
         // TODO: 更合理的筛选
         try {

@@ -23,8 +23,10 @@ public class TeacherApplication {
     private Integer applicationId;
 
     // 课程id
-    @Column(name = "course_id")
     private Integer courseId;
+
+    // 课程编号
+    private Integer courseNumber;
 
     // 选课容量
     private Integer capacity;
@@ -37,6 +39,12 @@ public class TeacherApplication {
     @ManyToOne
     @JoinColumn(name = "course_category_id")
     private CourseCategory courseCategory;
+
+    // 面向开放的专业
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @JoinColumn(name = "major_id")
+    private Set<Major> openToMajors = new HashSet<>();
 
     // 课程安排，一个课程一星期可能包含多次课，一节课对应一个安排
     @JsonIgnore
