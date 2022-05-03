@@ -4,6 +4,7 @@ import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.ResultMessage;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface CourseService {
@@ -27,6 +28,6 @@ public interface CourseService {
     Course findCourseByCourseId(Integer courseId);
 
     //批量添加课程信息
-    ResultMessage batchImportCourse(MultipartFile file);
+//    HashMap<String,String> batchImportCourse(MultipartFile file);
 
 }

@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -155,54 +156,54 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findById(courseId).orElse(null);
     }
 
-    @Override
-    public ResultMessage batchImportCourse(MultipartFile file) {
-        Course course = new Course();
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
-            BufferedReader studentReader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
-            String line;
-            //首行列标题
-            reader.readLine();
-            studentReader.readLine();
-            while((line = reader.readLine())!= null){
-                String []item = line.split(",");
-                if (    item[0].equals("") || item.length < 9 || item[8].length()==0||item[9].length()==0||item[10].length()==0||
-                         !commonService.isMatchSchoolAndMajor(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])),majorService.findMajorByMajorId(Integer.valueOf(item[9])))){}
-                else {
-                    if(item[0].length()!=0&&item[1].length()!=0&&item[2].length()!=0&&item[3].length()!=0&&item[4].length()!=0&&item[5].length()!=0&&item[6].length()!=0)
-                    {
-                        boolean number=false;
-                        number=item[0].matches("^[0-9]*$")&&item[2].matches("^[0-9]*$")&&item[3].matches("^[0-9]*$");
-                        if(number)
-                        {
-                            course.setCourseId(Integer.valueOf(item[0]));
-//                            course.setCourseName(item[1]);
-//                            course.setClassHour(Integer.valueOf(item[2]));
-//                            course.setCredit(Integer.valueOf(item[3]));
-//                            course.setCapacity(item[6]);
-                            course.setIntroduction(item[7]);
-//                            course.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[8])));
-//                            course.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[9])));
-                            course.setTeacher( userService.findTeacherByTeacherId(Integer.valueOf(item[10])));
-                            if (item.length > 11){
-                                String []student = item[11].split("\n");
-                                for (String s : student) {
-                                    course.getStudents().add(userService.findStudentByStudentId(Integer.valueOf(s)));
-                                }
-                            }
-                            courseRepository.save(course);
-                        }
-                    }
-
-                }
-
-            }
-            reader.close();
-            studentReader.close();
-        } catch (IOException e) {
-            return ResultMessage.FAILED;
-        }
-        return ResultMessage.SUCCESS;
-    }
+//    @Override
+//    public HashMap<String,String> batchImportCourse(MultipartFile file) {
+//        Course course = new Course();
+//        try {
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
+//            BufferedReader studentReader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
+//            String line;
+//            //首行列标题
+//            reader.readLine();
+//            studentReader.readLine();
+//            while((line = reader.readLine())!= null){
+//                String []item = line.split(",");
+//                if (    item[0].equals("") || item.length < 9 || item[8].length()==0||item[9].length()==0||item[10].length()==0||
+//                         !commonService.isMatchSchoolAndMajor(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])),majorService.findMajorByMajorId(Integer.valueOf(item[9])))){}
+//                else {
+//                    if(item[0].length()!=0&&item[1].length()!=0&&item[2].length()!=0&&item[3].length()!=0&&item[4].length()!=0&&item[5].length()!=0&&item[6].length()!=0)
+//                    {
+//                        boolean number=false;
+//                        number=item[0].matches("^[0-9]*$")&&item[2].matches("^[0-9]*$")&&item[3].matches("^[0-9]*$");
+//                        if(number)
+//                        {
+//                            course.setCourseId(Integer.valueOf(item[0]));
+////                            course.setCourseName(item[1]);
+////                            course.setClassHour(Integer.valueOf(item[2]));
+////                            course.setCredit(Integer.valueOf(item[3]));
+////                            course.setCapacity(item[6]);
+//                            course.setIntroduction(item[7]);
+////                            course.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[8])));
+////                            course.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[9])));
+//                            course.setTeacher( userService.findTeacherByTeacherId(Integer.valueOf(item[10])));
+//                            if (item.length > 11){
+//                                String []student = item[11].split("\n");
+//                                for (String s : student) {
+//                                    course.getStudents().add(userService.findStudentByStudentId(Integer.valueOf(s)));
+//                                }
+//                            }
+//                            courseRepository.save(course);
+//                        }
+//                    }
+//
+//                }
+//
+//            }
+//            reader.close();
+//            studentReader.close();
+//        } catch (IOException e) {
+//            return ResultMessage.FAILED;
+//        }
+//        return ResultMessage.SUCCESS;
+//    }
 }
