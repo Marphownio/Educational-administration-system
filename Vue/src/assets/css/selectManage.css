@@ -54,3 +54,8 @@ a:hover {
     height: 50px;
     margin:0 auto;
 }
+#flexInput{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

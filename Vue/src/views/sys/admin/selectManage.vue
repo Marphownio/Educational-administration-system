@@ -49,14 +49,19 @@
         title="设置学年学期"
         width="600px"
     >
-      <el-form :inline=true
+      <el-form
                ref="editRuleForm"
                :model="formInLine"
                :rules="editFormInLine"
                label-width="100px"
                class="demo-form-inline">
         <el-form-item label="设置学年" prop="academicYear" ref="academicYear">
-          <el-input v-model="formInLine.academicYear"/>
+          <div id="flexInput">
+            <el-input @change="formInLine.academicYear2=Number(formInLine.academicYear)+1" v-model="formInLine.academicYear"/>
+            {{'-'}}
+            <el-input v-model="formInLine.academicYear2" readonly/>
+          </div>
+
         </el-form-item>
         <el-form-item label="设置学期" prop="term" ref="term">
           <el-select v-model="formInLine.term" placeholder="选择学期">

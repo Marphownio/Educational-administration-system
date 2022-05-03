@@ -24,7 +24,7 @@ public class Admin {
         this.userId = 0;
         this.password = "fudan_admin";
         this.academicYear = "2021-2022";
-        this.term = "春";
+        this.term = "1";
     }
 
 }
