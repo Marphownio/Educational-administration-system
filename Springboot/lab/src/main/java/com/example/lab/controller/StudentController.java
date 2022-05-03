@@ -72,6 +72,25 @@ public class StudentController {
         }
     }
 
+    // 学生退课
+    @DeleteMapping(value = "/course/drop")
+    public ResultMessage dropCourse(@RequestParam("courseId") Integer courseId,@RequestParam("studentId") Integer studentId){
+        if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND){
+            try {
+                Student currentUser = userService.findStudentByStudentId(studentId);
+                Course course = courseService.findCourseByCourseId(courseId);
+                course.getStudents().remove(currentUser);
+                courseService.updateCourse(course);
+                return ResultMessage.SUCCESS;
+            } catch (Exception e) {
+                return ResultMessage.FAILED;
+            }
+        }
+        else {
+            return ResultMessage.NOT_OPEN;
+        }
+    }
+
     // 学生获取可选的课程
     @GetMapping(value = "/course/selectable")
     public ResponseEntity<Set<Course>> getSelectableCourse(HttpSession session) {

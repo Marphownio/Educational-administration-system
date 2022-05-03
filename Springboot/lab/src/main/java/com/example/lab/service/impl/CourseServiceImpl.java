@@ -1,5 +1,6 @@
 package com.example.lab.service.impl;
 
+import com.example.lab.pojo.CourseSelectionStatus;
 import com.example.lab.pojo.entity.*;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.repository.CourseRepository;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
+import static com.example.lab.LabApplication.admin;
 // 课程的增删改查服务
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -87,6 +90,20 @@ public class CourseServiceImpl implements CourseService {
             resultMessage = ResultMessage.FAILED;
         }
         else {
+            // 如果需要修改课程容量
+            // 修改课程容量只有在学期开始与一轮选课期间是不需要考虑课程容量与已选人数的 其他阶段要修改容量都需要考虑
+            if (course.getCapacity().equals(findCourseByCourseId(course.getCourseId()).getCapacity())
+                && (admin.getCourseSelectionStatus() != CourseSelectionStatus.START_FIRST
+                && admin.getCourseSelectionStatus() != CourseSelectionStatus.START_TERM)
+                && course.getCapacity() < course.getStudents().size())
+            {
+                    return ResultMessage.FAILED;
+            }
+            for (ClassArrangement classArrangement : course.getClassArrangements()){
+                if (course.getCapacity() > classArrangement.getClassroom().getCapacity()){
+                    return ResultMessage.FAILED;
+                }
+            }
             try {
                 courseRepository.save(course);
                 resultMessage = ResultMessage.SUCCESS;

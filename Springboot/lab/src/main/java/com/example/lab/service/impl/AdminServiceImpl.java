@@ -80,7 +80,7 @@ public class AdminServiceImpl implements AdminService {
         try{
             studentApplication.getCourse().setCapacity(studentApplication.getCourse().getCapacity() + 1);
             studentApplication.getCourse().getStudents().add(studentApplication.getStudent());
-            studentApplication.getStudent().getCourses().add(studentApplication.getCourse());
+            courseService.updateCourse(studentApplication.getCourse());
             return ResultMessage.SUCCESS;
         } catch (Exception e) {
             return ResultMessage.FAILED;
