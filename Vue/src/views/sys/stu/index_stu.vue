@@ -26,7 +26,7 @@
         <router-link to="/finishedclass">已修课程</router-link>
       </td>
       <td style="text-align:center" class="choose">
-        <router-link to="">敬请期待</router-link>
+        <router-link to="/stuApplication">我的选课申请</router-link>
       </td>
       <td style="text-align:center" class="choose">
         <router-link to="" > 敬请期待 </router-link>

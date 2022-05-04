@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,19 +43,29 @@ public class UserController {
 
     // 批量导入用户
     @PostMapping("/batchimport")
-    public ResultMessage batchImportUser(@RequestParam(value = "file",required = false) MultipartFile file) {
+    public HashMap<String,String> batchImportUser(@RequestParam(value = "file",required = false) MultipartFile file) {
         //判断文件是否为空
-        if(file == null) return ResultMessage.NOTFOUND;
+        HashMap<String,String> result = new HashMap<>();
+        if(file == null) {
+            result.put("操作","失败！");
+            return result;
+        }
         //获取文件名
         String name = file.getOriginalFilename();
         //进一步判断文件是否为空（即判断其大小是否为0或其名称是否为null）
         long size=file.getSize();
-        if (name == null || ("").equals(name) && size == 0) return ResultMessage.NOTFOUND;
+        if (name == null || ("").equals(name) && size == 0) {
+            result.put("操作","失败！");
+            return result;
+        }
         //批量导入。参数：文件名，文件。
         try {
-            return userService.batchImportUser(file);
+            result.put("操作","成功！");
+            result.putAll(userService.batchImportUser(file));
+            return result;
         }catch (NumberFormatException e){
-            return ResultMessage.FAILED;
+            result.put("操作","失败！");
+            return result;
         }
 
     }
