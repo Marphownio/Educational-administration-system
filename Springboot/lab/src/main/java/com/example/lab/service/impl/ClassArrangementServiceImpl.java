@@ -21,21 +21,16 @@ public class ClassArrangementServiceImpl implements ClassArrangementService {
 
     @Override
     public ResultMessage addClassArrangement(ClassArrangement classArrangement) {
-        if (findClassArrangementById(classArrangement.getClassArrangementId()) != null){
-            return ResultMessage.EXIST;
+        if (Boolean.FALSE.equals(commonService.isMatchBuildingAndClassroom(classArrangement.getBuilding(),classArrangement.getClassroom()))){
+            return ResultMessage.FAILED;
         }
         else {
-            if (Boolean.FALSE.equals(commonService.isMatchBuildingAndClassroom(classArrangement.getBuilding(),classArrangement.getClassroom()))){
-                return ResultMessage.FAILED;
+            try {
+                classArrangementRepository.save(classArrangement);
+                return ResultMessage.SUCCESS;
             }
-            else {
-                try {
-                    classArrangementRepository.save(classArrangement);
-                    return ResultMessage.SUCCESS;
-                }
-                catch (Exception e){
-                    return ResultMessage.FAILED;
-                }
+            catch (Exception e){
+                return ResultMessage.FAILED;
             }
         }
     }
@@ -58,8 +53,7 @@ public class ClassArrangementServiceImpl implements ClassArrangementService {
 
     @Override
     public ResultMessage updateClassArrangement(ClassArrangement classArrangement) {
-        // TODO
-        return ResultMessage.FAILED;
+        return addClassArrangement(classArrangement);
     }
 
     @Override

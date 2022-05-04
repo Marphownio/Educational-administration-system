@@ -60,6 +60,9 @@ public class CourseServiceImpl implements CourseService {
             try {
                 if (courseCategoryService.findCourseCategoryByCourseCategoryId(course.getCourseCategory().getCourseCategoryId()) == null) {
                    if (courseCategoryService.addCourseCategory(course.getCourseCategory()) == ResultMessage.SUCCESS) {
+                       for (ClassArrangement classArrangement : course.getClassArrangements()) {
+                           classArrangementService.addClassArrangement(classArrangement);
+                       }
                        courseRepository.save(course);
                        resultMessage = ResultMessage.SUCCESS;
 
@@ -123,6 +126,9 @@ public class CourseServiceImpl implements CourseService {
             try {
                 if (courseCategoryService.findCourseCategoryByCourseCategoryId(course.getCourseCategory().getCourseCategoryId()) == null) {
                     if (courseCategoryService.addCourseCategory(course.getCourseCategory()) == ResultMessage.SUCCESS) {
+                        for (ClassArrangement classArrangement : course.getClassArrangements()) {
+                            classArrangementService.updateClassArrangement(classArrangement);
+                        }
                         courseRepository.save(course);
                         resultMessage = ResultMessage.SUCCESS;
 
@@ -130,6 +136,9 @@ public class CourseServiceImpl implements CourseService {
                         resultMessage = ResultMessage.FAILED;
                     }
                 } else {
+                    for (ClassArrangement classArrangement : course.getClassArrangements()) {
+                        classArrangementService.updateClassArrangement(classArrangement);
+                    }
                     courseRepository.save(course);
                     resultMessage = ResultMessage.SUCCESS;
                 }
