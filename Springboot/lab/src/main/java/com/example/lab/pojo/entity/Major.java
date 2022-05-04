@@ -27,7 +27,7 @@ public class Major {
     private String introduction;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "school_id", nullable = false)
+    @JoinColumn(name = "school_id")
     private School school;
 
     // 该专业下的所有种类的课程
