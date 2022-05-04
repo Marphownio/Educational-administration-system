@@ -51,7 +51,7 @@ public class Course {
     // 课程安排，一个课程一星期可能包含多次课，一节课对应一个安排
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "class_arrangement_id")
+    @JoinColumn(name = "course_id")
     private Set<ClassArrangement> classArrangements = new HashSet<>();
 
     // 任课教师

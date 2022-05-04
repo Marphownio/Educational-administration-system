@@ -43,13 +43,13 @@ public class TeacherApplication {
     // 面向开放的专业
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
-    @JoinColumn(name = "major_id")
+    @JoinColumn(name = "application_id")
     private Set<Major> openToMajors = new HashSet<>();
 
     // 课程安排，一个课程一星期可能包含多次课，一节课对应一个安排
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "class_arrangement_id")
+    @JoinColumn(name = "application_id")
     private Set<ClassArrangement> classArrangements = new HashSet<>();
 
     // 任课教师
