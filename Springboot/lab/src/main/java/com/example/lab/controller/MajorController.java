@@ -22,7 +22,7 @@ public class MajorController {
     public MajorService majorService;
 
     @PostMapping(value = "/add")
-    public ResultMessage addMajor(Major major){
+    public ResultMessage addMajor(@RequestBody Major major){
         return majorService.addMajor(major);
     }
 
@@ -32,7 +32,7 @@ public class MajorController {
     }
 
     @PutMapping(value = "/update")
-    public ResultMessage updateMajor(Major major){
+    public ResultMessage updateMajor(@RequestBody Major major){
         return majorService.updateMajor(major);
     }
 

@@ -16,7 +16,7 @@ public class ClassroomController {
     private ClassroomService classroomService;
 
     @PostMapping(value = "/add")
-    public ResultMessage addClassroom(Classroom classroom){
+    public ResultMessage addClassroom(@RequestBody Classroom classroom){
         return classroomService.addClassroom(classroom);
     }
 
@@ -26,7 +26,7 @@ public class ClassroomController {
     }
 
     @PutMapping(value = "/update")
-    public ResultMessage updateClassroom(Classroom classroom){
+    public ResultMessage updateClassroom(@RequestBody Classroom classroom){
         return classroomService.updateClassroom(classroom);
     }
 

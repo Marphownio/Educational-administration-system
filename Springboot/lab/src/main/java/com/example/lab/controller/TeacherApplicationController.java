@@ -20,7 +20,7 @@ public class TeacherApplicationController {
 
     // 增加申请
     @PostMapping(value = "/add")
-    public ResultMessage addApplication(TeacherApplication application) {
+    public ResultMessage addApplication(@RequestBody TeacherApplication application) {
         return teacherApplicationService.addTeacherApplication(application);
     }
 

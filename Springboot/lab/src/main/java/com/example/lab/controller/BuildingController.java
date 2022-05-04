@@ -21,7 +21,7 @@ public class BuildingController {
     private BuildingService buildingService;
 
     @PostMapping(value = "/add")
-    public ResultMessage addBuilding(Building building){
+    public ResultMessage addBuilding(@RequestBody Building building){
         return buildingService.addBuilding(building);
     }
 
@@ -31,7 +31,7 @@ public class BuildingController {
     }
 
     @PutMapping(value = "/update")
-    public ResultMessage updateBuilding(Building building){
+    public ResultMessage updateBuilding(@RequestBody Building building){
         return buildingService.updateBuilding(building);
     }
 

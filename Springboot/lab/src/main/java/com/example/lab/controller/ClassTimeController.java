@@ -15,7 +15,7 @@ public class ClassTimeController {
     private ClassTimeService classTimeService;
 
     @PostMapping(value = "/add")
-    public ResultMessage addClassTime(ClassTime classTime){
+    public ResultMessage addClassTime(@RequestBody ClassTime classTime){
         return classTimeService.addClassTime(classTime);
     }
 
@@ -25,7 +25,7 @@ public class ClassTimeController {
     }
 
     @PutMapping(value = "/update")
-    public ResultMessage updateClassTime(ClassTime classTime){
+    public ResultMessage updateClassTime(@RequestBody ClassTime classTime){
         return classTimeService.updateClassTime(classTime);
     }
 

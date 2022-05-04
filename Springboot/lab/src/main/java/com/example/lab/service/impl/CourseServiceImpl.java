@@ -33,7 +33,7 @@ public class CourseServiceImpl implements CourseService {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
         if (findCourseByCourseId(course.getCourseId()) != null) {
             resultMessage = ResultMessage.EXIST;
-        } else if (course.getTeacher() == null || !commonService.isMatchSchoolAndMajor(course.getCourseCategory().getSchool(), course.getCourseCategory().getMajor())) {
+        } else if (course.getTeacher() == null || course.getCourseCategory() == null) {
             resultMessage = ResultMessage.FAILED;
         } else {
             for (ClassArrangement classArrangement : course.getClassArrangements()) {
@@ -88,7 +88,7 @@ public class CourseServiceImpl implements CourseService {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
         if (findCourseByCourseId(course.getCourseId()) == null) {
             resultMessage = ResultMessage.NOTFOUND;
-        } else if (course.getTeacher() == null || !commonService.isMatchSchoolAndMajor(course.getCourseCategory().getSchool(), course.getCourseCategory().getMajor())) {
+        } else if (course.getTeacher() == null || course.getCourseCategory() == null) {
             resultMessage = ResultMessage.FAILED;
         } else
         // 如果需要修改课程容量

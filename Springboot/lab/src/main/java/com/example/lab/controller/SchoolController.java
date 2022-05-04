@@ -21,7 +21,7 @@ public class SchoolController {
     public SchoolService schoolService;
 
     @PostMapping(value = "/add")
-    public ResultMessage addMajor(School school){
+    public ResultMessage addMajor(@RequestBody School school){
         return schoolService.addSchool(school);
     }
 
@@ -31,7 +31,7 @@ public class SchoolController {
     }
 
     @PutMapping(value = "/update")
-    public ResultMessage updateMajor(School school){
+    public ResultMessage updateMajor(@RequestBody School school){
         return schoolService.updateSchool(school);
     }
 

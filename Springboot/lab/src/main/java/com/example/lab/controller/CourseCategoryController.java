@@ -24,7 +24,7 @@ public class CourseCategoryController {
     }
 
     @PutMapping(value = "/update")
-    public ResultMessage updateCourse(CourseCategory courseCategory){
+    public ResultMessage updateCourse(@RequestBody CourseCategory courseCategory){
         return courseCategoryService.updateCourseCategory(courseCategory);
     }
 

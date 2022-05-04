@@ -21,7 +21,7 @@ public class CourseController {
     private CourseService courseService;
 
     @PostMapping(value = "/add")
-    public ResultMessage addCourse(Course course){
+    public ResultMessage addCourse(@RequestBody Course course){
         return courseService.addCourse(course);
     }
 
@@ -31,7 +31,7 @@ public class CourseController {
     }
 
     @PutMapping(value = "/update")
-    public ResultMessage updateCourse(Course course){
+    public ResultMessage updateCourse(@RequestBody Course course){
         return courseService.updateCourse(course);
     }
 
