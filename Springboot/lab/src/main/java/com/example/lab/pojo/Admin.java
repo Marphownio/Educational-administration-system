@@ -11,6 +11,8 @@ public class Admin {
     private String password;
     private UserRole role;
 
+    private String userDefaultPassword;
+
     // 选课系统状态
     private CourseSelectionStatus courseSelectionStatus;
 
@@ -25,6 +27,7 @@ public class Admin {
         this.password = "fudan_admin";
         this.academicYear = "2021-2022";
         this.term = "1";
+        this.userDefaultPassword = "fudan123456";
     }
 
 }

@@ -62,12 +62,11 @@ public class UserServiceImpl implements UserService {
 
     private ResultMessage loginResult(User user, HttpSession session) {
         ResultMessage resultMessage;
-        String defaultPassword = "fudan123456";
         switch (user.getRole()) {
             case TEACHER:
                 if (Boolean.TRUE.equals(user.getStatus())) {
                     session.setAttribute("user", user);
-                    resultMessage = user.getPassword().equals(defaultPassword) ? ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD : ResultMessage.SUCCESS_LOGIN_TEACHER;
+                    resultMessage = user.getPassword().equals(admin.getUserDefaultPassword()) ? ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD : ResultMessage.SUCCESS_LOGIN_TEACHER;
                 } else {
                     resultMessage = ResultMessage.FAILED_DIMISSION;
                 }
@@ -75,7 +74,7 @@ public class UserServiceImpl implements UserService {
             case STUDENT:
                 if (Boolean.TRUE.equals(user.getStatus())) {
                     session.setAttribute("user", user);
-                    resultMessage = user.getPassword().equals(defaultPassword) ? ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD : ResultMessage.SUCCESS_LOGIN_STUDENT;
+                    resultMessage = user.getPassword().equals(admin.getUserDefaultPassword()) ? ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD : ResultMessage.SUCCESS_LOGIN_STUDENT;
                 } else {
                     resultMessage = ResultMessage.FAILED_LEFT;
                 }
