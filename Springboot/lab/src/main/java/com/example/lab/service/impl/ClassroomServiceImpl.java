@@ -21,23 +21,20 @@ public class ClassroomServiceImpl implements ClassroomService {
     //教室
     @Override
     public ResultMessage addClassroom(Classroom classroom) {
+        ResultMessage resultMessage;
         if (findClassroomById(classroom.getClassroomId())!=null){
-            return ResultMessage.EXIST;
-        }
-        else {
-            if (classroom.getBuilding() == null || buildingService.findBuildingById(classroom.getBuilding().getBuildingId()) == null){
-                return ResultMessage.FAILED;
+            resultMessage = ResultMessage.EXIST;
+        } else if (classroom.getBuilding() != null || buildingService.findBuildingById(classroom.getBuilding().getBuildingId()) != null){
+            try {
+                classroomRepository.save(classroom);
+                resultMessage = ResultMessage.SUCCESS;
+            } catch (Exception e) {
+                resultMessage = ResultMessage.FAILED;
             }
-            else {
-                try {
-                    classroomRepository.save(classroom);
-                    return ResultMessage.SUCCESS;
-                }
-                catch (Exception e) {
-                    return ResultMessage.FAILED;
-                }
-            }
+        } else {
+            resultMessage = ResultMessage.FAILED;
         }
+        return resultMessage;
     }
 
     @Override

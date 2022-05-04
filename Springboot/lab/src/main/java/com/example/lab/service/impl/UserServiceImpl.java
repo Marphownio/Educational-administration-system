@@ -123,30 +123,35 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public ResultMessage addUser(User user) {
-        ResultMessage resultMessage;
-        if (findUserByUserId(user.getUserId()) != null) {
-            resultMessage = ResultMessage.EXIST;
-        } else if (user.getRole() == null || user.getRole() == UserRole.ADMIN || Boolean.TRUE.equals(!commonService.isMatchSchoolAndMajor(user.getSchool(), user.getMajor()))) {
-            resultMessage = ResultMessage.FAILED;
-        } else {
-            try {
-                user.setPassword("fudan123456");
-                if (user.getRole() == UserRole.TEACHER) {
-                    teacherRepository.save(new Teacher(user));
-                    resultMessage = ResultMessage.SUCCESS;
-                } else if (user.getRole() == UserRole.STUDENT) {
+    private ResultMessage saveUser(User user) {
+        ResultMessage resultMessage = ResultMessage.SUCCESS;
+        try {
+            switch (user.getRole()) {
+                case STUDENT:
                     studentRepository.save(new Student(user));
-                    resultMessage = ResultMessage.SUCCESS;
-                } else {
+                    break;
+                case TEACHER:
+                    teacherRepository.save(new Teacher(user));
+                    break;
+                default:
                     resultMessage = ResultMessage.FAILED;
-                }
-            } catch (Exception exception) {
-                resultMessage = ResultMessage.FAILED;
             }
+        } catch (Exception exception) {
+            resultMessage = ResultMessage.FAILED;
         }
         return resultMessage;
+    }
+
+    @Override
+    public ResultMessage addUser(User user) {
+        if (findUserByUserId(user.getUserId()) != null) {
+            return ResultMessage.EXIST;
+        }
+        if (user.getRole() == null || user.getRole() == UserRole.ADMIN || Boolean.TRUE.equals(!commonService.isMatchSchoolAndMajor(user.getSchool(), user.getMajor()))) {
+            return ResultMessage.FAILED;
+        }
+        user.setPassword(admin.getUserDefaultPassword());
+        return saveUser(user);
     }
 
     @Override
@@ -315,29 +320,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultMessage updateUser(User user) {
-        ResultMessage resultMessage;
         if (findUserByUserId(user.getUserId()) == null) {
-            resultMessage = ResultMessage.NOTFOUND;
-        } else {
-            if (Boolean.FALSE.equals(commonService.isMatchSchoolAndMajor(user.getSchool(), user.getMajor()))) {
-                resultMessage = ResultMessage.FAILED;
-            } else {
-                try {
-                    if (user.getRole() == UserRole.TEACHER) {
-                        teacherRepository.save(new Teacher(user));
-                        resultMessage = ResultMessage.SUCCESS;
-                    } else if (user.getRole() == UserRole.STUDENT) {
-                        studentRepository.save(new Student(user));
-                        resultMessage = ResultMessage.SUCCESS;
-                    } else {
-                        resultMessage = ResultMessage.FAILED;
-                    }
-                } catch (Exception exception) {
-                    resultMessage = ResultMessage.FAILED;
-                }
-            }
+            return ResultMessage.NOTFOUND;
         }
-        return resultMessage;
+        if (Boolean.FALSE.equals(commonService.isMatchSchoolAndMajor(user.getSchool(), user.getMajor()))) {
+            return ResultMessage.FAILED;
+        }
+        return saveUser(user);
     }
 
     // 查询全部用户

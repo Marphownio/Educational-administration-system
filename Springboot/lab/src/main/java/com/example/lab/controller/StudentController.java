@@ -41,31 +41,23 @@ public class StudentController {
     // 学生选课
     @PostMapping(value = "/course/select")
     public ResultMessage selectCourse(@RequestParam("courseId") Integer courseId, HttpSession session) {
-        if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND) {
-            try {
-                Student currentUser = userService.findStudentByStudentId(((User) session.getAttribute("user")).getUserId());
-                Course selectCourse = courseService.findCourseByCourseId(courseId);
-
-                ResponseEntity<Set<Course>> courses = findAllCoursesStudying(currentUser.getUserId());
-                Set<Course> courseSet = courses.getBody();
-                if (courseSet != null && !courseSet.isEmpty()) {
-                    for (Course course : courseSet) {
-                        // 已经选过同类课程
-                        if (course.getCourseCategory() == selectCourse.getCourseCategory()) {
-                            return ResultMessage.EXIST;
-                        }
-                    }
-                }
-                selectCourse.getStudents().add(currentUser);
-                courseService.updateCourse(selectCourse);
-                return ResultMessage.SUCCESS;
-            } catch (Exception exception) {
-                return ResultMessage.FAILED;
-            }
-        }
-        else {
+        if (admin.getCourseSelectionStatus() != CourseSelectionStatus.START_FIRST && admin.getCourseSelectionStatus() != CourseSelectionStatus.START_SECOND) {
             return ResultMessage.NOT_OPEN;
         }
+        Student currentUser = userService.findStudentByStudentId(((User) session.getAttribute("user")).getUserId());
+        Course selectCourse = courseService.findCourseByCourseId(courseId);
+        ResponseEntity<Set<Course>> courses = findAllCoursesStudying(currentUser.getUserId());
+        Set<Course> courseSet = courses.getBody();
+        if (courseSet != null && !courseSet.isEmpty()) {
+            for (Course course : courseSet) {
+                // 已经选过同类课程
+                if (course.getCourseCategory() == selectCourse.getCourseCategory()) {
+                    return ResultMessage.EXIST;
+                }
+            }
+        }
+        selectCourse.getStudents().add(currentUser);
+        return courseService.updateCourse(selectCourse);
     }
 
     // 学生退课
@@ -90,31 +82,26 @@ public class StudentController {
     // 学生获取可选的课程
     @GetMapping(value = "/course/selectable")
     public ResponseEntity<Set<Course>> getSelectableCourse(HttpSession session) {
-        if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND
-                && session.getAttribute("user") != null && ((User)session.getAttribute("user")).getRole() == UserRole.STUDENT) {
-            Student currentUser =  userService.findStudentByStudentId(((User)session.getAttribute("user")).getUserId());
-
-            // 本专业可选课程(已选课程的同类课程依然会出现，但在选择时不会通过)
-            Set<Course> selectableCourses = currentUser.getMajor().getSelectableCourses();
-
-            if (selectableCourses.isEmpty()) {
-                return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
-            } else {
-                // 去除已选/已修的课程
-                selectableCourses.removeIf(course -> !currentUser.getCourses().contains(course));
-
-                // 二轮选课时，去除已经选满的课程
-                if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND) {
-                    selectableCourses.removeIf(course -> course.getCapacity() == course.getStudents().size());
-                }
-                if (selectableCourses.isEmpty()) {
-                    return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
-                }
-                return new ResponseEntity<>(selectableCourses, HttpStatus.OK);
-            }
-        }
-        else {
+        if ( (admin.getCourseSelectionStatus() != CourseSelectionStatus.START_FIRST && admin.getCourseSelectionStatus() != CourseSelectionStatus.START_SECOND)
+                || session.getAttribute("user") == null || ((User)session.getAttribute("user")).getRole() != UserRole.STUDENT) {
             return new ResponseEntity<>(new HashSet<>(), HttpStatus.NOT_ACCEPTABLE);
+        }
+        Student currentUser =  userService.findStudentByStudentId(((User)session.getAttribute("user")).getUserId());
+
+        // 本专业可选课程(已选课程的同类课程依然会出现，但在选择时不会通过)
+        Set<Course> selectableCourses = currentUser.getMajor().getSelectableCourses();
+
+        if (selectableCourses.isEmpty()) {
+            return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
+        } else {
+            // 去除已选/已修的课程
+            selectableCourses.removeIf(course -> !currentUser.getCourses().contains(course));
+
+            // 二轮选课时，去除已经选满的课程
+            if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND) {
+                selectableCourses.removeIf(course -> course.getCapacity() == course.getStudents().size());
+            }
+            return new ResponseEntity<>(selectableCourses, HttpStatus.OK);
         }
     }
 

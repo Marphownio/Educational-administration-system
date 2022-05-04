@@ -60,12 +60,7 @@ public class AdminServiceImpl implements AdminService {
             default:
                 resultMessage = ResultMessage.FAILED; break;
         }
-        if (resultMessage == ResultMessage.SUCCESS) {
-            return teacherApplicationService.deleteTeacherApplication(applicationId);
-        }
-        else {
-            return ResultMessage.FAILED;
-        }
+        return (resultMessage == ResultMessage.SUCCESS) ? teacherApplicationService.deleteTeacherApplication(applicationId) : ResultMessage.FAILED;
     }
 
     // 管理员处理学生对课程的请求
@@ -75,17 +70,19 @@ public class AdminServiceImpl implements AdminService {
             return teacherApplicationService.deleteTeacherApplication(applicationId);
         }
         StudentApplication studentApplication = studentApplicationService.findStudentApplicationById(applicationId);
-        if (studentApplication == null) {
-            return ResultMessage.FAILED;
+        ResultMessage resultMessage = ResultMessage.SUCCESS;
+        if (studentApplication != null) {
+            try {
+                studentApplication.getCourse().setCapacity(studentApplication.getCourse().getCapacity() + 1);
+                studentApplication.getCourse().getStudents().add(studentApplication.getStudent());
+                courseService.updateCourse(studentApplication.getCourse());
+            } catch (Exception e) {
+                resultMessage = ResultMessage.FAILED;
+            }
+        } else {
+            resultMessage = ResultMessage.FAILED;
         }
-        try {
-            studentApplication.getCourse().setCapacity(studentApplication.getCourse().getCapacity() + 1);
-            studentApplication.getCourse().getStudents().add(studentApplication.getStudent());
-            courseService.updateCourse(studentApplication.getCourse());
-            return ResultMessage.SUCCESS;
-        } catch (Exception e) {
-            return ResultMessage.FAILED;
-        }
+        return resultMessage;
     }
 
     @Override

@@ -48,20 +48,22 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public ResultMessage addCourse(Course course) {
         ResultMessage resultMessage = checkBeforeAddCourse(course);
-        if (resultMessage == ResultMessage.SUCCESS) {
+        if (resultMessage != ResultMessage.SUCCESS) {
+            return resultMessage;
+        }
+        ResultMessage resultMessage1 = courseCategoryService.addCourseCategory(course.getCourseCategory());
+        if (resultMessage1 == ResultMessage.SUCCESS || resultMessage1 == ResultMessage.EXIST) {
+            for (ClassArrangement classArrangement : course.getClassArrangements()) {
+                classArrangementService.addClassArrangement(classArrangement);
+            }
             try {
-                ResultMessage resultMessage1 = courseCategoryService.addCourseCategory(course.getCourseCategory());
-                if (resultMessage1 == ResultMessage.SUCCESS || resultMessage1 == ResultMessage.EXIST) {
-                    for (ClassArrangement classArrangement : course.getClassArrangements()) {
-                        classArrangementService.addClassArrangement(classArrangement);
-                    }
-                    courseRepository.save(course);
-                } else {
-                    resultMessage = ResultMessage.FAILED;
-                }
-            } catch (Exception exception) {
+                courseRepository.save(course);
+            }
+            catch (Exception e) {
                 resultMessage = ResultMessage.FAILED;
             }
+        } else {
+            resultMessage = ResultMessage.FAILED;
         }
         return resultMessage;
     }
@@ -110,23 +112,25 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public ResultMessage updateCourse(Course course) {
         ResultMessage resultMessage = checkBeforeUpdateCourse(course);
-        if (resultMessage == ResultMessage.SUCCESS) {
+        if (resultMessage != ResultMessage.SUCCESS) {
+            return resultMessage;
+        }
+        ResultMessage resultMessage1 = courseCategoryService.updateCourseCategory(course.getCourseCategory());
+        if (resultMessage1 == ResultMessage.NOTFOUND) {
+            resultMessage1 = courseCategoryService.addCourseCategory(course.getCourseCategory());
+        }
+        if (resultMessage1 == ResultMessage.SUCCESS) {
+            for (ClassArrangement classArrangement : course.getClassArrangements()) {
+                classArrangementService.updateClassArrangement(classArrangement);
+            }
             try {
-                ResultMessage resultMessage1 = courseCategoryService.updateCourseCategory(course.getCourseCategory());
-                if (resultMessage1 == ResultMessage.NOTFOUND) {
-                    resultMessage1 = courseCategoryService.addCourseCategory(course.getCourseCategory());
-                }
-                if (resultMessage1 == ResultMessage.SUCCESS) {
-                    for (ClassArrangement classArrangement : course.getClassArrangements()) {
-                        classArrangementService.updateClassArrangement(classArrangement);
-                    }
-                    courseRepository.save(course);
-                } else {
-                    resultMessage = ResultMessage.FAILED;
-                }
-            } catch (Exception exception) {
+                courseRepository.save(course);
+            }
+            catch (Exception e) {
                 resultMessage = ResultMessage.FAILED;
             }
+        } else {
+            resultMessage = ResultMessage.FAILED;
         }
         return resultMessage;
     }

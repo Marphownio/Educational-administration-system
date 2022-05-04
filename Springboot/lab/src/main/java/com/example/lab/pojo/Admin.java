@@ -20,14 +20,14 @@ public class Admin {
     private String academicYear;
     private String term;
 
-    public Admin(){
-        this.role = UserRole.ADMIN;
-        this.courseSelectionStatus = CourseSelectionStatus.START_TERM;
-        this.userId = 0;
-        this.password = "fudan_admin";
-        this.academicYear = "2021-2022";
-        this.term = "1";
-        this.userDefaultPassword = "fudan123456";
+    public Admin(Integer userId, String password, UserRole userRole, String userDefaultPassword, CourseSelectionStatus courseSelectionStatus, String academicYear, String term){
+        this.userId = userId;
+        this.password = password;
+        this.role = userRole;
+        this.userDefaultPassword = userDefaultPassword;
+        this.courseSelectionStatus = courseSelectionStatus;
+        this.academicYear = academicYear;
+        this.term = term;
     }
 
 }
