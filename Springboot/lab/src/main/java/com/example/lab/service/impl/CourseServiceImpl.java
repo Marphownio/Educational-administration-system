@@ -41,6 +41,9 @@ public class CourseServiceImpl implements CourseService {
     @Resource
     private CourseCategoryService courseCategoryService;
 
+    @Resource
+    private ClassArrangementService classArrangementService;
+
     @Override
     public ResultMessage addCourse(Course course) {
         ResultMessage resultMessage;
@@ -64,6 +67,9 @@ public class CourseServiceImpl implements CourseService {
                        resultMessage = ResultMessage.FAILED;
                    }
                 } else {
+                    for (ClassArrangement classArrangement : course.getClassArrangements()) {
+                        classArrangementService.addClassArrangement(classArrangement);
+                    }
                     courseRepository.save(course);
                     resultMessage = ResultMessage.SUCCESS;
                 }
