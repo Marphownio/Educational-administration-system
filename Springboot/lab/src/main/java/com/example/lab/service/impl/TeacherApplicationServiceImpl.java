@@ -21,14 +21,11 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
     @Resource
     private CommonService commonService;
 
-    // 教师申请增删改课程
-    @Override
-    public ResultMessage addTeacherApplication(TeacherApplication application) {
-        ResultMessage resultMessage;
+    private ResultMessage checkBeforeAddTeacherApplication(TeacherApplication application) {
+        ResultMessage resultMessage = ResultMessage.SUCCESS;
         if (application.getType() == null || !commonService.isMatchSchoolAndMajor(application.getCourseCategory().getSchool(), application.getCourseCategory().getMajor())) {
-            resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT;
+            resultMessage = ResultMessage.FAILED;
         } else {
-            resultMessage = ResultMessage.SUCCESS;
             switch (application.getType()) {
                 case ADD:
                     if (courseService.findCourseByCourseId(application.getCourseId()) != null) {
@@ -42,14 +39,22 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
                     }
                     break;
                 default:
-                    resultMessage = ResultMessage.FAILED; break;
-            }
-            if(resultMessage == ResultMessage.SUCCESS) {
-                try {
-                    teacherApplicationRepository.save(application);
-                } catch (Exception exception) {
                     resultMessage = ResultMessage.FAILED;
-                }
+                    break;
+            }
+        }
+        return resultMessage;
+    }
+
+    // 教师申请增删改课程
+    @Override
+    public ResultMessage addTeacherApplication(TeacherApplication application) {
+        ResultMessage resultMessage = checkBeforeAddTeacherApplication(application);
+        if(resultMessage == ResultMessage.SUCCESS) {
+            try {
+                teacherApplicationRepository.save(application);
+            } catch (Exception exception) {
+                resultMessage = ResultMessage.FAILED;
             }
         }
         return resultMessage;

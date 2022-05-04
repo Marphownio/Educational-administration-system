@@ -14,9 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.example.lab.LabApplication.admin;
+import static java.lang.Integer.parseInt;
 
 // 用户的增删改查服务
 @Service
@@ -39,6 +43,86 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private CommonService commonService;
+
+    @Override
+    public ResultMessage login(String userId, String password, HttpSession session) {
+        ResultMessage resultMessage = ResultMessage.FAILED;
+        if (userId.matches("^\\d{6}$") || userId.matches("^\\d{8}$")) {
+            if (admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getPassword())) {
+                session.setAttribute("user", admin);
+                return ResultMessage.SUCCESS_LOGIN_ADMIN;
+            }
+            User user = findUserByUserId(parseInt(userId));
+            if (user != null && user.getPassword().equals(password)) {
+                resultMessage = loginResult(user, session);
+            }
+        }
+        return resultMessage;
+    }
+
+    private ResultMessage loginResult(User user, HttpSession session) {
+        ResultMessage resultMessage;
+        String defaultPassword = "fudan123456";
+        switch (user.getRole()) {
+            case TEACHER:
+                if (Boolean.TRUE.equals(user.getStatus())) {
+                    session.setAttribute("user", user);
+                    resultMessage = user.getPassword().equals(defaultPassword) ? ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD : ResultMessage.SUCCESS_LOGIN_TEACHER;
+                } else {
+                    resultMessage = ResultMessage.FAILED_DIMISSION;
+                }
+                break;
+            case STUDENT:
+                if (Boolean.TRUE.equals(user.getStatus())) {
+                    session.setAttribute("user", user);
+                    resultMessage = user.getPassword().equals(defaultPassword) ? ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD : ResultMessage.SUCCESS_LOGIN_STUDENT;
+                } else {
+                    resultMessage = ResultMessage.FAILED_LEFT;
+                }
+                break;
+            default:
+                resultMessage = ResultMessage.FAILED;
+        }
+        return resultMessage;
+    }
+
+    @Override
+    public ResultMessage logout(HttpSession session) {
+        try {
+            session.invalidate();
+            return ResultMessage.SUCCESS;
+        }
+        catch (Exception exception) {
+            return ResultMessage.FAILED;
+        }
+    }
+
+    @Override
+    public ResultMessage resetPassword(String newPassword, HttpSession session) {
+        User user = findUserByUserId(((User)session.getAttribute("user")).getUserId());
+        if(newPassword.equals(user.getPassword())) {
+            return ResultMessage.FAILED;
+        }
+        else {
+            user.setPassword(newPassword);
+            try {
+                updateUser(user);
+                ResultMessage resultMessage;
+                switch (user.getRole()) {
+                    case TEACHER:
+                        resultMessage = ResultMessage.SUCCESS_LOGIN_TEACHER; break;
+                    case STUDENT:
+                        resultMessage = ResultMessage.SUCCESS_LOGIN_STUDENT; break;
+                    default:
+                        resultMessage = ResultMessage.FAILED; break;
+                }
+                return resultMessage;
+            }
+            catch (Exception exception) {
+                return ResultMessage.FAILED;
+            }
+        }
+    }
 
     @Override
     public ResultMessage addUser(User user) {
@@ -236,7 +320,7 @@ public class UserServiceImpl implements UserService {
         if (findUserByUserId(user.getUserId()) == null) {
             resultMessage = ResultMessage.NOTFOUND;
         } else {
-            if (!commonService.isMatchSchoolAndMajor(user.getSchool(), user.getMajor())) {
+            if (Boolean.FALSE.equals(commonService.isMatchSchoolAndMajor(user.getSchool(), user.getMajor()))) {
                 resultMessage = ResultMessage.FAILED;
             } else {
                 try {

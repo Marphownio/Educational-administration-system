@@ -6,17 +6,11 @@ import com.example.lab.pojo.ResultMessage;
 import com.example.lab.repository.CourseRepository;
 import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-
 
 import static com.example.lab.LabApplication.admin;
 // 课程的增删改查服务
@@ -27,16 +21,7 @@ public class CourseServiceImpl implements CourseService {
     private CourseRepository courseRepository;
 
     @Resource
-    private MajorService majorService;
-
-    @Resource
-    private SchoolService schoolService;
-
-    @Resource
     private CommonService commonService;
-
-    @Resource
-    private UserService userService;
 
     @Resource
     private CourseCategoryService courseCategoryService;
@@ -44,9 +29,8 @@ public class CourseServiceImpl implements CourseService {
     @Resource
     private ClassArrangementService classArrangementService;
 
-    @Override
-    public ResultMessage addCourse(Course course) {
-        ResultMessage resultMessage;
+    private ResultMessage checkBeforeAddCourse(Course course) {
+        ResultMessage resultMessage = ResultMessage.SUCCESS;
         if (findCourseByCourseId(course.getCourseId()) != null) {
             resultMessage = ResultMessage.EXIST;
         } else if (course.getTeacher() == null || !commonService.isMatchSchoolAndMajor(course.getCourseCategory().getSchool(), course.getCourseCategory().getMajor())) {
@@ -57,27 +41,25 @@ public class CourseServiceImpl implements CourseService {
                     return ResultMessage.FAILED;
                 }
             }
-            try {
-                if (courseCategoryService.findCourseCategoryByCourseCategoryId(course.getCourseCategory().getCourseCategoryId()) == null) {
-                   if (courseCategoryService.addCourseCategory(course.getCourseCategory()) == ResultMessage.SUCCESS) {
-                       for (ClassArrangement classArrangement : course.getClassArrangements()) {
-                           classArrangementService.addClassArrangement(classArrangement);
-                       }
-                       courseRepository.save(course);
-                       resultMessage = ResultMessage.SUCCESS;
+        }
+        return resultMessage;
+    }
 
-                   } else {
-                       resultMessage = ResultMessage.FAILED;
-                   }
-                } else {
+    @Override
+    public ResultMessage addCourse(Course course) {
+        ResultMessage resultMessage = checkBeforeAddCourse(course);
+        if (resultMessage == ResultMessage.SUCCESS) {
+            try {
+                ResultMessage resultMessage1 = courseCategoryService.addCourseCategory(course.getCourseCategory());
+                if (resultMessage1 == ResultMessage.SUCCESS || resultMessage1 == ResultMessage.EXIST) {
                     for (ClassArrangement classArrangement : course.getClassArrangements()) {
                         classArrangementService.addClassArrangement(classArrangement);
                     }
                     courseRepository.save(course);
-                    resultMessage = ResultMessage.SUCCESS;
+                } else {
+                    resultMessage = ResultMessage.FAILED;
                 }
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 resultMessage = ResultMessage.FAILED;
             }
         }
@@ -100,50 +82,49 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
-    @Override
-    public ResultMessage updateCourse(Course course) {
-        ResultMessage resultMessage;
+    private ResultMessage checkBeforeUpdateCourse(Course course) {
+        ResultMessage resultMessage = ResultMessage.SUCCESS;
         if (findCourseByCourseId(course.getCourseId()) == null) {
             resultMessage = ResultMessage.NOTFOUND;
         } else if (course.getTeacher() == null || !commonService.isMatchSchoolAndMajor(course.getCourseCategory().getSchool(), course.getCourseCategory().getMajor())) {
             resultMessage = ResultMessage.FAILED;
-        }
-        else {
-            // 如果需要修改课程容量
-            // 修改课程容量只有在学期开始与一轮选课期间是不需要考虑课程容量与已选人数的 其他阶段要修改容量都需要考虑
+        } else
+        // 如果需要修改课程容量
+        // 修改课程容量只有在学期开始与一轮选课期间是不需要考虑课程容量与已选人数的 其他阶段要修改容量都需要考虑
             if (course.getCapacity().equals(findCourseByCourseId(course.getCourseId()).getCapacity())
-                && (admin.getCourseSelectionStatus() != CourseSelectionStatus.START_FIRST
-                && admin.getCourseSelectionStatus() != CourseSelectionStatus.START_TERM)
-                && course.getCapacity() < course.getStudents().size())
-            {
-                    return ResultMessage.FAILED;
-            }
-            for (ClassArrangement classArrangement : course.getClassArrangements()){
-                if (course.getCapacity() > classArrangement.getClassroom().getCapacity()){
-                    return ResultMessage.FAILED;
+                    && (admin.getCourseSelectionStatus() != CourseSelectionStatus.START_FIRST
+                    && admin.getCourseSelectionStatus() != CourseSelectionStatus.START_TERM)
+                    && course.getCapacity() < course.getStudents().size()) {
+                resultMessage = ResultMessage.FAILED;
+            } else {
+                for (ClassArrangement classArrangement : course.getClassArrangements()) {
+                    if (course.getCapacity() > classArrangement.getClassroom().getCapacity()) {
+                        resultMessage = ResultMessage.FAILED;
+                        break;
+                    }
                 }
             }
-            try {
-                if (courseCategoryService.findCourseCategoryByCourseCategoryId(course.getCourseCategory().getCourseCategoryId()) == null) {
-                    if (courseCategoryService.addCourseCategory(course.getCourseCategory()) == ResultMessage.SUCCESS) {
-                        for (ClassArrangement classArrangement : course.getClassArrangements()) {
-                            classArrangementService.updateClassArrangement(classArrangement);
-                        }
-                        courseRepository.save(course);
-                        resultMessage = ResultMessage.SUCCESS;
+        return resultMessage;
+    }
 
-                    } else {
-                        resultMessage = ResultMessage.FAILED;
-                    }
-                } else {
+    @Override
+    public ResultMessage updateCourse(Course course) {
+        ResultMessage resultMessage = checkBeforeUpdateCourse(course);
+        if (resultMessage == ResultMessage.SUCCESS) {
+            try {
+                ResultMessage resultMessage1 = courseCategoryService.updateCourseCategory(course.getCourseCategory());
+                if (resultMessage1 == ResultMessage.NOTFOUND) {
+                    resultMessage1 = courseCategoryService.addCourseCategory(course.getCourseCategory());
+                }
+                if (resultMessage1 == ResultMessage.SUCCESS) {
                     for (ClassArrangement classArrangement : course.getClassArrangements()) {
                         classArrangementService.updateClassArrangement(classArrangement);
                     }
                     courseRepository.save(course);
-                    resultMessage = ResultMessage.SUCCESS;
+                } else {
+                    resultMessage = ResultMessage.FAILED;
                 }
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 resultMessage = ResultMessage.FAILED;
             }
         }

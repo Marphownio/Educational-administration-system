@@ -17,14 +17,14 @@ public class AdminController {
     private AdminService adminService;
 
     // 管理员处理教师对课程的请求
-    @DeleteMapping(value = "/teacher/application")
+    @DeleteMapping(value = "/application/teacher")
     public ResultMessage processCourseApplication(@RequestParam(value = "applicationId") Integer applicationId,
                                                   @RequestParam(value = "operation") Boolean operation) {
         return adminService.processTeacherApplication(applicationId, operation);
     }
 
     // 管理员处理学生对课程的请求
-    @DeleteMapping(value = "/student/application")
+    @DeleteMapping(value = "/application/student")
     public ResultMessage processStudentApplication(@RequestParam(value = "applicationId") Integer applicationId,
                                                    @RequestParam(value = "operation") Boolean operation){
         return adminService.processStudentApplication(applicationId,operation);

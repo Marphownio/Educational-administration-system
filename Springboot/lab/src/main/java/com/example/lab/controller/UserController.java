@@ -1,5 +1,6 @@
 package com.example.lab.controller;
 
+import com.example.lab.pojo.Admin;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.entity.User;
 import com.example.lab.service.UserService;
@@ -12,6 +13,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import static com.example.lab.LabApplication.admin;
@@ -24,10 +26,28 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    // 登录
+    @PostMapping(value = "/login")
+    public ResultMessage login(@RequestParam(value = "loginid") String userId, @RequestParam(value = "loginpw") String password , HttpSession session) {
+        return userService.login(userId, password, session);
+    }
+
+    // 注销
+    @RequestMapping(value = "/logout")
+    public ResultMessage logout(HttpSession session) {
+        return userService.logout(session);
+    }
+
+    // 重置密码
+    @RequestMapping(value ="/resetPassword")
+    public ResultMessage resetPassword(@RequestParam("newpw1") String newPassword, HttpSession session) {
+        return userService.resetPassword(newPassword, session);
+    }
+
     // 获取当前用户信息
     @GetMapping(value = "/info")
     public User getUserInfo(HttpSession session) {
-        if ((session.getAttribute("user")).getClass().getSimpleName().equals("Admin")) {
+        if ((session.getAttribute("user")) instanceof Admin) {
             User user = new User();
             user.setUserId(admin.getUserId());
             user.setRole(admin.getRole());
@@ -43,7 +63,7 @@ public class UserController {
 
     // 批量导入用户
     @PostMapping("/batchimport")
-    public HashMap<String,String> batchImportUser(@RequestParam(value = "file",required = false) MultipartFile file) {
+    public Map<String,String> batchImportUser(@RequestParam(value = "file",required = false) MultipartFile file) {
         //判断文件是否为空
         HashMap<String,String> result = new HashMap<>();
         if(file == null) {

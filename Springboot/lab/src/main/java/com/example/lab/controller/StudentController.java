@@ -4,7 +4,6 @@ import com.example.lab.pojo.CourseSelectionStatus;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.UserRole;
 import com.example.lab.pojo.entity.*;
-import com.example.lab.service.CourseCategoryService;
 import com.example.lab.service.CourseService;
 import com.example.lab.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -44,7 +43,7 @@ public class StudentController {
     public ResultMessage selectCourse(@RequestParam("courseId") Integer courseId, HttpSession session) {
         if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND) {
             try {
-                Student currentUser = userService.findStudentByStudentId(((Student) session.getAttribute("user")).getUserId());
+                Student currentUser = userService.findStudentByStudentId(((User) session.getAttribute("user")).getUserId());
                 Course selectCourse = courseService.findCourseByCourseId(courseId);
 
                 ResponseEntity<Set<Course>> courses = findAllCoursesStudying(currentUser.getUserId());

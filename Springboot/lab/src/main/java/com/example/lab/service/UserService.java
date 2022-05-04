@@ -6,10 +6,19 @@ import com.example.lab.pojo.entity.Teacher;
 import com.example.lab.pojo.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 
 public interface UserService {
+
+    // 登录
+    ResultMessage login(String userId, String password, HttpSession session);
+
+    // 注销
+    ResultMessage logout(HttpSession session);
+
+    ResultMessage resetPassword(String newPassword, HttpSession session);
 
     // 增加用户
     ResultMessage addUser(User user);
