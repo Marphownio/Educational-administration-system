@@ -63,32 +63,28 @@ public class UserController {
 
     // 批量导入用户
     @PostMapping("/batchimport")
-    public Map<String,String> batchImportUser(@RequestParam(value = "file",required = false) MultipartFile file) {
+    public ResponseEntity<Map<String,String>> batchImportUser(@RequestParam(value = "file",required = false) MultipartFile file) {
         //判断文件是否为空
         HashMap<String,String> result = new HashMap<>();
         if(file == null) {
-            result.put("操作","失败！");
-            return result;
+            return new ResponseEntity<>(result,HttpStatus.NO_CONTENT);
         }
         //获取文件名
         String name = file.getOriginalFilename();
         //进一步判断文件是否为空（即判断其大小是否为0或其名称是否为null）
         long size=file.getSize();
         if (name == null || ("").equals(name) && size == 0) {
-            result.put("操作","失败！");
-            return result;
+            return new ResponseEntity<>(result,HttpStatus.NO_CONTENT);
         }
         //批量导入。参数：文件名，文件。
         try {
-            result.put("操作","成功！");
             result.putAll(userService.batchImportUser(file));
-            return result;
-        } catch (NumberFormatException e){
-            result.put("操作","失败！");
-            return result;
+            return new ResponseEntity<>(result,HttpStatus.OK);
+        }catch (NumberFormatException e){
+            return new ResponseEntity<>(result,HttpStatus.NOT_IMPLEMENTED);
         }
-
     }
+
 
     @DeleteMapping(value = "/delete/{userId}")
     public ResultMessage deleteUser(@PathVariable("userId") Integer userId) {

@@ -75,7 +75,7 @@ public class CourseController {
     }
 
 //    @PostMapping("/batchimport")
-//    public HashMap<String,String> batchImportCourse(@RequestParam(value = "file",required = false) MultipartFile file) {
+//    public ResponseEntity<HashMap<String,String>> batchImportCourse(@RequestParam(value = "file",required = false) MultipartFile file) {
 //        //判断文件是否为空
 //        if(file == null) return ResultMessage.NOTFOUND;
 //        //获取文件名
