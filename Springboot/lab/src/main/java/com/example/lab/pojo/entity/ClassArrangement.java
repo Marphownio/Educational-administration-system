@@ -1,5 +1,6 @@
 package com.example.lab.pojo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 

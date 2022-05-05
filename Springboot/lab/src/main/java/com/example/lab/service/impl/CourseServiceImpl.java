@@ -8,9 +8,7 @@ import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.example.lab.LabApplication.admin;
 // 课程的增删改查服务
@@ -21,23 +19,30 @@ public class CourseServiceImpl implements CourseService {
     private CourseRepository courseRepository;
 
     @Resource
-    private CommonService commonService;
-
-    @Resource
     private CourseCategoryService courseCategoryService;
 
     @Resource
     private ClassArrangementService classArrangementService;
 
+    @Resource
+    private ClassroomService classroomService;
+
+    @Resource
+    private CommonService commonService;
+
     private ResultMessage checkBeforeAddCourse(Course course) {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
         if (findCourseByCourseId(course.getCourseId()) != null) {
             resultMessage = ResultMessage.EXIST;
-        } else if (course.getTeacher() == null || course.getCourseCategory() == null) {
+        } else if (course.getTeacher() == null || course.getCourseCategory() == null || course.getClassArrangements().isEmpty()) {
             resultMessage = ResultMessage.FAILED;
         } else {
             for (ClassArrangement classArrangement : course.getClassArrangements()) {
-                if (course.getCapacity() > classArrangement.getClassroom().getCapacity()) {
+                Classroom classroom = classroomService.findClassroomById(classArrangement.getClassroom().getClassroomId());
+                if (course.getCapacity() > classroom.getCapacity()) {
+                    return ResultMessage.FAILED;
+                }
+                if (Boolean.FALSE.equals(commonService.isMatchBuildingAndClassroom(classArrangement.getBuilding(),classArrangement.getClassroom()))) {
                     return ResultMessage.FAILED;
                 }
             }
@@ -53,18 +58,20 @@ public class CourseServiceImpl implements CourseService {
         }
         ResultMessage resultMessage1 = courseCategoryService.addCourseCategory(course.getCourseCategory());
         if (resultMessage1 == ResultMessage.SUCCESS || resultMessage1 == ResultMessage.EXIST) {
+            // 添加课程安排，由于id改变，需要重新获取
+            Set<ClassArrangement> newClassArrangement = new HashSet<>();
             for (ClassArrangement classArrangement : course.getClassArrangements()) {
-                classArrangementService.addClassArrangement(classArrangement);
+                newClassArrangement.add(classArrangementService.addClassArrangement(classArrangement));
             }
+            course.setClassArrangements(newClassArrangement);
             try {
-
                 courseRepository.save(course);
             }
             catch (Exception e) {
-                resultMessage = ResultMessage.FAILED_LEFT;
+                resultMessage = ResultMessage.FAILED;
             }
         } else {
-            resultMessage = ResultMessage.NOT_OPEN;
+            resultMessage = ResultMessage.FAILED;
         }
         return resultMessage;
     }

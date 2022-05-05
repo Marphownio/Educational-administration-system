@@ -42,14 +42,12 @@ public class Course {
 
     // 面向开放的专业
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JsonIgnore
     @JoinTable(name = "Major_Course",
             joinColumns = {@JoinColumn(name = "course_id", referencedColumnName = "course_id")},
             inverseJoinColumns = {@JoinColumn(name = "major_id", referencedColumnName ="major_id")})
     private Set<Major> openToMajors = new HashSet<>();
 
     // 课程安排，一个课程一星期可能包含多次课，一节课对应一个安排
-    @JsonIgnore
     @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id")
     private Set<ClassArrangement> classArrangements = new HashSet<>();

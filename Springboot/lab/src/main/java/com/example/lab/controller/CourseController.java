@@ -1,6 +1,7 @@
 package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.entity.ClassArrangement;
 import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.Student;
 import com.example.lab.service.CourseService;
@@ -21,13 +22,12 @@ public class CourseController {
     private CourseService courseService;
 
     @PostMapping(value = "/add")
-    public void addCourse(@RequestBody Course course){
-        System.out.println(course.getOpenToMajors().size());
-
+    public ResultMessage addCourse(@RequestBody Course course) {
+        return courseService.addCourse(course);
     }
 
     @DeleteMapping(value = "/delete/{courseId}")
-    public ResultMessage deleteCourse(@PathVariable("courseId") Integer courseId){
+    public ResultMessage deleteCourse(@PathVariable("courseId") Integer courseId) {
         return courseService.deleteCourse(courseId);
     }
 

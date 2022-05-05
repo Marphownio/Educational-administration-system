@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface ClassArrangementService {
 
-    ResultMessage addClassArrangement(ClassArrangement classArrangement);
+    ClassArrangement addClassArrangement(ClassArrangement classArrangement);
 
     ResultMessage deleteClassArrangement(Integer classArrangementId);
 
-    ResultMessage updateClassArrangement(ClassArrangement classArrangement);
+    ClassArrangement updateClassArrangement(ClassArrangement classArrangement);
 
     List<ClassArrangement> findAllClassArrangement();
 

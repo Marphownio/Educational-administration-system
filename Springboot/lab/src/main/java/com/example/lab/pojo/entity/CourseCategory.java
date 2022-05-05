@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -40,5 +41,5 @@ public class CourseCategory {
     // 该类课程下的所有课程
     @JsonIgnore
     @OneToMany(mappedBy = "courseCategory", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    private Set<Course> courses;
+    private Set<Course> courses = new HashSet<>();
 }

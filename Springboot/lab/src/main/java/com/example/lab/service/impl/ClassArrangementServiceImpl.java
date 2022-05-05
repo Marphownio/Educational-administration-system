@@ -16,23 +16,9 @@ public class ClassArrangementServiceImpl implements ClassArrangementService {
     @Resource
     private ClassArrangementRepository classArrangementRepository;
 
-    @Resource
-    private CommonService commonService;
-
     @Override
-    public ResultMessage addClassArrangement(ClassArrangement classArrangement) {
-        if (Boolean.FALSE.equals(commonService.isMatchBuildingAndClassroom(classArrangement.getBuilding(),classArrangement.getClassroom()))){
-            return ResultMessage.FAILED;
-        }
-        else {
-            try {
-                classArrangementRepository.save(classArrangement);
-                return ResultMessage.SUCCESS;
-            }
-            catch (Exception e){
-                return ResultMessage.FAILED;
-            }
-        }
+    public ClassArrangement addClassArrangement(ClassArrangement classArrangement) {
+        return classArrangementRepository.save(classArrangement);
     }
 
     @Override
@@ -52,7 +38,7 @@ public class ClassArrangementServiceImpl implements ClassArrangementService {
     }
 
     @Override
-    public ResultMessage updateClassArrangement(ClassArrangement classArrangement) {
+    public ClassArrangement updateClassArrangement(ClassArrangement classArrangement) {
         return addClassArrangement(classArrangement);
     }
 
