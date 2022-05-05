@@ -149,6 +149,11 @@ public class CourseServiceImpl implements CourseService {
             newClassArrangement.add(classArrangementService.addClassArrangement(classArrangement));
         }
         course.setClassArrangements(newClassArrangement);
+        Set<Major> newMajors = new HashSet<>();
+        for (Major major : course.getOpenToMajors()) {
+            newMajors.add(majorService.findMajorByMajorId(major.getMajorId()));
+        }
+        course.setOpenToMajors(newMajors);
         try {
             courseRepository.save(course);
         }
