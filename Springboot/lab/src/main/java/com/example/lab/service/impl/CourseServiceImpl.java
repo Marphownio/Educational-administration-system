@@ -28,6 +28,9 @@ public class CourseServiceImpl implements CourseService {
     private ClassroomService classroomService;
 
     @Resource
+    private MajorService majorService;
+
+    @Resource
     private CommonService commonService;
 
     private ResultMessage checkBeforeAddCourse(Course course) {
@@ -52,6 +55,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public ResultMessage addCourse(Course course) {
+        course.setCourseId(0);
         ResultMessage resultMessage = checkBeforeAddCourse(course);
         if (resultMessage != ResultMessage.SUCCESS) {
             return resultMessage;
@@ -65,10 +69,16 @@ public class CourseServiceImpl implements CourseService {
                 newClassArrangement.add(classArrangementService.addClassArrangement(classArrangement));
             }
             course.setClassArrangements(newClassArrangement);
+            Set<Major> majors = new HashSet<>();
+            for (Major major : course.getOpenToMajors()) {
+                majors.add(majorService.findMajorByMajorId(major.getMajorId()));
+            }
+            course.setOpenToMajors(majors);
             try {
                 courseRepository.save(course);
             }
             catch (Exception e) {
+                System.out.println(e.getMessage());
                 resultMessage = ResultMessage.FAILED;
             }
         } else {
@@ -109,9 +119,12 @@ public class CourseServiceImpl implements CourseService {
                 resultMessage = ResultMessage.FAILED;
             } else {
                 for (ClassArrangement classArrangement : course.getClassArrangements()) {
-                    if (course.getCapacity() > classArrangement.getClassroom().getCapacity()) {
-                        resultMessage = ResultMessage.FAILED;
-                        break;
+                    Classroom classroom = classroomService.findClassroomById(classArrangement.getClassroom().getClassroomId());
+                    if (course.getCapacity() > classroom.getCapacity()) {
+                        return ResultMessage.FAILED;
+                    }
+                    if (Boolean.FALSE.equals(commonService.isMatchBuildingAndClassroom(classArrangement.getBuilding(),classArrangement.getClassroom()))) {
+                        return ResultMessage.FAILED;
                     }
                 }
             }
@@ -124,21 +137,22 @@ public class CourseServiceImpl implements CourseService {
         if (resultMessage != ResultMessage.SUCCESS) {
             return resultMessage;
         }
-        ResultMessage resultMessage1 = courseCategoryService.updateCourseCategory(course.getCourseCategory());
-        if (resultMessage1 == ResultMessage.NOTFOUND) {
-            resultMessage1 = courseCategoryService.addCourseCategory(course.getCourseCategory());
+        // 清除以前课程安排
+        Course getCourse = findCourseByCourseId(course.getCourseId());
+        for (ClassArrangement classArrangement : getCourse.getClassArrangements()) {
+            classArrangementService.deleteClassArrangement(classArrangement.getClassArrangementId());
         }
-        if (resultMessage1 == ResultMessage.SUCCESS) {
-            for (ClassArrangement classArrangement : course.getClassArrangements()) {
-                classArrangementService.updateClassArrangement(classArrangement);
-            }
-            try {
-                courseRepository.save(course);
-            }
-            catch (Exception e) {
-                resultMessage = ResultMessage.FAILED;
-            }
-        } else {
+        // 新建课程安排
+        Set<ClassArrangement> newClassArrangement = new HashSet<>();
+        for (ClassArrangement classArrangement : course.getClassArrangements()) {
+            classArrangement.setClassArrangementId(0);
+            newClassArrangement.add(classArrangementService.addClassArrangement(classArrangement));
+        }
+        course.setClassArrangements(newClassArrangement);
+        try {
+            courseRepository.save(course);
+        }
+        catch (Exception e) {
             resultMessage = ResultMessage.FAILED;
         }
         return resultMessage;

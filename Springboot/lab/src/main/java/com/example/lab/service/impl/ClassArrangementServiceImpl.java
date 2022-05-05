@@ -4,7 +4,6 @@ import com.example.lab.pojo.ResultMessage;
 import com.example.lab.pojo.entity.ClassArrangement;
 import com.example.lab.repository.ClassArrangementRepository;
 import com.example.lab.service.ClassArrangementService;
-import com.example.lab.service.CommonService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,17 +22,12 @@ public class ClassArrangementServiceImpl implements ClassArrangementService {
 
     @Override
     public ResultMessage deleteClassArrangement(Integer classArrangementId) {
-        if (findClassArrangementById(classArrangementId) == null){
-            return ResultMessage.NOTFOUND;
+        try {
+            classArrangementRepository.deleteById(classArrangementId);
+            return ResultMessage.SUCCESS;
         }
-        else {
-            try {
-                classArrangementRepository.deleteById(classArrangementId);
-                return ResultMessage.SUCCESS;
-            }
-            catch (Exception e){
-                return ResultMessage.FAILED;
-            }
+        catch (Exception e){
+            return ResultMessage.FAILED;
         }
     }
 
