@@ -31,6 +31,6 @@ public class ClassArrangement {
 
     @OneToMany
     @JoinColumn(name = "class_arrangement_id")
-    private Set<ClassTime> classTime = new HashSet<>();
+    private Set<ClassTime> classTimes = new HashSet<>();
 
 }

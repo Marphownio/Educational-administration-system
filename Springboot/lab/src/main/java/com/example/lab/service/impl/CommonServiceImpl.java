@@ -33,7 +33,7 @@ public class CommonServiceImpl implements CommonService {
         } else {
             School getSchool = schoolService.findSchoolBySchoolId(school.getSchoolId());
             Major getMajor = majorService.findMajorByMajorId(major.getMajorId());
-            return getSchool != null && getMajor != null && Objects.equals(major.getSchool().getSchoolId(), school.getSchoolId());
+            return getSchool != null && getMajor != null && Objects.equals(getMajor.getSchool().getSchoolId(), getSchool.getSchoolId());
         }
     }
 
@@ -45,7 +45,7 @@ public class CommonServiceImpl implements CommonService {
         else {
             Building getBuilding = buildingService.findBuildingById(building.getBuildingId());
             Classroom getClassroom = classroomService.findClassroomById(classroom.getClassroomId());
-            return getBuilding != null && getClassroom != null && Objects.equals(classroom.getBuilding().getBuildingId(),building.getBuildingId());
+            return getBuilding != null && getClassroom != null && Objects.equals(getClassroom.getBuilding().getBuildingId(),getBuilding.getBuildingId());
         }
     }
 }
