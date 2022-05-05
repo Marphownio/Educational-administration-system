@@ -21,8 +21,9 @@ public class CourseController {
     private CourseService courseService;
 
     @PostMapping(value = "/add")
-    public ResultMessage addCourse(@RequestBody Course course){
-        return courseService.addCourse(course);
+    public void addCourse(@RequestBody Course course){
+        System.out.println(course.getOpenToMajors().size());
+
     }
 
     @DeleteMapping(value = "/delete/{courseId}")

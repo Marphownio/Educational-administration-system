@@ -57,13 +57,14 @@ public class CourseServiceImpl implements CourseService {
                 classArrangementService.addClassArrangement(classArrangement);
             }
             try {
+
                 courseRepository.save(course);
             }
             catch (Exception e) {
-                resultMessage = ResultMessage.FAILED;
+                resultMessage = ResultMessage.FAILED_LEFT;
             }
         } else {
-            resultMessage = ResultMessage.FAILED;
+            resultMessage = ResultMessage.NOT_OPEN;
         }
         return resultMessage;
     }

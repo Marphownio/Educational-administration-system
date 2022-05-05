@@ -26,40 +26,36 @@ export default {
                 }
 
         };
-        let idcheck=(rule,value,callback)=>{
+        let idcheck=(rule,value,callback)=>
+        {
             if(this.dialogVisible1===true)
             {
-                if(value[0]!=='2'||value[1]!=='2')
-            {
-                callback(new Error('工号/学号前两位需为22'));
-                return false;
-            }
-            else if(isNaN(value))
-            {
-                callback(new Error('输入只能为数字'));
-                return false;
-            }
-            else if(this.ruleForm.role==='TEACHER')
-            {
-                if(value.length!==8)
+                if(isNaN(value))
                 {
-                    callback(new Error('请输入8位工号'))
+                    callback(new Error('输入只能为数字'));
                     return false;
                 }
-                else
-                    return true;
-            }
-            else if(this.ruleForm.role==='STUDENT')
-            {
-                if(value.length!==6)
+                else if(this.ruleForm.role==='TEACHER')
                 {
-                    callback(new Error('请输入6位学号'))
-                    return false;
+                    if(value.length!==8)
+                    {
+                        callback(new Error('请输入8位工号'))
+                        return false;
+                    }
+                    else
+                        return true;
                 }
-                else
-                    return true;
+                else if(this.ruleForm.role==='STUDENT')
+                {
+                    if(value.length!==6)
+                    {
+                         callback(new Error('请输入6位学号'))
+                         return false;
+                   }
+                   else
+                        return true;
+                }
             }
-        }
             else return true;
         };
         return{
