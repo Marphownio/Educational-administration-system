@@ -61,6 +61,7 @@ public class CourseServiceImpl implements CourseService {
             // 添加课程安排，由于id改变，需要重新获取
             Set<ClassArrangement> newClassArrangement = new HashSet<>();
             for (ClassArrangement classArrangement : course.getClassArrangements()) {
+                classArrangement.setClassArrangementId(0);
                 newClassArrangement.add(classArrangementService.addClassArrangement(classArrangement));
             }
             course.setClassArrangements(newClassArrangement);
