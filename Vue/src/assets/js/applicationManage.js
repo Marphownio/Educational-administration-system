@@ -28,8 +28,16 @@ export default {
         }
     },
     mounted() {
+        this.getapplication();
     },
     created(){
-
+    },
+    methods:{
+        getapplication(){
+            request.get("/student/application/list").then(res=>{
+                this.applicationData=res;
+            })
+            console.log(this.applicationData);
+        },
     }
 }

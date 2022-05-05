@@ -22,7 +22,7 @@ export default {
     methods:{
         logout(){
             const that=this;
-            request.post("/logout")
+            request.post("/user/logout")
                 .then(function(res){
                     if(res==="SUCCESS"){
                         ALERTMSG.show(that,true,"成功退出！","success");

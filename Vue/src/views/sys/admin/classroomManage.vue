@@ -25,6 +25,7 @@
             <el-table-column prop="classroomId" label="教室编号" sortable />
             <el-table-column prop="buildingName" label="所属教学楼" sortable />
                 <el-table-column prop="buildingId" label="教学楼编号" sortable />
+                <el-table-column prop="capacity" label="教室容量" sortable />
             <el-table-column  align="right" width="420px">
                 <template #header>
                     <el-input v-model="search" @change="getForm" size="small" placeholder="输入教学楼名" />
@@ -92,6 +93,9 @@
                     <el-option v-for="item in buildingData" :key="item.buildingName" :label="item.buildingName" :value="item.buildingId" />
                 </el-select>
             </el-form-item>
+            <el-form-item label="教室容量" prop="capacity">
+                <el-input v-model="ruleForm2.capacity"></el-input>
+            </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitaddclassroom" >添加</el-button>
             </el-form-item>
@@ -112,6 +116,9 @@
                 <el-select v-model="ruleForm2.buildingId" placeholder="所属教学楼" >
                     <el-option v-for="item in buildingData" :key="item.buildingName" :label="item.buildingName" :value="item.buildingId" />
                 </el-select>
+            </el-form-item>
+            <el-form-item label="教室容量" prop="capacity">
+                <el-input v-model="ruleForm2.capacity"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitupdateclassroom" >修改</el-button>

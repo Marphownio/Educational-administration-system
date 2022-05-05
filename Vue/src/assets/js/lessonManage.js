@@ -1,6 +1,7 @@
 import Nav from "@/views/inc/Nav.vue";
 import request from "@/utils/request";
 import {reactive} from "vue";
+import {set} from "core-js/internals/task";
 
 
 export default {
@@ -24,6 +25,7 @@ export default {
         };
         return{
             addcourse:false,
+            checked: false,
             updatecourse:false,
             checkcourse:false,
             schooldata:[],
@@ -65,16 +67,39 @@ export default {
                 arrangement: [{
                     classArrangementId: '',
                     buildingId: '',
+                    building:[],
+                    classroom:[],
                     classroomId:'',
                     classTimeId:'',
-                    dayofweek:''
-                }]
+                    classTime:[],
+                    dayOfWeek:'',
+                }],
+                openToMajors:[{
+                 majorId: ''
+                }],
+                 courseCategory:''
             },
             ruleForm2:{
 
             },
+            rule:({
+                arrangement:[
+                    {
+                        required: true,
+                        message: '课程安排不能为空',
+                        trigger: 'change'
+                    },
+                ],
+                openToMajors:[
+                    {
+                        required: true,
+                        message: '请选择选课开放专业',
+                        trigger: 'change'
+                    },
+                ]
+            }),
             editRules1 :({
-                courseId: [
+                courseNumber: [
                     {
                         required: true,
                         message: '请输入课程代码',
@@ -93,21 +118,21 @@ export default {
                     {
                         required: true,
                         message: '请选择开课院系',
-                        trigger: 'blur',
+                        trigger: 'change',
                     },
                 ],
                 majorId: [
                     {
                         required: true,
                         message: '请选择所属专业',
-                        trigger: 'blur',
+                        trigger: 'change',
                     },
                 ],
                 teacherId:[
                     {
                         required: true,
                         message: '请选择任课教师',
-                        trigger: 'blur',
+                        trigger: 'change',
                     },
                 ],
                 classHour:[
@@ -126,20 +151,6 @@ export default {
                     },
                     {validator: numbercheck,trigger: 'blur'}
                 ],
-                classroomId:[
-                    {
-                        required: true,
-                        message: '请输入上课教室',
-                        trigger: 'blur',
-                    },
-                ],
-                buildingId:[
-                    {
-                        required: true,
-                        message: '请输入教学楼',
-                        trigger: 'blur',
-                    },
-                ],
                 capacity:[
                     {
                         required: true,
@@ -152,20 +163,38 @@ export default {
             tableData:[
 
             ],
+            academicData:[
+
+            ],
             applicationData:[
                 {
                 },
             ],
+            courseCategoryData:[
+                {
+                    courseName:'（无）',
+                    credit:'',
+                    schoolId:'',
+                    majorId: ''
+                }
+            ],
             timeData:[
+
+            ],
+            majorListData:[
 
             ]
         }
     },
+
     mounted() {
         this.getSchool();
         this.getTeacher();
         this.getBuilding();
         this.getTime();
+        this.getacademicterm();
+        this.getcourseCategory();
+        this.getMajorList();
     },
     created(){
         this.getCourseForm();
@@ -175,8 +204,57 @@ export default {
         refresh(){
             this.ruleForm1= {};
         },
+        fillclassArrangementId(){
+            for(let i=0;i<Object.keys(this.ruleForm1.arrangement).length;i++)
+            {
+                let classtime=[];
+                this.ruleForm1.arrangement[i].building=JSON.parse(this.ruleForm1.arrangement[i].buildingId);
+                this.ruleForm1.arrangement[i].classroom=JSON.parse(this.ruleForm1.arrangement[i].classroomId);
+                this.ruleForm1.arrangement[i].classArrangementId=i;
+                classtime.push({classTimeId:1});
+                this.ruleForm1.arrangement[i].classTime=classtime;
+            }
+        },
+        selectAll() {
+            this.ruleForm1.openToMajors = [];
+            if (this.checked) {
+                this.majorListData.forEach((item) => { this.ruleForm1.openToMajors.push({majorId:item.majorId})});
+            } else {
+                this.ruleForm1.openToMajors = [];
+            }
+            this.$emit('update:updateMultipleSelect',this.ruleForm1.openToMajors);
+        },
+        changeSelect(val) {
+            if (val.length === this.majorListData.length) {
+                this.checked = true;
+            } else {
+                this.checked = false;
+            }
+            this.$emit('update:updateMultipleSelect',this.ruleForm1.openToMajors);
+        },
+        getMajorList(){
+            request.get("/major/list").then(res=>{
+                this.majorListData=res;
+            })
+        },
+        fillData(){
+          this.ruleForm1.courseName=this.ruleForm1.courseCategory.courseName;
+          this.ruleForm1.schoolId=this.ruleForm1.courseCategory.school.schoolId;
+          this.ruleForm1.majorId=this.ruleForm1.courseCategory.major.majorId;
+
+        },
+        getcourseCategory(){
+            request.get("/courseCategory/list").then(res=>{
+                this.courseCategoryData=res;
+            })
+        },
+        getacademicterm(){
+            request.get("/admin/academicYearAndTerm").then(res=>{
+                this.academicData=res;
+            })
+        },
         getapplicationData(){
-            request.get("/application/list").then(res=>{
+            request.get("/teacher/application/list").then(res=>{
                 this.applicationData=res;
                 for(let i=0;i<Object.keys(this.applicationData).length;i++)
                 {
@@ -234,7 +312,7 @@ export default {
             })
         },
         getTeacher:function(){
-            request.get("/user/teacher/list").then(res=>{
+            request.get("/teacher/list").then(res=>{
                 this.teacherdata= res;
             })
         },
@@ -299,31 +377,56 @@ export default {
         },
         addarrangement(){
             this.ruleForm1.arrangement.push({
+                classArrangementId: "",
                 buildingId: '',
                 classroomId: '',
-                classtimeId:'',
+                classTimeId:'',
                 dayofweek:''
             })
         },
+
         submitaddcourse(){
-            this.$refs.ruleForm1.validate(valid=>{
+            this.fillclassArrangementId();
+            console.log(this.ruleForm1);
+            this.$refs.ruleForm1.validate((valid,error)=>{
                 if(valid){
-                    let params = new URLSearchParams();
-                    params.append('courseId', this.ruleForm1.courseId);
-                    params.append('courseName', this.ruleForm1.courseName);
-                    params.append('school', JSON.parse(this.ruleForm1.schoolId));
-                    params.append('teacher', JSON.parse(this.ruleForm1.teacherId));
-                    params.append('major', JSON.parse(this.ruleForm1.majorId));
-                    params.append('classHour', this.ruleForm1.classHour);
-                    params.append('credit', this.ruleForm1.credit);
-                    params.append('courseTime', this.ruleForm1.courseTime);
-                    params.append('coursePlace', this.ruleForm1.coursePlace);
-                    params.append('capacity', this.ruleForm1.capacity);
-                    params.append('introduction', this.ruleForm1.introduction);
+                    let params ={};
+                    let classArrangements=[];
+                    let openToMajors=[];
+                    for(let i=0;i<Object.keys(this.ruleForm1.arrangement).length;i++)
+                    {
+                        classArrangements.push(this.ruleForm1.arrangement[i]);
+                    }
+                    for(let i=0;i<Object.keys(this.ruleForm1.openToMajors).length;i++)
+                    {
+                        openToMajors.push(this.ruleForm1.openToMajors[i]);
+                    }
+                    params.courseNumber=this.ruleForm1.courseNumber;
+                    params.courseId= this.ruleForm1.courseNumber;
+                    params.academicYear= this.academicData.toString().slice(0,9);
+                    params.term= this.academicData.toString().slice(9,10);
+                    params.courseCategory= {
+                        'courseCategoryId':1,
+                        'courseName': this.ruleForm1.courseName,
+                        'classHour': this.ruleForm1.classHour,
+                        'credit': this.ruleForm1.credit,
+                        'major': {'majorId': this.ruleForm1.majorId},
+                        'school': {'schoolId': this.ruleForm1.schoolId}
+                    }
+                    params.teacher= {'teacherId':this.ruleForm1.teacherId};
+                    params.classArrangements= classArrangements;
+                    params.openToMajors=  openToMajors;
+                    params.capacity=this.ruleForm1.capacity;
+                    if(this.ruleForm1.introduction==='')
+                        params.introduction= '该课程暂无描述信息';
+                    else
+                        params.introduction=this.ruleForm1.introduction;
                     this.$axios({
+                        headers:{'Content-Type':'application/json'},
+                        type:'application/json',
                         method: 'post',
                         url:'/api/course/add',
-                        data:params,
+                        data:JSON.stringify(params)
                     }).then(res=>{
                         if(res.data==='SUCCESS'){
                             this.$message({
@@ -354,6 +457,7 @@ export default {
                     )
                 }
                 else{
+                    console.log(error);
                     this.$nextTick(() => {
                         this.scrollToTop(this.$refs.ruleForm1.$el)
                     })

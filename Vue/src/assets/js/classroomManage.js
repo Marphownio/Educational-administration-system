@@ -15,6 +15,11 @@ export default {
                 callback(new Error('输入只能为数字'));
                 return false;
             }
+            else if(value<=0)
+            {
+                callback(new Error('输入需大于0'));
+                return false;
+            }
             else return true;
         };
         return{
@@ -64,6 +69,14 @@ export default {
                         trigger: 'blur'
                     },
                 ],
+                capacity:[
+                    {
+                        required: true,
+                        message: '请输入教室容量',
+                        trigger: 'blur'
+                    },
+                    {validator: numbercheck,trigger: 'blur'}
+                ]
             }),
             buildingData:[
 
@@ -121,12 +134,12 @@ export default {
         submitaddbuilding() {
             this.$refs.ruleForm1.validate(valid => {
                 if (valid) {
-                    let params = new URLSearchParams();
-                    params.append('buildingId', this.ruleForm1.buildingId);
-                    params.append('buildingName', this.ruleForm1.buildingName);
+                    let params ={};
+                    params.buildingId= this.ruleForm1.buildingId;
+                    params.buildingName=this.ruleForm1.buildingName;
                     this.$axios({
                         method: 'post',
-                        url: '/api/building/addBuilding',
+                        url: '/api/building/add',
                         data: params
                     }).then(res => {
                             if(res.data==='SUCCESS')
@@ -168,9 +181,9 @@ export default {
         submitupdatebuilding() {
             this.$refs.ruleForm1.validate(valid => {
                 if (valid) {
-                    let params = new URLSearchParams();
-                    params.append('buildingId', this.ruleForm1.buildingId);
-                    params.append('buildingName', this.ruleForm1.buildingName);
+                    let params = {};
+                    params.buildingId= this.ruleForm1.buildingId;
+                    params.buildingName=this.ruleForm1.buildingName;
                     this.$axios({
                         method: 'put',
                         url: '/api/building/update',
@@ -207,9 +220,10 @@ export default {
         submitaddclassroom() {
             this.$refs.ruleForm2.validate(valid => {
                 if (valid) {
-                    let params = new URLSearchParams();
-                    params.append('classroomId', this.ruleForm2.classroomId);
-                    params.append('building', JSON.parse(this.ruleForm2.buildingId));
+                    let params = {};
+                    params.classroomId= this.ruleForm2.classroomId;
+                    params.capacity=this.ruleForm2.capacity;
+                    params.building= {'buildingId':this.ruleForm2.buildingId};
                     this.$axios({
                         method: 'post',
                         url: '/api/classroom/add',
@@ -252,15 +266,15 @@ export default {
         submitupdateclassroom() {
             this.$refs.ruleForm2.validate(valid => {
                 if (valid) {
-                    let params = new URLSearchParams();
-                    params.append('classroomId', this.ruleForm2.classroomId);
-                    params.append('building', JSON.parse(this.ruleForm2.buildingId));
+                    let params = {};
+                    params.classroomId= this.ruleForm2.classroomId;
+                    params.capacity=this.ruleForm2.capacity;
+                    params.building= {'buildingId':this.ruleForm2.buildingId};
                     this.$axios({
                         method: 'put',
                         url: '/api/classroom/update',
                         data: params
                     }).then(res => {
-                            console.log(res);
                             if(res.data==='SUCCESS'){
                                 this.$message({
                                     showClose: true,
@@ -293,14 +307,23 @@ export default {
         },
         delHandle1(id){
             this.$axios.delete("/api/building/delete/"+id).then(res=> {
-                this.$message({
-                    showClose: true,
-                    message: '操作成功',
-                    type: 'success',
-                })
-                this.getBuildingForm();
-                this.getClassroomForm();
-                this.$router.go(0)
+                if(res.data==='SUCCESS'){
+                    this.$message({
+                        showClose: true,
+                        message: '操作成功',
+                        type: 'success',
+                    });
+                    this.getBuildingForm();
+                    this.$router.go(0)
+                }
+                else if(res.data==='FAILED')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '该教学楼下仍存在教室，无法删除',
+                        type: 'error',
+                    });
+                }
             })
         },
         editHandle2(obj){
@@ -308,7 +331,7 @@ export default {
             this.ruleForm2=obj;
         },
         delHandle2(id){
-            this.$axios.delete("/api/classroom/"+id).then(res=> {
+            this.$axios.delete("/api/classroom/delete/"+id).then(res=> {
                 this.$message({
                     showClose: true,
                     message: '操作成功',
