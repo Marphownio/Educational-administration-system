@@ -1,6 +1,5 @@
 package com.example.lab.service.impl;
 
-import com.example.lab.pojo.CourseSelectionStatus;
 import com.example.lab.pojo.entity.*;
 import com.example.lab.pojo.ResultMessage;
 import com.example.lab.repository.CourseRepository;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.*;
 
-import static com.example.lab.LabApplication.admin;
 // 课程的增删改查服务
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -78,7 +76,6 @@ public class CourseServiceImpl implements CourseService {
                 courseRepository.save(course);
             }
             catch (Exception e) {
-                System.out.println(e.getMessage());
                 resultMessage = ResultMessage.FAILED;
             }
         } else {
@@ -106,28 +103,18 @@ public class CourseServiceImpl implements CourseService {
     private ResultMessage checkBeforeUpdateCourse(Course course) {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
         if (findCourseByCourseId(course.getCourseId()) == null) {
-            resultMessage = ResultMessage.NOTFOUND;
-        } else if (course.getTeacher() == null || course.getCourseCategory() == null) {
-            resultMessage = ResultMessage.FAILED;
-        } else
-        // 如果需要修改课程容量
-        // 修改课程容量只有在学期开始与一轮选课期间是不需要考虑课程容量与已选人数的 其他阶段要修改容量都需要考虑
-            if (course.getCapacity().equals(findCourseByCourseId(course.getCourseId()).getCapacity())
-                    && (admin.getCourseSelectionStatus() != CourseSelectionStatus.START_FIRST
-                    && admin.getCourseSelectionStatus() != CourseSelectionStatus.START_TERM)
-                    && course.getCapacity() < course.getStudents().size()) {
+            return ResultMessage.NOTFOUND;
+        }
+        if (course.getTeacher() == null || course.getCourseCategory() == null) {
+            return ResultMessage.FAILED;
+        }
+        for (ClassArrangement classArrangement : course.getClassArrangements()) {
+            Classroom classroom = classroomService.findClassroomById(classArrangement.getClassroom().getClassroomId());
+            if (course.getCapacity() > classroom.getCapacity() || Boolean.FALSE.equals(commonService.isMatchBuildingAndClassroom(classArrangement.getBuilding(),classArrangement.getClassroom()))) {
                 resultMessage = ResultMessage.FAILED;
-            } else {
-                for (ClassArrangement classArrangement : course.getClassArrangements()) {
-                    Classroom classroom = classroomService.findClassroomById(classArrangement.getClassroom().getClassroomId());
-                    if (course.getCapacity() > classroom.getCapacity()) {
-                        return ResultMessage.FAILED;
-                    }
-                    if (Boolean.FALSE.equals(commonService.isMatchBuildingAndClassroom(classArrangement.getBuilding(),classArrangement.getClassroom()))) {
-                        return ResultMessage.FAILED;
-                    }
-                }
+                break;
             }
+        }
         return resultMessage;
     }
 

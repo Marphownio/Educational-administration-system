@@ -73,9 +73,10 @@ public class AdminServiceImpl implements AdminService {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
         if (studentApplication != null) {
             try {
-                studentApplication.getCourse().setCapacity(studentApplication.getCourse().getCapacity() + 1);
-                studentApplication.getCourse().getStudents().add(studentApplication.getStudent());
-                courseService.updateCourse(studentApplication.getCourse());
+                Course course = studentApplication.getCourse();
+                course.setCapacity(course.getCapacity() + 1);
+                course.getStudents().add(studentApplication.getStudent());
+                courseService.updateCourse(course);
             } catch (Exception e) {
                 resultMessage = ResultMessage.FAILED;
             }

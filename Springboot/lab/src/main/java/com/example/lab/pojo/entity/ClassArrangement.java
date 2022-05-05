@@ -29,7 +29,7 @@ public class ClassArrangement {
 
     private DayOfWeek dayOfWeek;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "class_arrangement_id")
     private Set<ClassTime> classTimes = new HashSet<>();
 
