@@ -158,18 +158,16 @@ public class UserServiceImpl implements UserService {
     public HashMap<String,String> batchImportUser(MultipartFile file) {
         User user = new User();
         HashMap<String,String> wrongMessage = new HashMap<>();
-        HashMap<String,String> result = new HashMap<>();
         try {
             String line;
             //存储错误用户的信息及相关错误
             BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "GBK"));
             //首行列标题
-            line=reader.readLine();
-            wrongMessage.put(line,",错误原因\n");
+            reader.readLine();
             while((line = reader.readLine())!= null){
                 String []item = line.split(",");
                 if (item.length < 10){
-                    wrongMessage.put(line,",必填项缺失\n");
+                    wrongMessage.put(line,"必填项缺失");
                 }
                 else {
                     if( item[0].length() != 0 && item[1].length() != 0 && item[2].length() != 0
@@ -181,10 +179,9 @@ public class UserServiceImpl implements UserService {
                             if(UserRole.valueOf(item[2]) == UserRole.TEACHER)
                             {
                                 number1 = item[0].matches("^[0-9]*$");
-                                // 直接一个位数正则就搞定了吧
                                 if(!number1 || item[0].length() != 8)
                                 {
-                                    wrongMessage.put(line,",工号需为8位纯数字\n");
+                                    wrongMessage.put(line,"工号需为8位纯数字");
                                     continue;
                                 }
                             }
@@ -193,14 +190,14 @@ public class UserServiceImpl implements UserService {
                                 number1 = item[0].matches("^[0-9]*$");
                                 if(!number1 || item[0].length() != 6)
                                 {
-                                    wrongMessage.put(line,",学号需为6位纯数字\n");
+                                    wrongMessage.put(line,"学号需为6位纯数字");
                                     continue;
                                 }
                             }
                         }
                         else
                         {
-                            wrongMessage.put(line,",角色输入不正确\n");
+                            wrongMessage.put(line,"角色输入不正确\n");
                             continue;
                         }
                         if(item[4].length() == 18){
@@ -208,7 +205,7 @@ public class UserServiceImpl implements UserService {
                         }
                         if(!number2)
                         {
-                            wrongMessage.put(line,",身份证号需为18位纯数字\n");
+                            wrongMessage.put(line,"身份证号需为18位纯数字");
                             continue;
                         }
                         if(item[5].length() == 11){
@@ -219,27 +216,27 @@ public class UserServiceImpl implements UserService {
                         }
                         if(!number3)
                         {
-                            wrongMessage.put(line,",手机号需为1开头的11位纯数字\n");
+                            wrongMessage.put(line,"手机号需为1开头的11位纯数字");
                             continue;
                         }
                         charcheck = item[3].matches("^[a-zA-Z\u4e00-\u9fa5]+$");
                         if(!charcheck)
                         {
-                            wrongMessage.put(line,",姓名输入只能为中英文\n");
+                            wrongMessage.put(line,"姓名输入只能为中英文");
                             continue;
                         }
                         if(item[7].equals("TRUE")||item[7].equals("FALSE"))
                             statuscheck=true;
                         if(!statuscheck)
                         {
-                            wrongMessage.put(line,",状态输入不正确\n");
+                            wrongMessage.put(line,"状态输入不正确");
                             continue;
                         }
                         if(Boolean.TRUE.equals(commonService.isMatchSchoolAndMajor(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])),majorService.findMajorByMajorId(Integer.valueOf(item[9])))))
                             match=true;
                         if(!match)
                         {
-                            wrongMessage.put(line,",学院与专业不存在或不匹配\n");
+                            wrongMessage.put(line,"学院与专业不存在或不匹配");
                             continue;
                         }
                         if(number1 && number2 && number3 && charcheck && statuscheck && match)
@@ -258,42 +255,19 @@ public class UserServiceImpl implements UserService {
                         }
                     }
                     else{
-                        wrongMessage.put(line,",必填项缺失\n");
+                        wrongMessage.put(line,"必填项缺失");
                     }
                 }
             }
             reader.close();
-            result.put("操作","成功！");
-            result.putAll(wrongMessage);
 //            可以尝试输出一下检查结果是否正确
 //            System.out.println(result);
-            return result;
+            return wrongMessage;
         }
         catch (Exception e) {
-            result.put("操作","失败！");
-            return result;
+            return wrongMessage;
         }
     }
-
-//    public void createCSV(StringBuffer sb) throws Exception {
-//        PrintWriter os =null;
-//        try {
-//            String fileName = "错误信息"+System.currentTimeMillis() + ".csv";
-//            fileName=new String(fileName.getBytes("UTF-8"),"ISO-8859-1");
-//            OutputStream outputStream = null;
-//            outputStream.write(new   byte []{( byte ) 0xEF ,( byte ) 0xBB ,( byte ) 0xBF });
-//            os = new PrintWriter(new OutputStreamWriter(outputStream,"UTF-8"));
-//            os.print(sb);
-//            os.flush();
-//        }finally{
-//            try {
-//                assert os != null;
-//                os.close();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 
     @Override
     public ResultMessage deleteUser(Integer userId) {
