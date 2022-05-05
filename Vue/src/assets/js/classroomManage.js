@@ -134,9 +134,9 @@ export default {
         submitaddbuilding() {
             this.$refs.ruleForm1.validate(valid => {
                 if (valid) {
-                    let params = new URLSearchParams();
-                    params.append('buildingId', this.ruleForm1.buildingId);
-                    params.append('buildingName', this.ruleForm1.buildingName);
+                    let params ={};
+                    params.buildingId= this.ruleForm1.buildingId;
+                    params.buildingName=this.ruleForm1.buildingName;
                     this.$axios({
                         method: 'post',
                         url: '/api/building/add',
@@ -181,9 +181,9 @@ export default {
         submitupdatebuilding() {
             this.$refs.ruleForm1.validate(valid => {
                 if (valid) {
-                    let params = new URLSearchParams();
-                    params.append('buildingId', this.ruleForm1.buildingId);
-                    params.append('buildingName', this.ruleForm1.buildingName);
+                    let params = {};
+                    params.buildingId= this.ruleForm1.buildingId;
+                    params.buildingName=this.ruleForm1.buildingName;
                     this.$axios({
                         method: 'put',
                         url: '/api/building/update',
@@ -220,10 +220,10 @@ export default {
         submitaddclassroom() {
             this.$refs.ruleForm2.validate(valid => {
                 if (valid) {
-                    let params = new URLSearchParams();
-                    params.append('classroomId', this.ruleForm2.classroomId);
-                    params.append('capacity', this.ruleForm2.capacity);
-                    params.append('building', JSON.parse(this.ruleForm2.buildingId));
+                    let params = {};
+                    params.classroomId= this.ruleForm2.classroomId;
+                    params.capacity=this.ruleForm2.capacity;
+                    params.building= {'buildingId':this.ruleForm2.buildingId};
                     this.$axios({
                         method: 'post',
                         url: '/api/classroom/add',
@@ -266,10 +266,10 @@ export default {
         submitupdateclassroom() {
             this.$refs.ruleForm2.validate(valid => {
                 if (valid) {
-                    let params = new URLSearchParams();
-                    params.append('classroomId', this.ruleForm2.classroomId);
-                    params.append('capacity', this.ruleForm2.capacity);
-                    params.append('building', JSON.parse(this.ruleForm2.buildingId));
+                    let params = {};
+                    params.classroomId= this.ruleForm2.classroomId;
+                    params.capacity=this.ruleForm2.capacity;
+                    params.building= {'buildingId':this.ruleForm2.buildingId};
                     this.$axios({
                         method: 'put',
                         url: '/api/classroom/update',

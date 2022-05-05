@@ -417,8 +417,6 @@ export default {
                     params.classArrangements= classArrangements;
                     params.openToMajors=  openToMajors;
                     params.capacity=this.ruleForm1.capacity;
-                    console.log(params);
-                    console.log(JSON.stringify(params));
                     if(this.ruleForm1.introduction==='')
                         params.introduction= '该课程暂无描述信息';
                     else

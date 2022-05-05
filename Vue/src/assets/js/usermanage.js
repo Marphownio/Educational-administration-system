@@ -205,16 +205,16 @@ export default {
             console.log(typeof  this.ruleForm.phoneNumber)
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
-                    let params = new URLSearchParams();
-                    params.append('userId', this.ruleForm.userId);
-                    params.append('role', this.ruleForm.role);
-                    params.append('school', JSON.parse(this.ruleForm.schoolId));
-                    params.append('major', JSON.parse(this.ruleForm.majorId));
-                    params.append('idNumber', this.ruleForm.idNumber);
-                    params.append('username', this.ruleForm.username);
-                    params.append('phoneNumber', this.ruleForm.phoneNumber);
-                    params.append('email', this.ruleForm.email);
-                    params.append('status', this.ruleForm.status);
+                    let params = {};
+                    params.userId= this.ruleForm.userId;
+                    params.role= this.ruleForm.role;
+                    params.school= {'schoolId':this.ruleForm.schoolId};
+                    params.major={'majorId':this.ruleForm.majorId};
+                    params.idNumber=this.ruleForm.idNumber;
+                    params.username= this.ruleForm.username;
+                    params.phoneNumber=this.ruleForm.phoneNumber;
+                    params.email=this.ruleForm.email;
+                    params.status=this.ruleForm.status;
                     this.$axios({
                         "method": 'post',
                         "url":'/api/user/add',
@@ -259,16 +259,16 @@ export default {
         "submitForm2"(){
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
-                    let params = new URLSearchParams();
-                    params.append('userId', this.ruleForm.userId);
-                    params.append('role', this.ruleForm.role);
-                    params.append('school', JSON.parse(this.ruleForm.schoolId));
-                    params.append('major', JSON.parse(this.ruleForm.majorId));
-                    params.append('idNumber', this.ruleForm.idNumber);
-                    params.append('username', this.ruleForm.username);
-                    params.append('phoneNumber', this.ruleForm.phoneNumber);
-                    params.append('email', this.ruleForm.email);
-                    params.append('status', this.ruleForm.status);
+                    let params = {};
+                    params.userId= this.ruleForm.userId;
+                    params.role= this.ruleForm.role;
+                    params.school= {'schoolId':this.ruleForm.schoolId};
+                    params.major={'majorId':this.ruleForm.majorId};
+                    params.idNumber=this.ruleForm.idNumber;
+                    params.username= this.ruleForm.username;
+                    params.phoneNumber=this.ruleForm.phoneNumber;
+                    params.email=this.ruleForm.email;
+                    params.status=this.ruleForm.status;
                     this.$axios({
                         "method": 'put',
                         "url":'/api/user/update',

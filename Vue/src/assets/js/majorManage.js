@@ -160,13 +160,13 @@ export default {
         submitaddschool() {
             this.$refs.ruleForm1.validate(valid => {
                 if (valid) {
-                    let params = new URLSearchParams();
-                    params.append('schoolId', this.ruleForm1.schoolId);
-                    params.append('schoolName', this.ruleForm1.schoolName);
+                    let params = {};
+                    params.schoolId=this.ruleForm1.schoolId;
+                    params.schoolName= this.ruleForm1.schoolName;
                     if(this.ruleForm1.introduction==='')
-                        params.append('introduction', '该学院暂无描述信息');
+                        params.introduction='该学院暂无描述信息';
                     else
-                        params.append('introduction', this.ruleForm1.introduction);
+                        params.introduction=this.ruleForm1.introduction;
                     this.$axios({
                         method: 'post',
                         url: '/api/school/add',
@@ -212,13 +212,13 @@ export default {
         submitupdateschool() {
             this.$refs.ruleForm1.validate(valid => {
                 if (valid) {
-                    let params = new URLSearchParams();
-                    params.append('schoolId', this.ruleForm1.schoolId);
-                    params.append('schoolName', this.ruleForm1.schoolName);
+                    let params = {};
+                    params.schoolId=this.ruleForm1.schoolId;
+                    params.schoolName= this.ruleForm1.schoolName;
                     if(this.ruleForm1.introduction==='')
-                        params.append('introduction', '该学院暂无描述信息');
+                        params.introduction='该学院暂无描述信息';
                     else
-                        params.append('introduction', this.ruleForm1.introduction);
+                        params.introduction=this.ruleForm1.introduction;
                     this.$axios({
                         method: 'put',
                         url: '/api/school/update',
@@ -256,14 +256,14 @@ export default {
         submitaddmajor() {
             this.$refs.ruleForm2.validate(valid => {
                 if (valid) {
-                    let params = new URLSearchParams();
-                    params.append('majorId', this.ruleForm2.majorId);
-                    params.append('majorName', this.ruleForm2.majorName);
-                    params.append('school', JSON.parse(this.ruleForm2.schoolId));
+                    let params = {};
+                    params.majorId=this.ruleForm2.majorId;
+                    params.majorName=this.ruleForm2.majorName;
+                    params.school= {'schoolId':this.ruleForm2.schoolId};
                     if(this.ruleForm2.introduction==='')
-                        params.append('introduction', '该专业暂无描述信息');
+                        params.ntroduction='该专业暂无描述信息';
                     else
-                        params.append('introduction', this.ruleForm2.introduction);
+                        params.introduction= this.ruleForm2.introduction;
                     this.$axios({
                         method: 'post',
                         url: '/api/major/add',
@@ -306,14 +306,14 @@ export default {
         submitupdatemajor() {
             this.$refs.ruleForm2.validate(valid => {
                 if (valid) {
-                    let params = new URLSearchParams();
-                    params.append('majorId', this.ruleForm2.majorId);
-                    params.append('majorName', this.ruleForm2.majorName);
-                    params.append('school', JSON.parse(this.ruleForm2.schoolId));
+                    let params = {};
+                    params.majorId=this.ruleForm2.majorId;
+                    params.majorName=this.ruleForm2.majorName;
+                    params.school= {'schoolId':this.ruleForm2.schoolId};
                     if(this.ruleForm2.introduction==='')
-                        params.append('introduction', '该专业暂无描述信息');
+                        params.ntroduction='该专业暂无描述信息';
                     else
-                        params.append('introduction', this.ruleForm2.introduction);
+                        params.introduction= this.ruleForm2.introduction;
                     this.$axios({
                         method: 'put',
                         url: '/api/major/update',
@@ -351,15 +351,24 @@ export default {
             this.ruleForm1=obj;
         },
         delHandle1(id){
-            this.$axios.delete("/api/school/"+id).then(res=> {
-                this.$message({
-                    showClose: true,
-                    message: '操作成功',
-                    type: 'success',
-                })
-                this.getSchoolForm();
-                this.getMajorForm();
-                this.$router.go(0)
+            this.$axios.delete("/api/school/delete/"+id).then(res=> {
+                if(res.data==='SUCCESS'){
+                    this.$message({
+                        showClose: true,
+                        message: '操作成功',
+                        type: 'success',
+                    });
+                    this.getSchoolForm();
+                    this.$router.go(0)
+                }
+                else if(res.data==='FAILED')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '该学院下仍存在专业，无法删除',
+                        type: 'error',
+                    });
+                }
             })
         },
         editHandle2(obj){
@@ -368,14 +377,24 @@ export default {
             this.ruleForm2=obj;
         },
         delHandle2(id){
-            this.$axios.delete("/api/major/"+id).then(res=> {
-                this.$message({
-                    showClose: true,
-                    message: '操作成功',
-                    type: 'success',
-                })
-                this.getMajorForm();
-                this.$router.go(0)
+            this.$axios.delete("/api/major/delete/"+id).then(res=> {
+                if(res.data==='SUCCESS'){
+                    this.$message({
+                        showClose: true,
+                        message: '操作成功',
+                        type: 'success',
+                    });
+                    this.getMajorForm();
+                    this.$router.go(0)
+                }
+                else if(res.data==='FAILED')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '该专业下仍存在用户，无法删除',
+                        type: 'error',
+                    });
+                }
             })
         },
         scrollToTop (node) {
