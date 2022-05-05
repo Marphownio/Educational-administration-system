@@ -1,6 +1,7 @@
 import Nav from "@/views/inc/Nav.vue";
 //import Papa from "papaparse";
 import request from "@/utils/request";
+import {string} from "mockjs/src/mock/random/basic";
 
 
 export default {
@@ -61,6 +62,7 @@ export default {
         return{
             dialogVisible1:false,
             dialogVisible2:false,
+            dialogVisible3:false,
             schooldata:[],
             majordata:[],
             ruleForm:{
@@ -152,7 +154,8 @@ export default {
                     email:'',
                     status:'',
                 }
-            ]
+            ],
+            wrongmessage:''
         }
     },
     mounted() {
@@ -162,6 +165,14 @@ export default {
         this.getUserForm();
     },
     methods:{
+        showwrongmessage(file){
+            this.dialogVisible3=true;
+            const str=JSON.stringify(file.response);
+            console.log(typeof str);
+            console.log(JSON.stringify(file.response));
+            this.wrongmessage=str;
+            console.log(str)
+        },
         "refresh"(){
           this.ruleForm= {};
         },
@@ -304,51 +315,32 @@ export default {
                 }
             })
         },
-        handleChange(file) {
-                this.fileTemp = file.raw
-                if (this.fileTemp) {
-                    if ((this.fileTemp.type === '.csv') || (this.fileTemp.type === 'application/vnd.ms-excel')) {
-                        request.post("/user/batchimport",this.fileTemp)
-                        // let params = new URLSearchParams();
-                        // params.append('filename', this.fileTemp);
-                        // this.$axios({
-                        //     method: 'post',
-                        //     url: '/api/user/batchimport',
-                        //     data: params
-                        // })
-                        .then(res=>{
-                            if(res.data==='FAILED')
-                            {
-                                this.$message({
-                                    "showClose": true,
-                                    "message": '上传失败',
-                                    "type": 'fail',
-                                });
-                                this.getUserForm()
-                            }
-                            if(res.data==='SUCCESS')
-                            {
-                                this.$message({
-                                    "showClose": true,
-                                    "message": '操作成功',
-                                    "type": 'success',
-                                });
-                                this.getUserForm()
-                            }
-                        })
-                    } else {
-                        this.$message({
-                            type: 'warning',
-                            message: '附件格式错误，请删除后重新上传！'
-                        })
-                    }
-                } else {
-                    this.$message({
-                        type: 'warning',
-                        message: '请上传附件！'
-                    })
-                }
-            },
+        // handleChange(file) {
+        //         this.fileTemp = file.raw
+        //         if (this.fileTemp) {
+        //             if ((this.fileTemp.type === '.csv') || (this.fileTemp.type === 'application/vnd.ms-excel'))
+        //             {
+        //                 request.post("/user/batchimport",this.fileTemp)
+        //                     .then(res=>{
+        //                     console.log(1);
+        //                     this.wrongmessage=res;
+        //                     console.log(res);
+        //                     console.log(res.data);
+        //                     console.log(res.headers);
+        //                 })
+        //             } else {
+        //                 this.$message({
+        //                     type: 'warning',
+        //                     message: '附件格式错误，请删除后重新上传！'
+        //                 })
+        //             }
+        //         } else {
+        //             this.$message({
+        //                 type: 'warning',
+        //                 message: '请上传附件！'
+        //             })
+        //         }
+        //     },
         // submitForm3(){
         //     console.log(this.ruleForm)
         //     this.$refs.ruleForm.validate(valid=>{
@@ -451,7 +443,7 @@ export default {
             this.ruleForm=obj;
         },
         "delHandle"(id){
-            this.$axios.delete("/api/user/"+id).then(res=> {
+            this.$axios.delete("/api/user/delete/"+id).then(res=> {
                 if(res.data==='NOTFOUND')
                 {
                     this.$message({
