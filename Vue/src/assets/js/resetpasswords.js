@@ -74,7 +74,7 @@ export default {
                     for(let key in this.newPWsubmitForm) {
                         formData.append(key,this.newPWsubmitForm[key]);
                     }
-                    request.post("/resetPassword",formData)
+                    request.post("/user/resetPassword",formData)
                         .then(function (response) {
                             if(response==="FAILED"){
                                 //密码重置失败

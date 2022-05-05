@@ -31,7 +31,7 @@ export default {
                     for(let key in this.loginruleForm) {
                         formData.append(key,this.loginruleForm[key]);
                     }
-                    request.post("/login",formData)
+                    request.post("/user/login",formData)
                         .then(function (response) {
                             if(response==="FAILED"){
                                 //登录失败
