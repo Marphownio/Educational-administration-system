@@ -74,3 +74,10 @@ a:hover {
     height:70%;
     table-layout:auto;
 }
+#dialog3{
+    text-align: center;
+}
+textarea{
+    width: 900px;
+    min-height: 400px;
+}

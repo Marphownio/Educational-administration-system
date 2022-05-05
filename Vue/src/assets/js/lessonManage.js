@@ -207,12 +207,10 @@ export default {
         fillclassArrangementId(){
             for(let i=0;i<Object.keys(this.ruleForm1.arrangement).length;i++)
             {
-                let classtime=[];
-                this.ruleForm1.arrangement[i].building=JSON.parse(this.ruleForm1.arrangement[i].buildingId);
-                this.ruleForm1.arrangement[i].classroom=JSON.parse(this.ruleForm1.arrangement[i].classroomId);
+                this.ruleForm1.arrangement[i].building={'buildingId':this.ruleForm1.arrangement[i].buildingId};
+                this.ruleForm1.arrangement[i].classroom= {'classroomId':this.ruleForm1.arrangement[i].classroomId};
                 this.ruleForm1.arrangement[i].classArrangementId=i;
-                classtime.push({classTimeId:1});
-                this.ruleForm1.arrangement[i].classTime=classtime;
+                this.ruleForm1.arrangement[i].classTime={'classTimeId':this.ruleForm1.arrangement[i].classTimeId};
             }
         },
         selectAll() {
@@ -406,14 +404,14 @@ export default {
                     params.academicYear= this.academicData.toString().slice(0,9);
                     params.term= this.academicData.toString().slice(9,10);
                     params.courseCategory= {
-                        'courseCategoryId':1,
+                        'courseCategoryId':this.ruleForm1.courseNumber.toInteger,
                         'courseName': this.ruleForm1.courseName,
                         'classHour': this.ruleForm1.classHour,
                         'credit': this.ruleForm1.credit,
                         'major': {'majorId': this.ruleForm1.majorId},
                         'school': {'schoolId': this.ruleForm1.schoolId}
                     }
-                    params.teacher= {'teacherId':this.ruleForm1.teacherId};
+                    params.teacher= {'userId':this.ruleForm1.teacherId};
                     params.classArrangements= classArrangements;
                     params.openToMajors=  openToMajors;
                     params.capacity=this.ruleForm1.capacity;
@@ -449,7 +447,7 @@ export default {
                         {
                             this.$message({
                                 showClose: true,
-                                message: '操作失败',
+                                message: '该专业名称已存在',
                                 type: 'error',
                             });
                         }

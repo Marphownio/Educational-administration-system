@@ -195,7 +195,7 @@ export default {
                         {
                             this.$message({
                                 showClose: true,
-                                message: '操作失败',
+                                message: '该学院名称已存在',
                                 type: 'error',
                             });
                         }
@@ -239,8 +239,11 @@ export default {
                             {
                                 this.$message({
                                     showClose: true,
-                                    message: '操作失败',
+                                    message: '该学院名称已存在',
                                     type: 'error',
+                                    onClose:()=>{
+                                        this.getSchoolForm();
+                                    }
                                 });
                             }
                         }
@@ -290,7 +293,7 @@ export default {
                         {
                             this.$message({
                                 showClose: true,
-                                message: '操作失败',
+                                message: '该专业名称已存在',
                                 type: 'error',
                             });
                         }
@@ -333,8 +336,11 @@ export default {
                             {
                                 this.$message({
                                     showClose: true,
-                                    message: '操作失败',
+                                    message: '该专业名称已存在',
                                     type: 'error',
+                                    onClose:()=>{
+                                        this.getMajorForm();
+                                    }
                                 });
                             }
                         }

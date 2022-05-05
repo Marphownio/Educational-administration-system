@@ -1,4 +1,4 @@
-<template >
+<template xmlns="http://www.w3.org/1999/html">
     <head>
         <meta charset="UTF-8">
         <title>用户管理</title>
@@ -19,7 +19,7 @@
                 <el-upload
                         class="upload-demo"
                         action="http://localhost/api/user/batchimport"
-                        :on-success="fresh"
+                        :on-change="showwrongmessage"
                         method="post"
                         enctype=“multipart/form-data”
                         accept=".csv"
@@ -166,6 +166,16 @@
                     <el-button type="primary" @click="submitForm2" >修改</el-button>
                 </el-form-item>
             </el-form>
+        </el-dialog>
+
+        <el-dialog
+                v-model="dialogVisible3"
+                title="错误信息显示"
+                width="1000px"
+                @close="fresh()"
+                id="dialog3"
+        >
+            <textarea v-model="wrongmessage" readonly ></textarea>
         </el-dialog>
 
     </div>
