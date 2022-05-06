@@ -1,6 +1,7 @@
 package com.example.lab.controller;
 
 import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.CourseCategory;
 import com.example.lab.service.CourseCategoryService;
 import org.springframework.http.HttpStatus;
@@ -35,5 +36,14 @@ public class CourseCategoryController {
             return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(courseCategories ,HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/courses")
+    public ResponseEntity<Set<Course>> findCoursesInCategory(@RequestParam("courseCategoryId") Integer courseCategoryId){
+        CourseCategory courseCategory = courseCategoryService.findCourseCategoryByCourseCategoryId(courseCategoryId);
+        if (courseCategory == null || courseCategory.getCourses().isEmpty()){
+            return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(courseCategory.getCourses() ,HttpStatus.OK);
     }
 }
