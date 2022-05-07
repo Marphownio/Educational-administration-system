@@ -165,13 +165,16 @@ export default {
         this.getUserForm();
     },
     methods:{
-        showwrongmessage(file){
+        showwrongmessage(response){
             this.dialogVisible3=true;
-            const str=JSON.stringify(file.response);
-            console.log(typeof str);
-            console.log(JSON.stringify(file.response));
+            let str=JSON.stringify(response);
+            console.log(str);
+            str=str.replace(/{|}/g,'');
+            str.replace(/"([,"]*)/g,'\n');
+            console.log(str);
+            str.replace(/:/g,",");
+            console.log(str);
             this.wrongmessage=str;
-            console.log(str)
         },
         "refresh"(){
           this.ruleForm= {};

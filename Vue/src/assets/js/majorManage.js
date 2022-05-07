@@ -264,7 +264,7 @@ export default {
                     params.majorName=this.ruleForm2.majorName;
                     params.school= {'schoolId':this.ruleForm2.schoolId};
                     if(this.ruleForm2.introduction==='')
-                        params.ntroduction='该专业暂无描述信息';
+                        params.introduction='该专业暂无描述信息';
                     else
                         params.introduction= this.ruleForm2.introduction;
                     this.$axios({
@@ -314,7 +314,7 @@ export default {
                     params.majorName=this.ruleForm2.majorName;
                     params.school= {'schoolId':this.ruleForm2.schoolId};
                     if(this.ruleForm2.introduction==='')
-                        params.ntroduction='该专业暂无描述信息';
+                        params.introduction='该专业暂无描述信息';
                     else
                         params.introduction= this.ruleForm2.introduction;
                     this.$axios({

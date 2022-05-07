@@ -19,7 +19,7 @@
                 <el-upload
                         class="upload-demo"
                         action="http://localhost/api/user/batchimport"
-                        :on-change="showwrongmessage"
+                        :on-success="showwrongmessage"
                         method="post"
                         enctype=“multipart/form-data”
                         accept=".csv"
