@@ -21,6 +21,7 @@ public class CourseCategory {
     private Integer courseCategoryId;
 
     // 课程名
+    @Column(unique = true)
     private String courseName;
 
     // 学时

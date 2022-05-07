@@ -32,18 +32,18 @@ public class CourseCategoryController {
     @GetMapping(value = "/list")
     public ResponseEntity<Set<CourseCategory>> findAllCourseCategories(){
         Set<CourseCategory> courseCategories = new HashSet<>(courseCategoryService.findAllCourseCategory());
-        if (courseCategories.isEmpty()){
+        if (courseCategories.isEmpty()) {
             return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(courseCategories ,HttpStatus.OK);
+        return new ResponseEntity<>(courseCategories, HttpStatus.OK);
     }
 
     @GetMapping(value = "/courses")
     public ResponseEntity<Set<Course>> findCoursesInCategory(@RequestParam("courseCategoryId") Integer courseCategoryId){
         CourseCategory courseCategory = courseCategoryService.findCourseCategoryByCourseCategoryId(courseCategoryId);
-        if (courseCategory == null || courseCategory.getCourses().isEmpty()){
+        if (courseCategory == null || courseCategory.getCourses().isEmpty()) {
             return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(courseCategory.getCourses() ,HttpStatus.OK);
+        return new ResponseEntity<>(courseCategory.getCourses(), HttpStatus.OK);
     }
 }

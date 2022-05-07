@@ -26,7 +26,7 @@ public class CourseCategoryServiceImpl implements CourseCategoryService {
     @Override
     public ResultMessage addCourseCategory(CourseCategory courseCategory) {
         ResultMessage resultMessage;
-        if (findCourseCategoryByCourseCategoryId(courseCategory.getCourseCategoryId()) != null) {
+        if (findCourseCategoryByCourseName(courseCategory.getCourseName()) != null) {
             resultMessage = ResultMessage.EXIST;
         } else if (Boolean.FALSE.equals(commonService.isMatchSchoolAndMajor(courseCategory.getSchool(), courseCategory.getMajor()))) {
             resultMessage = ResultMessage.FAILED;

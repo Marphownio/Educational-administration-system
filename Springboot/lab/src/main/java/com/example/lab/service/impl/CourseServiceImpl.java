@@ -60,6 +60,9 @@ public class CourseServiceImpl implements CourseService {
         }
         ResultMessage resultMessage1 = courseCategoryService.addCourseCategory(course.getCourseCategory());
         if (resultMessage1 == ResultMessage.SUCCESS || resultMessage1 == ResultMessage.EXIST) {
+            // 由于课程类id可能改变，需要重新获取
+            CourseCategory newCourseCategory = courseCategoryService.findCourseCategoryByCourseName(course.getCourseCategory().getCourseName());
+            course.setCourseCategory(newCourseCategory);
             // 添加课程安排，由于id改变，需要重新获取
             Set<ClassArrangement> newClassArrangement = new HashSet<>();
             for (ClassArrangement classArrangement : course.getClassArrangements()) {
@@ -76,6 +79,10 @@ public class CourseServiceImpl implements CourseService {
                 courseRepository.save(course);
             }
             catch (Exception e) {
+                if (resultMessage1 == ResultMessage.SUCCESS) {
+                    // 是新增的课程类，由于添加课程失败，所以将该课程类删除
+                    courseCategoryService.deleteCourseCategory(newCourseCategory.getCourseCategoryId());
+                }
                 resultMessage = ResultMessage.FAILED;
             }
         } else {
