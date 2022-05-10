@@ -23,6 +23,17 @@ export default {
             }
             else return true;
         };
+        let capacitycheck=(rule,value,callback)=>{
+            for(let i=0;i<Object.keys(this.ruleForm1.arrangement).length;i++)
+            {
+                if(value>this.ruleForm1.arrangement[i].classroom.capacity)
+                {
+                    callback(new Error('课程容量不能大于教室容量'));
+                    return false;
+                }
+            }
+            return true;
+        };
         return{
             addcourse:false,
             checked: false,
@@ -83,17 +94,17 @@ export default {
 
             },
             rule:({
-                arrangement:[
-                    {
-                        required: true,
-                        message: '课程安排不能为空',
-                        trigger: 'change'
-                    },
-                ],
                 openToMajors:[
                     {
                         required: true,
                         message: '请选择选课开放专业',
+                        trigger: 'change'
+                    },
+                ],
+                arrangement:[
+                    {
+                        required: true,
+                        message: '课程安排不能为空',
                         trigger: 'change'
                     },
                 ]
@@ -157,7 +168,8 @@ export default {
                         message: '请输入选课容量',
                         trigger: 'blur',
                     },
-                    {validator: numbercheck,trigger: 'blur'}
+                    {validator: numbercheck,trigger: 'blur'},
+                    {validator: capacitycheck,trigger: 'blur'}
                 ],
             }),
             tableData:[
@@ -199,13 +211,15 @@ export default {
     },
     methods:{
         refresh(){
-            this.ruleForm1= {};
+            this.ruleForm1= {
+                arrangement: []
+            };
         },
         fillclassArrangementId(){
             for(let i=0;i<Object.keys(this.ruleForm1.arrangement).length;i++)
             {
                 this.ruleForm1.arrangement[i].building={'buildingId':this.ruleForm1.arrangement[i].buildingId};
-                this.ruleForm1.arrangement[i].classroom= {'classroomId':this.ruleForm1.arrangement[i].classroomId};
+                this.ruleForm1.arrangement[i].classroom= {'classroomId':this.ruleForm1.arrangement[i].classroom.classroomId,'capacity':this.ruleForm1.arrangement[i].classroom.capacity};
                 this.ruleForm1.arrangement[i].classArrangementId=i;
                 this.ruleForm1.arrangement[i].classTimes=[];
                 for(let j=0;j<Object.keys(this.ruleForm1.arrangement[i].classTimeId).length;j++)
@@ -245,8 +259,19 @@ export default {
         fillData(){
           this.ruleForm1.courseName=this.ruleForm1.courseCategory.courseName;
           this.ruleForm1.schoolId=this.ruleForm1.courseCategory.school.schoolId;
+          request.get("/school/majors",{
+                params:{
+                    schoolId:this.ruleForm1.schoolId
+                }
+            }).then(res=>{
+                this.majordata= res;
+            })
           this.ruleForm1.majorId=this.ruleForm1.courseCategory.major.majorId;
-
+          this.ruleForm1.classHour=this.ruleForm1.courseCategory.classHour;
+          this.ruleForm1.credit=this.ruleForm1.courseCategory.credit;
+        },
+        changeCategory(){
+            this.ruleForm1.courseCategory='';
         },
         getcourseCategory(){
             request.get("/courseCategory/list").then(res=>{
@@ -385,10 +410,7 @@ export default {
             {
                 if(this.courseCategoryData[i]!==null)
                 {
-                    console.log(1);
-                    console.log(this.courseCategoryData[i].courseCategoryId);
                     this.getcourse(this.courseCategoryData[i].courseCategoryId,i);
-                    console.log(2);
                     this.tableData[i]={
                         'courseCategoryId':this.courseCategoryData[i].courseCategoryId,
                         'courseName':this.courseCategoryData[i].courseName,
@@ -399,45 +421,26 @@ export default {
                         'classHour':this.courseCategoryData[i].classHour,
                         'credit':this.courseCategoryData[i].credit,
                     }
-                    // for(let j=0;j<this.courseData;j++)
-                    // {
-                    //     this.tableData[i].push(
-                    //         children[j]={
-                    //             'courseId':this.courseData[i][j].courseId,
-                    //             'academicYear':this.courseData[i][j].academicYear,
-                    //             'term':this.courseData[i][j].term,
-                    //             'courseCategoryId':this.courseCategoryData[i].courseCategoryId,
-                    //             'courseNumber':this.courseData[i][j].courseNumber,
-                    //             'courseName':this.courseCategoryData[i].courseName,
-                    //             'schoolName':this.courseCategoryData[i].school.schoolName,
-                    //             'schoolId':this.courseCategoryData[i].school.schoolId,
-                    //             'majorName':this.courseCategoryData[i].major.majorName,
-                    //             'majorId':this.courseCategoryData[i].major.majorId,
-                    //             'classHour':this.courseCategoryData[i].classHour,
-                    //             'credit':this.courseCategoryData[i].credit,
-                    //             'teacherId':this.courseData[i][j].teacher.userId,
-                    //             'teacherName':this.courseData[i][j].teacher.username
-                    //         })
-                    // }
                 }
-                if(this.tableData[i].teacher!==null)
+                if(this.courseCategoryData[i].teacher!==null)
                 {
-
-                    this.tableData[i].teacherName=this.tableData[i].teacher.username;
-                    this.tableData[i].teacherId=this.tableData[i].teacher.userId;
+                    this.tableData[i].teacherName=this.courseCategoryData[i].teacher.username;
+                    this.tableData[i].teacherId=this.courseCategoryData[i].teacher.userId;
                 }
-                if(this.tableData[i].major!==null)
+                if(this.courseCategoryData[i].major!==null)
                 {
-
-                    this.tableData[i].majorName=this.tableData[i].major.majorName;
-                    this.tableData[i].majorId=this.tableData[i].major.majorId;
+                    this.tableData[i].majorName=this.courseCategoryData[i].major.majorName;
+                    this.tableData[i].majorId=this.courseCategoryData[i].major.majorId;
                 }
             }
         },
         remove(item){
-            const index = this.ruleForm1.arrangement.indexOf(item)
-            if (index !== -1) {
-                this.ruleForm1.arrangement.splice(index, 1)
+            if(Object.keys(this.ruleForm1.arrangement).length>1)
+            {
+                const index = this.ruleForm1.arrangement.indexOf(item)
+                if (index !== -1) {
+                    this.ruleForm1.arrangement.splice(index, 1)
+                }
             }
         },
         addarrangement(){
@@ -502,7 +505,7 @@ export default {
                                 type: 'success',
                             });
                             this.addcourse = false;
-                            this.getCourseForm()
+                            this.getcourseCategory()
                         }
                         else if(res.data==='EXIST')
                         {
@@ -557,7 +560,7 @@ export default {
                                     message: '操作成功',
                                     type: 'success',
                                 });
-                                this.getCourseForm()
+                                this.getcourseCategory()
                                 this.updatecourse = false;
                             }
                             else if(res.data==='FAILED')
@@ -618,7 +621,6 @@ export default {
         editHandle(obj){
             this.updatecourse=true;
             this.ruleForm1=obj;
-            console.log(this.ruleForm1)
             request.get("/school/majors",{
                 params:{
                     schoolId:this.ruleForm1.schoolId
@@ -635,7 +637,7 @@ export default {
                         message: '操作成功',
                         type: 'success',
                     });
-                    this.getCourseForm()
+                    this.getcourseCategory()
                 }
                 else if(res.data==='FAILED')
                 {
