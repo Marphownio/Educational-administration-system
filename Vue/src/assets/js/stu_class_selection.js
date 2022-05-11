@@ -69,44 +69,7 @@ export default {
             selectableDataShow:[{}],
             selectableData1:[{}],
             selectableData2:[{}],
-            selectableData:[
-                {
-                courseId:'MATH101',
-                courseName:'线性代数',
-                teacher:'张三四',
-                credit:'2',
-                classTime:[
-                    {
-                        day:'1',
-                        cishu:'1',
-                    },
-                    {
-                        day:'1',
-                        cishu:'2',
-                    },
-                ],
-                yixuan:'5',
-                capacity:'50',
-                },
-                {
-                    courseId:'MATH102',
-                    courseName:'高等代数',
-                    teacher:'张三五',
-                    credit:'2',
-                    yixuan:'50',
-                    capacity:'50',
-                    classTime:[
-                        {
-                            day:'2',
-                            cishu:'1',
-                        },
-                        {
-                            day:'7',
-                            cishu:'3',
-                        },]
-
-                },
-            ],
+            selectableData:[],
             search11:'',
             search22:'',
             search33:'',
@@ -133,7 +96,7 @@ export default {
     },
     mounted(){},
     created(){
-        //
+        this.getclassinfo();
         this.search();
         this.getSchooltimetable();
     },
@@ -182,14 +145,14 @@ export default {
                 this.selectableData1.filter(
                     (data) =>
                         !this.search22 ||
-                        data.courseName.toLowerCase().includes(this.search22.toLowerCase())
+                        data.courseCategory.courseName.toLowerCase().includes(this.search22.toLowerCase())
                 )
             );
             this.selectableDataShow = computed(() =>
                 this.selectableData2.filter(
                     (data) =>
                         !this.search33 ||
-                        data.teacher.toLowerCase().includes(this.search33.toLowerCase())
+                        data.teacher.username.toLowerCase().includes(this.search33.toLowerCase())
                 )
             );
         },
@@ -204,8 +167,9 @@ export default {
         },
         getclassinfo(){
             const that=this;
-                request.get("/course/selectable")
+                request.get("/course/list")
                     .then(function(res){
+                            console.log(res);
                             that.selectableData=res;
                     }
                     ,function (err) {
