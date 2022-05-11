@@ -233,12 +233,6 @@
                         <el-option v-for='item in majorListData' :key='item.majorName' :label='item.majorName' :value='item.majorId'></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="学时" prop="classHour" >
-                    <el-input v-model="ruleForm1.classHour" style="width: 220px"></el-input>
-                </el-form-item>
-                <el-form-item label="学分" prop="credit" >
-                    <el-input v-model="ruleForm1.credit" style="width: 220px"></el-input>
-                </el-form-item>
 <!--                <el-row  v-for="(item, index) in ruleForm1.arrangement" label="课时安排" :key="index" gutter="0">-->
 <!--                    <span>-->
 <!--                        <el-form-item   :prop="'arrangement[' + index + '].buildingId'" :rules="rule.arrangement">-->
