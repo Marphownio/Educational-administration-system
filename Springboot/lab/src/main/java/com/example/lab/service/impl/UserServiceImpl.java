@@ -196,7 +196,7 @@ public class UserServiceImpl implements UserService {
                         }
                         else
                         {
-                            wrongMessage.put(line,"角色输入不正确\n");
+                            wrongMessage.put(line,"角色输入不正确");
                             continue;
                         }
                         if(item[4].length() == 18){
@@ -259,8 +259,7 @@ public class UserServiceImpl implements UserService {
                 }
             }
             reader.close();
-//            可以尝试输出一下检查结果是否正确
-//            System.out.println(result);
+           //System.out.println(wrongMessage);
             return wrongMessage;
         }
         catch (Exception e) {

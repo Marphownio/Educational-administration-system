@@ -29,26 +29,26 @@
             </el-table-column>
           </el-table-column>
           <el-table-column align="center" label="课程名称">
-            <el-table-column align="center" prop="courseName" width="130px">
+            <el-table-column align="center" prop="courseCategory.courseName" width="130px">
               <template #header>
                 <el-input v-model="search22" size="small" @change="search()" placeholder="搜索课程名称" />
               </template>
               <template v-slot="scope">
-                {{scope.row.courseName}}
+                {{scope.row.courseCategory.courseName}}
               </template>
             </el-table-column>
           </el-table-column>
-        <el-table-column align="center"  prop="school.schoolName" label="开课院系"/>
-        <el-table-column align="center" prop="major.majorName" label="开课专业" />
-        <el-table-column align="center" prop="classHour" label="学时" width="60px" />
-        <el-table-column align="center" prop="credit" label="学分" width="60px" />
+        <el-table-column align="center"  prop="courseCategory.school.schoolName" label="开课院系"/>
+        <el-table-column align="center" prop="courseCategory.major.majorName" label="开课专业" />
+        <el-table-column align="center" prop="courseCategory.classHour" label="学时" width="60px" />
+        <el-table-column align="center" prop="courseCategory.credit" label="学分" width="60px" />
           <el-table-column align="center" label="任课教师">
-            <el-table-column align="center" prop="teacher" width="130px">
+            <el-table-column align="center" prop="teacher.username" width="130px">
               <template #header>
                 <el-input v-model="search33" size="small" @change="search()" placeholder="搜索任课教师" />
               </template>
               <template v-slot="scope">
-                {{scope.row.teacher}}
+                {{scope.row.teacher.username}}
               </template>
             </el-table-column>
           </el-table-column>
@@ -64,15 +64,15 @@
             </template>
           </el-table-column>
         <el-table-column align="center" v-slot="scope" fixed="right" prop="icon" label="操作">
-          <div v-if="scope.row.capacity>scope.row.yixuan">
+          <div v-if="scope.row.capacity<=scope.row.yixuan">
+            <el-button @click="applyStudentSelectOpen(scope.row)" type="success" plain>选课申请</el-button>
+          </div>
+          <div v-else>
             <el-popconfirm  @confirm="stu_select(scope.row.courseId)"  title="确认选课吗？">
               <template #reference>
                 <el-button type="primary" plain>&nbsp;选&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;课&nbsp;</el-button>
               </template>
             </el-popconfirm>
-          </div>
-          <div v-else>
-            <el-button @click="applyStudentSelectOpen(scope.row)" type="success" plain>选课申请</el-button>
           </div>
 
         </el-table-column>

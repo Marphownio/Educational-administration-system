@@ -169,11 +169,10 @@ export default {
             this.dialogVisible3=true;
             let str=JSON.stringify(response);
             console.log(str);
-            str=str.replace(/{|}/g,'');
-            str.replace(/"([,"]*)/g,'\n');
-            console.log(str);
-            str.replace(/:/g,",");
-            console.log(str);
+            str=str.replace(/","/g,'\n');
+            str=str.replace(/"/g,'');
+            str=str.replace(/{/g,'');
+            str=str.replace(/}/g,'');
             this.wrongmessage=str;
         },
         "refresh"(){
@@ -477,6 +476,21 @@ export default {
         "scrollToTop"(node) {
             const ChildHasError = Array.from(node.querySelectorAll('.is-error'))
             if (!ChildHasError.length) throw new Error('有错误，但是找不到错误位置')
+        },
+        exporttxt()
+        {
+            const filename = "用户添加错误信息";
+            const text=this.wrongmessage;
+            const pom = document.createElement('a');
+            pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            pom.setAttribute('download', filename);
+            if (document.createEvent) {
+                const event = document.createEvent('MouseEvents');
+                event.initEvent('click', true, true);
+                pom.dispatchEvent(event);
+            } else {
+                pom.click();
+            }
         }
     }
 }
