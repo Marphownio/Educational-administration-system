@@ -38,6 +38,7 @@ export default {
             addcourse:false,
             checked: false,
             updatecourse:false,
+            updatecoursecategory:false,
             checkcourse:false,
             schooldata:[],
             teacherdata:[],
@@ -171,6 +172,45 @@ export default {
                     {validator: numbercheck,trigger: 'blur'},
                     {validator: capacitycheck,trigger: 'blur'}
                 ],
+            }),
+                editRules2 :({
+                    courseName: [
+                        {
+                            required: true,
+                            message: '请输入课程名',
+                            trigger: 'blur',
+                        },
+                    ],
+                    schoolId: [
+                        {
+                            required: true,
+                            message: '请选择开课院系',
+                            trigger: 'change',
+                        },
+                    ],
+                    majorId: [
+                        {
+                            required: true,
+                            message: '请选择所属专业',
+                            trigger: 'change',
+                        },
+                    ],
+                    classHour:[
+                        {
+                            required: true,
+                            message: '请输入学时',
+                            trigger: 'blur',
+                        },
+                        {validator: numbercheck,trigger: 'blur'}
+                    ],
+                    credit: [
+                        {
+                            required: true,
+                            message: '请选择学分',
+                            trigger: 'change',
+                        },
+                        {validator: numbercheck,trigger: 'blur'}
+                    ],
             }),
             tableData:[
                 {
@@ -475,7 +515,6 @@ export default {
 
         submitaddcourse(){
             this.fillclassArrangementId();
-            console.log(this.ruleForm1);
             this.$refs.ruleForm1.validate((valid,error)=>{
                 if(valid){
                     let params ={};
@@ -601,6 +640,52 @@ export default {
                 }
             })
         },
+        submitupdatecoursecategory(){
+            this.$refs.ruleForm2.validate((valid,error)=>{
+                if(valid){
+                    let params ={};
+                    params.courseCategoryId= this.ruleForm2.courseCategoryId;
+                    params.courseName= this.ruleForm2.courseName;
+                    params.classHour= this.ruleForm2.classHour;
+                    params.credit= this.ruleForm2.credit;
+                    params.major={'majorId': this.ruleForm2.majorId};
+                    params.school= {'schoolId': this.ruleForm2.schoolId};
+                    params.capacity=this.ruleForm2.capacity;
+                    this.$axios({
+                        headers:{'Content-Type':'application/json'},
+                        type:'application/json',
+                        method: 'put',
+                        url:'/api/courseCategory/update',
+                        data:JSON.stringify(params)
+                    }).then(res=>{
+                            if(res.data==='SUCCESS'){
+                                this.$message({
+                                    showClose: true,
+                                    message: '操作成功',
+                                    type: 'success',
+                                });
+                                this.updatecoursecategory = false;
+                                this.$router.go(0);
+                            }
+                            else if(res.data==='FAILED')
+                            {
+                                this.$message({
+                                    showClose: true,
+                                    message: '操作失败',
+                                    type: 'error',
+                                });
+                            }
+                        }
+                    )
+                }
+                else{
+                    console.log(error);
+                    this.$nextTick(() => {
+                        this.scrollToTop(this.$refs.ruleForm1.$el)
+                    })
+                }
+            })
+        },
         handleChange(file) {
             this.fileTemp = file.raw
             if (this.fileTemp) {
@@ -639,35 +724,71 @@ export default {
             }
         },
         editHandle(obj){
-            this.updatecourse=true;
-            this.ruleForm1=obj;
-            request.get("/school/majors",{
-                params:{
-                    schoolId:this.ruleForm1.schoolId
-                }
-            }).then(res=>{
-                this.majordata= res;
+            if(typeof obj.courseId!=="undefined"&&obj.courseId.length!==0) {
+                this.updatecourse=true;
+                this.ruleForm1=obj;
+                request.get("/school/majors",{
+                    params:{
+                        schoolId:this.ruleForm1.schoolId
+                    }
+                }).then(res=>{
+                    this.majordata= res;
             })
+            }
+            else {
+                console.log(obj);
+                this.updatecoursecategory=true;
+                this.ruleForm2=obj;
+                request.get("/school/majors",{
+                    params:{
+                        schoolId:this.ruleForm2.schoolId
+                    }
+                }).then(res=>{
+                    this.majordata= res;
+                })
+            }
         },
-        delHandle(id){
-            this.$axios.delete("/api/course/delete/"+id).then(res=> {
-                if(res.data==='SUCCESS'){
-                    this.$message({
-                        showClose: true,
-                        message: '操作成功',
-                        type: 'success',
-                    });
-                    this.getcourseCategory()
-                }
-                else if(res.data==='FAILED')
-                {
-                    this.$message({
-                        showClose: true,
-                        message: '操作失败',
-                        type: 'error',
-                    });
-                }
-            })
+        delHandle(obj){
+            if(typeof obj.courseId!=="undefined"&&obj.courseId.length!==0) {
+                this.$axios.delete("/api/course/delete/"+obj.courseId).then(res=> {
+                    if(res.data==='SUCCESS'){
+                        this.$message({
+                            showClose: true,
+                            message: '操作成功',
+                            type: 'success',
+                        });
+                        this.$router.go(0);
+                    }
+                    else if(res.data==='FAILED')
+                    {
+                        this.$message({
+                            showClose: true,
+                            message: '操作失败',
+                            type: 'error',
+                        });
+                    }
+                })
+            }
+            else if(typeof obj.courseCategoryId!=="undefined"&&obj.courseCategoryId.length!==0){
+                this.$axios.delete("/api/courseCategory/delete/"+obj.courseCategoryId).then(res=> {
+                    if(res.data==='SUCCESS'){
+                        this.$message({
+                            showClose: true,
+                            message: '操作成功',
+                            type: 'success',
+                        });
+                        this.$router.go(0);
+                    }
+                    else if(res.data==='FAILED')
+                    {
+                        this.$message({
+                            showClose: true,
+                            message: '该课程类下仍有课程，无法删除',
+                            type: 'error',
+                        });
+                    }
+                })
+            }
         },
         scrollToTop (node) {
             const ChildHasError = Array.from(node.querySelectorAll('.is-error'))
