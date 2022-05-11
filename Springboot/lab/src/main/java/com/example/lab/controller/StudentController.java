@@ -1,9 +1,10 @@
 package com.example.lab.controller;
 
-import com.example.lab.pojo.CourseSelectionStatus;
-import com.example.lab.pojo.ResultMessage;
-import com.example.lab.pojo.UserRole;
+import com.example.lab.pojo.enums.CourseSelectionStatus;
+import com.example.lab.pojo.enums.ResultMessage;
+import com.example.lab.pojo.enums.UserRole;
 import com.example.lab.pojo.entity.*;
+import com.example.lab.service.AdminService;
 import com.example.lab.service.CourseService;
 import com.example.lab.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -16,8 +17,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.example.lab.LabApplication.admin;
-
 @RestController
 @RequestMapping(value = "/student")
 public class StudentController {
@@ -27,6 +26,9 @@ public class StudentController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private AdminService adminService;
 
     // 查询全部学生
     @GetMapping(value = "/list")
@@ -41,11 +43,20 @@ public class StudentController {
     // 学生选课
     @PostMapping(value = "/course/select")
     public ResultMessage selectCourse(@RequestParam("courseId") Integer courseId, HttpSession session) {
+        ResultMessage resultMessage = ResultMessage.SUCCESS;
+        Admin admin = adminService.getAdmin();
         if (admin.getCourseSelectionStatus() != CourseSelectionStatus.START_FIRST && admin.getCourseSelectionStatus() != CourseSelectionStatus.START_SECOND) {
-            return ResultMessage.NOT_OPEN;
+            resultMessage = ResultMessage.NOT_OPEN;
         }
         Student currentUser = userService.findStudentByStudentId(((User) session.getAttribute("user")).getUserId());
         Course selectCourse = courseService.findCourseByCourseId(courseId);
+        // 二轮选课时，已选满的课程不可选
+        if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND && selectCourse.getCapacity() <= selectCourse.getStudents().size()) {
+            resultMessage = ResultMessage.FAILED;
+        }
+        if (resultMessage == ResultMessage.NOT_OPEN || resultMessage == ResultMessage.FAILED) {
+            return resultMessage;
+        }
         ResponseEntity<Set<Course>> courses = findAllCoursesStudying(currentUser.getUserId());
         Set<Course> courseSet = courses.getBody();
         if (courseSet != null && !courseSet.isEmpty()) {
@@ -62,7 +73,8 @@ public class StudentController {
 
     // 学生退课
     @DeleteMapping(value = "/course/drop")
-    public ResultMessage dropCourse(@RequestParam("courseId") Integer courseId,@RequestParam("studentId") Integer studentId){
+    public ResultMessage dropCourse(@RequestParam("courseId") Integer courseId,@RequestParam("studentId") Integer studentId) {
+        Admin admin = adminService.getAdmin();
         if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND){
             try {
                 Student currentUser = userService.findStudentByStudentId(studentId);
@@ -82,25 +94,19 @@ public class StudentController {
     // 学生获取可选的课程
     @GetMapping(value = "/course/selectable")
     public ResponseEntity<Set<Course>> getSelectableCourse(HttpSession session) {
-        if ( (admin.getCourseSelectionStatus() != CourseSelectionStatus.START_FIRST && admin.getCourseSelectionStatus() != CourseSelectionStatus.START_SECOND)
+        Admin admin = adminService.getAdmin();
+        if ((admin.getCourseSelectionStatus() != CourseSelectionStatus.START_FIRST && admin.getCourseSelectionStatus() != CourseSelectionStatus.START_SECOND)
                 || session.getAttribute("user") == null || ((User)session.getAttribute("user")).getRole() != UserRole.STUDENT) {
             return new ResponseEntity<>(new HashSet<>(), HttpStatus.NOT_ACCEPTABLE);
         }
         Student currentUser =  userService.findStudentByStudentId(((User)session.getAttribute("user")).getUserId());
-
         // 本专业可选课程(已选课程的同类课程依然会出现，但在选择时不会通过)
         Set<Course> selectableCourses = currentUser.getMajor().getSelectableCourses();
-
         if (selectableCourses.isEmpty()) {
             return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         } else {
             // 去除已选/已修的课程
-            selectableCourses.removeIf(course -> !currentUser.getCourses().contains(course));
-
-            // 二轮选课时，去除已经选满的课程
-            if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND) {
-                selectableCourses.removeIf(course -> course.getCapacity() == course.getStudents().size());
-            }
+            selectableCourses.removeIf(course -> currentUser.getCourses().contains(course));
             return new ResponseEntity<>(selectableCourses, HttpStatus.OK);
         }
     }
@@ -114,6 +120,7 @@ public class StudentController {
             return new ResponseEntity<>(courses, HttpStatus.NO_CONTENT);
         }
         courses.addAll(student.getCourses());
+        Admin admin = adminService.getAdmin();
         courses.removeIf(course -> Objects.equals(course.getAcademicYear(), admin.getAcademicYear()) || Objects.equals(course.getTerm(), admin.getTerm()));
         if (courses.isEmpty()) {
             return new ResponseEntity<>(courses, HttpStatus.NO_CONTENT);
@@ -142,6 +149,7 @@ public class StudentController {
     // 查看指定学生所有已选/在读课程
     @GetMapping(value = "/courses/studying")
     public ResponseEntity<Set<Course>> findAllCoursesStudying(@RequestParam(value = "studentId") Integer studentId) {
+        Admin admin = adminService.getAdmin();
         return findAllCoursesSpecified(studentId, admin.getAcademicYear(), admin.getTerm());
     }
 }

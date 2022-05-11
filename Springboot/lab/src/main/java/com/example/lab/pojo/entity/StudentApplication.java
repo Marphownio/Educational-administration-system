@@ -1,14 +1,10 @@
 package com.example.lab.pojo.entity;
 
-import com.example.lab.pojo.ApplicationType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 // 学生的申请
 @Entity

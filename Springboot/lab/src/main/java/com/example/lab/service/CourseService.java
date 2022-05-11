@@ -1,10 +1,8 @@
 package com.example.lab.service;
 
 import com.example.lab.pojo.entity.Course;
-import com.example.lab.pojo.ResultMessage;
-import org.springframework.web.multipart.MultipartFile;
+import com.example.lab.pojo.enums.ResultMessage;
 
-import java.util.HashMap;
 import java.util.List;
 
 public interface CourseService {

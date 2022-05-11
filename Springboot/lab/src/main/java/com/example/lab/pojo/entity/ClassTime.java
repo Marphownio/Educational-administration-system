@@ -21,4 +21,16 @@ public class ClassTime {
     private Integer startTimeMin;
     private Integer endTimeHour;
     private Integer endTimeMin;
+
+    public ClassTime(Integer classTimeId, Integer startTimeHour, Integer startTimeMin, Integer endTimeHour, Integer endTimeMin) {
+        this.classTimeId = classTimeId;
+        this.startTimeHour = startTimeHour;
+        this.startTimeMin = startTimeMin;
+        this.endTimeHour = endTimeHour;
+        this.endTimeMin = endTimeMin;
+    }
+
+    public ClassTime() {
+
+    }
 }

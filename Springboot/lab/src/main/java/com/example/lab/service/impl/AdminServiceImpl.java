@@ -1,9 +1,9 @@
 package com.example.lab.service.impl;
 
-import com.example.lab.pojo.ApplicationType;
-import com.example.lab.pojo.CourseSelectionStatus;
+import com.example.lab.pojo.enums.CourseSelectionStatus;
 import com.example.lab.pojo.entity.*;
-import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.enums.ResultMessage;
+import com.example.lab.repository.AdminRepository;
 import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
 
@@ -11,84 +11,51 @@ import javax.annotation.Resource;
 
 import java.util.*;
 
-import static com.example.lab.LabApplication.admin;
 import static java.lang.Math.min;
 
 @Service
 public class AdminServiceImpl implements AdminService {
 
     @Resource
+    private AdminRepository adminRepository;
+
+    @Resource
     private CourseService courseService;
 
-    @Resource
-    private TeacherApplicationService teacherApplicationService;
-
-    @Resource
-    private StudentApplicationService studentApplicationService;
-
-    // 管理员处理教师对课程的请求
     @Override
-    public ResultMessage processTeacherApplication(Integer applicationId, Boolean operation) {
-
-        if (Boolean.FALSE.equals(operation)) {
-            return teacherApplicationService.deleteTeacherApplication(applicationId);
+    public ResultMessage saveAdmin(Admin admin) {
+        try {
+            adminRepository.save(admin);
         }
-        TeacherApplication application = teacherApplicationService.findTeacherApplicationById(applicationId);
-        if (application == null) {
+        catch (Exception e) {
             return ResultMessage.FAILED;
         }
-        Course course = new Course();
-        if (application.getType() != ApplicationType.DELETE) {
-            course.setCourseNumber(application.getCourseNumber());
-            course.setAcademicYear(admin.getAcademicYear());
-            course.setTerm(admin.getTerm());
-            course.setCapacity(application.getCapacity());
-            course.setIntroduction(application.getIntroduction());
-            course.setCourseCategory(application.getCourseCategory());
-            course.setOpenToMajors(application.getOpenToMajors());
-            course.setClassArrangements(application.getClassArrangements());
-            course.setTeacher(application.getTeacher());
-        }
-        ResultMessage resultMessage;
-        switch (application.getType()) {
-            case ADD:
-                resultMessage = courseService.addCourse(course); break;
-            case DELETE:
-                resultMessage = courseService.deleteCourse(application.getCourseId()); break;
-            case UPDATE:
-                resultMessage = courseService.updateCourse(course); break;
-            default:
-                resultMessage = ResultMessage.FAILED; break;
-        }
-        return (resultMessage == ResultMessage.SUCCESS) ? teacherApplicationService.deleteTeacherApplication(applicationId) : ResultMessage.FAILED;
+        return ResultMessage.SUCCESS;
     }
 
-    // 管理员处理学生对课程的请求
     @Override
-    public ResultMessage processStudentApplication(Integer applicationId, Boolean operation) {
-        if (Boolean.FALSE.equals(operation)){
-            return teacherApplicationService.deleteTeacherApplication(applicationId);
+    public Admin getAdmin() {
+        return adminRepository.findById(0).orElse(null);
+    }
+
+    @Override
+    public ResultMessage setAcademicYearAndTerm(String academicYear, String term) {
+        Admin admin = this.getAdmin();
+        try {
+            admin.setAcademicYear(academicYear);
+            admin.setTerm(term);
+            this.saveAdmin(admin);
+            return ResultMessage.SUCCESS;
         }
-        StudentApplication studentApplication = studentApplicationService.findStudentApplicationById(applicationId);
-        ResultMessage resultMessage = ResultMessage.SUCCESS;
-        if (studentApplication != null) {
-            try {
-                Course course = studentApplication.getCourse();
-                course.setCapacity(course.getCapacity() + 1);
-                course.getStudents().add(studentApplication.getStudent());
-                courseService.updateCourse(course);
-            } catch (Exception e) {
-                resultMessage = ResultMessage.FAILED;
-            }
-        } else {
-            resultMessage = ResultMessage.FAILED;
+        catch (Exception e) {
+            return ResultMessage.FAILED;
         }
-        return resultMessage;
     }
 
     @Override
     public ResultMessage changeCourseSelectionStatus() {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
+        Admin admin = this.getAdmin();
         try {
             switch (admin.getCourseSelectionStatus()) {
                 case START_TERM:    admin.setCourseSelectionStatus(CourseSelectionStatus.START_FIRST);  break;
@@ -100,6 +67,9 @@ public class AdminServiceImpl implements AdminService {
                 case END_SECOND:    admin.setCourseSelectionStatus(CourseSelectionStatus.END_TERM);     break;
                 case END_TERM:      admin.setCourseSelectionStatus(CourseSelectionStatus.START_TERM);   break;
             }
+            if (resultMessage == ResultMessage.SUCCESS) {
+                resultMessage = saveAdmin(admin);
+            }
         }
         catch (Exception exception) {
             resultMessage = ResultMessage.FAILED;
@@ -109,6 +79,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ResultMessage firstScreening() {
+        Admin admin = this.getAdmin();
         List<Course> courses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
         // 备份，失败时回滚
         List<Course> backupCourses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());

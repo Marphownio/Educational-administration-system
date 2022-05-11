@@ -1,4 +1,4 @@
-package com.example.lab.pojo;
+package com.example.lab.pojo.enums;
 
 public enum ResultMessage {
     EXIST,

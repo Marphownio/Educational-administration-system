@@ -1,7 +1,7 @@
 package com.example.lab.service;
 
 import com.example.lab.pojo.entity.TeacherApplication;
-import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.enums.ResultMessage;
 
 import java.util.List;
 
@@ -18,4 +18,7 @@ public interface TeacherApplicationService {
 
     // 通过id查询申请
     TeacherApplication findTeacherApplicationById(Integer applicationId);
+
+    // 管理员处理教师对课程的请求
+    ResultMessage processTeacherApplication(Integer applicationId, Boolean operation);
 }
