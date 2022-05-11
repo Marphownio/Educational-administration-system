@@ -175,7 +175,8 @@
                 @close="fresh()"
                 id="dialog3"
         >
-            <textarea v-model="wrongmessage" readonly ></textarea>
+            <textarea v-model="wrongmessage" readonly style="font-size: 15px"></textarea>
+            <el-button type="primary" @click="exporttxt" >导出为txt</el-button>
         </el-dialog>
 
     </div>
