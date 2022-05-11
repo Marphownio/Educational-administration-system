@@ -2,6 +2,7 @@ package com.example.lab.pojo.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Proxy(lazy = false)
 // 一节课的课程安排，包括时间和地点
 public class ClassArrangement {
 
@@ -29,8 +31,9 @@ public class ClassArrangement {
 
     private DayOfWeek dayOfWeek;
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "class_arrangement_id")
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JoinTable(name="arrangement_time",joinColumns={@JoinColumn(name="class_arrangement_id")},
+            inverseJoinColumns ={@JoinColumn(name="class_time_id")})
     private Set<ClassTime> classTimes = new HashSet<>();
 
 }
