@@ -29,7 +29,9 @@
                 <el-button type="primary" @click="checkcourse=true">审核课程申请</el-button>
             </el-form-item>
         </el-form>
-        <el-table :data="tableData" >
+        <el-table :data="tableData" row-key="courseId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+            <el-table-column prop="openToMajors" label="" width="120px" v-if="false"/>
+            <el-table-column prop="classArrangements" label="" width="120px" v-if="false"/>
             <el-table-column prop="courseId" label="" width="120px" v-if="false"/>
             <el-table-column prop="academicYear" label="" width="120px" v-if="false"/>
             <el-table-column prop="term" label="" width="120px" v-if="false"/>
@@ -45,6 +47,7 @@
             <el-table-column prop="teacherName" label="任课教师" width="120px"/>
             <el-table-column prop="teacherId" label="教师工号" width="120px"/>
             <el-table-column prop="capacity" label="选课容量" width="120px"/>
+            <el-table-column prop="arrangement" label="课程安排" width="120px"/>
             <el-table-column prop="introduction" label="课程介绍" />
             <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="170px">
                 <div>
@@ -204,7 +207,6 @@
                 v-model="updatecourse"
                 title="编辑课程信息"
                 width="800px"
-                @close="refresh"
         >
             <el-form
                     ref="ruleForm1"
@@ -213,7 +215,12 @@
                     label-width="120px"
                     class="demo-ruleForm"
             >
-                <el-form-item label="课程代码" prop="courseId">
+                <el-form-item label="所属课程类" prop="courseCategory" >
+                    <el-select v-model="ruleForm1.courseCategory" placeholder="选择所属课程类" @change="fillData" readonly value-key="courseName">
+                        <el-option v-for="item in courseCategoryData" :key="item.courseName" :label="item.courseName" :value="item" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="课程代码" prop="courseNumber">
                     <el-input v-model="ruleForm1.courseId"></el-input>
                 </el-form-item>
                 <el-form-item label="课程名" prop="courseName">

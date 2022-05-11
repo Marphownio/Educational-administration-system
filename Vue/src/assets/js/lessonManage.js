@@ -388,7 +388,47 @@ export default {
             }).then(res=>{
                 console.log(res);
                 this.courseData[i]= res;
-                console.log(this.courseData[i]);
+                for(let j=0;j<Object.keys(this.courseData[i]).length;j++)
+                {
+                    this.courseData[i][j].courseName=this.courseCategoryData[i].courseName;
+                    this.courseData[i][j].courseCategoryId=this.courseCategoryData[i].courseCategoryId;
+                    this.courseData[i][j].schoolName=this.courseCategoryData[i].school.schoolName;
+                    this.courseData[i][j].schoolId=this.courseCategoryData[i].school.schoolId;
+                    this.courseData[i][j].majorName=this.courseCategoryData[i].major.majorName;
+                    this.courseData[i][j].majorId=this.courseCategoryData[i].major.majorId;
+                    this.courseData[i][j].classHour=this.courseCategoryData[i].classHour;
+                    this.courseData[i][j].credit=this.courseCategoryData[i].credit;
+                    this.courseData[i][j].teacherName=this.courseData[i][j].teacher.username;
+                    this.courseData[i][j].teacherId=this.courseData[i][j].teacher.userId;
+                    let arrangementstr='';
+                    for(let k=0;k<Object.keys(this.courseData[i][j].classArrangements).length;k++)
+                    {
+                        let times='';
+                        for(let l=0;l<Object.keys(this.courseData[i][j].classArrangements[k].classTimes).length;l++)
+                        {
+                            times=times.concat(this.courseData[i][j].classArrangements[k].classTimes[l].classTimeId+',');
+                        }
+                        console.log(this.courseData[i][j]);
+                        console.log(this.courseData[i][j].classArrangements[k]);
+                        console.log(times);
+                        arrangementstr=arrangementstr.concat(this.courseData[i][j].classArrangements[k].building.buildingName+','+
+                            this.courseData[i][j].classArrangements[k].classroom.classroomId+','+
+                            times+
+                            JSON.stringify(this.courseData[i][j].classArrangements[k].dayOfWeek).replace(/"/g,"")+';')
+                    }
+                    this.courseData[i][j].arrangement=arrangementstr;
+                }
+                this.tableData[i]= {
+                    'courseCategoryId': this.courseCategoryData[i].courseCategoryId,
+                    'courseName': this.courseCategoryData[i].courseName,
+                    'schoolName': this.courseCategoryData[i].school.schoolName,
+                    'schoolId': this.courseCategoryData[i].school.schoolId,
+                    'majorName': this.courseCategoryData[i].major.majorName,
+                    'majorId': this.courseCategoryData[i].major.majorId,
+                    'classHour': this.courseCategoryData[i].classHour,
+                    'credit': this.courseCategoryData[i].credit,
+                    children: this.courseData[i]
+                }
             })
         },
         rejectApplication(id){
@@ -411,26 +451,6 @@ export default {
                 if(this.courseCategoryData[i]!==null)
                 {
                     this.getcourse(this.courseCategoryData[i].courseCategoryId,i);
-                    this.tableData[i]={
-                        'courseCategoryId':this.courseCategoryData[i].courseCategoryId,
-                        'courseName':this.courseCategoryData[i].courseName,
-                        'schoolName':this.courseCategoryData[i].school.schoolName,
-                        'schoolId':this.courseCategoryData[i].school.schoolId,
-                        'majorName':this.courseCategoryData[i].major.majorName,
-                        'majorId':this.courseCategoryData[i].major.majorId,
-                        'classHour':this.courseCategoryData[i].classHour,
-                        'credit':this.courseCategoryData[i].credit,
-                    }
-                }
-                if(this.courseCategoryData[i].teacher!==null)
-                {
-                    this.tableData[i].teacherName=this.courseCategoryData[i].teacher.username;
-                    this.tableData[i].teacherId=this.courseCategoryData[i].teacher.userId;
-                }
-                if(this.courseCategoryData[i].major!==null)
-                {
-                    this.tableData[i].majorName=this.courseCategoryData[i].major.majorName;
-                    this.tableData[i].majorId=this.courseCategoryData[i].major.majorId;
                 }
             }
         },
@@ -505,7 +525,7 @@ export default {
                                 type: 'success',
                             });
                             this.addcourse = false;
-                            this.getcourseCategory()
+                            this.$router.go(0);
                         }
                         else if(res.data==='EXIST')
                         {
