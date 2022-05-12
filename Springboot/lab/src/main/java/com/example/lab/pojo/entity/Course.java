@@ -21,7 +21,7 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer courseId;
 
-    // 课程编号
+    // 课程编号(该课程在一类课程中的编号，如.01, .02)
     private Integer courseNumber;
 
     // 学年学期
@@ -64,4 +64,6 @@ public class Course {
             joinColumns = {@JoinColumn(name = "course_id", referencedColumnName = "course_id")},
             inverseJoinColumns = {@JoinColumn(name = "student_id", referencedColumnName ="user_id")})
     private Set<Student> students = new HashSet<>();
+
+    private Integer numberOfStudents;
 }

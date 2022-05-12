@@ -20,6 +20,10 @@ public class CourseCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer courseCategoryId;
 
+    // 课程类编号（如MATH001）
+    @Column(unique = true)
+    private Integer courseCategoryNumber;
+
     // 课程名
     @Column(unique = true)
     private String courseName;

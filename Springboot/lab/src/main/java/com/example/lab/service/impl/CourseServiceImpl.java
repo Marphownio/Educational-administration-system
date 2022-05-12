@@ -94,6 +94,7 @@ public class CourseServiceImpl implements CourseService {
             course.setCourseCategory(newCourseCategory);
             // 添加前准备
             prepareBeforeAddOrUpdateCourse(course);
+            course.setNumberOfStudents(0);
             try {
                 courseRepository.save(course);
             }
@@ -162,8 +163,10 @@ public class CourseServiceImpl implements CourseService {
         }
         // 找到对应课程类
         course.setCourseCategory(courseCategoryService.findCourseCategoryByCourseCategoryId(course.getCourseCategory().getCourseCategoryId()));
+
         // 更新前准备
         prepareBeforeAddOrUpdateCourse(course);
+        course.setNumberOfStudents(course.getStudents().size());
         try {
             courseRepository.save(course);
         }

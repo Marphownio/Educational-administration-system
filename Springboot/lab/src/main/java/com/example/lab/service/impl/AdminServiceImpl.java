@@ -83,7 +83,7 @@ public class AdminServiceImpl implements AdminService {
         List<Course> courses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
         // 备份，失败时回滚
         List<Course> backupCourses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
-        // TODO: 更合理的筛选
+        // TODO: 更合理的筛选, 课程时间冲突，模块复选
         try {
             for (Course course : courses) {
                 List<Student> students = new ArrayList<>(course.getStudents());
