@@ -41,19 +41,19 @@ public class CourseServiceImpl implements CourseService {
     private ResultMessage checkBeforeAddCourse(Course course) {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
         if (findCourseByCourseId(course.getCourseId()) != null) {
-            resultMessage = ResultMessage.EXIST;
-        } else if (course.getTeacher() == null || userService.findTeacherByTeacherId(course.getTeacher().getUserId()) == null
+            return ResultMessage.EXIST;
+        }
+        if (course.getTeacher() == null || userService.findTeacherByTeacherId(course.getTeacher().getUserId()) == null
                 || course.getCourseCategory() == null || course.getClassArrangements().isEmpty()) {
-            resultMessage = ResultMessage.FAILED;
-        } else {
-            for (ClassArrangement classArrangement : course.getClassArrangements()) {
-                Classroom classroom = classroomService.findClassroomById(classArrangement.getClassroom().getClassroomId());
-                if (course.getCapacity() > classroom.getCapacity()) {
-                    return ResultMessage.FAILED;
-                }
-                if (Boolean.FALSE.equals(commonService.isMatchBuildingAndClassroom(classArrangement.getBuilding(),classArrangement.getClassroom()))) {
-                    return ResultMessage.FAILED;
-                }
+            return ResultMessage.FAILED;
+        }
+        for (ClassArrangement classArrangement : course.getClassArrangements()) {
+            Classroom classroom = classroomService.findClassroomById(classArrangement.getClassroom().getClassroomId());
+            if (course.getCapacity() > classroom.getCapacity()) {
+                resultMessage = ResultMessage.FAILED;
+            }
+            if (Boolean.FALSE.equals(commonService.isMatchBuildingAndClassroom(classArrangement.getBuilding(),classArrangement.getClassroom()))) {
+                resultMessage = ResultMessage.FAILED;
             }
         }
         return resultMessage;
@@ -88,31 +88,33 @@ public class CourseServiceImpl implements CourseService {
             return resultMessage;
         }
         ResultMessage resultMessage1 = courseCategoryService.addCourseCategory(course.getCourseCategory());
-        if (resultMessage1 == ResultMessage.SUCCESS || resultMessage1 == ResultMessage.EXIST) {
-            // 由于课程类id可能改变，需要重新获取
-            CourseCategory newCourseCategory = courseCategoryService.findCourseCategoryByCourseName(course.getCourseCategory().getCourseName());
-            course.setCourseCategory(newCourseCategory);
-            // 添加前准备
-            prepareBeforeAddOrUpdateCourse(course);
-            course.setCourseNumber(newCourseCategory.getCourses().size() + 1);
-            course.setNumberOfStudents(0);
-            try {
-                courseRepository.save(course);
-            }
-            catch (Exception e) {
-                if (resultMessage1 == ResultMessage.SUCCESS) {
-                    // 是新增的课程类，由于添加课程失败，所以将该课程类和课程安排删除
-                    courseCategoryService.deleteCourseCategory(newCourseCategory.getCourseCategoryId());
-                    for (ClassArrangement classArrangement : course.getClassArrangements()) {
-                        classArrangementService.deleteClassArrangement(classArrangement.getClassArrangementId());
-                    }
-                }
-                resultMessage = ResultMessage.FAILED;
-            }
-        } else {
+        if (resultMessage1 != ResultMessage.SUCCESS && resultMessage1 != ResultMessage.EXIST) {
+            return ResultMessage.FAILED;
+        }
+        // 由于课程类id可能改变，需要重新获取
+        CourseCategory newCourseCategory = courseCategoryService.findCourseCategoryByCourseName(course.getCourseCategory().getCourseName());
+        course.setCourseCategory(newCourseCategory);
+        // 添加前准备
+        prepareBeforeAddOrUpdateCourse(course);
+        course.setCourseNumber(newCourseCategory.getCourses().size() + 1);
+        course.setNumberOfStudents(0);
+        try {
+            courseRepository.save(course);
+        }
+        catch (Exception e) {
+            addCourseFailed(resultMessage1, newCourseCategory, course);
             resultMessage = ResultMessage.FAILED;
         }
         return resultMessage;
+    }
+    private void addCourseFailed(ResultMessage resultMessage1, CourseCategory newCourseCategory, Course course) {
+        if (resultMessage1 == ResultMessage.SUCCESS) {
+            // 是新增的课程类，由于添加课程失败，所以将该课程类和课程安排删除
+            courseCategoryService.deleteCourseCategory(newCourseCategory.getCourseCategoryId());
+            for (ClassArrangement classArrangement : course.getClassArrangements()) {
+                classArrangementService.deleteClassArrangement(classArrangement.getClassArrangementId());
+            }
+        }
     }
 
     @Override
@@ -153,6 +155,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public ResultMessage updateCourse(Course course) {
+        // 更新前检查
         ResultMessage resultMessage = checkBeforeUpdateCourse(course);
         if (resultMessage != ResultMessage.SUCCESS) {
             return resultMessage;
@@ -167,6 +170,7 @@ public class CourseServiceImpl implements CourseService {
 
         // 更新前准备
         prepareBeforeAddOrUpdateCourse(course);
+        course.setCourseNumber(findCourseByCourseId(course.getCourseId()).getCourseNumber());
         course.setNumberOfStudents(course.getStudents().size());
         try {
             courseRepository.save(course);

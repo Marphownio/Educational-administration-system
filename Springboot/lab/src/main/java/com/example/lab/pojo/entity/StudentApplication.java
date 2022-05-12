@@ -16,6 +16,7 @@ public class StudentApplication {
     // 申请id
     @Id
     @Column(name = "application_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer applicationId;
 
     @ManyToOne
