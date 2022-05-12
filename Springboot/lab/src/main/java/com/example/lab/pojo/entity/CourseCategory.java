@@ -22,7 +22,7 @@ public class CourseCategory {
 
     // 课程类编号（如MATH001）
     @Column(unique = true)
-    private Integer courseCategoryNumber;
+    private String courseCategoryNumber;
 
     // 课程名
     @Column(unique = true)
