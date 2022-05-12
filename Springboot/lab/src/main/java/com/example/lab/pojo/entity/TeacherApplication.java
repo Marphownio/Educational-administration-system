@@ -25,9 +25,6 @@ public class TeacherApplication {
     // 课程id
     private Integer courseId;
 
-    // 课程编号
-    private Integer courseNumber;
-
     // 选课容量
     private Integer capacity;
 

@@ -94,6 +94,7 @@ public class CourseServiceImpl implements CourseService {
             course.setCourseCategory(newCourseCategory);
             // 添加前准备
             prepareBeforeAddOrUpdateCourse(course);
+            course.setCourseNumber(newCourseCategory.getCourses().size() + 1);
             course.setNumberOfStudents(0);
             try {
                 courseRepository.save(course);

@@ -108,7 +108,6 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         Course course = new Course();
         Admin admin = adminService.getAdmin();
         if (application.getType() != ApplicationType.DELETE) {
-            course.setCourseNumber(application.getCourseNumber());
             course.setAcademicYear(admin.getAcademicYear());
             course.setTerm(admin.getTerm());
             course.setCapacity(application.getCapacity());
