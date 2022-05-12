@@ -19,12 +19,12 @@
             :data="selectableDataShow"
         >
           <el-table-column align="center" label="课程编号">
-            <el-table-column align="center" width="130px" prop="courseId">
+            <el-table-column align="center" width="130px" prop="courseNumber">
               <template #header>
                 <el-input  v-model="search11" @change="search()" size="small" placeholder="搜索课程编号" />
               </template>
               <template v-slot="scope">
-                {{scope.row.courseId}}
+                {{scope.row.courseNumber}}
               </template>
             </el-table-column>
           </el-table-column>
@@ -147,7 +147,7 @@
       <el-table-column align="center" prop="classTimeId,startTimeHour,startTimeMin,endTimeHour,endTimeMin" label="次">
         <template v-slot="scope">
           <p class="xxh1">第{{scope.row.classTimeId}}节课</p>
-          <p class="xxh2">{{scope.row.startTimeHour}}:{{scope.row.startTimeMin}}---{{scope.row.endTimeHour}}:{{scope.row.endTimeMin}}</p>
+          <p class="xxh2">{{scope.row.startTimeHour}}:<span v-if="scope.row.startTimeMin<10">0</span>{{scope.row.startTimeMin}}---{{scope.row.endTimeHour}}:<span v-if="scope.row.endTimeMin<10">0</span>{{scope.row.endTimeMin}}</p>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="name" label="一">
@@ -222,10 +222,28 @@
       </el-table-column>
     </el-table>
 
-    <el-table id="classtimeData" :data="theclasstimeData" style="width: 100%">
-      <el-table-column prop="date" align="center" label="日次" />
-      <el-table-column prop="name" align="center" label="节次" />
-      <el-table-column prop="address" align="center" label="教室" />
+    <el-table id="classtimeData" :data="theClassTimeData" style="width: 100%">
+      <el-table-column prop="dayOfWeek" align="center" label="日次">
+        <template v-slot="scope">
+          <span v-if="scope.row.dayOfWeek=='MONDAY'">周一</span>
+          <span v-if="scope.row.dayOfWeek=='TUESDAY'">周二</span>
+          <span v-if="scope.row.dayOfWeek=='WEDNESDAY'">周三</span>
+          <span v-if="scope.row.dayOfWeek=='THURSDAY'">周四</span>
+          <span v-if="scope.row.dayOfWeek=='FRIDAY'">周五</span>
+          <span v-if="scope.row.dayOfWeek=='SATURDAY'">周六</span>
+          <span v-if="scope.row.dayOfWeek=='SUNDAY'">周日</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="classTimes" align="center" label="节次">
+        <template v-slot="scope">
+          <span v-for="item in scope.row.classTimes">{{item.classTimeId}};</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="building.buildingName,classroom.classroomId" align="center" label="教室">
+      <template v-slot="scope">
+        {{scope.row.building.buildingName}}-{{scope.row.classroom.classroomId}}
+      </template>
+      </el-table-column>
     </el-table>
   </el-dialog>
 

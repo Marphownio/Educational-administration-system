@@ -9,89 +9,96 @@ export default {
         Nav
     },
     data(){
-        return{
-            schooltimetable:[],
-            classinfortable1:[
+        return {
+            schooltimetable: [],
+            classinfortable1: [
                 {
-                    classid:'MATH0001',
-                    classname:'数学分析',
-                    teacher:'李四',
-                    classroom:'H3102',
-                    classtime:[
-                        {day:'2',
-                            classci:[
-                                '1','2','3'
-                            ]
+                    academicYear: "2000-2001",
+                    capacity: 30,
+                    classArrangements: [
+                        {
+                            classArrangementId: 8,
+                            building:
+                                {
+                                    buildingId: 2,
+                                    buildingName: "第二教学楼"
+                                },
+                            classroom:
+                                {
+                                    building: {buildingId: 2, buildingName: "第二教学楼"},
+                                    capacity: 80,
+                                    classroomId: 202
+                                },
+                            dayOfWeek: "TUESDAY",
+                            classTimes: [{
+                                classTimeId: 1,
+                                startTimeHour: null,
+                                startTimeMin: null,
+                                endTimeHour: null,
+                                endTimeMin: null
+                            }],
+                        },],
+                    courseCategory:
+                        {
+                            courseCategoryId: 1,
+                            courseName: "数学分析",
+                            classHour: 5,
+                            credit: 5,
                         },
-                    ],
+                    courseId: 2,
+                    courseNumber: 2,
+                    teacher: {username: "哈哈哈",},
                 },
-                {
-                    classid:'MATH0002',
-                    classname:'高等代数',
-                    teacher:'张三',
-                    classroom:'H3108',
-                    classtime:[
-                        {day:'3',
-                            classci:[
-                                '1','3'
-                            ]
-                        },
-                        {day:'5',
-                            classci:[
-                                '2'
-                            ]
-                        },
-                    ],
-                },
-             ],
+            ],
 
 
-            tianCi:[
-                { text: '周一', value: '1' },
-                { text: '周二', value: '2' },
-                { text: '周三', value: '3' },
-                { text: '周四', value: '4' },
-                { text: '周五', value: '5' },
-                { text: '周六', value: '6' },
-                { text: '周日', value: '7' },
+            tianCi: [
+                {text: '周一', value: '1'},
+                {text: '周二', value: '2'},
+                {text: '周三', value: '3'},
+                {text: '周四', value: '4'},
+                {text: '周五', value: '5'},
+                {text: '周六', value: '6'},
+                {text: '周日', value: '7'},
             ],
-            jieCi:[
-                { text: '1', value: '1' },
-                { text: '2', value: '2' },
-                { text: '3', value: '3' },
-                { text: '4', value: '4' },
-                { text: '5', value: '5' },
-                { text: '6', value: '6' },
-                { text: '7', value: '7' },
+            jieCi: [
+                {text: '1', value: '1'},
+                {text: '2', value: '2'},
+                {text: '3', value: '3'},
+                {text: '4', value: '4'},
+                {text: '5', value: '5'},
+                {text: '6', value: '6'},
+                {text: '7', value: '7'},
             ],
-            teachingBuildings:[],
-            teachingRooms:[],
-            selectableDataShow:[{}],
-            selectableData1:[{}],
-            selectableData2:[{}],
-            selectableData:[],
-            search11:'',
-            search22:'',
-            search33:'',
-            dialogVisible1:false,
-            applyForSelectVisiable:false,
-            applyForSelectFormRules:({
+            teachingBuildings: [],
+            teachingRooms: [],
+            selectableDataShow: [{}],
+            selectableData1: [{}],
+            selectableData2: [{}],
+            selectableData: [],
+            search11: '',
+            search22: '',
+            search33: '',
+            dialogVisible1: false,
+            applyForSelectVisiable: false,
+            applyForSelectFormRules: ({
                 applyReason: [
                     {required: true, message: '请输入申请理由', trigger: 'blur',},
                 ]
             }),
-            applyForSelectForm:{
-                applyClassId:'',
-                applyClassName:'',
-                applyStudentId:'',
-                applyStudentName:'',
-                applyReason:'',
+            applyForSelectForm: {
+                applyClassId: '',
+                applyClassName: '',
+                applyStudentId: '',
+                applyStudentName: '',
+                applyReason: '',
             },
-            userTable:{
-                User:'',
-                id:'',
-                name:'',
-            }
+            userTable: {
+                User: '',
+                id: '',
+                name: '',
+            },
+            theClassTimeData:[],
         }
     },
     mounted(){},
@@ -138,7 +145,7 @@ export default {
                 this.selectableData.filter(
                     (data) =>
                         !this.search11 ||
-                        data.courseId.toLowerCase().includes(this.search11.toLowerCase())
+                        String(data.courseNumber).toLowerCase().includes(this.search11.toLowerCase())
                 )
             );
             this.selectableData2 = computed(() =>
@@ -163,11 +170,15 @@ export default {
                 that.cleanTable();
                 that.fillInClassInForm2();
                 that.findTarget(currentRow);
+                that.fillInTimeTable(currentRow.classArrangements);
             }, 300); // 定时时间
+        },
+        fillInTimeTable(classArrangements){
+            this.theClassTimeData=classArrangements;
         },
         getclassinfo(){
             const that=this;
-                request.get("/course/list")
+                request.get("/student/course/selectable")
                     .then(function(res){
                             console.log(res);
                             that.selectableData=res;
@@ -203,15 +214,20 @@ export default {
                     }
             )
         },
-        conflictTest(day,cishu){
-            // const that=this;
-            // let currentArragement
-            // for(let i=0;i<that.classinfortable1.length;i++){
-            //     for(let j=0;j<that.classinfortable1[i].classtime.length;i++){
-            //         currentArragement=that.classinfortable1[i].classtime[j];
-            //         if(currentArragement.day==day&&)
-            //     }
-            // }
+        conflictTest(day,ci){
+            const that=this;
+            for(let i=0;i<that.classinfortable1.length;i++){
+                for(let j=0;j<that.classinfortable1[i].classArrangements.length;j++){
+                    if(that.classinfortable1[i].classArrangements[j].dayOfWeek==day){
+                        for(let k=0;k<that.classinfortable1[i].classArrangements[j].classTimes.length;k++){
+                            if(that.classinfortable1[i].classArrangements[j].classTimes[k].classTimeId==ci){
+                                return 1;
+                            }
+                        }
+                    }
+                }
+            }
+            return 0;
 
         },
         cleanTable(){
@@ -223,9 +239,18 @@ export default {
             let SaturdayObj=document.querySelectorAll(".Saturday");
             let SundayObj=document.querySelectorAll(".Sunday");
             let week=[MondayObj,TuesdayObj,WednesdayObj,ThursdayObj,FridayObj,SaturdayObj,SundayObj];
+            let inform;
             for(let i=0;i<week.length;i++) {
                 for(let j=0;j<week[i].length;j++){
                     week[i][j].parentElement.parentElement.style.backgroundColor="#FFFFFF";
+                    inform=week[i][j].firstElementChild;
+                    inform.innerText="";
+                    inform=inform.nextElementSibling;
+                    inform.innerText="";
+                    inform=inform.nextElementSibling;
+                    inform.innerText="";
+                    inform=inform.nextElementSibling;
+                    inform.innerText="";
                 }
             }
         },
@@ -239,14 +264,49 @@ export default {
             let SundayObj=document.querySelectorAll(".Sunday");
             let week=[MondayObj,TuesdayObj,WednesdayObj,ThursdayObj,FridayObj,SaturdayObj,SundayObj];
             const that=this;
-            let currentClass;
-            for(let i=0;i<currentRow.classTime.length;i++){
-                currentClass=currentRow.classTime[i];
-                if(that.conflictTest()==1){
-                    week[currentClass.day-1][currentClass.cishu-1].parentElement.parentElement.style.backgroundColor="#c45656";
+            let currentCi;
+            let inform;
+            let currentClassDay;
+            for(let i=0;i<currentRow.classArrangements.length;i++){
+                switch (currentRow.classArrangements[i].dayOfWeek){
+                    case "MONDAY":
+                        currentClassDay=1;
+                        break;
+                    case "TUESDAY":
+                        currentClassDay=2;
+                        break;
+                    case "WEDNESDAY":
+                        currentClassDay=3;
+                        break;
+                    case "THURSDAY":
+                        currentClassDay=4;
+                        break;
+                    case "FRIDAY":
+                        currentClassDay=5;
+                        break;
+                    case "SATURDAY":
+                        currentClassDay=6;
+                        break;
+                    case "SUNDAY":
+                        currentClassDay=7;
+                        break;
                 }
-                else{
-                    week[currentClass.day-1][currentClass.cishu-1].parentElement.parentElement.style.backgroundColor="#409EFF";
+                for(let j=0;j<currentRow.classArrangements[i].classTimes.length;j++){
+                    currentCi = currentRow.classArrangements[i].classTimes[j].classTimeId;
+                    if(that.conflictTest(currentRow.classArrangements[i].dayOfWeek,currentCi)==1){
+                        week[currentClassDay-1][currentCi-1].parentElement.parentElement.style.backgroundColor="#c45656";
+                    }
+                    else{
+                        week[currentClassDay-1][currentCi-1].parentElement.parentElement.style.backgroundColor="#409EFF";
+                        inform=week[currentClassDay-1][currentCi-1].firstElementChild;
+                        inform.innerText=currentRow.courseNumber;
+                        inform=inform.nextElementSibling;
+                        inform.innerText=currentRow.courseCategory.courseName;
+                        inform=inform.nextElementSibling;
+                        inform.innerText=currentRow.teacher.username;
+                        inform=inform.nextElementSibling;
+                        inform.innerText=currentRow.classArrangements[i].building.buildingName+currentRow.classArrangements[i].classroom.classroomId;
+                    }
                 }
             }
         },
@@ -267,21 +327,42 @@ export default {
             let inform;
             for(let i=0;i<that.classinfortable1.length;i++){
                 currentClass=that.classinfortable1[i];
-                for(let j=0;j<currentClass.classtime.length;j++){
-                    currentClassDay=currentClass.classtime[j].day;
-                    currentClassDayTimeObj=currentClass.classtime[j].classci;
+                for(let j=0;j<currentClass.classArrangements.length;j++){
+                    switch (currentClass.classArrangements[j].dayOfWeek){
+                        case "MONDAY":
+                            currentClassDay=1;
+                            break;
+                        case "TUESDAY":
+                            currentClassDay=2;
+                            break;
+                        case "WEDNESDAY":
+                            currentClassDay=3;
+                            break;
+                        case "THURSDAY":
+                            currentClassDay=4;
+                            break;
+                        case "FRIDAY":
+                            currentClassDay=5;
+                            break;
+                        case "SATURDAY":
+                            currentClassDay=6;
+                            break;
+                        case "SUNDAY":
+                            currentClassDay=7;
+                            break;
+                    }
+                    currentClassDayTimeObj=currentClass.classArrangements[j].classTimes;
                     ci=0
-                    for(ci;ci<currentClassDayTimeObj.length;){
-                        week[currentClassDay-1][currentClassDayTimeObj[ci]-1].parentElement.parentElement.style.backgroundColor="#B0C4DE";
-                        inform=week[currentClassDay-1][currentClassDayTimeObj[ci]-1].firstElementChild;
-                        inform.innerText=currentClass.classid;
+                    for(ci;ci<currentClassDayTimeObj.length;ci++){
+                        week[currentClassDay-1][currentClassDayTimeObj[ci].classTimeId-1].parentElement.parentElement.style.backgroundColor="#B0C4DE";
+                        inform=week[currentClassDay-1][currentClassDayTimeObj[ci].classTimeId-1].firstElementChild;
+                        inform.innerText=currentClass.courseNumber;
                         inform=inform.nextElementSibling;
-                        inform.innerText=currentClass.classname;
+                        inform.innerText=currentClass.courseCategory.courseName;
                         inform=inform.nextElementSibling;
-                        inform.innerText=currentClass.teacher;
+                        inform.innerText=currentClass.teacher.username;
                         inform=inform.nextElementSibling;
-                        inform.innerText=currentClass.classroom;
-                        ci=ci+1;
+                        inform.innerText=currentClass.classArrangements[j].building.buildingName+currentClass.classArrangements[j].classroom.classroomId;
                     }
                 }
             }

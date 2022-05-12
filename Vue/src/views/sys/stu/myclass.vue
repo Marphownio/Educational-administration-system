@@ -13,7 +13,7 @@
       <el-table-column align="center" prop="classTimeId,startTimeHour,startTimeMin,endTimeHour,endTimeMin" label="课次" width="155px">
         <template v-slot="scope">
           <h3>第{{scope.row.classTimeId}}节课</h3>
-          <h6>{{scope.row.startTimeHour}}:{{scope.row.startTimeMin}}---{{scope.row.endTimeHour}}:{{scope.row.endTimeMin}}</h6>
+          <h6>{{scope.row.startTimeHour}}:<span v-if="scope.row.startTimeMin<10">0</span>{{scope.row.startTimeMin}}---{{scope.row.endTimeHour}}:<span v-if="scope.row.endTimeMin<10">0</span>{{scope.row.endTimeMin}}</h6>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="name" label="周一" width="155px">
