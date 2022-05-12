@@ -314,7 +314,6 @@ export default {
         },
         getcourseCategory(){
             request.get("/courseCategory/list").then(res=>{
-                console.log(res);
                 for(let i=0;i<Object.keys(res).length;i++)
                 {
                     let coursecategory={
@@ -348,6 +347,7 @@ export default {
         getapplicationData(){
             request.get("/teacher/application/list").then(res=>{
                 this.applicationData=res;
+                console.log(res);
                 for(let i=0;i<Object.keys(this.applicationData).length;i++)
                 {
                     if(this.applicationData[i].school!==null)
@@ -430,7 +430,6 @@ export default {
             }
             }).then(res=>{
                 this.courseData[i]= res;
-                console.log(res);
                 for(let j=0;j<Object.keys(this.courseData[i]).length;j++)
                 {
                     this.courseData[i][j].courseName=this.courseCategoryData[i].courseName;
@@ -607,9 +606,7 @@ export default {
             })
         },
         submitupdatecourse(){
-            console.log(this.ruleForm1);
             this.fillclassArrangementId();
-            console.log(this.ruleForm1);
             this.$refs.ruleForm1.validate(valid=>{
                 if(valid){
                     let params ={};
@@ -799,8 +796,6 @@ export default {
                         this.classroomData[i]= res;
                     })
                 }
-                console.log(this.ruleForm1);
-                console.log(this.ruleForm1.classArrangements[0].building);
             }
             else {
                 this.updatecoursecategory=true;

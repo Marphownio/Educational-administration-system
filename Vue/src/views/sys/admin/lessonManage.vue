@@ -73,7 +73,14 @@
                     <el-tag v-if="scope.row.type==='DELETE'" type="danger" >删除</el-tag>
                 </template>
                 </el-table-column>
-                <el-table-column prop="applicationId" v-if="false" />
+                <el-table-column prop="openToMajors" label="" width="120px" v-if="false"/>
+                <el-table-column prop="classArrangements" label="" width="120px" v-if="false"/>
+                <el-table-column prop="courseId" label="" width="120px" v-if="false"/>
+                <el-table-column prop="academicYear" label="" width="120px" v-if="false"/>
+                <el-table-column prop="term" label="" width="120px" v-if="false"/>
+                <el-table-column prop="courseCategoryId" label="" width="120px" v-if="false"/>
+                <el-table-column prop="courseCategoryNumber" label="" width="120px" v-if="false"/>
+                <el-table-column prop="courseCategoryNumbershow" label="课程代码" width="120px"/>
                 <el-table-column prop="courseName" label="课程名称" width="120px" />
                 <el-table-column prop="schoolName" label="开课院系" width="120px"/>
                 <el-table-column prop="schoolId" label="学院代码" width="120px"/>
@@ -83,9 +90,8 @@
                 <el-table-column prop="credit" label="学分" width="120px"/>
                 <el-table-column prop="teacherName" label="任课教师" width="120px"/>
                 <el-table-column prop="teacherId" label="教师工号" width="120px"/>
-                <el-table-column prop="courseTime" label="上课时间" width="120px"/>
-                <el-table-column prop="coursePlace" label="上课地点" width="120px"/>
                 <el-table-column prop="capacity" label="选课容量" width="120px"/>
+                <el-table-column prop="classarrangement" label="课程安排" width="120px"/>
                 <el-table-column prop="introduction" label="课程介绍" />
                 <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="170px">
                     <div>
