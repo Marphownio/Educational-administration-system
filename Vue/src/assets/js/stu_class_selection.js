@@ -29,7 +29,7 @@ export default {
                                     capacity: 80,
                                     classroomId: 202
                                 },
-                            ayOfWeek: "THURSDAY",
+                            dayOfWeek: "TUESDAY",
                             classTimes: [{
                                 classTimeId: 1,
                                 startTimeHour: null,
@@ -47,7 +47,7 @@ export default {
                         },
                     courseId: 2,
                     courseNumber: 2,
-                    teacher: {username: "李四",},
+                    teacher: {username: "哈哈哈",},
                 },
             ],
 
@@ -97,7 +97,8 @@ export default {
                 User: '',
                 id: '',
                 name: '',
-            }
+            },
+            theClassTimeData:[],
         }
     },
     mounted(){},
@@ -144,7 +145,7 @@ export default {
                 this.selectableData.filter(
                     (data) =>
                         !this.search11 ||
-                        String(data.courseId).toLowerCase().includes(this.search11.toLowerCase())
+                        String(data.courseNumber).toLowerCase().includes(this.search11.toLowerCase())
                 )
             );
             this.selectableData2 = computed(() =>
@@ -169,11 +170,15 @@ export default {
                 that.cleanTable();
                 that.fillInClassInForm2();
                 that.findTarget(currentRow);
+                that.fillInTimeTable(currentRow.classArrangements);
             }, 300); // 定时时间
+        },
+        fillInTimeTable(classArrangements){
+            this.theClassTimeData=classArrangements;
         },
         getclassinfo(){
             const that=this;
-                request.get("/course/list")
+                request.get("/student/course/selectable")
                     .then(function(res){
                             console.log(res);
                             that.selectableData=res;
@@ -209,15 +214,20 @@ export default {
                     }
             )
         },
-        conflictTest(day,cishu){
-            // const that=this;
-            // let currentArragement
-            // for(let i=0;i<that.classinfortable1.length;i++){
-            //     for(let j=0;j<that.classinfortable1[i].classtime.length;i++){
-            //         currentArragement=that.classinfortable1[i].classtime[j];
-            //         if(currentArragement.day==day&&)
-            //     }
-            // }
+        conflictTest(day,ci){
+            const that=this;
+            for(let i=0;i<that.classinfortable1.length;i++){
+                for(let j=0;j<that.classinfortable1[i].classArrangements.length;j++){
+                    if(that.classinfortable1[i].classArrangements[j].dayOfWeek==day){
+                        for(let k=0;k<that.classinfortable1[i].classArrangements[j].classTimes.length;k++){
+                            if(that.classinfortable1[i].classArrangements[j].classTimes[k].classTimeId==ci){
+                                return 1;
+                            }
+                        }
+                    }
+                }
+            }
+            return 0;
 
         },
         cleanTable(){
@@ -229,9 +239,18 @@ export default {
             let SaturdayObj=document.querySelectorAll(".Saturday");
             let SundayObj=document.querySelectorAll(".Sunday");
             let week=[MondayObj,TuesdayObj,WednesdayObj,ThursdayObj,FridayObj,SaturdayObj,SundayObj];
+            let inform;
             for(let i=0;i<week.length;i++) {
                 for(let j=0;j<week[i].length;j++){
                     week[i][j].parentElement.parentElement.style.backgroundColor="#FFFFFF";
+                    inform=week[i][j].firstElementChild;
+                    inform.innerText="";
+                    inform=inform.nextElementSibling;
+                    inform.innerText="";
+                    inform=inform.nextElementSibling;
+                    inform.innerText="";
+                    inform=inform.nextElementSibling;
+                    inform.innerText="";
                 }
             }
         },
@@ -245,14 +264,49 @@ export default {
             let SundayObj=document.querySelectorAll(".Sunday");
             let week=[MondayObj,TuesdayObj,WednesdayObj,ThursdayObj,FridayObj,SaturdayObj,SundayObj];
             const that=this;
-            let currentClass;
-            for(let i=0;i<currentRow.classTime.length;i++){
-                currentClass=currentRow.classTime[i];
-                if(that.conflictTest()==1){
-                    week[currentClass.day-1][currentClass.cishu-1].parentElement.parentElement.style.backgroundColor="#c45656";
+            let currentCi;
+            let inform;
+            let currentClassDay;
+            for(let i=0;i<currentRow.classArrangements.length;i++){
+                switch (currentRow.classArrangements[i].dayOfWeek){
+                    case "MONDAY":
+                        currentClassDay=1;
+                        break;
+                    case "TUESDAY":
+                        currentClassDay=2;
+                        break;
+                    case "WEDNESDAY":
+                        currentClassDay=3;
+                        break;
+                    case "THURSDAY":
+                        currentClassDay=4;
+                        break;
+                    case "FRIDAY":
+                        currentClassDay=5;
+                        break;
+                    case "SATURDAY":
+                        currentClassDay=6;
+                        break;
+                    case "SUNDAY":
+                        currentClassDay=7;
+                        break;
                 }
-                else{
-                    week[currentClass.day-1][currentClass.cishu-1].parentElement.parentElement.style.backgroundColor="#409EFF";
+                for(let j=0;j<currentRow.classArrangements[i].classTimes.length;j++){
+                    currentCi = currentRow.classArrangements[i].classTimes[j].classTimeId;
+                    if(that.conflictTest(currentRow.classArrangements[i].dayOfWeek,currentCi)==1){
+                        week[currentClassDay-1][currentCi-1].parentElement.parentElement.style.backgroundColor="#c45656";
+                    }
+                    else{
+                        week[currentClassDay-1][currentCi-1].parentElement.parentElement.style.backgroundColor="#409EFF";
+                        inform=week[currentClassDay-1][currentCi-1].firstElementChild;
+                        inform.innerText=currentRow.courseNumber;
+                        inform=inform.nextElementSibling;
+                        inform.innerText=currentRow.courseCategory.courseName;
+                        inform=inform.nextElementSibling;
+                        inform.innerText=currentRow.teacher.username;
+                        inform=inform.nextElementSibling;
+                        inform.innerText=currentRow.classArrangements[i].building.buildingName+currentRow.classArrangements[i].classroom.classroomId;
+                    }
                 }
             }
         },
@@ -273,21 +327,42 @@ export default {
             let inform;
             for(let i=0;i<that.classinfortable1.length;i++){
                 currentClass=that.classinfortable1[i];
-                for(let j=0;j<currentClass.classtime.length;j++){
-                    currentClassDay=currentClass.classtime[j].day;
-                    currentClassDayTimeObj=currentClass.classtime[j].classci;
+                for(let j=0;j<currentClass.classArrangements.length;j++){
+                    switch (currentClass.classArrangements[j].dayOfWeek){
+                        case "MONDAY":
+                            currentClassDay=1;
+                            break;
+                        case "TUESDAY":
+                            currentClassDay=2;
+                            break;
+                        case "WEDNESDAY":
+                            currentClassDay=3;
+                            break;
+                        case "THURSDAY":
+                            currentClassDay=4;
+                            break;
+                        case "FRIDAY":
+                            currentClassDay=5;
+                            break;
+                        case "SATURDAY":
+                            currentClassDay=6;
+                            break;
+                        case "SUNDAY":
+                            currentClassDay=7;
+                            break;
+                    }
+                    currentClassDayTimeObj=currentClass.classArrangements[j].classTimes;
                     ci=0
-                    for(ci;ci<currentClassDayTimeObj.length;){
-                        week[currentClassDay-1][currentClassDayTimeObj[ci]-1].parentElement.parentElement.style.backgroundColor="#B0C4DE";
-                        inform=week[currentClassDay-1][currentClassDayTimeObj[ci]-1].firstElementChild;
-                        inform.innerText=currentClass.classid;
+                    for(ci;ci<currentClassDayTimeObj.length;ci++){
+                        week[currentClassDay-1][currentClassDayTimeObj[ci].classTimeId-1].parentElement.parentElement.style.backgroundColor="#B0C4DE";
+                        inform=week[currentClassDay-1][currentClassDayTimeObj[ci].classTimeId-1].firstElementChild;
+                        inform.innerText=currentClass.courseNumber;
                         inform=inform.nextElementSibling;
-                        inform.innerText=currentClass.classname;
+                        inform.innerText=currentClass.courseCategory.courseName;
                         inform=inform.nextElementSibling;
-                        inform.innerText=currentClass.teacher;
+                        inform.innerText=currentClass.teacher.username;
                         inform=inform.nextElementSibling;
-                        inform.innerText=currentClass.classroom;
-                        ci=ci+1;
+                        inform.innerText=currentClass.classArrangements[j].building.buildingName+currentClass.classArrangements[j].classroom.classroomId;
                     }
                 }
             }
