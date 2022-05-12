@@ -29,22 +29,22 @@
             </el-form-item>
         </el-form>
         <el-table id="eltable" :data="tableData" >
-            <el-table-column fixed prop="userId" label="学号/工号" width="120px"/>
-            <el-table-column prop="role" label="身份" width="120px" />
-            <el-table-column prop="username" label="姓名" width="120px" />
-            <el-table-column v-slot="scope" prop="status" label="状态" width="120px">
+            <el-table-column fixed prop="userId" label="学号/工号" width="120px" sortable/>
+            <el-table-column prop="role" label="身份" width="120px" sortable/>
+            <el-table-column prop="username" label="姓名" width="120px" sortable/>
+            <el-table-column v-slot="scope" prop="status" label="状态" width="120px" sortable>
                 <el-tag v-if="scope.row.status===true&&scope.row.role==='STUDENT'" type="success">在读</el-tag>
                 <el-tag v-if="scope.row.status===true&&scope.row.role==='TEACHER'" type="success">在岗</el-tag>
                 <el-tag v-if="scope.row.status===false&&scope.row.role==='STUDENT'" type="info" >已毕业</el-tag>
                 <el-tag v-if="scope.row.status===false&&scope.row.role==='TEACHER'" type="info">已离职</el-tag>
             </el-table-column>
-            <el-table-column prop="schoolName" label="学院" width="120px"/>
-            <el-table-column prop="schoolId" label="学院代码" />
-            <el-table-column prop="majorName" label="专业" width="120px"/>
-            <el-table-column prop="majorId" label="专业代码" />
-            <el-table-column prop="idNumber" label="身份证号" width="180px"/>
-            <el-table-column prop="phoneNumber" label="手机号" width="120px"/>
-            <el-table-column prop="email" label="邮箱" width="180px"/>
+            <el-table-column prop="schoolName" label="学院" width="120px" sortable/>
+            <el-table-column prop="schoolId" label="学院代码" sortable/>
+            <el-table-column prop="majorName" label="专业" width="120px" sortable/>
+            <el-table-column prop="majorId" label="专业代码" sortable/>
+            <el-table-column prop="idNumber" label="身份证号" width="180px" sortable/>
+            <el-table-column prop="phoneNumber" label="手机号" width="120px" sortable/>
+            <el-table-column prop="email" label="邮箱" width="180px" sortable/>
             <el-table-column v-slot="scope"  fixed="right" prop="icon" label="操作" width="170px">
             <div>
                 <el-button @click="editHandle(scope.row)">编辑</el-button>
