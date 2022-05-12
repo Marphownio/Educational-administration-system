@@ -9,88 +9,94 @@ export default {
         Nav
     },
     data(){
-        return{
-            schooltimetable:[],
-            classinfortable1:[
+        return {
+            schooltimetable: [],
+            classinfortable1: [
                 {
-                    classid:'MATH0001',
-                    classname:'数学分析',
-                    teacher:'李四',
-                    classroom:'H3102',
-                    classtime:[
-                        {day:'2',
-                            classci:[
-                                '1','2','3'
-                            ]
+                    academicYear: "2000-2001",
+                    capacity: 30,
+                    classArrangements: [
+                        {
+                            classArrangementId: 8,
+                            building:
+                                {
+                                    buildingId: 2,
+                                    buildingName: "第二教学楼"
+                                },
+                            classroom:
+                                {
+                                    building: {buildingId: 2, buildingName: "第二教学楼"},
+                                    capacity: 80,
+                                    classroomId: 202
+                                },
+                            ayOfWeek: "THURSDAY",
+                            classTimes: [{
+                                classTimeId: 1,
+                                startTimeHour: null,
+                                startTimeMin: null,
+                                endTimeHour: null,
+                                endTimeMin: null
+                            }],
+                        },],
+                    courseCategory:
+                        {
+                            courseCategoryId: 1,
+                            courseName: "数学分析",
+                            classHour: 5,
+                            credit: 5,
                         },
-                    ],
+                    courseId: 2,
+                    courseNumber: 2,
+                    teacher: {username: "李四",},
                 },
-                {
-                    classid:'MATH0002',
-                    classname:'高等代数',
-                    teacher:'张三',
-                    classroom:'H3108',
-                    classtime:[
-                        {day:'3',
-                            classci:[
-                                '1','3'
-                            ]
-                        },
-                        {day:'5',
-                            classci:[
-                                '2'
-                            ]
-                        },
-                    ],
-                },
-             ],
+            ],
 
 
-            tianCi:[
-                { text: '周一', value: '1' },
-                { text: '周二', value: '2' },
-                { text: '周三', value: '3' },
-                { text: '周四', value: '4' },
-                { text: '周五', value: '5' },
-                { text: '周六', value: '6' },
-                { text: '周日', value: '7' },
+            tianCi: [
+                {text: '周一', value: '1'},
+                {text: '周二', value: '2'},
+                {text: '周三', value: '3'},
+                {text: '周四', value: '4'},
+                {text: '周五', value: '5'},
+                {text: '周六', value: '6'},
+                {text: '周日', value: '7'},
             ],
-            jieCi:[
-                { text: '1', value: '1' },
-                { text: '2', value: '2' },
-                { text: '3', value: '3' },
-                { text: '4', value: '4' },
-                { text: '5', value: '5' },
-                { text: '6', value: '6' },
-                { text: '7', value: '7' },
+            jieCi: [
+                {text: '1', value: '1'},
+                {text: '2', value: '2'},
+                {text: '3', value: '3'},
+                {text: '4', value: '4'},
+                {text: '5', value: '5'},
+                {text: '6', value: '6'},
+                {text: '7', value: '7'},
             ],
-            teachingBuildings:[],
-            teachingRooms:[],
-            selectableDataShow:[{}],
-            selectableData1:[{}],
-            selectableData2:[{}],
-            selectableData:[],
-            search11:'',
-            search22:'',
-            search33:'',
-            dialogVisible1:false,
-            applyForSelectVisiable:false,
-            applyForSelectFormRules:({
+            teachingBuildings: [],
+            teachingRooms: [],
+            selectableDataShow: [{}],
+            selectableData1: [{}],
+            selectableData2: [{}],
+            selectableData: [],
+            search11: '',
+            search22: '',
+            search33: '',
+            dialogVisible1: false,
+            applyForSelectVisiable: false,
+            applyForSelectFormRules: ({
                 applyReason: [
                     {required: true, message: '请输入申请理由', trigger: 'blur',},
                 ]
             }),
-            applyForSelectForm:{
-                applyClassId:'',
-                applyClassName:'',
-                applyStudentId:'',
-                applyStudentName:'',
-                applyReason:'',
+            applyForSelectForm: {
+                applyClassId: '',
+                applyClassName: '',
+                applyStudentId: '',
+                applyStudentName: '',
+                applyReason: '',
             },
-            userTable:{
-                User:'',
-                id:'',
-                name:'',
+            userTable: {
+                User: '',
+                id: '',
+                name: '',
             }
         }
     },
@@ -138,7 +144,7 @@ export default {
                 this.selectableData.filter(
                     (data) =>
                         !this.search11 ||
-                        data.courseId.toLowerCase().includes(this.search11.toLowerCase())
+                        String(data.courseId).toLowerCase().includes(this.search11.toLowerCase())
                 )
             );
             this.selectableData2 = computed(() =>
