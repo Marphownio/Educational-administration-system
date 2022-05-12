@@ -215,7 +215,6 @@ export default {
             })
         },
         "submitForm1"(){
-            console.log(typeof  this.ruleForm.phoneNumber)
             this.$refs.ruleForm.validate(valid=>{
                 if(valid){
                     let params = {};

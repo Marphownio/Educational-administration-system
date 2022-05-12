@@ -36,7 +36,8 @@
             <el-table-column prop="academicYear" label="" width="120px" v-if="false"/>
             <el-table-column prop="term" label="" width="120px" v-if="false"/>
             <el-table-column prop="courseCategoryId" label="" width="120px" v-if="false"/>
-            <el-table-column prop="courseNumber" label="课程代码" width="120px"/>
+            <el-table-column prop="courseCategoryNumber" label="" width="120px" v-if="false"/>
+            <el-table-column prop="courseCategoryNumbershow" label="课程代码" width="120px"/>
             <el-table-column prop="courseName" label="课程名称" width="120px" />
             <el-table-column prop="schoolName" label="开课院系" width="120px"/>
             <el-table-column prop="schoolId" label="学院代码" width="120px"/>
@@ -47,7 +48,7 @@
             <el-table-column prop="teacherName" label="任课教师" width="120px"/>
             <el-table-column prop="teacherId" label="教师工号" width="120px"/>
             <el-table-column prop="capacity" label="选课容量" width="120px"/>
-            <el-table-column prop="arrangement" label="课程安排" width="120px"/>
+            <el-table-column prop="classarrangement" label="课程安排" width="120px"/>
             <el-table-column prop="introduction" label="课程介绍" />
             <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="170px">
                 <div>
@@ -72,7 +73,14 @@
                     <el-tag v-if="scope.row.type==='DELETE'" type="danger" >删除</el-tag>
                 </template>
                 </el-table-column>
-                <el-table-column prop="applicationId" v-if="false" />
+                <el-table-column prop="openToMajors" label="" width="120px" v-if="false"/>
+                <el-table-column prop="classArrangements" label="" width="120px" v-if="false"/>
+                <el-table-column prop="courseId" label="" width="120px" v-if="false"/>
+                <el-table-column prop="academicYear" label="" width="120px" v-if="false"/>
+                <el-table-column prop="term" label="" width="120px" v-if="false"/>
+                <el-table-column prop="courseCategoryId" label="" width="120px" v-if="false"/>
+                <el-table-column prop="courseCategoryNumber" label="" width="120px" v-if="false"/>
+                <el-table-column prop="courseCategoryNumbershow" label="课程代码" width="120px"/>
                 <el-table-column prop="courseName" label="课程名称" width="120px" />
                 <el-table-column prop="schoolName" label="开课院系" width="120px"/>
                 <el-table-column prop="schoolId" label="学院代码" width="120px"/>
@@ -82,9 +90,8 @@
                 <el-table-column prop="credit" label="学分" width="120px"/>
                 <el-table-column prop="teacherName" label="任课教师" width="120px"/>
                 <el-table-column prop="teacherId" label="教师工号" width="120px"/>
-                <el-table-column prop="courseTime" label="上课时间" width="120px"/>
-                <el-table-column prop="coursePlace" label="上课地点" width="120px"/>
                 <el-table-column prop="capacity" label="选课容量" width="120px"/>
+                <el-table-column prop="classarrangement" label="课程安排" width="120px"/>
                 <el-table-column prop="introduction" label="课程介绍" />
                 <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="170px">
                     <div>
@@ -113,14 +120,14 @@
                         <el-option v-for="item in courseCategoryData" :key="item.courseName" :label="item.courseName" :value="item" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="课程代码" prop="courseNumber">
-                    <el-input v-model="ruleForm1.courseNumber" style="width: 220px"></el-input>
+                <el-form-item label="课程代码" prop="courseCategoryNumber" @change="changeCategory">
+                    <el-input v-model="ruleForm1.courseCategoryNumber" style="width: 220px"></el-input>
                 </el-form-item>
                 <el-form-item label="课程名" prop="courseName" @change="changeCategory">
                     <el-input v-model="ruleForm1.courseName" style="width: 220px"></el-input>
                 </el-form-item>
                 <el-form-item label="开课院系" prop="schoolId">
-                    <el-select v-model="ruleForm1.schoolId" placeholder="选择学院" @change="getMajor">
+                    <el-select v-model="ruleForm1.schoolId" placeholder="选择学院" @change="getMajor(ruleForm1.schoolId)">
                         <el-option v-for="item in schooldata" :key="item.schoolName" :label="item.schoolName" :value="item.schoolId" />
                     </el-select>
                 </el-form-item>
@@ -155,29 +162,29 @@
                 </el-form-item>
                 <el-row  v-for="(item, index) in ruleForm1.arrangement" label="课时安排" :key="index" gutter="0">
                     <span>
-                        <el-form-item   :prop="'arrangement[' + index + '].buildingId'" :rules="rule.arrangement">
+                        <el-form-item   :prop="'arrangement[' + index + '].buildingId'" >
                         <el-select v-model="ruleForm1.arrangement[index].buildingId" prop="'buildingId'+index" placeholder="教学楼"  @change="getClassroom(index,ruleForm1.arrangement[index].buildingId)" style="margin:0">
                             <el-option v-for="item in buildingData" :key="item.buildingId" :label="item.buildingName" :value="item.buildingId" />
                         </el-select>
                         </el-form-item>
                     </span>
                     <span>
-                        <el-form-item  :prop="'arrangement[' + index + '].classroom'"  :rules="rule.arrangement">
+                        <el-form-item  :prop="'arrangement[' + index + '].classroom'"  >
                         <el-select v-model="ruleForm1.arrangement[index].classroom" prop="'classroom'+index" placeholder="教室" value-key="classroomId">
                             <el-option v-for="item in classroomData[index]" :key="item.classroomId" :label="item.classroomId" :value="item" />
                         </el-select>
                         </el-form-item>
                     </span>
                     <span>
-                        <el-form-item  :prop="'arrangement[' + index + '].dayOfWeek'"  :rules="rule.arrangement">
+                        <el-form-item  :prop="'arrangement[' + index + '].dayOfWeek'" >
                         <el-select v-model="ruleForm1.arrangement[index].dayOfWeek" prop="'dayofweek'+index" placeholder="周几" >
                             <el-option v-for="item in dayofweekData" :key="item.value" :label="item.name" :value="item.value" />
                         </el-select>
                         </el-form-item>
                     </span>
                     <span>
-                        <el-form-item  :prop="'arrangement[' + index + '].classTimeId'" :rules="rule.arrangement" >
-                        <el-select v-model="ruleForm1.arrangement[index].classTimeId" prop="'classTimeId'+index" placeholder="节次" multiple clearable >
+                        <el-form-item  :prop="'arrangement[' + index + '].classTimeId'" >
+                        <el-select v-model="ruleForm1.arrangement[index].classTimeId" prop="'classTimeId'+index" placeholder="节次" multiple clearable value-key="classTimeId">
                             <el-option v-for="item in timeData" :key="item.classTimeId" :label="item.classTimeId" :value="item.classTimeId" />
                         </el-select>
                         </el-form-item>
@@ -233,42 +240,43 @@
                         <el-option v-for='item in majorListData' :key='item.majorName' :label='item.majorName' :value='item.majorId'></el-option>
                     </el-select>
                 </el-form-item>
-<!--                <el-row  v-for="(item, index) in ruleForm1.arrangement" label="课时安排" :key="index" gutter="0">-->
-<!--                    <span>-->
-<!--                        <el-form-item   :prop="'arrangement[' + index + '].buildingId'" :rules="rule.arrangement">-->
-<!--                        <el-select v-model="ruleForm1.arrangement[index].buildingId" prop="'buildingId'+index" placeholder="教学楼"  @change="getClassroom(index,ruleForm1.arrangement[index].buildingId)" style="margin:0">-->
-<!--                            <el-option v-for="item in buildingData" :key="item.buildingId" :label="item.buildingName" :value="item.buildingId" />-->
-<!--                        </el-select>-->
-<!--                        </el-form-item>-->
-<!--                    </span>-->
-<!--                    <span>-->
-<!--                        <el-form-item  :prop="'arrangement[' + index + '].classroom'"  :rules="rule.arrangement">-->
-<!--                        <el-select v-model="ruleForm1.arrangement[index].classroom" prop="'classroom'+index" placeholder="教室" value-key="classroomId">-->
-<!--                            <el-option v-for="item in classroomData[index]" :key="item.classroomId" :label="item.classroomId" :value="item" />-->
-<!--                        </el-select>-->
-<!--                        </el-form-item>-->
-<!--                    </span>-->
-<!--                    <span>-->
-<!--                        <el-form-item  :prop="'arrangement[' + index + '].dayOfWeek'"  :rules="rule.arrangement">-->
-<!--                        <el-select v-model="ruleForm1.arrangement[index].dayOfWeek" prop="'dayofweek'+index" placeholder="周几" >-->
-<!--                            <el-option v-for="item in dayofweekData" :key="item.value" :label="item.name" :value="item.value" />-->
-<!--                        </el-select>-->
-<!--                        </el-form-item>-->
-<!--                    </span>-->
-<!--                    <span>-->
-<!--                        <el-form-item  :prop="'arrangement[' + index + '].classTimeId'" :rules="rule.arrangement" >-->
-<!--                        <el-select v-model="ruleForm1.arrangement[index].classTimeId" prop="'classTimeId'+index" placeholder="节次" multiple clearable >-->
-<!--                            <el-option v-for="item in timeData" :key="item.classTimeId" :label="item.classTimeId" :value="item.classTimeId" />-->
-<!--                        </el-select>-->
-<!--                        </el-form-item>-->
-<!--                    </span>-->
-<!--                    <span style="margin-left: 20px">-->
-<!--                        <el-button @click.prevent="remove(item)" >删除</el-button>-->
-<!--                    </span>-->
-<!--                </el-row>-->
-<!--                <el-form-item>-->
-<!--                    <el-button @click="addarrangement">新增安排</el-button>-->
-<!--                </el-form-item>-->
+                <el-row  v-for="(item, index) in ruleForm1.arrangement" label="课时安排" :key="index" gutter="0">
+                    <span>
+                        <el-form-item   :prop="'arrangement[' + index + '].buildingId'" >
+                        <el-select v-model="ruleForm1.arrangement[index].buildingId" prop="'buildingId'+index" placeholder="教学楼"  value-key="buildingId"
+                                   @change="getClassroom(index,ruleForm1.arrangement[index].buildingId)" style="margin:0">
+                            <el-option v-for="item in buildingData" :key="item.buildingId" :label="item.buildingName" :value="item.buildingId" />
+                        </el-select>
+                        </el-form-item>
+                    </span>
+                    <span>
+                        <el-form-item  :prop="'arrangement[' + index + '].classroom'" >
+                        <el-select v-model="ruleForm1.arrangement[index].classroom" prop="'classroom'+index" placeholder="教室" value-key="classroomId">
+                            <el-option v-for="item in classroomData[index]" :key="item.classroomId" :label="item.classroomId" :value="item" />
+                        </el-select>
+                        </el-form-item>
+                    </span>
+                    <span>
+                        <el-form-item  :prop="'arrangement[' + index + '].dayOfWeek'"  >
+                        <el-select v-model="ruleForm1.arrangement[index].dayOfWeek" prop="'dayofweek'+index" placeholder="周几" >
+                            <el-option v-for="item in dayofweekData" :key="item.value" :label="item.name" :value="item.value" />
+                        </el-select>
+                        </el-form-item>
+                    </span>
+                    <span>
+                        <el-form-item  :prop="'arrangement[' + index + '].classTimeId'"  >
+                        <el-select v-model="ruleForm1.arrangement[index].classTimeId" prop="'classTimeId'+index" placeholder="节次" multiple clearable value-key="classTimeId">
+                            <el-option v-for="item in timeData" :key="item.classTimeId" :label="item.classTimeId" :value="item.classTimeId" />
+                        </el-select>
+                        </el-form-item>
+                    </span>
+                    <span style="margin-left: 20px">
+                        <el-button @click.prevent="remove(item)" >删除</el-button>
+                    </span>
+                </el-row>
+                <el-form-item>
+                    <el-button @click="addarrangement">新增安排</el-button>
+                </el-form-item>
                 <el-form-item label="选课容量" prop="capacity">
                     <el-input v-model="ruleForm1.capacity" style="width: 220px"></el-input>
                 </el-form-item>
@@ -295,11 +303,14 @@
                     label-width="120px"
                     class="demo-ruleForm"
             >
+                <el-form-item label="课程类代码" prop="courseCategoryNumber" >
+                    <el-input v-model="ruleForm2.courseCategoryNumber" style="width: 220px"></el-input>
+                </el-form-item>
                 <el-form-item label="课程名" prop="courseName" >
                     <el-input v-model="ruleForm2.courseName" style="width: 220px"></el-input>
                 </el-form-item>
                 <el-form-item label="开课院系" prop="schoolId">
-                    <el-select v-model="ruleForm2.schoolId" placeholder="选择学院" >
+                    <el-select v-model="ruleForm2.schoolId" placeholder="选择学院" @change="getMajor(ruleForm2.schoolId)">
                         <el-option v-for="item in schooldata" :key="item.schoolName" :label="item.schoolName" :value="item.schoolId" />
                     </el-select>
                 </el-form-item>

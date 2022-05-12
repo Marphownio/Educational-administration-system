@@ -80,22 +80,14 @@ export default {
                         trigger: 'change'
                     },
                 ],
-                // arrangement:[
-                //     {
-                //         required: true,
-                //         message: '课程安排不能为空',
-                //         trigger: 'change'
-                //     },
-                // ]
             }),
             editRules1 :({
-                courseNumber: [
+                courseCategoryNumber: [
                     {
                         required: true,
                         message: '请输入课程代码',
                         trigger: 'blur'
                     },
-                    {validator: numbercheck,trigger: 'blur'}
                 ],
                 courseName: [
                     {
@@ -199,6 +191,9 @@ export default {
             search11:'',
             search22:'',
             search33:'',
+            teacherdata:[
+
+            ]
         }
     },
     mounted() {
@@ -228,8 +223,8 @@ export default {
             const _this=this;
             request.get("/user/info")
                 .then(function(res){
-                        _this.ruleForm1.teacherName=res.username;
-                        _this.ruleForm1.teacherId=res.userId;
+                        _this.teacherdata.teacherName=res.username;
+                        _this.teacherdata.teacherId=res.userId;
             })
         },
         getMajorList(){
@@ -286,9 +281,12 @@ export default {
                 this.classroomData[index]= res;
             })
             this.ruleForm1.arrangement[index].classroomId=null;
+            this.ruleForm.arrangement[index].classroomId=null;
         },
         fillData(){
             this.ruleForm1.courseName=this.ruleForm1.courseCategory.courseName;
+            console.log(this.ruleForm1.courseCategory);
+            this.ruleForm1.courseCategoryNumber=this.ruleForm1.courseCategory.courseCategoryNumber;
             this.ruleForm1.schoolId=this.ruleForm1.courseCategory.school.schoolId;
             request.get("/school/majors",{
                 params:{
@@ -315,6 +313,7 @@ export default {
                 {
                     let coursecategory={
                         'classHour': res[i].classHour,
+                        'courseCategoryNumber':res[i].courseCategoryNumber,
                         'courseCategoryId': res[i].courseCategoryId,
                         'courseName': res[i].courseName,
                         'credit': res[i].credit,
@@ -368,7 +367,7 @@ export default {
                 this.selectableData.filter(
                     (data) =>
                         !this.search11 ||
-                        String(data.courseId).toLowerCase().includes(this.search11.toLowerCase())
+                        data.courseCategoryNumbershow.toLowerCase().includes(this.search11.toLowerCase())
                 )
             );
             this.selectableData2 = computed(() =>
@@ -402,12 +401,13 @@ export default {
                         if(this.ruleForm1.openToMajors[i]!=="全选")
                             openToMajors.push({'majorId':this.ruleForm1.openToMajors[i]});
                     }
-                    params.courseNumber=this.ruleForm1.courseNumber;
-                    params.courseId= this.ruleForm1.courseNumber;
+                    params.courseNumber=1;
+                    params.courseId= 1;
                     params.academicYear= this.academicData.toString().slice(0,9);
                     params.term= this.academicData.toString().slice(9,10);
                     params.courseCategory= {
-                        'courseCategoryId':this.ruleForm1.courseNumber,
+                        'courseCategoryNumber':this.ruleForm1.courseCategoryNumber,
+                        'courseCategoryId':this.ruleForm1.courseCategory.courseCategoryId,
                         'courseName': this.ruleForm1.courseName,
                         'classHour': this.ruleForm1.classHour,
                         'credit': this.ruleForm1.credit,
@@ -419,6 +419,7 @@ export default {
                     params.openToMajors=  openToMajors;
                     params.capacity=this.ruleForm1.capacity;
                     params.type='ADD';
+                    params.applicationId=1;
                     if(typeof this.ruleForm1.introduction==="undefined"||(typeof this.ruleForm1.introduction==="string"&&this.ruleForm1.introduction.length===0))
                         params.introduction= "该课程暂无描述信息";
                     else
@@ -469,28 +470,84 @@ export default {
         },
         edit_class_inform(row){//12
             this.dialogVisible=true;
-            this.applicationform=row;
-            this.ruleForm.openToMajors=row.openToMajors;
-            this.ruleForm.capacity=row.capacity;
-            this.ruleForm.introduction=row.introduction;
-            this.applicationform.type="UPDATE";
-            console.log(this.applicationform);
+            this.ruleForm1=row;
+            this.ruleForm1.arrangement=[];
+            let opentomajors=[];
+            for(let i=0;i<Object.keys(this.ruleForm1.openToMajors).length;i++)
+            {
+                opentomajors[i]=this.ruleForm1.openToMajors[i].majorId;
+            }
+            this.ruleForm1.openToMajors=opentomajors;
+            for(let i=0;i<Object.keys(this.ruleForm1.classArrangements).length;i++)
+            {
+                let time=[];
+                for(let j=0;j<Object.keys(this.ruleForm1.classArrangements[i].classTimes).length;j++)
+                {
+                    time[j]=this.ruleForm1.classArrangements[i].classTimes[j].classTimeId;
+                }
+                this.ruleForm1.arrangement[i]={
+                    'building':this.ruleForm1.classArrangements[i].building,
+                    'buildingId':this.ruleForm1.classArrangements[i].building.buildingId,
+                    'classroom':this.ruleForm1.classArrangements[i].classroom,
+                    'dayOfWeek':this.ruleForm1.classArrangements[i].dayOfWeek,
+                    'classTimeId': time
+                }
+                request.get("/building/classrooms",{
+                    params:{
+                        buildingId:this.ruleForm1.classArrangements[i].building.buildingId
+                    }
+                }).then(res=>{
+                    this.classroomData[i]= res;
+                })
+            }
         },
         submit_edit(){
-            this.$refs.ruleForm.validate((valid) => {
-                    if (valid) {
-                        this.applicationform.courseName=this.ruleForm.courseName;
-                        this.applicationform.capacity=this.ruleForm.capacity;
-                        if(typeof this.ruleForm.introduction==="undefined"||(typeof this.ruleForm.introduction==="string"&&this.ruleForm1.introduction.length===0))
-                            this.applicationform.introduction= "该课程暂无描述信息";
-                        else
-                            this.applicationform.introduction=this.ruleForm.introduction;
+            this.fillclassArrangementId();
+            console.log(this.ruleForm1);
+            this.$refs.ruleForm1.validate(valid=>{
+                if(valid){
+                    let params ={};
+                    let classArrangements=[];
+                    let openToMajors=[];
+                    for(let i=0;i<Object.keys(this.ruleForm1.arrangement).length;i++)
+                    {
+                        classArrangements.push(this.ruleForm1.arrangement[i]);
+                    }
+                    for(let i=0;i<Object.keys(this.ruleForm1.openToMajors).length;i++)
+                    {
+                        if(this.ruleForm1.openToMajors[i]!=="全选")
+                            openToMajors.push({'majorId':this.ruleForm1.openToMajors[i]});
+                    }
+                    params.courseNumber=this.ruleForm1.courseNumber;
+                    params.courseId= this.ruleForm1.courseId;
+                    params.academicYear= this.academicData.toString().slice(0,9);
+                    params.term= this.academicData.toString().slice(9,10);
+                    params.courseCategory= {
+                        'courseCategoryNumber':this.ruleForm1.courseCategory.courseCategoryNumber,
+                        'courseCategoryId':this.ruleForm1.courseCategory.courseCategoryId,
+                        'courseName': this.ruleForm1.courseCategory.courseName,
+                        'classHour': this.ruleForm1.courseCategory.classHour,
+                        'credit': this.ruleForm1.courseCategory.credit,
+                        'major': {'majorId': this.ruleForm1.courseCategory.major.majorId},
+                        'school': {'schoolId': this.ruleForm1.courseCategory.school.schoolId}
+                    }
+                    params.teacher= {'userId':this.teacherdata.teacherId};
+                    params.classArrangements= classArrangements;
+                    params.openToMajors=  openToMajors;
+                    params.capacity=this.ruleForm1.capacity;
+                    if(typeof this.ruleForm1.introduction==="undefined"||(typeof this.ruleForm1.introduction==="string"&&this.ruleForm1.introduction.length===0))
+                        params.introduction= "该课程暂无描述信息";
+                    else
+                        params.introduction=this.ruleForm1.introduction;
+                    params.type='UPDATE'
+                    params.applicationId=2;
+                    console.log(params);
                         this.$axios({
                             headers:{'Content-Type':'application/json'},
                             type:'application/json',
                             method: 'post',
                             url:'/api/teacher/application/add',
-                            data:JSON.stringify(this.applicationform)
+                            data:JSON.stringify(params)
                         }).then(res=>{
                                 if(res.data==='SUCCESS'){
                                     this.$message({
@@ -525,15 +582,47 @@ export default {
             const that =this;
             request.get("/course/list")
                 .then(res=>{
+                    console.log(res);
                     this.tableData=res;
+                    this.filltabledata();
                 },function (err) {
                     ALERTMSG.show(that,true,"课程信息获取失败！","error");
                     return false;
                 });
         },
+        filltabledata(){
+            for(let i=0;i<Object.keys(this.tableData).length;i++)
+            {
+                this.tableData[i].courseCategoryNumbershow=this.tableData[i].courseCategory.courseCategoryNumber+'.'+this.tableData[i].courseNumber;
+                let classarrangementstr='';
+                for(let k=0;k<Object.keys(this.tableData[i].classArrangements).length;k++)
+                {
+                    let times='';
+                    let timesinorder=[];
+                    timesinorder.length=Object.keys(this.tableData[i].classArrangements[k].classTimes).length;
+                    //将classTimes按从小到大放入timesinorder
+                    for(let l=0;l<Object.keys(this.tableData[i].classArrangements[k].classTimes).length;l++)
+                    {
+                        timesinorder[l]=this.tableData[i].classArrangements[k].classTimes[l].classTimeId;
+                    }
+                    timesinorder=timesinorder.sort();
+                    for(let l=0;l<Object.keys(timesinorder).length;l++)
+                    {
+                        times=times.concat(timesinorder[l]+',');
+                    }
+                    classarrangementstr=classarrangementstr.concat(this.tableData[i].classArrangements[k].building.buildingName+','+
+                        this.tableData[i].classArrangements[k].classroom.classroomId+','+
+                        times+
+                        JSON.stringify(this.tableData[i].classArrangements[k].dayOfWeek).replace(/"/g,"")+'\n')
+                }
+                this.tableData[i].classarrangement = classarrangementstr;
+            }
+
+        },
         tea_delete(row){
             this.applicationform=row;
             this.applicationform.type="DELETE";
+            this.applicationform.applicationId=3;
             this.$axios({
                 headers:{'Content-Type':'application/json'},
                 type:'application/json',
