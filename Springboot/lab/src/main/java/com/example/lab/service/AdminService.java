@@ -1,13 +1,18 @@
 package com.example.lab.service;
 
-import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.enums.ResultMessage;
+import com.example.lab.pojo.entity.Admin;
 
 public interface AdminService {
 
-    // 管理员处理教师对课程的请求
-    ResultMessage processTeacherApplication(Integer applicationId, Boolean operation);
+    // 设置管理员
+    ResultMessage saveAdmin(Admin admin);
 
-    ResultMessage processStudentApplication(Integer applicationId, Boolean operation);
+    // 获取管理员
+    Admin getAdmin();
+
+    // 设定学年学期
+    ResultMessage setAcademicYearAndTerm(String academicYear, String term);
 
     // 更改选课系统状态
     ResultMessage changeCourseSelectionStatus();

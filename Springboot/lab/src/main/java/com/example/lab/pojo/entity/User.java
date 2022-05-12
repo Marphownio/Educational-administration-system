@@ -1,6 +1,6 @@
 package com.example.lab.pojo.entity;
 
-import com.example.lab.pojo.UserRole;
+import com.example.lab.pojo.enums.UserRole;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Proxy;

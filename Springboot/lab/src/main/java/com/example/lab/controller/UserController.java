@@ -1,8 +1,9 @@
 package com.example.lab.controller;
 
-import com.example.lab.pojo.Admin;
-import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.entity.Admin;
+import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.pojo.entity.User;
+import com.example.lab.service.AdminService;
 import com.example.lab.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.example.lab.LabApplication.admin;
-
 // 用户的增删改查
 @RestController
 @RequestMapping(value = "/user")
@@ -25,6 +24,9 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private AdminService adminService;
 
     // 登录
     @PostMapping(value = "/login")
@@ -49,8 +51,8 @@ public class UserController {
     public User getUserInfo(HttpSession session) {
         if ((session.getAttribute("user")) instanceof Admin) {
             User user = new User();
-            user.setUserId(admin.getUserId());
-            user.setRole(admin.getRole());
+            user.setUserId(adminService.getAdmin().getUserId());
+            user.setRole(adminService.getAdmin().getRole());
             return user;
         }
         return  userService.findUserByUserId(((User)session.getAttribute("user")).getUserId());

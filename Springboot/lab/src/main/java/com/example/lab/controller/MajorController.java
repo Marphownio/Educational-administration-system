@@ -1,6 +1,6 @@
 package com.example.lab.controller;
 
-import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.CourseCategory;
 import com.example.lab.pojo.entity.Major;
@@ -45,7 +45,7 @@ public class MajorController {
         return new ResponseEntity<>(majors, HttpStatus.OK);
     }
 
-    // 获取该专业下的所有课程
+    // 获取该专业开设的所有课程
     @GetMapping(value = "/courses")
     public ResponseEntity<Set<Course>> findCoursesInMajor(@RequestParam(value = "majorId") Integer majorId) {
         Major major = majorService.findMajorByMajorId(majorId);

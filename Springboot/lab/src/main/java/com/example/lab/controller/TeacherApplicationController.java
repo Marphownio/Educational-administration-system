@@ -1,6 +1,6 @@
 package com.example.lab.controller;
 
-import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.pojo.entity.TeacherApplication;
 import com.example.lab.service.TeacherApplicationService;
 import org.springframework.http.HttpStatus;

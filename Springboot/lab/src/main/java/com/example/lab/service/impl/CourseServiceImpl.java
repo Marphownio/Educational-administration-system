@@ -1,7 +1,7 @@
 package com.example.lab.service.impl;
 
 import com.example.lab.pojo.entity.*;
-import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.repository.CourseRepository;
 import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
@@ -34,6 +34,9 @@ public class CourseServiceImpl implements CourseService {
     @Resource
     private CommonService commonService;
 
+    @Resource
+    private ClassTimeService classTimeService;
+
     // 增加课程前，检查教师、课程安排、容量、教师与教学楼是否符合要求
     private ResultMessage checkBeforeAddCourse(Course course) {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
@@ -61,6 +64,11 @@ public class CourseServiceImpl implements CourseService {
         Set<ClassArrangement> newClassArrangement = new HashSet<>();
         for (ClassArrangement classArrangement : course.getClassArrangements()) {
             classArrangement.setClassArrangementId(0);
+            Set<ClassTime> classTimes = new HashSet<>();
+            for (ClassTime classTime : classArrangement.getClassTimes()) {
+                classTimes.add(classTimeService.findClassTimeById(classTime.getClassTimeId()));
+            }
+            classArrangement.setClassTimes(classTimes);
             newClassArrangement.add(classArrangementService.addClassArrangement(classArrangement));
         }
         course.setClassArrangements(newClassArrangement);

@@ -1,15 +1,12 @@
 package com.example.lab.service.impl;
 
-import com.example.lab.pojo.ResultMessage;
-import com.example.lab.pojo.UserRole;
+import com.example.lab.pojo.enums.ResultMessage;
+import com.example.lab.pojo.enums.UserRole;
 import com.example.lab.pojo.entity.*;
 import com.example.lab.repository.StudentRepository;
 import com.example.lab.repository.TeacherRepository;
 import com.example.lab.repository.UserRepository;
-import com.example.lab.service.CommonService;
-import com.example.lab.service.MajorService;
-import com.example.lab.service.SchoolService;
-import com.example.lab.service.UserService;
+import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,7 +16,6 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.example.lab.LabApplication.admin;
 import static java.lang.Integer.parseInt;
 
 // 用户的增删改查服务
@@ -48,6 +44,9 @@ public class UserServiceImpl implements UserService {
     public ResultMessage login(String userId, String password, HttpSession session) {
         ResultMessage resultMessage = ResultMessage.FAILED;
         if (userId.matches("^\\d{6}$") || userId.matches("^\\d{8}$")) {
+            Admin admin = new Admin();
+            admin.setUserId(0);
+            admin.setPassword("fudan_admin");
             if (admin.getUserId().equals(parseInt(userId)) && password.equals(admin.getPassword())) {
                 session.setAttribute("user", admin);
                 return ResultMessage.SUCCESS_LOGIN_ADMIN;
@@ -66,7 +65,7 @@ public class UserServiceImpl implements UserService {
             case TEACHER:
                 if (Boolean.TRUE.equals(user.getStatus())) {
                     session.setAttribute("user", user);
-                    resultMessage = user.getPassword().equals(admin.getUserDefaultPassword()) ? ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD : ResultMessage.SUCCESS_LOGIN_TEACHER;
+                    resultMessage = user.getPassword().equals("fudan123456") ? ResultMessage.SUCCESS_LOGIN_TEACHER_RESETPASSWORD : ResultMessage.SUCCESS_LOGIN_TEACHER;
                 } else {
                     resultMessage = ResultMessage.FAILED_DIMISSION;
                 }
@@ -74,7 +73,7 @@ public class UserServiceImpl implements UserService {
             case STUDENT:
                 if (Boolean.TRUE.equals(user.getStatus())) {
                     session.setAttribute("user", user);
-                    resultMessage = user.getPassword().equals(admin.getUserDefaultPassword()) ? ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD : ResultMessage.SUCCESS_LOGIN_STUDENT;
+                    resultMessage = user.getPassword().equals("fudan123456") ? ResultMessage.SUCCESS_LOGIN_STUDENT_RESETPASSWORD : ResultMessage.SUCCESS_LOGIN_STUDENT;
                 } else {
                     resultMessage = ResultMessage.FAILED_LEFT;
                 }
@@ -150,7 +149,7 @@ public class UserServiceImpl implements UserService {
         if (user.getRole() == null || user.getRole() == UserRole.ADMIN || Boolean.TRUE.equals(!commonService.isMatchSchoolAndMajor(user.getSchool(), user.getMajor()))) {
             return ResultMessage.FAILED;
         }
-        user.setPassword(admin.getUserDefaultPassword());
+        user.setPassword("fudan123456");
         return saveUser(user);
     }
 
@@ -197,7 +196,7 @@ public class UserServiceImpl implements UserService {
                         }
                         else
                         {
-                            wrongMessage.put(line,"角色输入不正确\n");
+                            wrongMessage.put(line,"角色输入不正确");
                             continue;
                         }
                         if(item[4].length() == 18){
@@ -260,8 +259,7 @@ public class UserServiceImpl implements UserService {
                 }
             }
             reader.close();
-//            可以尝试输出一下检查结果是否正确
-//            System.out.println(result);
+           //System.out.println(wrongMessage);
             return wrongMessage;
         }
         catch (Exception e) {

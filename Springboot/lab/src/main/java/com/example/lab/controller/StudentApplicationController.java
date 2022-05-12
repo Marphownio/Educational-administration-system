@@ -1,6 +1,6 @@
 package com.example.lab.controller;
 
-import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.pojo.entity.StudentApplication;
 import com.example.lab.service.StudentApplicationService;
 import org.springframework.http.HttpStatus;
@@ -14,6 +14,7 @@ import java.util.Set;
 @RestController
 @RequestMapping(value = "/student/application")
 public class StudentApplicationController {
+
     @Resource
     private StudentApplicationService studentApplicationService;
 

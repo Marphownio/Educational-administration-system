@@ -1,7 +1,10 @@
 package com.example.lab.service.impl;
 
+import com.example.lab.pojo.entity.Admin;
+import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.TeacherApplication;
-import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.enums.ApplicationType;
+import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.repository.TeacherApplicationRepository;
 import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,9 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
 
     @Resource
     private CommonService commonService;
+
+    @Resource
+    private AdminService adminService;
 
     private ResultMessage checkBeforeAddTeacherApplication(TeacherApplication application) {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
@@ -87,5 +93,42 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
     @Override
     public TeacherApplication findTeacherApplicationById(Integer applicationId) {
         return teacherApplicationRepository.findById(applicationId).orElse(null);
+    }
+
+    // 管理员处理教师对课程的请求
+    @Override
+    public ResultMessage processTeacherApplication(Integer applicationId, Boolean operation) {
+        if (Boolean.FALSE.equals(operation)) {
+            return this.deleteTeacherApplication(applicationId);
+        }
+        TeacherApplication application = this.findTeacherApplicationById(applicationId);
+        if (application == null) {
+            return ResultMessage.FAILED;
+        }
+        Course course = new Course();
+        Admin admin = adminService.getAdmin();
+        if (application.getType() != ApplicationType.DELETE) {
+            course.setCourseNumber(application.getCourseNumber());
+            course.setAcademicYear(admin.getAcademicYear());
+            course.setTerm(admin.getTerm());
+            course.setCapacity(application.getCapacity());
+            course.setIntroduction(application.getIntroduction());
+            course.setCourseCategory(application.getCourseCategory());
+            course.setOpenToMajors(application.getOpenToMajors());
+            course.setClassArrangements(application.getClassArrangements());
+            course.setTeacher(application.getTeacher());
+        }
+        ResultMessage resultMessage;
+        switch (application.getType()) {
+            case ADD:
+                resultMessage = courseService.addCourse(course); break;
+            case DELETE:
+                resultMessage = courseService.deleteCourse(application.getCourseId()); break;
+            case UPDATE:
+                resultMessage = courseService.updateCourse(course); break;
+            default:
+                resultMessage = ResultMessage.FAILED; break;
+        }
+        return (resultMessage == ResultMessage.SUCCESS) ? this.deleteTeacherApplication(applicationId) : ResultMessage.FAILED;
     }
 }

@@ -1,8 +1,10 @@
 package com.example.lab.controller;
 
+import com.example.lab.pojo.entity.Admin;
 import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.Teacher;
 import com.example.lab.pojo.entity.TeacherApplication;
+import com.example.lab.service.AdminService;
 import com.example.lab.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +15,15 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.example.lab.LabApplication.admin;
-
 @RestController
 @RequestMapping(value = "/teacher")
 public class TeacherController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private AdminService adminService;
 
     // 查询全部教师
     @GetMapping(value = "/list")
@@ -52,6 +55,7 @@ public class TeacherController {
             return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
         Set<Course> courses = new HashSet<>(teacher.getCourses());
+        Admin admin = adminService.getAdmin();
         courses.removeIf(course -> Objects.equals(course.getAcademicYear(), admin.getAcademicYear()) && Objects.equals(course.getTerm(), admin.getTerm()));
         if (courses.isEmpty()) {
             return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);

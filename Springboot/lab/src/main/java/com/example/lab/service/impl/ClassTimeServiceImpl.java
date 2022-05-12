@@ -1,6 +1,6 @@
 package com.example.lab.service.impl;
 
-import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.pojo.entity.ClassTime;
 import com.example.lab.repository.ClassTimeRepository;
 import com.example.lab.service.ClassTimeService;
@@ -20,12 +20,13 @@ public class ClassTimeServiceImpl implements ClassTimeService {
         if (findClassTimeById(classTime.getClassTimeId()) != null){
             return ResultMessage.EXIST;
         }
-        else{
+        else {
             try {
                 classTimeRepository.save(classTime);
                 return ResultMessage.SUCCESS;
             }
             catch (Exception e){
+                System.out.println(e.getMessage());
                 return ResultMessage.FAILED;
             }
         }

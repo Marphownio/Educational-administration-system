@@ -1,6 +1,6 @@
 package com.example.lab.controller;
 
-import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.pojo.entity.Building;
 import com.example.lab.pojo.entity.Classroom;
 import com.example.lab.service.BuildingService;

@@ -1,6 +1,6 @@
 package com.example.lab.service;
 
-import com.example.lab.pojo.ResultMessage;
+import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.pojo.entity.School;
 
 import java.util.List;
