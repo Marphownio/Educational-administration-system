@@ -77,8 +77,8 @@
                 label-width="120px"
                 class="demo-ruleForm"
         >
-            <el-form-item label="学院代码" prop="schoolId">
-                <el-input v-model="ruleForm1.schoolId"></el-input>
+            <el-form-item label="学院代码" prop="schoolId" >
+                <el-input v-model="ruleForm1.schoolId" readonly></el-input>
             </el-form-item>
             <el-form-item label="学院名" prop="schoolName">
                 <el-input v-model="ruleForm1.schoolName"></el-input>
@@ -128,7 +128,7 @@
                 class="demo-ruleForm"
         >
             <el-form-item label="专业代码" prop="majorId">
-                <el-input v-model="ruleForm2.majorId"></el-input>
+                <el-input v-model="ruleForm2.majorId"  readonly></el-input>
             </el-form-item>
             <el-form-item label="所属学院" prop="schoolId">
                 <el-select v-model="ruleForm2.schoolId" placeholder="所属学院" >
