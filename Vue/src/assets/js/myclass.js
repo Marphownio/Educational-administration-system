@@ -108,7 +108,7 @@ export default {
         const that=this;
         setTimeout(function() {
             that.fillInClassInForm()
-        }, 300); // 定时时间
+        }, 500); // 定时时间
     },
     created(){
         this.getTimeinfor();
