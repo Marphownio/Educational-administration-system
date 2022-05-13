@@ -1,9 +1,7 @@
 package com.example.lab.controller;
 
-import com.example.lab.pojo.entity.Admin;
 import com.example.lab.pojo.enums.CourseSelectionStatus;
 import com.example.lab.pojo.enums.ResultMessage;
-import com.example.lab.pojo.enums.UserRole;
 import com.example.lab.service.AdminService;
 import com.example.lab.service.StudentApplicationService;
 import com.example.lab.service.TeacherApplicationService;

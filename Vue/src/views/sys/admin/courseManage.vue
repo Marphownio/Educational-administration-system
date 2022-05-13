@@ -13,6 +13,7 @@
     </div>
 
     <div class="showlist">
+        <div style="font-size: 20px;margin: 20px">课程信息:</div>
         <el-form :inline="true" >
             <el-form-item>
                 <el-button type="primary" @click="addcourse=true">添加课程</el-button>
@@ -27,33 +28,119 @@
                     <el-button type="primary" style="margin-left: 20px;margin-right: 20px;margin-top: 10px">通过csv文件添加</el-button>
                 </el-upload>
                 <el-button type="primary" @click="checkcourse=true">审核课程申请</el-button>
+                <span>
+                <el-form-item label="学年" prop="academicyear" style="margin-left: 180px">
+                    <el-select v-model="academicyear" placeholder="选择学年" >
+                        <el-option v-for="item in academicyearData" :key="item.year" :label="item.year" :value="item.year" />
+                    </el-select>
+                </el-form-item>
+                </span>
+                <span>
+                <el-form-item label="学期" prop="term">
+                    <el-select v-model="term" placeholder="选择学期">
+                        <el-option v-for="item in termData" :key="item.term" :label="item.term" :value="item.term" />
+                    </el-select>
+                </el-form-item>
+                </span>
+                <el-button @click="changeterm()">变更</el-button>
             </el-form-item>
         </el-form>
-        <el-table :data="tableData" row-key="courseId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" default-expand-all>
+        <el-table :data="courseDatashow"  default-expand-all>
             <el-table-column prop="openToMajors" label="" width="120px" v-if="false"/>
             <el-table-column prop="classArrangements" label="" width="120px" v-if="false"/>
             <el-table-column prop="courseId" label="" width="120px" v-if="false"/>
-            <el-table-column prop="academicYear" label="" width="120px" v-if="false"/>
-            <el-table-column prop="term" label="" width="120px" v-if="false"/>
             <el-table-column prop="courseCategoryId" label="" width="120px" v-if="false"/>
             <el-table-column prop="courseCategoryNumber" label="" width="120px" v-if="false"/>
-            <el-table-column prop="courseCategoryNumbershow" label="课程代码" width="120px" sortable/>
-            <el-table-column prop="courseName" label="课程名称" width="120px" sortable/>
+            <el-table-column align="center" label="课程代码" sortable>
+                <el-table-column align="center" width="130px" prop="courseCategoryNumbershow">
+                    <template #header>
+                        <el-input  v-model="search11" @change="search1()" size="small" placeholder="搜索课程代码" />
+                    </template>
+                    <template v-slot="scope">
+                        {{scope.row.courseCategoryNumbershow}}
+                    </template>
+                </el-table-column>
+            </el-table-column>
+            <el-table-column align="center" label="课程名称" sortable>
+                <el-table-column align="center" prop="courseName" width="130px">
+                    <template #header>
+                        <el-input v-model="search12" size="small" @change="search1()" placeholder="搜索课程名称" />
+                    </template>
+                    <template v-slot="scope">
+                        {{scope.row.courseName}}
+                    </template>
+                </el-table-column>
+            </el-table-column>
             <el-table-column prop="schoolName" label="开课院系" width="120px" sortable/>
             <el-table-column prop="schoolId" label="学院代码" width="120px" sortable/>
             <el-table-column prop="majorName" label="所属专业" width="120px" sortable/>
             <el-table-column prop="majorId" label="专业代码" width="120px" sortable/>
             <el-table-column prop="classHour" label="学时" width="120px" sortable/>
             <el-table-column prop="credit" label="学分" width="120px" sortable/>
-            <el-table-column prop="teacherName" label="任课教师" width="120px" sortable/>
+            <el-table-column align="center" label="任课教师" sortable>
+                <el-table-column align="center" prop="teacherName" width="130px">
+                    <template #header>
+                        <el-input v-model="search13" size="small" @change="search1()" placeholder="搜索任课教师" />
+                    </template>
+                    <template v-slot="scope">
+                        {{scope.row.teacherName}}
+                    </template>
+                </el-table-column>
+            </el-table-column>
             <el-table-column prop="teacherId" label="教师工号" width="120px" sortable/>
             <el-table-column prop="capacity" label="选课容量" width="120px" sortable/>
-            <el-table-column prop="classarrangement" label="课程安排" width="120px" />
-            <el-table-column prop="introduction" label="课程介绍" />
+            <el-table-column prop="classarrangement" label="课程安排" width="200px" >
+                <template #header>
+                    <el-input v-model="search14" size="small" @change="search1()" placeholder="搜索上课时间" />
+                    <el-input v-model="search15" size="small" @change="search1()" placeholder="搜索上课地点" />
+                </template>
+            </el-table-column>
+            <el-table-column prop="time" label="上课时间" v-if="false"/>
+            <el-table-column prop="place" label="上课地点" v-if="false"/>
+            <el-table-column prop="academicYear" label="学年" width="120px"/>
+            <el-table-column prop="term" label="学期" width="120px" />
+            <el-table-column prop="introduction" label="课程介绍" width="200px"/>
             <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="170px">
                 <div>
                     <el-button @click="editHandle(scope.row)">编辑</el-button>
                     <el-button type="danger" @click="delHandle(scope.row)">删除</el-button>
+                </div>
+            </el-table-column>
+        </el-table>
+
+        <div style="font-size: 20px;margin: 20px">课程类信息:</div>
+        <el-table :data="courseCategoryDatashow" >
+            <el-table-column prop="courseCategoryId" label="" width="120px" v-if="false"/>
+            <el-table-column align="center" label="课程类代码" sortable>
+                <el-table-column align="center" width="130px" prop="courseCategoryNumber">
+                    <template #header>
+                        <el-input  v-model="search21" @change="search2()" size="small" placeholder="搜索课程类代码" />
+                    </template>
+                    <template v-slot="scope">
+                        {{scope.row.courseCategoryNumber}}
+                    </template>
+                </el-table-column>
+            </el-table-column>
+            <el-table-column align="center" label="课程名称" sortable>
+                <el-table-column align="center" prop="courseName" width="130px">
+                    <template #header>
+                        <el-input v-model="search22" size="small" @change="search2()" placeholder="搜索课程类名称" />
+                    </template>
+                    <template v-slot="scope">
+                        {{scope.row.courseName}}
+                    </template>
+                </el-table-column>
+            </el-table-column>
+            <el-table-column prop="school.schoolName" label="开课院系" width="120px" sortable/>
+            <el-table-column prop="school.schoolId" label="学院代码" width="120px" sortable/>
+            <el-table-column prop="major.majorName" label="所属专业" width="120px" sortable/>
+            <el-table-column prop="major.majorId" label="专业代码" width="120px" sortable/>
+            <el-table-column prop="classHour" label="学时" width="120px" sortable/>
+            <el-table-column prop="credit" label="学分" width="120px" sortable/>
+            <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" >
+                <div>
+                    <el-button @click="editHandle2(scope.row)">编辑</el-button>
+                    <el-button type="danger" @click="delHandle2(scope.row)">删除</el-button>
                 </div>
             </el-table-column>
         </el-table>

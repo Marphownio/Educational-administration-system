@@ -1,16 +1,14 @@
 package com.example.lab.controller;
 
-import com.example.lab.pojo.entity.Admin;
-import com.example.lab.pojo.entity.Course;
-import com.example.lab.pojo.entity.Teacher;
-import com.example.lab.pojo.entity.TeacherApplication;
+import com.example.lab.pojo.entity.*;
 import com.example.lab.service.AdminService;
-import com.example.lab.service.UserService;
+import com.example.lab.service.TeacherService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -20,7 +18,7 @@ import java.util.Set;
 public class TeacherController {
 
     @Resource
-    private UserService userService;
+    private TeacherService teacherService;
 
     @Resource
     private AdminService adminService;
@@ -28,7 +26,7 @@ public class TeacherController {
     // 查询全部教师
     @GetMapping(value = "/list")
     public ResponseEntity<Set<Teacher>> findAllTeacher() {
-        Set<Teacher> teachers = new HashSet<>(userService.findAllTeacher());
+        Set<Teacher> teachers = new HashSet<>(teacherService.findAllTeacher());
         if (teachers.isEmpty()) {
             return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
@@ -37,8 +35,9 @@ public class TeacherController {
 
     // 查询指定教师发出的所有请求
     @GetMapping(value = "/application")
-    public ResponseEntity<Set<TeacherApplication>> findAllTeacherApplication(@RequestParam(value = "teacherId") Integer teacherId) {
-        Teacher teacher = userService.findTeacherByTeacherId(teacherId);
+    public ResponseEntity<Set<TeacherApplication>> findAllTeacherApplication(HttpSession session) {
+        User user = (User)session.getAttribute("user");
+        Teacher teacher = teacherService.findTeacherByTeacherId(user.getUserId());
         if (teacher == null || teacher.getTeacherApplications().isEmpty()) {
             return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
@@ -49,8 +48,9 @@ public class TeacherController {
 
     // 当前学年指定教师的任课课程
     @GetMapping(value = "/courses")
-    public ResponseEntity<Set<Course>> findAllCoursesTheTeacherTeaches(@RequestParam(value = "teacherId") Integer teacherId) {
-        Teacher teacher = userService.findTeacherByTeacherId(teacherId);
+    public ResponseEntity<Set<Course>> findAllCoursesTheTeacherTeaches(HttpSession session) {
+        User user = (User)session.getAttribute("user");
+        Teacher teacher = teacherService.findTeacherByTeacherId(user.getUserId());
         if (teacher == null) {
             return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }

@@ -26,7 +26,6 @@ public class ClassTimeServiceImpl implements ClassTimeService {
                 return ResultMessage.SUCCESS;
             }
             catch (Exception e){
-                System.out.println(e.getMessage());
                 return ResultMessage.FAILED;
             }
         }
