@@ -23,23 +23,17 @@ export default {
             request.get("/course/list")
                 .then(res=>{
                     this.courseData=res;
-                    console.log(res);
                     this.filltabledata();
                 })
         },
-        getstudent(id){
+        getstudent(id,i){
             request.get("/course/students",{
                 params:{
                     courseId:id
                 }
             }).then(res=>{
                 this.studentData[id]= res;
-            })
-        },
-        filltabledata(){
-            for(let i=0;i<Object.keys(this.courseData).length;i++)
-            {
-                this.getstudent(this.courseData[i].courseId);
+                console.log(res);
                 this.tableData[i]= {
                     'courseCategoryNumbershow':this.courseData[i].courseCategory.courseCategoryNumber+'.'+this.courseData[i].courseNumber,
                     'courseName': this.courseData[i].courseCategory.courseName,
@@ -47,6 +41,12 @@ export default {
                     'coursemajorName': this.courseData[i].courseCategory.major.majorName,
                     children: this.studentData[this.courseData[i].courseId],
                 }
+            })
+        },
+        filltabledata(){
+            for(let i=0;i<Object.keys(this.courseData).length;i++)
+            {
+                this.getstudent(this.courseData[i].courseId,i);
             }
         }
     }

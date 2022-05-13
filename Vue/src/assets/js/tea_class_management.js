@@ -225,6 +225,8 @@ export default {
                 .then(function(res){
                         _this.teacherdata.teacherName=res.username;
                         _this.teacherdata.teacherId=res.userId;
+                        _this.ruleForm1.teacherName=res.username;
+                        _this.ruleForm1.teacherId=res.userId;
             })
         },
         getMajorList(){
@@ -401,7 +403,7 @@ export default {
                         if(this.ruleForm1.openToMajors[i]!=="全选")
                             openToMajors.push({'majorId':this.ruleForm1.openToMajors[i]});
                     }
-                    params.courseNumber=1;
+                    params.courseNumber=0;
                     params.courseId= 1;
                     params.academicYear= this.academicData.toString().slice(0,9);
                     params.term= this.academicData.toString().slice(9,10);
@@ -419,7 +421,7 @@ export default {
                     params.openToMajors=  openToMajors;
                     params.capacity=this.ruleForm1.capacity;
                     params.type='ADD';
-                    params.applicationId=1;
+                    params.applicationId=Math.floor(Math.random()*(9999-1000+1))+1000;
                     if(typeof this.ruleForm1.introduction==="undefined"||(typeof this.ruleForm1.introduction==="string"&&this.ruleForm1.introduction.length===0))
                         params.introduction= "该课程暂无描述信息";
                     else
@@ -540,7 +542,7 @@ export default {
                     else
                         params.introduction=this.ruleForm1.introduction;
                     params.type='UPDATE'
-                    params.applicationId=2;
+                    params.applicationId=this.ruleForm1.courseId;
                     console.log(params);
                         this.$axios({
                             headers:{'Content-Type':'application/json'},
@@ -582,7 +584,6 @@ export default {
             const that =this;
             request.get("/course/list")
                 .then(res=>{
-                    console.log(res);
                     this.tableData=res;
                     this.filltabledata();
                 },function (err) {
@@ -622,7 +623,7 @@ export default {
         tea_delete(row){
             this.applicationform=row;
             this.applicationform.type="DELETE";
-            this.applicationform.applicationId=3;
+            this.applicationform.applicationId=this.applicationform.courseId;
             this.$axios({
                 headers:{'Content-Type':'application/json'},
                 type:'application/json',

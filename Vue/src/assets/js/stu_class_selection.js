@@ -319,7 +319,7 @@ export default {
                     else{
                         week[currentClassDay-1][currentCi-1].parentElement.parentElement.style.backgroundColor="#409EFF";
                         inform=week[currentClassDay-1][currentCi-1].firstElementChild;
-                        inform.innerText=currentRow.courseNumber;
+                        inform.innerText=currentRow.courseCategory.courseCategoryNumber+'.'+currentRow.courseNumber;
                         inform=inform.nextElementSibling;
                         inform.innerText=currentRow.courseCategory.courseName;
                         inform=inform.nextElementSibling;
@@ -376,7 +376,7 @@ export default {
                     for(ci;ci<currentClassDayTimeObj.length;ci++){
                         week[currentClassDay-1][currentClassDayTimeObj[ci].classTimeId-1].parentElement.parentElement.style.backgroundColor="#B0C4DE";
                         inform=week[currentClassDay-1][currentClassDayTimeObj[ci].classTimeId-1].firstElementChild;
-                        inform.innerText=currentClass.courseNumber;
+                        inform.innerText=currentClass.courseCategory.courseCategoryNumber+'.'+currentClass.courseNumber;
                         inform=inform.nextElementSibling;
                         inform.innerText=currentClass.courseCategory.courseName;
                         inform=inform.nextElementSibling;

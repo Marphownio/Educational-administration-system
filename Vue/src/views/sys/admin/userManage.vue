@@ -39,9 +39,9 @@
                 <el-tag v-if="scope.row.status===false&&scope.row.role==='TEACHER'" type="info">已离职</el-tag>
             </el-table-column>
             <el-table-column prop="schoolName" label="学院" width="120px" sortable/>
-            <el-table-column prop="schoolId" label="学院代码" sortable/>
+            <el-table-column prop="schoolId" label="学院代码" sortable width="120px"/>
             <el-table-column prop="majorName" label="专业" width="120px" sortable/>
-            <el-table-column prop="majorId" label="专业代码" sortable/>
+            <el-table-column prop="majorId" label="专业代码" sortable width="120px"/>
             <el-table-column prop="idNumber" label="身份证号" width="180px" sortable/>
             <el-table-column prop="phoneNumber" label="手机号" width="120px" sortable/>
             <el-table-column prop="email" label="邮箱" width="180px" sortable/>
