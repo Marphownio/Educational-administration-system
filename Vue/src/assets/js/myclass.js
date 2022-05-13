@@ -80,8 +80,16 @@ export default {
                                 endTimeMin: null
                             },],
                     },],
+                introduction:'cdww',
                 courseCategory:
                     {
+                        school:{
+                            schoolName:'计算机科学学院',
+                        },
+                        major:{
+                            majorName:'软件工程',
+                        },
+                        courseCategoryNumber:'Math101',
                         courseCategoryId: 1,
                         courseName: "数学分析",
                         classHour: 5,
@@ -99,25 +107,25 @@ export default {
     mounted() {
         const that=this;
         setTimeout(function() {
-            that.getStudingClass()
             that.fillInClassInForm()
         }, 300); // 定时时间
     },
     created(){
         this.getTimeinfor();
-        // this.getuserId();
-        // this.getStudingClass();
+        this.getStudingClass();
 
     },
     methods:{
-        getuserId:function (){
-            const that = this;
-            this.$axios({
-                "method": 'get',
-                "url":'/api/user/info',
-                async: false,
-            }).then(function(res){
-                that.currentStudentId = res.data.userId;
+        classDrop(courseId){
+            const that =this;
+            let form = new FormData();
+            form.append('courseId', courseId);
+            request.delete("/student/course/drop",form).then(function(res){
+                ALERTMSG.show(that,true,"退课成功!","success");
+                return true;
+            },function(err){
+                ALERTMSG.show(that,true,"退课失败!","error");
+                return false;
             })
         },
         getTimeinfor:function(){
@@ -126,13 +134,9 @@ export default {
             });
         },
         getStudingClass:function(){
-            const that =this;
-            let form = new FormData();
-            console.log(that.currentStudentId)
-            form.append('studentId', that.currentStudentId);
-            request.get("/student/courses/studying",form).then(res=>{
+          request.get("/student/courses/studying").then(res=>{
                 console.log(res)
-                this.classinfortable= res;
+                // this.classinfortable= res;
             });
         },
         fillInClassInForm:function(){
@@ -181,7 +185,7 @@ export default {
                     for(ci;ci<currentClassDayTimeObj.length;ci++){
                         week[currentClassDay-1][currentClassDayTimeObj[ci].classTimeId-1].parentElement.parentElement.style.backgroundColor="#B0C4DE";
                         inform=week[currentClassDay-1][currentClassDayTimeObj[ci].classTimeId-1].firstElementChild;
-                        inform.innerText=currentClass.courseNumber;
+                        inform.innerText=currentClass.courseCategory.courseCategoryNumber+'.'+currentClass.courseNumber;
                         inform=inform.nextElementSibling;
                         inform.innerText=currentClass.courseCategory.courseName;
                         inform=inform.nextElementSibling;
