@@ -87,6 +87,7 @@ export default {
                 ]
             }),
             applyForSelectForm: {
+                applyCourseCategoryNumber: '',
                 applyClassId: '',
                 applyClassName: '',
                 applyStudentId: '',
@@ -110,16 +111,34 @@ export default {
     methods:{
         toSubmitApply(){
             const that=this;
-            request.post("")
-                .then(function(res){
-                        ALERTMSG.show(that,true,"选课申请提交成功!","warning");
-                        return true;
+            this.$refs.applyForSelectForm.validate(valid=>{
+                    if(valid){
+                        // let params = {};
+                        // params.courseId= that.applyForSelectForm.applyClassId;
+                        // params.studentId= that.applyForSelectForm.applyStudentId;
+                        // params.reason= that.applyForSelectForm.applyReason;
+                        let selectApplyForm = new FormData();
+                        selectApplyForm.append('courseId', that.applyForSelectForm.applyClassId);
+                        selectApplyForm.append('studentId', that.applyForSelectForm.applyStudentId);
+                        selectApplyForm.append('reason', that.applyForSelectForm.applyReason);
+                        console.log(selectApplyForm)
+                        request.post("/student/application/add",selectApplyForm)
+                            .then(function(res){
+                                    ALERTMSG.show(that,true,"选课申请提交成功!","success");
+                                    return true;
+                                }
+                                ,function (err) {
+                                    ALERTMSG.show(that,true,"提交申请失败!请再次尝试！","error");
+                                    return false;
+                                }
+                            )
                     }
-                    ,function (err) {
-                        ALERTMSG.show(that,true,"提交申请失败!请再次尝试！","error");
-                        return false;
-                    }
-                )
+            else{
+                        ALERTMSG.show(that,true,"请先填写选课申请理由","warning");
+                    }})
+        },
+        cancleApply(){
+            this.applyForSelectVisiable=false;
         },
         getUserInfo(){
             const that=this;
@@ -133,7 +152,8 @@ export default {
             that.getUserInfo();
             that.applyForSelectVisiable=true;
             that.applyForSelectForm.applyClassId=row.courseId;
-            that.applyForSelectForm.applyClassName=row.courseName;
+            that.applyForSelectForm.applyCourseCategoryNumber=row.courseCategory.courseCategoryNumber+'.'+row.courseNumber;
+            that.applyForSelectForm.applyClassName=row.courseCategory.courseName;
         },
         getSchooltimetable:function(){
             request.get("/classTime/list").then(res=>{
@@ -193,7 +213,7 @@ export default {
             const that =this;
             let xuankeform = new FormData();
             xuankeform.append('courseId', courseId);
-            request.post("/course/select",xuankeform)
+            request.post("/student/course/select",xuankeform)
                 .then(function (response) {
                     if (response === "FAILED") {
                         ALERTMSG.show(that,true,"选课失败！请重新尝试!","error");

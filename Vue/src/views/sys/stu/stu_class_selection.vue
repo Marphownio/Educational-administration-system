@@ -18,13 +18,14 @@
             id="classinformtable"
             :data="selectableDataShow"
         >
+          <el-table-column prop="courseId" v-if="false"/>
           <el-table-column align="center" label="课程编号">
             <el-table-column align="center" width="130px" prop="courseNumber">
               <template #header>
                 <el-input  v-model="search11" @change="search()" size="small" placeholder="搜索课程编号" />
               </template>
               <template v-slot="scope">
-                {{scope.row.courseNumber}}
+                {{scope.row.courseCategory.courseCategoryNumber}}.{{scope.row.courseNumber}}
               </template>
             </el-table-column>
           </el-table-column>
@@ -56,15 +57,18 @@
           <el-table-column v-slot="scope" align="center" label="时间及地点" width="100px">
               <el-button plain @click="openit(scope.row)">详情</el-button>
           </el-table-column>
-          <el-table-column align="center" prop="capacity,yixuan" label="已选/可选">
+          <el-table-column align="center" prop="capacity,numberOfStudents" label="已选/可选">
             <template v-slot="scope">
-              <div>
-                {{scope.row.yixuan}}/{{scope.row.capacity}}
+              <div v-if="scope.row.numberOfStudents==null">
+                {{0}}/{{scope.row.capacity}}
+              </div>
+              <div v-else>
+                {{scope.row.numberOfStudents}}/{{scope.row.capacity}}
               </div>
             </template>
           </el-table-column>
         <el-table-column align="center" v-slot="scope" fixed="right" prop="icon" label="操作">
-          <div v-if="scope.row.capacity<=scope.row.yixuan">
+          <div v-if="scope.row.capacity<=scope.row.numberOfStudents">
             <el-button @click="applyStudentSelectOpen(scope.row)" type="success" plain>选课申请</el-button>
           </div>
           <div v-else>
@@ -86,15 +90,16 @@
       title="提交选课申请"
   >
       <el-form
+          ref="applyForSelectForm"
           :model="applyForSelectForm"
           :rules="applyForSelectFormRules"
           label-width="80px">
         <div class="flexItems">
           <el-form-item label="课程编号:">
-            <el-input v-model="applyForSelectForm.applyClassId" readonly/>
+            <el-input v-model="applyForSelectForm.applyCourseCategoryNumber" readonly/>
           </el-form-item>
           <el-form-item label="课程名称:">
-            <el-input v-model="applyForSelectForm.applyClassId" readonly/>
+            <el-input v-model="applyForSelectForm.applyClassName" readonly/>
           </el-form-item>
         </div>
         <div class="flexItems">
