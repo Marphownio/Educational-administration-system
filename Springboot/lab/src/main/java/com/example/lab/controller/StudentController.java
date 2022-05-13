@@ -51,14 +51,14 @@ public class StudentController {
     }
 
     // 学生查看所有已修课程
-    @GetMapping(value = "/courses/completed/all")
+    @GetMapping(value = "/course/completed")
     public ResponseEntity<Set<Course>> findAllCoursesCompleted(HttpSession session) {
         User student = (User) session.getAttribute("user");
         return new ResponseEntity<>(studentService.findAllCoursesCompleted(student.getUserId()), HttpStatus.OK);
     }
 
     // 学生查看在指定学年学期的课程
-    @GetMapping(value = "/courses/specified")
+    @GetMapping(value = "/course/specified")
     public ResponseEntity<Set<Course>> findAllCoursesSpecified(@RequestParam(value = "academicYear") String academicYear,
                                                                @RequestParam(value = "term") String term, HttpSession session) {
         User student = (User) session.getAttribute("user");
@@ -66,7 +66,7 @@ public class StudentController {
     }
 
     // 学生查看所有已选/在读课程
-    @GetMapping(value = "/courses/studying")
+    @GetMapping(value = "/course/studying")
     public ResponseEntity<Set<Course>> findAllCoursesStudying(HttpSession session) {
         User student = (User) session.getAttribute("user");
         return new ResponseEntity<>(studentService.findAllCoursesStudying(student.getUserId()), HttpStatus.OK);

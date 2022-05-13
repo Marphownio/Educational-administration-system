@@ -50,6 +50,10 @@ public class StudentServiceImpl implements StudentService {
         if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND && selectCourse.getCapacity() <= selectCourse.getStudents().size()) {
             resultMessage = ResultMessage.FAILED;
         }
+        // 不在可选课程中
+        if (!getSelectableCourse(studentId).contains(selectCourse)) {
+            resultMessage = ResultMessage.FAILED;
+        }
         if (resultMessage == ResultMessage.NOT_OPEN || resultMessage == ResultMessage.FAILED) {
             return resultMessage;
         }
@@ -117,7 +121,7 @@ public class StudentServiceImpl implements StudentService {
             return courses;
         }
         courses.addAll(student.getCourses());
-        courses.removeIf(course -> Objects.equals(course.getAcademicYear(), academicYear) || Objects.equals(course.getTerm(), term));
+        courses.removeIf(course -> !Objects.equals(course.getAcademicYear(), academicYear) && Objects.equals(course.getTerm(), term));
         return courses;
     }
 
@@ -130,7 +134,7 @@ public class StudentServiceImpl implements StudentService {
         }
         courses.addAll(student.getCourses());
         Admin admin = adminService.getAdmin();
-        courses.removeIf(course -> Objects.equals(course.getAcademicYear(), admin.getAcademicYear()) || Objects.equals(course.getTerm(), admin.getTerm()));
+        courses.removeIf(course -> Objects.equals(course.getAcademicYear(), admin.getAcademicYear()) && Objects.equals(course.getTerm(), admin.getTerm()));
         return courses;
     }
 }

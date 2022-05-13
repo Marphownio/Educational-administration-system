@@ -71,7 +71,7 @@ public class AdminServiceImpl implements AdminService {
                 resultMessage = saveAdmin(admin);
             }
         }
-        catch (Exception exception) {
+        catch (Exception e) {
             resultMessage = ResultMessage.FAILED;
         }
         return resultMessage;
@@ -87,9 +87,17 @@ public class AdminServiceImpl implements AdminService {
         try {
             for (Course course : courses) {
                 List<Student> students = new ArrayList<>(course.getStudents());
+                if (students.isEmpty()) {
+                    continue;
+                }
                 course.getStudents().clear();
                 course.setStudents(new HashSet<>(students.subList(0, min(course.getCapacity(), students.size())-1)));
-                courseService.updateCourse(course);
+                if (courseService.updateCourse(course) == ResultMessage.FAILED) {
+                    for (Course course1 : backupCourses) {
+                        courseService.updateCourse(course1);
+                    }
+                    return ResultMessage.FAILED;
+                }
             }
             return ResultMessage.SUCCESS;
         }

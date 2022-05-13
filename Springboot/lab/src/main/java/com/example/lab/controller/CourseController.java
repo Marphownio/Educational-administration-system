@@ -3,6 +3,7 @@ package com.example.lab.controller;
 import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.Student;
+import com.example.lab.service.AdminService;
 import com.example.lab.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,13 @@ public class CourseController {
     @Resource
     private CourseService courseService;
 
+    @Resource
+    private AdminService adminService;
+
     @PostMapping(value = "/add")
     public ResultMessage addCourse(@RequestBody Course course) {
+        course.setAcademicYear(adminService.getAdmin().getAcademicYear());
+        course.setTerm(adminService.getAdmin().getTerm());
         return courseService.addCourse(course);
     }
 
