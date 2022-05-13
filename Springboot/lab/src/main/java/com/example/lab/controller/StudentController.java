@@ -38,8 +38,8 @@ public class StudentController {
 
     // 学生退课
     @DeleteMapping(value = "/course/drop")
-    public ResultMessage dropCourse(Integer courseId, HttpSession session) {
-        User student = (User) session.getAttribute("user");
+    public ResultMessage dropCourse(Integer courseId,HttpSession session) {
+        Student student = (Student) session.getAttribute("user");
         return studentService.dropCourse(student.getUserId(), courseId);
     }
 
