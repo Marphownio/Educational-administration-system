@@ -285,6 +285,8 @@ export default {
             };
         },
         search1(){
+            //if判断防止数据为空时报错
+            if(this.courseData){
             this.courseData1 = computed(() =>
                 this.courseData.filter(
                     (data) =>
@@ -320,6 +322,7 @@ export default {
                         data.place.toLowerCase().includes(this.search15.toLowerCase())
                 )
             );
+            }
         },
         changeterm(){
             request.get("/course/list",{
@@ -334,6 +337,8 @@ export default {
             })
         },
         search2(){
+            //if判断防止数据为空时报错
+            if(this.courseCategoryData){
             this.courseCategoryData1 = computed(() =>
                 this.courseCategoryData.filter(
                     (data) =>
@@ -348,6 +353,7 @@ export default {
                         data.courseName.toLowerCase().includes(this.search22.toLowerCase())
                 )
             );
+            }
         },
         fillclassArrangementId(){
             for(let i=0;i<Object.keys(this.ruleForm1.arrangement).length;i++)
