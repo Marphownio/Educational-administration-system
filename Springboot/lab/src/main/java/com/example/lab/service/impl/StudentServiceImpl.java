@@ -41,19 +41,35 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findAll();
     }
 
-    @Override
-    public ResultMessage selectCourse(Integer studentId, Integer courseId) {
-        ResultMessage resultMessage = ResultMessage.SUCCESS;
+    private ResultMessage checkBeforeSelectCourse(Integer studentId, Course selectCourse) {
+        ResultMessage resultMessage = ResultMessage.FAILED;
+        if (selectCourse == null) {
+            return ResultMessage.FAILED;
+        }
         Admin admin = adminService.getAdmin();
         if (admin.getCourseSelectionStatus() != CourseSelectionStatus.START_FIRST && admin.getCourseSelectionStatus() != CourseSelectionStatus.START_SECOND) {
-            resultMessage = ResultMessage.NOT_OPEN;
+            return ResultMessage.NOT_OPEN;
         }
-        Course selectCourse = courseService.findCourseByCourseId(courseId);
+        // 是否为可选课程
+        for (Course course : getSelectableCourse(studentId)) {
+            if (Objects.equals(course.getCourseId(), selectCourse.getCourseId())) {
+                resultMessage = ResultMessage.SUCCESS;
+                break;
+            }
+        }
         // 二轮选课时，已选满的课程不可选
-        if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND && selectCourse.getCapacity() <= selectCourse.getStudents().size()) {
+        if (resultMessage == ResultMessage.SUCCESS && admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND
+                && selectCourse.getCapacity() <= selectCourse.getStudents().size()) {
             resultMessage = ResultMessage.FAILED;
         }
-        if (resultMessage == ResultMessage.NOT_OPEN || resultMessage == ResultMessage.FAILED) {
+        return resultMessage;
+    }
+
+    @Override
+    public ResultMessage selectCourse(Integer studentId, Integer courseId) {
+        Course selectCourse = courseService.findCourseByCourseId(courseId);
+        ResultMessage resultMessage = checkBeforeSelectCourse(studentId, selectCourse);
+        if (resultMessage != ResultMessage.SUCCESS) {
             return resultMessage;
         }
         Set<Course> courseSet = findAllCoursesStudying(studentId);
