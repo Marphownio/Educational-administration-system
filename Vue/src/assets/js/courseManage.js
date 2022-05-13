@@ -2,6 +2,7 @@ import Nav from "@/views/inc/Nav.vue";
 import request from "@/utils/request";
 import {reactive} from "vue";
 import {set} from "core-js/internals/task";
+import {computed} from "vue";
 
 
 export default {
@@ -231,7 +232,36 @@ export default {
             majorListData:[
 
             ],
-            courseData:[]
+            courseData:[],
+            search11: '',
+            search12: '',
+            search13: '',
+            search14:'',
+            search15:'',
+            search21:'',
+            search22:'',
+            courseCategoryData1:[{}],
+            courseCategoryDatashow:[{}],
+            selectableDataShow: [{}],
+            courseData1: [{}],
+            courseData2: [{}],
+            courseData3: [{}],
+            courseData4: [{}],
+            courseData5: [{}],
+            courseDatashow:[{}],
+            academicyear:'',
+            term:'',
+            academicyearData:[
+                {year:"2019-2020"},
+                {year:"2020-2021"},
+                {year:"2021-2022"},
+                {year:"2022-2023"},
+                {year:"2023-2024"}
+            ],
+            termData:[
+                {term:1},
+                {term:2}
+            ]
         }
     },
 
@@ -243,6 +273,7 @@ export default {
         this.getacademicterm();
         this.getMajorList();
         this.getcourseCategory();
+        this.getCourse();
     },
     created(){
         this.getapplicationData();
@@ -252,6 +283,71 @@ export default {
             this.ruleForm1= {
                 arrangement: []
             };
+        },
+        search1(){
+            this.courseData1 = computed(() =>
+                this.courseData.filter(
+                    (data) =>
+                        !this.search11 ||
+                        data.courseCategoryNumbershow.toLowerCase().includes(this.search11.toLowerCase())
+                )
+            );
+            this.courseData2 = computed(() =>
+                this.courseData1.filter(
+                    (data) =>
+                        !this.search12 ||
+                        data.courseName.toLowerCase().includes(this.search12.toLowerCase())
+                )
+            );
+            this.courseData3 = computed(() =>
+                this.courseData2.filter(
+                    (data) =>
+                        !this.search13 ||
+                        data.teacherName.toLowerCase().includes(this.search13.toLowerCase())
+                )
+            );
+            this.courseData4 = computed(() =>
+                this.courseData3.filter(
+                    (data) =>
+                        !this.search14 ||
+                        data.time.toLowerCase().includes(this.search14.toLowerCase())
+                )
+            );
+            this.courseDatashow = computed(() =>
+                this.courseData4.filter(
+                    (data) =>
+                        !this.search15 ||
+                        data.place.toLowerCase().includes(this.search15.toLowerCase())
+                )
+            );
+        },
+        changeterm(){
+            request.get("/course/list",{
+                params:{
+                    academicYear:this.academicyear,
+                    term:this.term
+                },
+            }).then(res=>{
+                this.courseData= res;
+                this.fillcourse();
+                this.search1();
+            })
+        },
+        search2(){
+            this.courseCategoryData1 = computed(() =>
+                this.courseCategoryData.filter(
+                    (data) =>
+                        !this.search21 ||
+                        data.courseCategoryNumber.toLowerCase().includes(this.search21.toLowerCase())
+                )
+            );
+            this.courseCategoryDatashow = computed(() =>
+                this.courseCategoryData1.filter(
+                    (data) =>
+                        !this.search22 ||
+                        data.courseName.toLowerCase().includes(this.search22.toLowerCase())
+                )
+            );
         },
         fillclassArrangementId(){
             for(let i=0;i<Object.keys(this.ruleForm1.arrangement).length;i++)
@@ -312,36 +408,19 @@ export default {
         changeCategory(){
             this.ruleForm1.courseCategory='';
         },
+
         getcourseCategory(){
             request.get("/courseCategory/list").then(res=>{
-                for(let i=0;i<Object.keys(res).length;i++)
-                {
-                    let coursecategory={
-                        'courseCategoryNumbershow':res[i].courseCategoryNumber,
-                        'courseCategoryNumber':res[i].courseCategoryNumber,
-                        'classHour': res[i].classHour,
-                        'courseCategoryId': res[i].courseCategoryId,
-                        'courseName': res[i].courseName,
-                        'credit': res[i].credit,
-                        'major':{
-                            'introduction': res[i].major.introduction,
-                            'majorId': res[i].major.majorId,
-                            'majorName': res[i].major.majorName
-                        },
-                        'school':{
-                            'introduction': res[i].school.introduction,
-                            'schoolId': res[i].school.schoolId,
-                            'schoolName': res[i].school.schoolName
-                        }
-                    }
-                    this.courseCategoryData.push(coursecategory);
-                }
-                this.getCourseForm();
+                this.courseCategoryData=res;
+                this.search2();
             })
         },
+
         getacademicterm(){
             request.get("/admin/academicYearAndTerm").then(res=>{
                 this.academicData=res;
+                this.academicyear=res.slice(0,9);
+                this.term=res.slice(9,10);
             })
         },
         getapplicationData(){
@@ -423,64 +502,63 @@ export default {
             });
             this.getapplicationData();
         },
-        getcourse(id,i){
-            request.get("/courseCategory/courses",{
-            params:{
-                courseCategoryId:id
-            }
-            }).then(res=>{
-                this.courseData[i]= res;
-                for(let j=0;j<Object.keys(this.courseData[i]).length;j++)
-                {
-                    this.courseData[i][j].courseName=this.courseCategoryData[i].courseName;
-                    this.courseData[i][j].courseCategoryNumber=this.courseCategoryData[i].courseCategoryNumber;
-                    this.courseData[i][j].courseCategoryNumbershow=this.courseCategoryData[i].courseCategoryNumber+'.'+this.courseData[i][j].courseNumber;
-                    this.courseData[i][j].courseCategoryId=this.courseCategoryData[i].courseCategoryId;
-                    this.courseData[i][j].schoolName=this.courseCategoryData[i].school.schoolName;
-                    this.courseData[i][j].schoolId=this.courseCategoryData[i].school.schoolId;
-                    this.courseData[i][j].majorName=this.courseCategoryData[i].major.majorName;
-                    this.courseData[i][j].majorId=this.courseCategoryData[i].major.majorId;
-                    this.courseData[i][j].classHour=this.courseCategoryData[i].classHour;
-                    this.courseData[i][j].credit=this.courseCategoryData[i].credit;
-                    this.courseData[i][j].teacherName=this.courseData[i][j].teacher.username;
-                    this.courseData[i][j].teacherId=this.courseData[i][j].teacher.userId;
-                    let classarrangementstr='';
-                    for(let k=0;k<Object.keys(this.courseData[i][j].classArrangements).length;k++)
-                    {
-                        let times='';
-                        let timesinorder=[];
-                        timesinorder.length=Object.keys(this.courseData[i][j].classArrangements[k].classTimes).length;
-                        //将classTimes按从小到大放入timesinorder
-                        for(let l=0;l<Object.keys(this.courseData[i][j].classArrangements[k].classTimes).length;l++)
-                        {
-                            timesinorder[l]=this.courseData[i][j].classArrangements[k].classTimes[l].classTimeId;
-                        }
-                        timesinorder=timesinorder.sort();
-                        for(let l=0;l<Object.keys(timesinorder).length;l++)
-                        {
-                            times=times.concat(timesinorder[l]+',');
-                        }
-                        classarrangementstr=classarrangementstr.concat(this.courseData[i][j].classArrangements[k].building.buildingName+','+
-                            this.courseData[i][j].classArrangements[k].classroom.classroomId+','+
-                            times+
-                            JSON.stringify(this.courseData[i][j].classArrangements[k].dayOfWeek).replace(/"/g,"")+'\n')
-                    }
-                    this.courseData[i][j].classarrangement=classarrangementstr;
-                }
-                this.tableData[i]= {
-                    'courseCategoryNumbershow':this.courseCategoryData[i].courseCategoryNumber,
-                    'courseCategoryNumber':this.courseCategoryData[i].courseCategoryNumber,
-                    'courseCategoryId': this.courseCategoryData[i].courseCategoryId,
-                    'courseName': this.courseCategoryData[i].courseName,
-                    'schoolName': this.courseCategoryData[i].school.schoolName,
-                    'schoolId': this.courseCategoryData[i].school.schoolId,
-                    'majorName': this.courseCategoryData[i].major.majorName,
-                    'majorId': this.courseCategoryData[i].major.majorId,
-                    'classHour': this.courseCategoryData[i].classHour,
-                    'credit': this.courseCategoryData[i].credit,
-                    children: this.courseData[i]
-                }
+        showCourse(){
+            request.get("/course/list")
+        },
+        getCourse(){
+            request.get("/course/list").
+            then(res=>{
+                this.courseData= res;
+                this.fillcourse();
+                this.search1();
             })
+        },
+        fillcourse(){
+            for(let j=0;j<Object.keys(this.courseData).length;j++)
+            {
+                this.courseData[j].courseName=this.courseData[j].courseCategory.courseName;
+                this.courseData[j].courseCategoryNumber=this.courseData[j].courseCategory.courseCategoryNumber;
+                this.courseData[j].courseCategoryNumbershow=this.courseData[j].courseCategoryNumber+'.'+this.courseData[j].courseNumber;
+                this.courseData[j].courseCategoryId=this.courseData[j].courseCategory.courseCategoryId;
+                this.courseData[j].schoolName=this.courseData[j].courseCategory.school.schoolName;
+                this.courseData[j].schoolId=this.courseData[j].courseCategory.school.schoolId;
+                this.courseData[j].majorName=this.courseData[j].courseCategory.major.majorName;
+                this.courseData[j].majorId=this.courseData[j].courseCategory.major.majorId;
+                this.courseData[j].classHour=this.courseData[j].courseCategory.classHour;
+                this.courseData[j].credit=this.courseData[j].courseCategory.credit;
+                this.courseData[j].teacherName=this.courseData[j].teacher.username;
+                this.courseData[j].teacherId=this.courseData[j].teacher.userId;
+                let classarrangementstr='';
+                let timestr='';
+                let placestr='';
+                for(let k=0;k<Object.keys(this.courseData[j].classArrangements).length;k++)
+                {
+                    let times='';
+                    let timesinorder=[];
+                    timesinorder.length=Object.keys(this.courseData[j].classArrangements[k].classTimes).length;
+                    //将classTimes按从小到大放入timesinorder
+                    for(let l=0;l<Object.keys(this.courseData[j].classArrangements[k].classTimes).length;l++)
+                    {
+                        timesinorder[l]=this.courseData[j].classArrangements[k].classTimes[l].classTimeId;
+                    }
+                    timesinorder=timesinorder.sort();
+                    for(let l=0;l<Object.keys(timesinorder).length;l++)
+                    {
+                        times=times.concat(timesinorder[l]+',');
+                    }
+                    classarrangementstr=classarrangementstr.concat(this.courseData[j].classArrangements[k].building.buildingName+','+
+                        this.courseData[j].classArrangements[k].classroom.classroomId+','+
+                        times+
+                        JSON.stringify(this.courseData[j].classArrangements[k].dayOfWeek).replace(/"/g,"")+' ; ');
+                    timestr=timestr.concat(times+
+                        JSON.stringify(this.courseData[j].classArrangements[k].dayOfWeek).replace(/"/g,"")+' ; ');
+                    placestr=placestr.concat(this.courseData[j].classArrangements[k].building.buildingName+','+
+                        this.courseData[j].classArrangements[k].classroom.classroomId+' ; ');
+                }
+                this.courseData[j].classarrangement=classarrangementstr;
+                this.courseData[j].time=timestr;
+                this.courseData[j].place=placestr;
+            }
         },
         rejectApplication(id){
             request.delete("/admin/application",{
@@ -495,15 +573,6 @@ export default {
                 type: 'success',
             });
             this.getapplicationData();
-        },
-        getCourseForm(){
-            for(let i=0;i<Object.keys(this.courseCategoryData).length;i++)
-            {
-                if(this.courseCategoryData[i]!==null)
-                {
-                    this.getcourse(this.courseCategoryData[i].courseCategoryId,i);
-                }
-            }
         },
         remove(item){
             if(Object.keys(this.ruleForm1.arrangement).length>1)
@@ -764,7 +833,6 @@ export default {
             }
         },
         editHandle(obj){
-            if(typeof obj.courseId!=="undefined"&&obj.courseId.length!==0) {
                 this.updatecourse=true;
                 this.ruleForm1=obj;
                 this.ruleForm1.arrangement=[];
@@ -796,21 +864,21 @@ export default {
                         this.classroomData[i]= res;
                     })
                 }
-            }
-            else {
-                this.updatecoursecategory=true;
-                this.ruleForm2=obj;
-                request.get("/school/majors",{
-                    params:{
-                        schoolId:this.ruleForm2.schoolId
-                    }
-                }).then(res=>{
-                    this.majordata= res;
-                })
-            }
+        },
+        editHandle2(row){
+            this.updatecoursecategory=true;
+            this.ruleForm2=row;
+            this.ruleForm2.schoolId=row.school.schoolId;
+            this.ruleForm2.majorId=row.major.majorId;
+            request.get("/school/majors",{
+                params:{
+                    schoolId:this.ruleForm2.school.schoolId
+                }
+            }).then(res=>{
+                this.majordata= res;
+            })
         },
         delHandle(obj){
-            if(typeof obj.courseId!=="undefined"&&obj.courseId.length!==0) {
                 this.$axios.delete("/api/course/delete/"+obj.courseId).then(res=> {
                     if(res.data==='SUCCESS'){
                         this.$message({
@@ -829,27 +897,26 @@ export default {
                         });
                     }
                 })
-            }
-            else if(typeof obj.courseCategoryId!=="undefined"&&obj.courseCategoryId.length!==0){
-                this.$axios.delete("/api/courseCategory/delete/"+obj.courseCategoryId).then(res=> {
-                    if(res.data==='SUCCESS'){
-                        this.$message({
-                            showClose: true,
-                            message: '操作成功',
-                            type: 'success',
-                        });
-                        this.$router.go(0);
-                    }
-                    else if(res.data==='FAILED')
-                    {
-                        this.$message({
-                            showClose: true,
-                            message: '该课程类下仍有课程，无法删除',
-                            type: 'error',
-                        });
-                    }
-                })
-            }
+        },
+        delHandle2(row){
+            this.$axios.delete("/api/courseCategory/delete/"+row.courseCategoryId).then(res=> {
+                if(res.data==='SUCCESS'){
+                    this.$message({
+                        showClose: true,
+                        message: '操作成功',
+                        type: 'success',
+                    });
+                    this.$router.go(0);
+                }
+                else if(res.data==='FAILED')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '该课程类下仍有课程，无法删除',
+                        type: 'error',
+                    });
+                }
+            })
         },
         scrollToTop (node) {
             const ChildHasError = Array.from(node.querySelectorAll('.is-error'))
