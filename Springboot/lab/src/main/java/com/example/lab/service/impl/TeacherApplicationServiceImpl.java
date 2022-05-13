@@ -25,7 +25,7 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
     private CourseCategoryService courseCategoryService;
 
     @Resource
-    private UserService userService;
+    private TeacherService teacherService;
 
     @Resource
     private MajorService majorService;
@@ -67,7 +67,7 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
     }
 
     private ResultMessage applicationOfAddOrUpdateCourse(TeacherApplication application) {
-        if (userService.findTeacherByTeacherId(application.getTeacher().getUserId()) == null) {
+        if (teacherService.findTeacherByTeacherId(application.getTeacher().getUserId()) == null) {
             return ResultMessage.FAILED;
         }
         Set<ClassArrangement> classArrangementSet = new HashSet<>();
@@ -177,7 +177,6 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
             default:
                 resultMessage = ResultMessage.FAILED; break;
         }
-        System.out.println(resultMessage);
         return (resultMessage == ResultMessage.SUCCESS) ? this.deleteTeacherApplication(applicationId) : ResultMessage.FAILED;
     }
 }

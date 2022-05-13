@@ -29,7 +29,7 @@ public class CourseServiceImpl implements CourseService {
     private MajorService majorService;
 
     @Resource
-    private UserService userService;
+    private TeacherService teacherService;
 
     @Resource
     private CommonService commonService;
@@ -43,7 +43,7 @@ public class CourseServiceImpl implements CourseService {
         if (findCourseByCourseId(course.getCourseId()) != null) {
             return ResultMessage.EXIST;
         }
-        if (course.getTeacher() == null || userService.findTeacherByTeacherId(course.getTeacher().getUserId()) == null
+        if (course.getTeacher() == null || teacherService.findTeacherByTeacherId(course.getTeacher().getUserId()) == null
                 || course.getCourseCategory() == null || course.getClassArrangements().isEmpty()) {
             return ResultMessage.FAILED;
         }
@@ -139,7 +139,7 @@ public class CourseServiceImpl implements CourseService {
         if (findCourseByCourseId(course.getCourseId()) == null) {
             return ResultMessage.NOTFOUND;
         }
-        if (course.getTeacher() == null || userService.findTeacherByTeacherId(course.getTeacher().getUserId()) == null
+        if (course.getTeacher() == null || teacherService.findTeacherByTeacherId(course.getTeacher().getUserId()) == null
                 || course.getCourseCategory() == null || courseCategoryService.findCourseCategoryByCourseCategoryId(course.getCourseCategory().getCourseCategoryId()) == null) {
             return ResultMessage.FAILED;
         }

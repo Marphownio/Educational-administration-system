@@ -7,10 +7,7 @@ import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.Student;
 import com.example.lab.pojo.entity.StudentApplication;
 import com.example.lab.repository.StudentApplicationRepository;
-import com.example.lab.service.AdminService;
-import com.example.lab.service.CourseService;
-import com.example.lab.service.StudentApplicationService;
-import com.example.lab.service.UserService;
+import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,7 +23,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
     private CourseService courseService;
 
     @Resource
-    private UserService userService;
+    private StudentService studentService;
 
     @Resource
     private AdminService adminService;
@@ -34,7 +31,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
     @Override
     public ResultMessage addStudentApplication(Integer courseId,Integer studentId,String reason) {
         Course course = courseService.findCourseByCourseId(courseId);
-        Student student = userService.findStudentByStudentId(studentId);
+        Student student = studentService.findStudentByStudentId(studentId);
         StudentApplication studentApplication = new StudentApplication(course,student,reason);
         // 如果需要修改课程容量
         // 修改课程容量只有在学期开始与一轮选课期间是不需要考虑课程容量与已选人数的 其他阶段要修改容量都需要考虑

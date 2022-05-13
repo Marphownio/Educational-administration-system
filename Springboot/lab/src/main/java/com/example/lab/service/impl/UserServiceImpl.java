@@ -26,10 +26,10 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Resource
-    private TeacherRepository teacherRepository;
+    private StudentRepository studentRepository;
 
     @Resource
-    private StudentRepository studentRepository;
+    private TeacherRepository teacherRepository;
 
     @Resource
     private SchoolService schoolService;
@@ -274,10 +274,10 @@ public class UserServiceImpl implements UserService {
             resultMessage = ResultMessage.NOTFOUND;
         } else {
             try {
-                if(findTeacherByTeacherId(userId) != null) {
+                if(teacherRepository.findById(userId).isPresent()) {
                     teacherRepository.deleteById(userId);
                     resultMessage = ResultMessage.SUCCESS;
-                } else if (findStudentByStudentId(userId) != null) {
+                } else if (studentRepository.findById(userId).isPresent()) {
                     studentRepository.deleteById(userId);
                     resultMessage = ResultMessage.SUCCESS;
                 } else {
@@ -307,18 +307,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-    // 查询全部教师
-    @Override
-    public List<Teacher> findAllTeacher() {
-        return teacherRepository.findAll();
-    }
-
-    // 查询全部学生
-    @Override
-    public List<Student> findAllStudent() {
-        return studentRepository.findAll();
-    }
-
     // 通过id查询用户
     @Override
     public User findUserByUserId(Integer userId) {
@@ -331,15 +319,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAllByUsername(username);
     }
 
-    // 通过id查询教师
-    @Override
-    public Teacher findTeacherByTeacherId(Integer teacherId) {
-        return teacherRepository.findById(teacherId).orElse(null);
-    }
-
-    // 通过id查询学生
-    @Override
-    public Student findStudentByStudentId(Integer studentId) {
-        return studentRepository.findById(studentId).orElse(null);
-    }
 }
