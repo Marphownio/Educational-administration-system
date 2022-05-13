@@ -50,10 +50,6 @@ public class StudentServiceImpl implements StudentService {
         if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND && selectCourse.getCapacity() <= selectCourse.getStudents().size()) {
             resultMessage = ResultMessage.FAILED;
         }
-        // 不在可选课程中
-        if (!getSelectableCourse(studentId).contains(selectCourse)) {
-            resultMessage = ResultMessage.FAILED;
-        }
         if (resultMessage == ResultMessage.NOT_OPEN || resultMessage == ResultMessage.FAILED) {
             return resultMessage;
         }

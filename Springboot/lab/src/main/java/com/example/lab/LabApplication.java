@@ -33,7 +33,6 @@ public class LabApplication {
         adminService2 = adminService;
         classTimeService2 = classTimeService;
     }
-
     public static void prepare() {
         Admin admin = new Admin(0,"fudan_admin", UserRole.ADMIN, CourseSelectionStatus.START_TERM,"2021-2022","1");
         if (adminService2.getAdmin() == null) {
