@@ -57,7 +57,7 @@ public class StudentController {
         if (resultMessage == ResultMessage.NOT_OPEN || resultMessage == ResultMessage.FAILED) {
             return resultMessage;
         }
-        ResponseEntity<Set<Course>> courses = findAllCoursesStudying(currentUser.getUserId());
+        ResponseEntity<Set<Course>> courses = findAllCoursesStudying(session);
         Set<Course> courseSet = courses.getBody();
         if (courseSet != null && !courseSet.isEmpty()) {
             for (Course course : courseSet) {
@@ -111,11 +111,12 @@ public class StudentController {
         }
     }
 
-    // 查看指定学生所有已修课程
+    // 学生查看所有已修课程
     @GetMapping(value = "/courses/completed/all")
-    public ResponseEntity<Set<Course>> findAllCoursesCompleted(@RequestParam(value = "studentId") Integer studentId) {
-        Student student = userService.findStudentByStudentId(studentId);
+    public ResponseEntity<Set<Course>> findAllCoursesCompleted(HttpSession session) {
         Set<Course> courses = new HashSet<>();
+        User user = (User)session.getAttribute("user");
+        Student student = userService.findStudentByStudentId(user.getUserId());
         if (student == null) {
             return new ResponseEntity<>(courses, HttpStatus.NO_CONTENT);
         }
@@ -128,12 +129,12 @@ public class StudentController {
         return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 
-    // 查看指定学生在指定学年学期的课程
+    // 学生查看在指定学年学期的课程
     @GetMapping(value = "/courses/specified")
-    public ResponseEntity<Set<Course>> findAllCoursesSpecified(@RequestParam(value = "studentId") Integer studentId,
-                                                               @RequestParam(value = "academicYear") String academicYear,
-                                                               @RequestParam(value = "term") String term) {
-        Student student = userService.findStudentByStudentId(studentId);
+    public ResponseEntity<Set<Course>> findAllCoursesSpecified(@RequestParam(value = "academicYear") String academicYear,
+                                                               @RequestParam(value = "term") String term, HttpSession session) {
+        User user = (User)session.getAttribute("user");
+        Student student = userService.findStudentByStudentId(user.getUserId());
         Set<Course> courses = new HashSet<>();
         if (student == null) {
             return new ResponseEntity<>(courses, HttpStatus.NO_CONTENT);
@@ -146,10 +147,10 @@ public class StudentController {
         return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 
-    // 查看指定学生所有已选/在读课程
+    // 学生查看所有已选/在读课程
     @GetMapping(value = "/courses/studying")
-    public ResponseEntity<Set<Course>> findAllCoursesStudying(@RequestParam(value = "studentId") Integer studentId) {
+    public ResponseEntity<Set<Course>> findAllCoursesStudying(HttpSession session) {
         Admin admin = adminService.getAdmin();
-        return findAllCoursesSpecified(studentId, admin.getAcademicYear(), admin.getTerm());
+        return findAllCoursesSpecified(admin.getAcademicYear(), admin.getTerm(), session);
     }
 }
