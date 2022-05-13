@@ -11,95 +11,7 @@ export default {
         return {
             currentStudentId:'',
             classtimetable:[],
-            classinfortable:[{
-                academicYear: "2000-2001",
-                capacity: 30,
-                classArrangements: [
-                    {
-                        classArrangementId: 8,
-                        building:
-                            {
-                                buildingId: 2,
-                                buildingName: "第二教学楼"
-                            },
-                        classroom:
-                            {
-                                building: {buildingId: 2, buildingName: "第二教学楼"},
-                                capacity: 80,
-                                classroomId: 202
-                            },
-                        dayOfWeek: "TUESDAY",
-                        classTimes: [{
-                            classTimeId: 1,
-                            startTimeHour: null,
-                            startTimeMin: null,
-                            endTimeHour: null,
-                            endTimeMin: null
-                        }],
-                    },
-                    {
-                        classArrangementId: 2,
-                        building:
-                            {
-                                buildingId: 1,
-                                buildingName: "第一教学楼"
-                            },
-                        classroom:
-                            {
-                                building: {buildingId: 2, buildingName: "第二教学楼"},
-                                capacity: 80,
-                                classroomId: 102
-                            },
-                        dayOfWeek: "FRIDAY",
-                        classTimes: [{
-                            classTimeId: 1,
-                            startTimeHour: null,
-                            startTimeMin: null,
-                            endTimeHour: null,
-                            endTimeMin: null
-                        },
-                            {
-                                classTimeId: 2,
-                                startTimeHour: null,
-                                startTimeMin: null,
-                                endTimeHour: null,
-                                endTimeMin: null
-                            },
-                            {
-                                classTimeId: 3,
-                                startTimeHour: null,
-                                startTimeMin: null,
-                                endTimeHour: null,
-                                endTimeMin: null
-                            },
-                            {
-                                classTimeId: 7,
-                                startTimeHour: null,
-                                startTimeMin: null,
-                                endTimeHour: null,
-                                endTimeMin: null
-                            },],
-                    },],
-                introduction:'cdww',
-                courseCategory:
-                    {
-                        school:{
-                            schoolName:'计算机科学学院',
-                        },
-                        major:{
-                            majorName:'软件工程',
-                        },
-                        courseCategoryNumber:'Math101',
-                        courseCategoryId: 1,
-                        courseName: "数学分析",
-                        classHour: 5,
-                        credit: 5,
-                    },
-                courseId: 2,
-                courseNumber: 2,
-                teacher: {username: "哈哈哈",},
-            },],
-
+            classinfortable:[],
         }
     },
     computed:{
@@ -108,7 +20,7 @@ export default {
         const that=this;
         setTimeout(function() {
             that.fillInClassInForm()
-        }, 300); // 定时时间
+        }, 500); // 定时时间
     },
     created(){
         this.getTimeinfor();
@@ -119,7 +31,11 @@ export default {
         classDrop(courseId){
             const that =this;
             let form = new FormData();
+            let dropForm = {};
+            dropForm.courseId=courseId;
+            console.log(dropForm)
             form.append('courseId', courseId);
+            console.log(form)
             request.delete("/student/course/drop",form).then(function(res){
                 ALERTMSG.show(that,true,"退课成功!","success");
                 return true;
@@ -134,9 +50,8 @@ export default {
             });
         },
         getStudingClass:function(){
-          request.get("/student/courses/studying").then(res=>{
-                console.log(res)
-                // this.classinfortable= res;
+          request.get("/student/course/studying").then(res=>{
+                this.classinfortable= res;
             });
         },
         fillInClassInForm:function(){

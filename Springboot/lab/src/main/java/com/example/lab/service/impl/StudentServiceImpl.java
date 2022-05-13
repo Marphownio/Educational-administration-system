@@ -27,6 +27,9 @@ public class StudentServiceImpl implements StudentService {
     @Resource
     private CourseService courseService;
 
+    @Resource
+    private UserService userService;
+
     // 通过id查询学生
     @Override
     public Student findStudentByStudentId(Integer studentId) {
@@ -85,19 +88,19 @@ public class StudentServiceImpl implements StudentService {
     public ResultMessage dropCourse(Integer studentId, Integer courseId) {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
         Student student = findStudentByStudentId(studentId);
-        if (student == null) {
-            return ResultMessage.FAILED;
-        }
         Admin admin = adminService.getAdmin();
         if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND){
             try {
                 Course course = courseService.findCourseByCourseId(courseId);
                 course.getStudents().remove(student);
+                student.getCourses().remove(course);
+                userService.updateUser(student);
                 courseService.updateCourse(course);
             } catch (Exception e) {
                 resultMessage = ResultMessage.FAILED;
             }
-        } else {
+        }
+        else {
             resultMessage = ResultMessage.NOT_OPEN;
         }
         return resultMessage;

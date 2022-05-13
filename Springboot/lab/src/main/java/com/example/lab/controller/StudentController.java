@@ -31,15 +31,15 @@ public class StudentController {
 
     // 学生选课
     @PostMapping(value = "/course/select")
-    public ResultMessage selectCourse(@RequestParam("courseId") Integer courseId, HttpSession session) {
+    public ResultMessage selectCourse(Integer courseId, HttpSession session) {
         User student = (User) session.getAttribute("user");
         return studentService.selectCourse(student.getUserId(), courseId);
     }
 
     // 学生退课
     @DeleteMapping(value = "/course/drop")
-    public ResultMessage dropCourse(@RequestParam("courseId") Integer courseId, HttpSession session) {
-        User student = (User) session.getAttribute("user");
+    public ResultMessage dropCourse(Integer courseId,HttpSession session) {
+        Student student = (Student) session.getAttribute("user");
         return studentService.dropCourse(student.getUserId(), courseId);
     }
 

@@ -33,15 +33,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
         Course course = courseService.findCourseByCourseId(courseId);
         Student student = studentService.findStudentByStudentId(studentId);
         StudentApplication studentApplication = new StudentApplication(course,student,reason);
-        // 如果需要修改课程容量
-        // 修改课程容量只有在学期开始与一轮选课期间是不需要考虑课程容量与已选人数的 其他阶段要修改容量都需要考虑
-        Admin admin = adminService.getAdmin();
-        if (course.getCapacity().equals(courseService.findCourseByCourseId(course.getCourseId()).getCapacity())
-                && (admin.getCourseSelectionStatus() != CourseSelectionStatus.START_FIRST
-                && admin.getCourseSelectionStatus() != CourseSelectionStatus.START_TERM)
-                && course.getCapacity() < course.getStudents().size()) {
-            return ResultMessage.FAILED;
-        }
+
         try{
             studentApplicationRepository.save(studentApplication);
             return ResultMessage.SUCCESS;
