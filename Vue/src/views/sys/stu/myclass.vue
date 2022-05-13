@@ -88,24 +88,44 @@
       </el-table-column>
     </el-table>
     <el-table
-        :data="tableClassData"
+        :data="classinfortable"
         id="chosenclasstabel"
         border=true>
       <el-table-column align="center" prop="index" label="序号" type="index" width="60px"/>
-      <el-table-column align="center" prop="courseId" label="课程编号" width="100px"/>
-      <el-table-column align="center" prop="courseName" label="课程名称" width="100px" />
-      <el-table-column align="center" prop="school.schoolName" label="开课院系" width="100px" />
-      <el-table-column align="center" prop="major.majorName" label="开课专业" width="100px" />
-      <el-table-column align="center" prop="classHour" label="学时" width="60px"/>
-      <el-table-column align="center" prop="credit" label="学分" width="60px"/>
-      <el-table-column align="center" prop="teacher.username" label="任课教师" width="120px"/>
+      <el-table-column align="center" prop="courseNumber,courseCategory.courseCategoryNumber" label="课程编号" width="100px">
+        <template v-slot="scope">
+          {{scope.row.courseCategory.courseCategoryNumber}}.{{scope.row.courseNumber}}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="courseCategory.courseName" label="课程名称" width="100px" />
+      <el-table-column align="center" prop="courseCategory.school.schoolName" label="开课院系" width="150px" />
+      <el-table-column align="center" prop="courseCategory.major.majorName" label="开课专业" width="100px" />
+      <el-table-column align="center" prop="courseCategory.classHour" label="学时" width="60px"/>
+      <el-table-column align="center" prop="courseCategory.credit" label="学分" width="60px"/>
+      <el-table-column align="center" prop="teacher.username" label="任课教师" width="80px"/>
       <el-table-column align="center" prop="introduction" label="课程介绍" width="160px"/>
-      <el-table-column align="center" prop="courseTime" label="上课时间" width="160px"/>
-      <el-table-column align="center" prop="coursePlace" label="上课地点" width="120px"/>
+      <el-table-column align="center" prop="courseTime" label="时间地点安排" width="300px">
+        <template  v-slot="scope">
+          <div v-for="item in scope.row.classArrangements">
+            <span v-if="item.dayOfWeek=='MONDAY'">周一</span>
+            <span v-if="item.dayOfWeek=='TUESDAY'">周二</span>
+            <span v-if="item.dayOfWeek=='WEDNESDAY'">周三</span>
+            <span v-if="item.dayOfWeek=='THURSDAY'">周四</span>
+            <span v-if="item.dayOfWeek=='FRIDAY'">周五</span>
+            <span v-if="item.dayOfWeek=='SATURDAY'">周六</span>
+            <span v-if="item.dayOfWeek=='SUNDAY'">周日</span>/
+             {{item.building.buildingName}}-{{item.classroom.classroomId}}/
+            <span v-for="item2 in item.classTimes">
+              {{item2.classTimeId}}&nbsp;
+            </span>
+            节课
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="capacity" label="选课容量" width="60px"/>
       <el-table-column align="center" v-slot="scope" fixed="right" prop="icon" label="操作" width="100px">
         <div >
-          <el-popconfirm @confirm="(scope.row.courseId)"  title="确认退课吗？">
+          <el-popconfirm @confirm="classDrop(scope.row.courseId)"  title="确认退课吗？">
             <template #reference>
               <el-button type="danger">退课</el-button>
             </template>
