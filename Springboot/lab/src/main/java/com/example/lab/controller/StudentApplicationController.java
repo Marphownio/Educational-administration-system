@@ -19,9 +19,7 @@ public class StudentApplicationController {
     private StudentApplicationService studentApplicationService;
 
     @PostMapping(value = "/add")
-    public ResultMessage addApplication(@RequestParam("courseId") Integer courseId,
-                                        @RequestParam("studentId") Integer studentId,
-                                        @RequestParam("reason") String reason){
+    public ResultMessage addApplication(Integer courseId, Integer studentId, String reason){
         return studentApplicationService.addStudentApplication(courseId,studentId,reason);
     }
 

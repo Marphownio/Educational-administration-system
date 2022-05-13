@@ -36,7 +36,7 @@ export default {
             console.log(dropForm)
             form.append('courseId', courseId);
             console.log(form)
-            request.delete("/student/course/drop",dropForm).then(function(res){
+            request.delete("/student/course/drop",form).then(function(res){
                 ALERTMSG.show(that,true,"退课成功!","success");
                 return true;
             },function(err){
