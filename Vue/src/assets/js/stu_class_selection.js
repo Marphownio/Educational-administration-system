@@ -11,45 +11,7 @@ export default {
     data(){
         return {
             schooltimetable: [],
-            classinfortable1: [
-                {
-                    academicYear: "2000-2001",
-                    capacity: 30,
-                    classArrangements: [
-                        {
-                            classArrangementId: 8,
-                            building:
-                                {
-                                    buildingId: 2,
-                                    buildingName: "第二教学楼"
-                                },
-                            classroom:
-                                {
-                                    building: {buildingId: 2, buildingName: "第二教学楼"},
-                                    capacity: 80,
-                                    classroomId: 202
-                                },
-                            dayOfWeek: "TUESDAY",
-                            classTimes: [{
-                                classTimeId: 1,
-                                startTimeHour: null,
-                                startTimeMin: null,
-                                endTimeHour: null,
-                                endTimeMin: null
-                            }],
-                        },],
-                    courseCategory:
-                        {
-                            courseCategoryId: 1,
-                            courseName: "数学分析",
-                            classHour: 5,
-                            credit: 5,
-                        },
-                    courseId: 2,
-                    courseNumber: 2,
-                    teacher: {username: "哈哈哈",},
-                },
-            ],
+            classinfortable1: [],
 
 
             tianCi: [
@@ -107,6 +69,7 @@ export default {
         this.getclassinfo();
         this.search();
         this.getSchooltimetable();
+        this.getStudingClass();
     },
     methods:{
         toSubmitApply(){
@@ -195,6 +158,11 @@ export default {
         },
         fillInTimeTable(classArrangements){
             this.theClassTimeData=classArrangements;
+        },
+        getStudingClass:function(){
+            request.get("/student/course/studying").then(res=>{
+                this.classinfortable1= res;
+            });
         },
         getclassinfo(){
             const that=this;

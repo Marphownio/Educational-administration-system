@@ -91,8 +91,8 @@
         :data="classinfortable"
         id="chosenclasstabel"
         border=true>
-      <el-table-column align="center" prop="index" label="序号" type="index" width="60px"/>
-      <el-table-column align="center" prop="courseNumber,courseCategory.courseCategoryNumber" label="课程编号" width="100px">
+      <el-table-column align="center" prop="index" label="序号" type="index" width="50px"/>
+      <el-table-column align="center" prop="courseNumber,courseCategory.courseCategoryNumber" label="课程编号" width="130px">
         <template v-slot="scope">
           {{scope.row.courseCategory.courseCategoryNumber}}.{{scope.row.courseNumber}}
         </template>
@@ -104,7 +104,7 @@
       <el-table-column align="center" prop="courseCategory.credit" label="学分" width="60px"/>
       <el-table-column align="center" prop="teacher.username" label="任课教师" width="80px"/>
       <el-table-column align="center" prop="introduction" label="课程介绍" width="160px"/>
-      <el-table-column align="center" prop="courseTime" label="时间地点安排" width="300px">
+      <el-table-column align="center" prop="courseTime" label="时间地点安排" width="270px">
         <template  v-slot="scope">
           <div v-for="item in scope.row.classArrangements">
             <span v-if="item.dayOfWeek=='MONDAY'">周一</span>
