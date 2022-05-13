@@ -29,7 +29,7 @@
                 <el-button type="primary" @click="checkcourse=true">审核课程申请</el-button>
             </el-form-item>
         </el-form>
-        <el-table :data="tableData" row-key="courseId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+        <el-table :data="tableData" row-key="courseId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" default-expand-all>
             <el-table-column prop="openToMajors" label="" width="120px" v-if="false"/>
             <el-table-column prop="classArrangements" label="" width="120px" v-if="false"/>
             <el-table-column prop="courseId" label="" width="120px" v-if="false"/>
@@ -37,18 +37,18 @@
             <el-table-column prop="term" label="" width="120px" v-if="false"/>
             <el-table-column prop="courseCategoryId" label="" width="120px" v-if="false"/>
             <el-table-column prop="courseCategoryNumber" label="" width="120px" v-if="false"/>
-            <el-table-column prop="courseCategoryNumbershow" label="课程代码" width="120px"/>
-            <el-table-column prop="courseName" label="课程名称" width="120px" />
-            <el-table-column prop="schoolName" label="开课院系" width="120px"/>
-            <el-table-column prop="schoolId" label="学院代码" width="120px"/>
-            <el-table-column prop="majorName" label="所属专业" width="120px"/>
-            <el-table-column prop="majorId" label="专业代码" width="120px"/>
-            <el-table-column prop="classHour" label="学时" width="120px"/>
-            <el-table-column prop="credit" label="学分" width="120px"/>
-            <el-table-column prop="teacherName" label="任课教师" width="120px"/>
-            <el-table-column prop="teacherId" label="教师工号" width="120px"/>
-            <el-table-column prop="capacity" label="选课容量" width="120px"/>
-            <el-table-column prop="classarrangement" label="课程安排" width="120px"/>
+            <el-table-column prop="courseCategoryNumbershow" label="课程代码" width="120px" sortable/>
+            <el-table-column prop="courseName" label="课程名称" width="120px" sortable/>
+            <el-table-column prop="schoolName" label="开课院系" width="120px" sortable/>
+            <el-table-column prop="schoolId" label="学院代码" width="120px" sortable/>
+            <el-table-column prop="majorName" label="所属专业" width="120px" sortable/>
+            <el-table-column prop="majorId" label="专业代码" width="120px" sortable/>
+            <el-table-column prop="classHour" label="学时" width="120px" sortable/>
+            <el-table-column prop="credit" label="学分" width="120px" sortable/>
+            <el-table-column prop="teacherName" label="任课教师" width="120px" sortable/>
+            <el-table-column prop="teacherId" label="教师工号" width="120px" sortable/>
+            <el-table-column prop="capacity" label="选课容量" width="120px" sortable/>
+            <el-table-column prop="classarrangement" label="课程安排" width="120px" />
             <el-table-column prop="introduction" label="课程介绍" />
             <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="170px">
                 <div>
@@ -334,9 +334,9 @@
     </body>
 </template>
 
-<script src="../../../assets/js/lessonManage.js" type="text/javascript">
+<script src="../../../assets/js/courseManage.js" type="text/javascript">
 
 </script>
 
-<style src="../../../assets/css/lessonManage.css" scoped>
+<style src="../../../assets/css/courseManage.css" scoped>
 </style>

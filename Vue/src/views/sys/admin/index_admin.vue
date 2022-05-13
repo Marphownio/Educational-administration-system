@@ -15,7 +15,7 @@
         <router-link to="/majormanage">学院/专业管理</router-link>
       </td>
       <td style="text-align:center" class="choose">
-          <router-link to="/lessonmanage" > 课程管理 </router-link>
+          <router-link to="/coursemanage" > 课程管理 </router-link>
       </td>
       <td style="text-align:center" class="choose">
           <router-link to="/selectmanage" > 学期管理 </router-link>
@@ -32,21 +32,7 @@
         <router-link to="/applicationmanage" >选课申请管理</router-link>
       </td>
       <td style="text-align:center" class="choose">
-        <a href="">查看课表</a>
-      </td>
-    </tr>
-    <tr>
-      <td style="text-align:center" class="choose">
-        <a href="" >教师/学生管理</a>
-      </td>
-      <td style="text-align:center" class="choose">
-        <a href="">选课</a>
-      </td>
-      <td style="text-align:center" class="choose">
-        <a href="" >评教</a>
-      </td>
-      <td style="text-align:center" class="choose">
-        <a href="">查看课表</a>
+          <router-link to="/courseselectionmanage" >查看选课名单</router-link>
       </td>
     </tr>
   </table>

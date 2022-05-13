@@ -39,9 +39,9 @@ const routes = [
     component: () => import('../views/sys/admin/userManage.vue')
   },
   {
-    path: '/lessonmanage',
-    name: 'Lessonmanage',
-    component: () => import('../views/sys/admin/lessonManage.vue')
+    path: '/coursemanage',
+    name: 'Coursemanage',
+    component: () => import('../views/sys/admin/courseManage.vue')
   },
   {
     path: '/selectmanage',
@@ -98,6 +98,11 @@ const routes = [
     name: 'stuApplication',
     component: () => import('../views/sys/stu/stuApplication.vue')
   },
+  {
+    path:'/courseselectionmanage',
+    name:'Courseselectionmanage',
+    component: ()=>import('../views/sys/admin/courseselectionManage')
+  },
   // {
   //   path: '*',
   //   name: 'NotFound',
@@ -130,7 +135,7 @@ router.beforeEach((to,from,next)=>{
       }
       //管理员身份
       if(token==="1"){
-        if(to.path==="/index_admin"||to.path==="/majormanage"||to.path==="/usermanage"||to.path==="/lessonmanage"||to.path==="/timemanage"||to.path==="/classroommanage"||to.path==="/selectmanage"||to.path==="/applicationmanage"){
+        if(to.path==="/index_admin"||to.path==="/majormanage"||to.path==="/usermanage"||to.path==="/coursemanage"||to.path==="/timemanage"||to.path==="/classroommanage"||to.path==="/selectmanage"||to.path==="/applicationmanage"||to.path==="/courseselectionmanage"){
           next();
         }
         else{

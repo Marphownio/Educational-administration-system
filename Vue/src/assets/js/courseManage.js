@@ -576,7 +576,7 @@ export default {
                                 type: 'success',
                             });
                             this.addcourse = false;
-                            //this.$router.go(0);
+                            this.$router.go(0);
                         }
                         else if(res.data==='EXIST')
                         {
