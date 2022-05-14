@@ -37,6 +37,8 @@ public class TeacherApplication {
     @JoinColumn(name = "course_category_id")
     private CourseCategory courseCategory;
 
+    private Integer courseNumber;
+
     // 面向开放的专业
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinTable(name = "Major_Application",

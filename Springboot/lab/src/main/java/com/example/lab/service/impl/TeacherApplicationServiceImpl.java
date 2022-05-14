@@ -43,6 +43,7 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         switch (application.getType()) {
             case ADD:
                 application.setCourseId(0);
+                application.setCourseNumber(null);
                 resultMessage = this.applicationOfAddOrUpdateCourse(application); break;
             case UPDATE:
                 if (courseService.findCourseByCourseId(application.getCourseId()) == null) {
@@ -108,6 +109,7 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         application.setCapacity(course.getCapacity());
         application.setIntroduction(course.getIntroduction());
         application.setCourseCategory(course.getCourseCategory());
+        application.setCourseNumber(course.getCourseNumber());
         application.setOpenToMajors(course.getOpenToMajors());
         application.setClassArrangements(course.getClassArrangements());
         application.setTeacher(course.getTeacher());
@@ -157,11 +159,12 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         Admin admin = adminService.getAdmin();
         if (application.getType() != ApplicationType.DELETE) {
             course.setCourseId(application.getCourseId());
-            course.setAcademicYear(admin.getAcademicYear());
-            course.setTerm(admin.getTerm());
             course.setCapacity(application.getCapacity());
             course.setIntroduction(application.getIntroduction());
             course.setCourseCategory(application.getCourseCategory());
+            course.setCourseNumber(application.getCourseNumber());
+            course.setAcademicYear(admin.getAcademicYear());
+            course.setTerm(admin.getTerm());
             course.setOpenToMajors(application.getOpenToMajors());
             course.setClassArrangements(application.getClassArrangements());
             course.setTeacher(application.getTeacher());
