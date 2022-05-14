@@ -12,31 +12,12 @@ export default {
         return {
             schooltimetable: [],
             classinfortable1: [],
-
-
-            tianCi: [
-                {text: '周一', value: '1'},
-                {text: '周二', value: '2'},
-                {text: '周三', value: '3'},
-                {text: '周四', value: '4'},
-                {text: '周五', value: '5'},
-                {text: '周六', value: '6'},
-                {text: '周日', value: '7'},
-            ],
-            jieCi: [
-                {text: '1', value: '1'},
-                {text: '2', value: '2'},
-                {text: '3', value: '3'},
-                {text: '4', value: '4'},
-                {text: '5', value: '5'},
-                {text: '6', value: '6'},
-                {text: '7', value: '7'},
-            ],
             teachingBuildings: [],
             teachingRooms: [],
             selectableDataShow: [{}],
             selectableData1: [{}],
             selectableData2: [{}],
+            selectableData3: [{}],
             selectableData: [],
             search11: '',
             search22: '',
@@ -62,6 +43,14 @@ export default {
                 name: '',
             },
             theClassTimeData:[],
+            fliterTimeAndPlaceForm:{
+                dayOfWeek:'',
+                classTimeId:'',
+                buildingId:'',
+                classroomId:'',
+            },
+            buildings:[],
+            classrooms:[],
         }
     },
     mounted(){},
@@ -70,16 +59,34 @@ export default {
         this.search();
         this.getSchooltimetable();
         this.getStudingClass();
+        this.getBuildings();
     },
     methods:{
+        cancleFilter(){
+            this.fliterTimeAndPlaceForm.classroomId='';
+            this.fliterTimeAndPlaceForm.buildingId='';
+            this.fliterTimeAndPlaceForm.dayOfWeek='';
+            this.fliterTimeAndPlaceForm.classTimeId='';
+        },
+        getBuildings(){
+            request.get("/building/list").then(res=>{
+                this.buildings=res;
+            })
+        },
+        getClassroom:function(id){
+            this.fliterTimeAndPlaceForm.classroomId='';
+            request.get("/building/classrooms",{
+                params:{
+                    buildingId:id
+                }
+            }).then(res=>{
+                this.classrooms= res;
+            })
+        },
         toSubmitApply(){
             const that=this;
             this.$refs.applyForSelectForm.validate(valid=>{
                     if(valid){
-                        // let params = {};
-                        // params.courseId= that.applyForSelectForm.applyClassId;
-                        // params.studentId= that.applyForSelectForm.applyStudentId;
-                        // params.reason= that.applyForSelectForm.applyReason;
                         let selectApplyForm = new FormData();
                         selectApplyForm.append('courseId', that.applyForSelectForm.applyClassId);
                         selectApplyForm.append('studentId', that.applyForSelectForm.applyStudentId);
@@ -123,12 +130,31 @@ export default {
                 this.schooltimetable= res;
             });
         },
+        filterAll(classArrangements){
+            let thisClassroomId = this.fliterTimeAndPlaceForm.classroomId;
+            let thisBuildingId = this.fliterTimeAndPlaceForm.buildingId;
+            let thisClassTimeId = this.fliterTimeAndPlaceForm.classTimeId;
+            let thisDayOfWeek = this.fliterTimeAndPlaceForm.dayOfWeek;
+            for(let i = 0;i<classArrangements.length;i++) {
+                if(classArrangements[i].dayOfWeek.includes(thisDayOfWeek)&&
+                    String(classArrangements[i].building.buildingId).includes(String(thisBuildingId))&&
+                    String(classArrangements[i].classroom.classroomId).includes(String(thisClassroomId))){
+                    for(let j=0;j<classArrangements[i].classTimes.length;j++){
+                        if(String(classArrangements[i].classTimes[j].classTimeId).includes(String(thisClassTimeId))){
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        },
         search(){
+            //搜索部分
             this.selectableData1 = computed(() =>
                 this.selectableData.filter(
                     (data) =>
                         !this.search11 ||
-                        String(data.courseNumber).toLowerCase().includes(this.search11.toLowerCase())
+                        String(data.courseCategory.courseCategoryNumber+'.'+data.courseNumber).toLowerCase().includes(this.search11.toLowerCase())
                 )
             );
             this.selectableData2 = computed(() =>
@@ -138,11 +164,17 @@ export default {
                         data.courseCategory.courseName.toLowerCase().includes(this.search22.toLowerCase())
                 )
             );
-            this.selectableDataShow = computed(() =>
+            this.selectableData3 = computed(() =>
                 this.selectableData2.filter(
                     (data) =>
                         !this.search33 ||
                         data.teacher.username.toLowerCase().includes(this.search33.toLowerCase())
+                )
+            );
+            //筛选部分
+            this.selectableDataShow = computed(() =>
+                this.selectableData3.filter(
+                    (data) =>this.filterAll(data.classArrangements)
                 )
             );
         },
@@ -193,6 +225,7 @@ export default {
                         return false;
                     } else if (response === "SUCCESS") {
                         ALERTMSG.show(that,true,"选课成功!","success");
+                        that.getStudingClass();
                         that.getclassinfo();
                     }
                 },function (err) {

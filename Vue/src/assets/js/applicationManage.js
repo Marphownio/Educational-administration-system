@@ -36,8 +36,39 @@ export default {
         getapplication(){
             request.get("/student/application/list").then(res=>{
                 this.applicationData=res;
+                for(let i=0;i<Object.keys(this.applicationData).length;i++)
+                {
+                    this.applicationData[i].courseNumbershow=this.applicationData[i].course.courseCategory.courseCategoryNumber+'.'
+                    +this.applicationData[i].course.courseNumber;
+                }
             })
-            console.log(this.applicationData);
+        },
+        passApplication(id){
+            request.delete("/admin/application/student",{
+                params:{
+                    applicationId:id,
+                    operation:true
+                }
+            })
+            this.$message({
+                showClose: true,
+                message: '操作成功',
+                type: 'success',
+            });
+        },
+        rejectApplication(id){
+            request.delete("/admin/application/student",{
+                params:{
+                    applicationId:id,
+                    operation:false
+                }
+            })
+            this.$message({
+                showClose: true,
+                message: '操作成功',
+                type: 'success',
+            });
+            this.$router.go(0);
         },
     }
 }
