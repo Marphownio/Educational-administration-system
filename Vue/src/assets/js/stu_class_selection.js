@@ -209,8 +209,14 @@ export default {
                 }
                 )
         },
-        stu_select(courseId){
+        stu_select(row){
+            let courseId=row.courseId;
+            let classArrangements = row.classArrangements;
             const that =this;
+            if(!that.conflictBeforSelect(classArrangements)){
+                ALERTMSG.show(that,true,"当前课程与您已选的课程冲突！","error");
+                return false;
+            }
             let xuankeform = new FormData();
             xuankeform.append('courseId', courseId);
             request.post("/student/course/select",xuankeform)
@@ -234,6 +240,21 @@ export default {
                     return false;
                     }
             )
+        },
+        conflictBeforSelect(classArrangements){
+            const that = this;
+            let day;
+            let result;
+            for(let i=0;i<classArrangements.length;i++){
+                day = classArrangements[i].dayOfWeek;
+                for(let j=0;j<classArrangements[i].classTimes.length;j++){
+                    result = that.conflictTest(day,classArrangements[i].classTimes[j].classTimeId);
+                    if(result===1){
+                        return false;
+                    }
+                }
+            }
+            return true;
         },
         conflictTest(day,ci){
             const that=this;

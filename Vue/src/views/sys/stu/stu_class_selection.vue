@@ -116,7 +116,7 @@
             <el-button @click="applyStudentSelectOpen(scope.row)" type="success" plain>选课申请</el-button>
           </div>
           <div v-else>
-            <el-popconfirm  @confirm="stu_select(scope.row.courseId)"  title="确认选课吗？">
+            <el-popconfirm  @confirm="stu_select(scope.row)"  title="确认选课吗？">
               <template #reference>
                 <el-button type="primary" plain>&nbsp;选&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;课&nbsp;</el-button>
               </template>
