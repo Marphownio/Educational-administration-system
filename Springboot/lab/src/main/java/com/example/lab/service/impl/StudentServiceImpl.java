@@ -27,9 +27,6 @@ public class StudentServiceImpl implements StudentService {
     @Resource
     private CourseService courseService;
 
-    @Resource
-    private UserService userService;
-
     // 通过id查询学生
     @Override
     public Student findStudentByStudentId(Integer studentId) {

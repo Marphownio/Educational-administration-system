@@ -1,8 +1,6 @@
 package com.example.lab.service.impl;
 
-import com.example.lab.pojo.enums.CourseSelectionStatus;
 import com.example.lab.pojo.enums.ResultMessage;
-import com.example.lab.pojo.entity.Admin;
 import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.entity.Student;
 import com.example.lab.pojo.entity.StudentApplication;
@@ -24,9 +22,6 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
 
     @Resource
     private StudentService studentService;
-
-    @Resource
-    private AdminService adminService;
 
     @Override
     public ResultMessage addStudentApplication(Integer courseId,Integer studentId,String reason) {

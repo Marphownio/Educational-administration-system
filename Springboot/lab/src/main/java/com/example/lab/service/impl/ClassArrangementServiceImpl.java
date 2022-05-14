@@ -1,5 +1,6 @@
 package com.example.lab.service.impl;
 
+import com.example.lab.pojo.entity.ClassTime;
 import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.pojo.entity.ClassArrangement;
 import com.example.lab.repository.ClassArrangementRepository;
@@ -7,11 +8,12 @@ import com.example.lab.service.ClassArrangementService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ClassArrangementServiceImpl implements ClassArrangementService {
+
     @Resource
     private ClassArrangementRepository classArrangementRepository;
 
@@ -38,13 +40,31 @@ public class ClassArrangementServiceImpl implements ClassArrangementService {
 
     @Override
     public List<ClassArrangement> findAllClassArrangement() {
-        // TODO
-        return new ArrayList<>();
+        return classArrangementRepository.findAll();
     }
 
     @Override
     public ClassArrangement findClassArrangementById(Integer classArrangementId) {
-        // TODO
-        return null;
+        return classArrangementRepository.findById(classArrangementId).orElse(null);
+    }
+
+    @Override
+    public Boolean isConflictArrangement(ClassArrangement classArrangement) {
+        List<ClassArrangement> classArrangements = findAllClassArrangement();
+        classArrangements.removeIf(classArrangement1 -> classArrangement1.getCourse() == null);
+        for (ClassArrangement classArrangement1 : classArrangements) {
+            if (!Objects.equals(classArrangement.getClassroom().getClassroomId(), classArrangement1.getClassroom().getClassroomId())
+                    || classArrangement.getDayOfWeek() != classArrangement1.getDayOfWeek()) {
+                continue;
+            }
+            for (ClassTime classTime : classArrangement.getClassTimes()) {
+                for (ClassTime classTime1 : classArrangement1.getClassTimes()) {
+                    if (Objects.equals(classTime1.getClassTimeId(), classTime.getClassTimeId())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

@@ -37,45 +37,71 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
     @Resource
     private AdminService adminService;
 
+    @Resource
+    private ClassTimeService classTimeService;
+
     // 教师申请增删改课程
     @Override
     public ResultMessage addTeacherApplication(TeacherApplication application) {
-        ResultMessage resultMessage;
+        ResultMessage resultMessage = ResultMessage.SUCCESS;
+        ResultMessage resultMessage1 = ResultMessage.FAILED;
+        ResultMessage resultMessage2 = ResultMessage.FAILED;
         application.setStatus(ApplicationStatus.IN_REVIEW);
         switch (application.getType()) {
             case ADD:
+                application.setApplicationId(0);
                 application.setCourseId(0);
                 application.setCourseNumber(null);
-                resultMessage = this.applicationOfAddOrUpdateCourse(application); break;
+                resultMessage1 = this.applicationOfAddOrUpdateCourse1(application);
+                resultMessage2 = this.applicationOfAddOrUpdateCourse2(application);
+                if (resultMessage1 != ResultMessage.SUCCESS || resultMessage2 == ResultMessage.FAILED) {
+                    resultMessage = ResultMessage.FAILED;
+                }
+                break;
             case UPDATE:
+                application.setApplicationId(0);
                 if (courseService.findCourseByCourseId(application.getCourseId()) == null) {
                     resultMessage = ResultMessage.FAILED;
                     break;
                 }
-                resultMessage = this.applicationOfAddOrUpdateCourse(application); break;
+                resultMessage1 = this.applicationOfAddOrUpdateCourse1(application);
+                resultMessage2 = this.applicationOfAddOrUpdateCourse2(application);
+                if (resultMessage1 != ResultMessage.SUCCESS || resultMessage2 == ResultMessage.FAILED) {
+                    resultMessage = ResultMessage.FAILED;
+                }
+                break;
             case DELETE:
-                resultMessage = this.applicationOfDeleteCourse(application); break;
-            default:
-                resultMessage = ResultMessage.NOTFOUND;
+                resultMessage = this.applicationOfDeleteCourse(application);
         }
-        if (resultMessage == ResultMessage.SUCCESS) {
-            try {
-                teacherApplicationRepository.save(application);
-            } catch (Exception e) {
-                this.applicationOfAddOrUpdateCourseFailed(application);
-                resultMessage = ResultMessage.FAILED;
-            }
+        if (resultMessage != ResultMessage.SUCCESS && (application.getType() == ApplicationType.ADD || application.getType() == ApplicationType.UPDATE)) {
+            this.applicationOfAddOrUpdateCourseFailed(resultMessage2, application);
+            return  (resultMessage1 == ResultMessage.CONFLICT) ? resultMessage1 : resultMessage2;
+        }
+        try {
+            teacherApplicationRepository.save(application);
+        } catch (Exception e) {
+            this.applicationOfAddOrUpdateCourseFailed(resultMessage2, application);
+            resultMessage = ResultMessage.FAILED;
         }
         return resultMessage;
     }
 
-    private ResultMessage applicationOfAddOrUpdateCourse(TeacherApplication application) {
+    private ResultMessage applicationOfAddOrUpdateCourse1(TeacherApplication application) {
         if (teacherService.findTeacherByTeacherId(application.getTeacher().getUserId()) == null) {
             return ResultMessage.FAILED;
         }
+        ResultMessage resultMessage = ResultMessage.SUCCESS;
         Set<ClassArrangement> classArrangementSet = new HashSet<>();
         for (ClassArrangement classArrangement : application.getClassArrangements()) {
             classArrangement.setClassArrangementId(0);
+            if (Boolean.TRUE.equals(classArrangementService.isConflictArrangement(classArrangement))) {
+                resultMessage = ResultMessage.CONFLICT;
+            }
+            Set<ClassTime> classTimes = new HashSet<>();
+            for (ClassTime classTime : classArrangement.getClassTimes()) {
+                classTimes.add(classTimeService.findClassTimeById(classTime.getClassTimeId()));
+            }
+            classArrangement.setClassTimes(classTimes);
             classArrangementSet.add(classArrangementService.addClassArrangement(classArrangement));
         }
         application.setClassArrangements(classArrangementSet);
@@ -84,25 +110,32 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
              majorSet.add(majorService.findMajorByMajorId(major.getMajorId()));
         }
         application.setOpenToMajors(majorSet);
-        if (courseCategoryService.findCourseCategoryByCourseCategoryId(application.getCourseCategory().getCourseCategoryId()) != null) {
-            application.setCourseCategory(courseCategoryService.findCourseCategoryByCourseCategoryId(application.getCourseCategory().getCourseCategoryId()));
-        } else {
-            return courseCategoryService.addCourseCategory(application.getCourseCategory());
-        }
-        return ResultMessage.SUCCESS;
+        return resultMessage;
     }
-
-    private void applicationOfAddOrUpdateCourseFailed(TeacherApplication application) {
+    private ResultMessage applicationOfAddOrUpdateCourse2(TeacherApplication application) {
+        CourseCategory courseCategory = courseCategoryService.findCourseCategoryByCourseName(application.getCourseCategory().getCourseName());
+        if (courseCategory != null) {
+            application.setCourseCategory(courseCategory);
+            return ResultMessage.EXIST;
+        } else {
+            ResultMessage resultMessage = courseCategoryService.addCourseCategory(application.getCourseCategory());
+            if (resultMessage == ResultMessage.SUCCESS) {
+                application.setCourseCategory(courseCategoryService.findCourseCategoryByCourseName(application.getCourseCategory().getCourseName()));
+            }
+            return resultMessage;
+        }
+    }
+    private void applicationOfAddOrUpdateCourseFailed(ResultMessage resultMessage2, TeacherApplication application) {
         if (application.getType() == ApplicationType.ADD || application.getType() == ApplicationType.UPDATE) {
             for (ClassArrangement classArrangement : application.getClassArrangements()) {
                 classArrangementService.deleteClassArrangement(classArrangement.getClassArrangementId());
             }
         }
-        if (application.getCourseCategory().getCourses().isEmpty()) {
+        // 是新增的课程类
+        if (resultMessage2 == ResultMessage.SUCCESS) {
             courseCategoryService.deleteCourseCategory(application.getCourseCategory().getCourseCategoryId());
         }
     }
-
     private ResultMessage applicationOfDeleteCourse(TeacherApplication application) {
         Course course = courseService.findCourseByCourseId(application.getCourseId());
         if (course == null) {
@@ -119,7 +152,7 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         return ResultMessage.SUCCESS;
     }
 
-    // 教师取消申请或管理员处理完申请后将其删除
+    // 教师取消申请
     @Override
     public ResultMessage deleteTeacherApplication(Integer applicationId) {
         if (findTeacherApplicationById(applicationId) == null) {
@@ -166,7 +199,7 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
     public ResultMessage processTeacherApplication(Integer applicationId, Boolean operation) {
         TeacherApplication application = this.findTeacherApplicationById(applicationId);
         if (application == null) {
-            return ResultMessage.FAILED;
+            return ResultMessage.NOTFOUND;
         }
         if (Boolean.FALSE.equals(operation)) {
             application.setStatus(ApplicationStatus.NOT_PASS);
@@ -183,13 +216,14 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
             course.setAcademicYear(admin.getAcademicYear());
             course.setTerm(admin.getTerm());
             course.setOpenToMajors(application.getOpenToMajors());
-            course.setClassArrangements(application.getClassArrangements());
             course.setTeacher(application.getTeacher());
+            course.setClassArrangements(application.getClassArrangements());
         }
         ResultMessage resultMessage;
         switch (application.getType()) {
             case ADD:
-                resultMessage = courseService.addCourse(course); break;
+                resultMessage = courseService.addCourse(course);
+                break;
             case DELETE:
                 resultMessage = courseService.deleteCourse(application.getCourseId()); break;
             case UPDATE:
@@ -197,9 +231,10 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
             default:
                 resultMessage = ResultMessage.FAILED; break;
         }
-        if (resultMessage == ResultMessage.SUCCESS) {
-            application.setStatus(ApplicationStatus.PASS);
+        if (resultMessage != ResultMessage.SUCCESS) {
+            return resultMessage;
         }
+        application.setStatus(ApplicationStatus.PASS);
         return updateTeacherApplication(application);
     }
 }

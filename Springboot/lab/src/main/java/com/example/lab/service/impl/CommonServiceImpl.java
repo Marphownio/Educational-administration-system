@@ -1,9 +1,6 @@
 package com.example.lab.service.impl;
 
-import com.example.lab.pojo.entity.Building;
-import com.example.lab.pojo.entity.Classroom;
-import com.example.lab.pojo.entity.Major;
-import com.example.lab.pojo.entity.School;
+import com.example.lab.pojo.entity.*;
 import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
 

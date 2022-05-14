@@ -16,4 +16,7 @@ public interface ClassArrangementService {
     List<ClassArrangement> findAllClassArrangement();
 
     ClassArrangement findClassArrangementById(Integer classArrangementId);
+
+    // 判断某课程安排是否与已有课程安排冲突
+    Boolean isConflictArrangement(ClassArrangement classArrangement);
 }

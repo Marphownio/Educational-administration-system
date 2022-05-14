@@ -33,7 +33,7 @@ public class TeacherController {
         return new ResponseEntity<>(teachers, HttpStatus.OK);
     }
 
-    // 查询指定教师发出的所有请求
+    // 查询教师发出的所有请求
     @GetMapping(value = "/application")
     public ResponseEntity<Set<TeacherApplication>> findAllTeacherApplication(HttpSession session) {
         User user = (User)session.getAttribute("user");

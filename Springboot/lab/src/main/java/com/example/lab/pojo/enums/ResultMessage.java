@@ -12,5 +12,6 @@ public enum ResultMessage {
     FAILED,
     FAILED_DIMISSION,
     FAILED_LEFT,
-    NOT_OPEN
+    NOT_OPEN,
+    CONFLICT
 }
