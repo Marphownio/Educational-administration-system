@@ -1,5 +1,6 @@
 package com.example.lab.service;
 
+import com.example.lab.pojo.entity.ClassArrangement;
 import com.example.lab.pojo.entity.Course;
 import com.example.lab.pojo.enums.ResultMessage;
 
@@ -24,6 +25,12 @@ public interface CourseService {
 
     // 通过id查询课程
     Course findCourseByCourseId(Integer courseId);
+
+    Boolean isConflictArrangement(ClassArrangement classArrangement);
+
+    ResultMessage changeCourseSelectionStatus();
+
+    ResultMessage firstScreening();
 
     //批量添加课程信息
 //    HashMap<String,String> batchImportCourse(MultipartFile file);

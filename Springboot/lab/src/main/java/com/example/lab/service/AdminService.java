@@ -14,8 +14,4 @@ public interface AdminService {
     // 设定学年学期
     ResultMessage setAcademicYearAndTerm(String academicYear, String term);
 
-    // 更改选课系统状态
-    ResultMessage changeCourseSelectionStatus();
-
-    ResultMessage firstScreening();
 }

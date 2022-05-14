@@ -136,7 +136,6 @@ public class UserServiceImpl implements UserService {
                     resultMessage = ResultMessage.FAILED;
             }
         } catch (Exception exception) {
-            System.out.println(exception.getMessage());
             resultMessage = ResultMessage.FAILED;
         }
         return resultMessage;

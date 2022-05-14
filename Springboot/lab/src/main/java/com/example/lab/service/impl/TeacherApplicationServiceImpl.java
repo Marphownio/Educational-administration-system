@@ -52,11 +52,6 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
                 application.setApplicationId(0);
                 application.setCourseId(0);
                 application.setCourseNumber(null);
-                resultMessage1 = this.applicationOfAddOrUpdateCourse1(application);
-                resultMessage2 = this.applicationOfAddOrUpdateCourse2(application);
-                if (resultMessage1 != ResultMessage.SUCCESS || resultMessage2 == ResultMessage.FAILED) {
-                    resultMessage = ResultMessage.FAILED;
-                }
                 break;
             case UPDATE:
                 application.setApplicationId(0);
@@ -64,14 +59,16 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
                     resultMessage = ResultMessage.FAILED;
                     break;
                 }
-                resultMessage1 = this.applicationOfAddOrUpdateCourse1(application);
-                resultMessage2 = this.applicationOfAddOrUpdateCourse2(application);
-                if (resultMessage1 != ResultMessage.SUCCESS || resultMessage2 == ResultMessage.FAILED) {
-                    resultMessage = ResultMessage.FAILED;
-                }
                 break;
             case DELETE:
                 resultMessage = this.applicationOfDeleteCourse(application);
+        }
+        if (application.getType() == ApplicationType.ADD || application.getType() == ApplicationType.UPDATE) {
+            resultMessage1 = this.applicationOfAddOrUpdateCourse1(application);
+            resultMessage2 = this.applicationOfAddOrUpdateCourse2(application);
+            if (resultMessage1 != ResultMessage.SUCCESS || resultMessage2 == ResultMessage.FAILED) {
+                resultMessage = ResultMessage.FAILED;
+            }
         }
         if (resultMessage != ResultMessage.SUCCESS && (application.getType() == ApplicationType.ADD || application.getType() == ApplicationType.UPDATE)) {
             this.applicationOfAddOrUpdateCourseFailed(resultMessage2, application);
@@ -85,7 +82,6 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         }
         return resultMessage;
     }
-
     private ResultMessage applicationOfAddOrUpdateCourse1(TeacherApplication application) {
         if (teacherService.findTeacherByTeacherId(application.getTeacher().getUserId()) == null) {
             return ResultMessage.FAILED;
@@ -94,7 +90,7 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         Set<ClassArrangement> classArrangementSet = new HashSet<>();
         for (ClassArrangement classArrangement : application.getClassArrangements()) {
             classArrangement.setClassArrangementId(0);
-            if (Boolean.TRUE.equals(classArrangementService.isConflictArrangement(classArrangement))) {
+            if (Boolean.TRUE.equals(courseService.isConflictArrangement(classArrangement))) {
                 resultMessage = ResultMessage.CONFLICT;
             }
             Set<ClassTime> classTimes = new HashSet<>();
@@ -198,12 +194,15 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
     @Override
     public ResultMessage processTeacherApplication(Integer applicationId, Boolean operation) {
         TeacherApplication application = this.findTeacherApplicationById(applicationId);
+        ResultMessage resultMessage = ResultMessage.FAILED;
         if (application == null) {
-            return ResultMessage.NOTFOUND;
-        }
-        if (Boolean.FALSE.equals(operation)) {
+            resultMessage = ResultMessage.NOTFOUND;
+        } else if (Boolean.FALSE.equals(operation)) {
             application.setStatus(ApplicationStatus.NOT_PASS);
-            return updateTeacherApplication(application);
+            resultMessage = updateTeacherApplication(application);
+        }
+        if (application == null || Boolean.FALSE.equals(operation)) {
+            return resultMessage;
         }
         Course course = new Course();
         Admin admin = adminService.getAdmin();
@@ -219,7 +218,6 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
             course.setTeacher(application.getTeacher());
             course.setClassArrangements(application.getClassArrangements());
         }
-        ResultMessage resultMessage;
         switch (application.getType()) {
             case ADD:
                 resultMessage = courseService.addCourse(course);

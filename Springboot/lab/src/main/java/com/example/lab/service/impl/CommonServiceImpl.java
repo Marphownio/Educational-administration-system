@@ -36,13 +36,13 @@ public class CommonServiceImpl implements CommonService {
 
     @Override
     public Boolean isMatchBuildingAndClassroom(Building building, Classroom classroom) {
-        if (building == null || classroom == null){
+        if (building == null || classroom == null) {
             return false;
-        }
-        else {
+        } else {
             Building getBuilding = buildingService.findBuildingById(building.getBuildingId());
             Classroom getClassroom = classroomService.findClassroomById(classroom.getClassroomId());
-            return getBuilding != null && getClassroom != null && Objects.equals(getClassroom.getBuilding().getBuildingId(),getBuilding.getBuildingId());
+            return getBuilding != null && getClassroom != null && Objects.equals(getClassroom.getBuilding().getBuildingId(), getBuilding.getBuildingId());
         }
     }
+
 }

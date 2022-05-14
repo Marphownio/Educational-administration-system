@@ -1,6 +1,5 @@
 package com.example.lab.pojo.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Proxy;
@@ -36,14 +35,4 @@ public class ClassArrangement {
     @JoinTable(name="arrangement_time",joinColumns={@JoinColumn(name="class_arrangement_id")},
             inverseJoinColumns ={@JoinColumn(name="class_time_id")})
     private Set<ClassTime> classTimes = new HashSet<>();
-
-    @ManyToOne
-    @JoinColumn(name = "course_id")
-    @JsonIgnore
-    private Course course;
-
-    @ManyToOne
-    @JoinColumn(name = "application_id")
-    @JsonIgnore
-    private TeacherApplication application;
 }

@@ -24,12 +24,6 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
     @Resource
     private StudentService studentService;
 
-    @Resource
-    private AdminService adminService;
-
-    @Resource
-    private UserService userService;
-
     @Override
     public ResultMessage addStudentApplication(Integer courseId,Integer studentId,String reason) {
         Course course = courseService.findCourseByCourseId(courseId);

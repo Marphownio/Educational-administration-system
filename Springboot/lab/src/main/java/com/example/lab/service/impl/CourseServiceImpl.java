@@ -1,16 +1,17 @@
 package com.example.lab.service.impl;
 
 import com.example.lab.pojo.entity.*;
+import com.example.lab.pojo.enums.CourseSelectionStatus;
 import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.repository.CourseRepository;
 import com.example.lab.service.*;
-//import jdk.internal.org.jline.utils.InputStreamReader;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.BufferedReader;
 import java.util.*;
+
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 // 课程的增删改查服务
 @Service
@@ -40,6 +41,9 @@ public class CourseServiceImpl implements CourseService {
     @Resource
     private ClassTimeService classTimeService;
 
+    @Resource
+    private AdminService adminService;
+
     // 增加或更新课程前，检查教师、课程安排、容量、教师与教学楼是否符合要求
     private ResultMessage checkBeforeAddOrUpdateCourse(Course course) {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
@@ -64,9 +68,7 @@ public class CourseServiceImpl implements CourseService {
         Set<ClassArrangement> newClassArrangement = new HashSet<>();
         for (ClassArrangement classArrangement : course.getClassArrangements()) {
             classArrangement.setClassArrangementId(0);
-            classArrangement.setApplication(null);
-            classArrangement.setCourse(null);
-            if (Boolean.TRUE.equals(classArrangementService.isConflictArrangement(classArrangement))) {
+            if (Boolean.TRUE.equals(isConflictArrangement(classArrangement))) {
                 resultMessage = ResultMessage.CONFLICT;
             }
             Set<ClassTime> classTimes = new HashSet<>();
@@ -96,6 +98,30 @@ public class CourseServiceImpl implements CourseService {
         course.setCourseCategory(newCourseCategory);
         return resultMessage;
     }
+
+    @Override
+    public Boolean isConflictArrangement(ClassArrangement classArrangement) {
+        List<Course> courses = findCourseByTerm(adminService.getAdmin().getAcademicYear(), adminService.getAdmin().getTerm());
+        List<ClassArrangement> classArrangements = new ArrayList<>();
+        for (Course course : courses) {
+            classArrangements.addAll(course.getClassArrangements());
+        }
+        for (ClassArrangement classArrangement1 : classArrangements) {
+            if (!Objects.equals(classArrangement.getClassroom().getClassroomId(), classArrangement1.getClassroom().getClassroomId())
+                    || classArrangement.getDayOfWeek() != classArrangement1.getDayOfWeek()) {
+                continue;
+            }
+            for (ClassTime classTime : classArrangement.getClassTimes()) {
+                for (ClassTime classTime1 : classArrangement1.getClassTimes()) {
+                    if (Objects.equals(classTime1.getClassTimeId(), classTime.getClassTimeId())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public ResultMessage addCourse(Course course) {
@@ -225,6 +251,56 @@ public class CourseServiceImpl implements CourseService {
     public Course findCourseByCourseId(Integer courseId) {
         return courseRepository.findById(courseId).orElse(null);
     }
+
+    @Override
+    public ResultMessage changeCourseSelectionStatus() {
+        ResultMessage resultMessage = ResultMessage.SUCCESS;
+        Admin admin = adminService.getAdmin();
+        try {
+            switch (admin.getCourseSelectionStatus()) {
+                case START_TERM:    admin.setCourseSelectionStatus(CourseSelectionStatus.START_FIRST);  break;
+                case START_FIRST:   admin.setCourseSelectionStatus(CourseSelectionStatus.END_FIRST);    break;
+                case END_FIRST:     admin.setCourseSelectionStatus(CourseSelectionStatus.START_SECOND);
+                    // 第一轮选课结果筛选
+                    resultMessage = firstScreening(); break;
+                case START_SECOND:  admin.setCourseSelectionStatus(CourseSelectionStatus.END_SECOND);   break;
+                case END_SECOND:    admin.setCourseSelectionStatus(CourseSelectionStatus.END_TERM);     break;
+                case END_TERM:      admin.setCourseSelectionStatus(CourseSelectionStatus.START_TERM);   break;
+            }
+            if (resultMessage == ResultMessage.SUCCESS) {
+                resultMessage = adminService.saveAdmin(admin);
+            }
+        }
+        catch (Exception e) {
+            resultMessage = ResultMessage.FAILED;
+        }
+        return resultMessage;
+    }
+
+    @Override
+    public ResultMessage firstScreening() {
+        Admin admin = adminService.getAdmin();
+        List<Course> courses = findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
+        // 备份，失败时回滚
+        List<Course> backupCourses = findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
+        // TODO: 更合理的筛选, 课程时间冲突，模块复选
+        for (Course course : courses) {
+            List<Student> students = new ArrayList<>(course.getStudents());
+            course.getStudents().clear();
+            course.setStudents(new HashSet<>(students.subList(0, max(min(course.getCapacity(), students.size()) - 1, 0))));
+            if (updateCourse(course) == ResultMessage.SUCCESS) {
+                continue;
+            }
+            for (Course course1 : backupCourses) {
+                updateCourse(course1);
+            }
+            return ResultMessage.FAILED;
+        }
+        return ResultMessage.SUCCESS;
+    }
+
+
+
 
 //    @Override
 //    public HashMap<String,String> batchImportCourse(MultipartFile file) {
