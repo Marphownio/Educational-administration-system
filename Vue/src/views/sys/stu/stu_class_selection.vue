@@ -10,8 +10,52 @@
   <span id="welcomeinform">可选课程信息：</span>
   <div id="classinform">
     <div id="filterbtn">
-      <el-button type="primary" @click="">设置筛选信息</el-button>
-      <el-button  type="danger"  @click="">取消筛选条件</el-button>
+      <el-popover  placement="bottom"
+                   title="设置筛选条件"
+                   :width="500"
+                   trigger="click"
+      >
+        <el-form
+            :model="fliterTimeAndPlaceForm"
+            label-width="80px">
+          <div class="flexItems">
+            <el-form-item label="上课日次:">
+              <el-select v-model="fliterTimeAndPlaceForm.dayOfWeek" placeholder="选择上课日次">
+                <el-option label="周一" value="MONDAY" />
+                <el-option label="周二" value="TUESDAY" />
+                <el-option label="周三" value="WEDNESDAY" />
+                <el-option label="周四" value="THURSDAY" />
+                <el-option label="周五" value="FRIDAY" />
+                <el-option label="周六" value="SATURDAY" />
+                <el-option label="周日" value="SUNDAY" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="上课节次:">
+              <el-select  v-model="fliterTimeAndPlaceForm.classTimeId" placeholder="选择上课节次">
+                <el-option v-for="item in schooltimetable" :key="item.classTimeId" :label="item.classTimeId" :value="item.classTimeId" />
+              </el-select>
+            </el-form-item>
+          </div>
+          <div class="flexItems">
+            <el-form-item label="教学楼:">
+              <el-select  v-model="fliterTimeAndPlaceForm.buildingId" placeholder="选择教学楼" @change="getClassroom(this.fliterTimeAndPlaceForm.buildingId)">
+                <el-option v-for="item in buildings" :key="item.buildingId" :label="item.buildingName" :value="item.buildingId" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="教室:">
+              <el-select v-model="fliterTimeAndPlaceForm.classroomId" placeholder="选择教室" >
+                <el-option v-for="item in classrooms" :key="item.classroomId" :label="item.classroomId" :value="item.classroomId" />
+              </el-select>
+            </el-form-item>
+          </div>
+        </el-form>
+        <div style="text-align: right; margin: 0">
+          <el-button size="small" type="danger" plain text @click="cancleFilter();">取消筛选</el-button>
+        </div>
+        <template #reference>
+          <el-button @click="visible = true" type="primary" plain>设置筛选条件</el-button>
+        </template>
+      </el-popover>
     </div>
 
         <el-table
