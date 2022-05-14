@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 
 import java.util.*;
 
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 @Service
@@ -84,28 +85,18 @@ public class AdminServiceImpl implements AdminService {
         // 备份，失败时回滚
         List<Course> backupCourses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
         // TODO: 更合理的筛选, 课程时间冲突，模块复选
-        try {
-            for (Course course : courses) {
-                List<Student> students = new ArrayList<>(course.getStudents());
-                if (students.isEmpty()) {
-                    continue;
-                }
-                course.getStudents().clear();
-                course.setStudents(new HashSet<>(students.subList(0, min(course.getCapacity(), students.size())-1)));
-                if (courseService.updateCourse(course) == ResultMessage.FAILED) {
-                    for (Course course1 : backupCourses) {
-                        courseService.updateCourse(course1);
-                    }
-                    return ResultMessage.FAILED;
-                }
+        for (Course course : courses) {
+            List<Student> students = new ArrayList<>(course.getStudents());
+            course.getStudents().clear();
+            course.setStudents(new HashSet<>(students.subList(0, max(min(course.getCapacity(), students.size()) - 1, 0))));
+            if (courseService.updateCourse(course) == ResultMessage.SUCCESS) {
+                continue;
             }
-            return ResultMessage.SUCCESS;
-        }
-        catch (Exception e) {
-            for (Course course : backupCourses) {
-                courseService.updateCourse(course);
+            for (Course course1 : backupCourses) {
+                courseService.updateCourse(course1);
             }
             return ResultMessage.FAILED;
         }
+        return ResultMessage.SUCCESS;
     }
 }

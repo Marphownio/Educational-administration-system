@@ -24,4 +24,6 @@ public interface StudentService {
     Set<Course> findAllCoursesSpecified(Integer studentId, String academicYear, String term);
 
     Set<Course> findAllCoursesCompleted(Integer studentId);
+
+    ResultMessage updateStudent(Student student);
 }

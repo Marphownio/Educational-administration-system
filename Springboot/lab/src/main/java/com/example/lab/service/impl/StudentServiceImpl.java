@@ -27,9 +27,6 @@ public class StudentServiceImpl implements StudentService {
     @Resource
     private CourseService courseService;
 
-    @Resource
-    private UserService userService;
-
     // 通过id查询学生
     @Override
     public Student findStudentByStudentId(Integer studentId) {
@@ -108,7 +105,7 @@ public class StudentServiceImpl implements StudentService {
         if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND){
             try {
                 student.getCourses().removeIf(course1 -> Objects.equals(course1.getCourseId(),courseId));
-                userService.updateUser(student);
+                updateStudent(student);
             } catch (Exception e) {
                 resultMessage = ResultMessage.FAILED;
             }
@@ -148,5 +145,21 @@ public class StudentServiceImpl implements StudentService {
         Admin admin = adminService.getAdmin();
         courses.removeIf(course -> Objects.equals(course.getAcademicYear(), admin.getAcademicYear()) && Objects.equals(course.getTerm(), admin.getTerm()));
         return courses;
+    }
+
+    @Override
+    public ResultMessage updateStudent(Student student) {
+        if (findStudentByStudentId(student.getUserId()) == null) {
+            return ResultMessage.NOTFOUND;
+        }
+        else {
+            try {
+                studentRepository.save(student);
+                return ResultMessage.SUCCESS;
+            }
+            catch (Exception exception) {
+                return ResultMessage.FAILED;
+            }
+        }
     }
 }
