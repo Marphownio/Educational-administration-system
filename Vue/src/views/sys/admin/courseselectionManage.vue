@@ -13,7 +13,7 @@
     </div>
 
     <div class="showlist">
-        <el-table :data="tableData" row-key="courseId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" >
+        <el-table :data="tableData" row-key="courseCategoryNumbershow" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" >
             <el-table-column prop="courseCategoryNumbershow" label="课程代码" width="120px"/>
             <el-table-column prop="courseName" label="课程名称" width="120px"/>
             <el-table-column prop="courseschoolName" label="开课院系" width="120px"/>

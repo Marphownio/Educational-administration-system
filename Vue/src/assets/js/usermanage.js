@@ -256,7 +256,7 @@ export default {
                             this.$message({
                                 "showClose": true,
                                 "message": '添加失败，请检查身份证号是否与已有用户相同',
-                                "type": 'danger',
+                                "type": 'error',
                             });
                         }
                     })

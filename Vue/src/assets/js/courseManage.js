@@ -435,21 +435,28 @@ export default {
                 console.log(res);
                 for(let i=0;i<Object.keys(this.applicationData).length;i++)
                 {
-                    if(this.applicationData[i].school!==null)
+                    let classarrangementstr='';
+                    for(let k=0;k<Object.keys(this.applicationData[i].classArrangements).length;k++)
                     {
-                        this.applicationData[i].schoolName=this.applicationData[i].school.schoolName;
-                        this.applicationData[i].schoolId=this.applicationData[i].school.schoolId;
+                        let times='';
+                        let timesinorder=[];
+                        timesinorder.length=Object.keys(this.applicationData[i].classArrangements[k].classTimes).length;
+                        //将classTimes按从小到大放入timesinorder
+                        for(let l=0;l<Object.keys(this.applicationData[i].classArrangements[k].classTimes).length;l++)
+                        {
+                            timesinorder[l]=this.applicationData[i].classArrangements[k].classTimes[l].classTimeId;
+                        }
+                        timesinorder=timesinorder.sort();
+                        for(let l=0;l<Object.keys(timesinorder).length;l++)
+                        {
+                            times=times.concat(timesinorder[l]+',');
+                        }
+                        classarrangementstr=classarrangementstr.concat(this.applicationData[i].classArrangements[k].building.buildingName+','+
+                            this.applicationData[i].classArrangements[k].classroom.classroomId+','+
+                            times+
+                            JSON.stringify(this.applicationData[i].classArrangements[k].dayOfWeek).replace(/"/g,"")+' ; ');
                     }
-                    if(this.applicationData[i].major!==null)
-                    {
-                        this.applicationData[i].majorName=this.applicationData[i].major.majorName;
-                        this.applicationData[i].majorId=this.applicationData[i].major.majorId;
-                    }
-                    if(this.applicationData[i].teacher!==null)
-                    {
-                        this.applicationData[i].teacherName=this.applicationData[i].teacher.username;
-                        this.applicationData[i].teacherId=this.applicationData[i].teacher.userId;
-                    }
+                    this.applicationData[i].classarrangement=classarrangementstr;
                 }
             })
         },
@@ -495,7 +502,7 @@ export default {
             })
         },
         passApplication(id){
-            request.delete("/admin/application",{
+            request.delete("/admin/application/teacher",{
                 params:{
                     applicationId:id,
                     operation:true
@@ -507,6 +514,7 @@ export default {
                 type: 'success',
             });
             this.getapplicationData();
+            this.checkcourse=false;
         },
         showCourse(){
             request.get("/course/list")
@@ -567,7 +575,7 @@ export default {
             }
         },
         rejectApplication(id){
-            request.delete("/admin/application",{
+            request.delete("/admin/application/teacher",{
                 params:{
                     applicationId:id,
                     operation:false
@@ -579,6 +587,7 @@ export default {
                 type: 'success',
             });
             this.getapplicationData();
+            this.checkcourse=false;
         },
         remove(item){
             if(Object.keys(this.ruleForm1.arrangement).length>1)
@@ -651,7 +660,7 @@ export default {
                                 type: 'success',
                             });
                             this.addcourse = false;
-                            this.$router.go(0);
+                            //this.$router.go(0);
                         }
                         else if(res.data==='EXIST')
                         {

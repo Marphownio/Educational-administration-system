@@ -168,15 +168,15 @@
                 <el-table-column prop="courseCategoryId" label="" width="120px" v-if="false"/>
                 <el-table-column prop="courseCategoryNumber" label="" width="120px" v-if="false"/>
                 <el-table-column prop="courseCategoryNumbershow" label="课程代码" width="120px"/>
-                <el-table-column prop="courseName" label="课程名称" width="120px" />
-                <el-table-column prop="schoolName" label="开课院系" width="120px"/>
-                <el-table-column prop="schoolId" label="学院代码" width="120px"/>
-                <el-table-column prop="majorName" label="所属专业" width="120px"/>
-                <el-table-column prop="majorId" label="专业代码" width="120px"/>
-                <el-table-column prop="classHour" label="学时" width="120px"/>
-                <el-table-column prop="credit" label="学分" width="120px"/>
-                <el-table-column prop="teacherName" label="任课教师" width="120px"/>
-                <el-table-column prop="teacherId" label="教师工号" width="120px"/>
+                <el-table-column prop="courseCategory.courseName" label="课程名称" width="120px" />
+                <el-table-column prop="courseCategory.school.schoolName" label="开课院系" width="120px"/>
+                <el-table-column prop="courseCategory.school.schoolId" label="学院代码" width="120px"/>
+                <el-table-column prop="courseCategory.major.majorName" label="所属专业" width="120px"/>
+                <el-table-column prop="courseCategory.major.majorId" label="专业代码" width="120px"/>
+                <el-table-column prop="courseCategory.classHour" label="学时" width="120px"/>
+                <el-table-column prop="courseCategory.credit" label="学分" width="120px"/>
+                <el-table-column prop="teacher.username" label="任课教师" width="120px"/>
+                <el-table-column prop="teacher.userId" label="教师工号" width="120px"/>
                 <el-table-column prop="capacity" label="选课容量" width="120px"/>
                 <el-table-column prop="classarrangement" label="课程安排" width="120px"/>
                 <el-table-column prop="introduction" label="课程介绍" />
