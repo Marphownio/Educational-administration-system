@@ -136,6 +136,7 @@ public class UserServiceImpl implements UserService {
                     resultMessage = ResultMessage.FAILED;
             }
         } catch (Exception exception) {
+            System.out.println(exception.getMessage());
             resultMessage = ResultMessage.FAILED;
         }
         return resultMessage;
@@ -146,7 +147,8 @@ public class UserServiceImpl implements UserService {
         if (findUserByUserId(user.getUserId()) != null) {
             return ResultMessage.EXIST;
         }
-        if (user.getRole() == null || user.getRole() == UserRole.ADMIN || Boolean.TRUE.equals(!commonService.isMatchSchoolAndMajor(user.getSchool(), user.getMajor()))) {
+        if (user.getRole() == null || user.getRole() == UserRole.ADMIN
+                || Boolean.TRUE.equals(!commonService.isMatchSchoolAndMajor(user.getSchool(), user.getMajor()))) {
             return ResultMessage.FAILED;
         }
         user.setPassword("fudan123456");
