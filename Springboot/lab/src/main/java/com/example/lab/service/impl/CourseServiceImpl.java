@@ -4,9 +4,12 @@ import com.example.lab.pojo.entity.*;
 import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.repository.CourseRepository;
 import com.example.lab.service.*;
+//import jdk.internal.org.jline.utils.InputStreamReader;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.BufferedReader;
 import java.util.*;
 
 // 课程的增删改查服务
@@ -216,11 +219,12 @@ public class CourseServiceImpl implements CourseService {
 //        Course course = new Course();
 //        try {
 //            BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
-//            BufferedReader studentReader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
+//            BufferedReader arrangementReader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
+//            HashMap<String,String> wrongMessage = new HashMap<>();
 //            String line;
 //            //首行列标题
-//            reader.readLine();
-//            studentReader.readLine();
+//            wrongMessage.put(reader.readLine(),"错误原因");
+//            arrangementReader.readLine();
 //            while((line = reader.readLine())!= null){
 //                String []item = line.split(",");
 //                if (    item[0].equals("") || item.length < 9 || item[8].length()==0||item[9].length()==0||item[10].length()==0||
@@ -232,15 +236,6 @@ public class CourseServiceImpl implements CourseService {
 //                        number=item[0].matches("^[0-9]*$")&&item[2].matches("^[0-9]*$")&&item[3].matches("^[0-9]*$");
 //                        if(number)
 //                        {
-//                            course.setCourseId(Integer.valueOf(item[0]));
-////                            course.setCourseName(item[1]);
-////                            course.setClassHour(Integer.valueOf(item[2]));
-////                            course.setCredit(Integer.valueOf(item[3]));
-////                            course.setCapacity(item[6]);
-//                            course.setIntroduction(item[7]);
-////                            course.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[8])));
-////                            course.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[9])));
-//                            course.setTeacher( userService.findTeacherByTeacherId(Integer.valueOf(item[10])));
 //                            if (item.length > 11){
 //                                String []student = item[11].split("\n");
 //                                for (String s : student) {
@@ -250,15 +245,46 @@ public class CourseServiceImpl implements CourseService {
 //                            courseRepository.save(course);
 //                        }
 //                    }
+//                }
+//                Boolean flag = true;
+//                for(int i = 0;i < item.length;i++) {
+//                    if (item[i].length() == 0) {
+//                        flag = false;
+//                        break;
+//                    }
+//                }
+//                if (item.length < 8 || !flag){
+//                    wrongMessage.put(line,"必填项缺失！");
+//                }
+//                else {
+//                    if (!item[0].matches("^[0-9]+$")){
+//                        wrongMessage.put(line,"课程编号格式不正确！");
+//                        continue;
+//                    }
+//                    if (!item[1].matches("^([1-9]+)-([1-9]+)")){
+//                        wrongMessage.put(line,"学年格式不正确！");
+//                        continue;
+//                    }
+//                    if (!item[2].matches("^[1|2]")){
+//                        wrongMessage.put(line,"学期格式不正确！");
+//                        continue;
+//                    }
+//                    if (!item[3].matches("^[1-9][0-9+]+")){
+//                        wrongMessage.put(line,"课程容量格式不正确！");
+//                        continue;
+//                    }
+//                    if (!item[7].matches("^[0-9]*$") || item[7].length() != 8){
+//                        wrongMessage.put(line,"教师ID格式不正确");
+//                        continue;
+//                    }
+//                    String []arrangement = item[6].split(" ");
 //
 //                }
-//
 //            }
 //            reader.close();
-//            studentReader.close();
-//        } catch (IOException e) {
-//            return ResultMessage.FAILED;
+//            return wrongMessage;
+//        } catch (Exception e) {
+//            return new HashMap<>();
 //        }
-//        return ResultMessage.SUCCESS;
 //    }
 }

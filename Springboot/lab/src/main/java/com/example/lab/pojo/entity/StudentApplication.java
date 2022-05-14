@@ -1,5 +1,6 @@
 package com.example.lab.pojo.entity;
 
+import com.example.lab.pojo.enums.ApplicationStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Proxy;
@@ -28,6 +29,9 @@ public class StudentApplication {
     private Course course;
 
     private String reason;
+
+    @Column(nullable = false)
+    private ApplicationStatus applicationStatus;
 
     public StudentApplication(Course course,Student student,String reason){
         this.setCourse(course);
