@@ -30,14 +30,13 @@ export default {
     methods:{
         classDrop(courseId){
             const that =this;
-            let form = new FormData();
-            let dropForm = {};
-            dropForm.courseId=courseId;
-            console.log(dropForm)
-            form.append('courseId', courseId);
-            console.log(form)
-            request.delete("/student/course/drop",form).then(function(res){
+            const formAAA = new FormData();
+            formAAA.append('courseId', courseId);
+            request.post("/student/course/drop",formAAA).then(function(res){
                 ALERTMSG.show(that,true,"退课成功!","success");
+                setTimeout(function() {
+                    that.$router.go(0);
+                }, 800); // 定时时间
                 return true;
             },function(err){
                 ALERTMSG.show(that,true,"退课失败!","error");
@@ -53,6 +52,30 @@ export default {
           request.get("/student/course/studying").then(res=>{
                 this.classinfortable= res;
             });
+        },
+        cleanTable(){
+            let MondayObj=document.querySelectorAll(".Monday");
+            let TuesdayObj=document.querySelectorAll(".Tuesday");
+            let WednesdayObj=document.querySelectorAll(".Wednesday");
+            let ThursdayObj=document.querySelectorAll(".Thursday");
+            let FridayObj=document.querySelectorAll(".Friday");
+            let SaturdayObj=document.querySelectorAll(".Saturday");
+            let SundayObj=document.querySelectorAll(".Sunday");
+            let week=[MondayObj,TuesdayObj,WednesdayObj,ThursdayObj,FridayObj,SaturdayObj,SundayObj];
+            let inform;
+            for(let i=0;i<week.length;i++) {
+                for(let j=0;j<week[i].length;j++){
+                    week[i][j].parentElement.parentElement.style.backgroundColor="#FFFFFF";
+                    inform=week[i][j].firstElementChild;
+                    inform.innerText="";
+                    inform=inform.nextElementSibling;
+                    inform.innerText="";
+                    inform=inform.nextElementSibling;
+                    inform.innerText="";
+                    inform=inform.nextElementSibling;
+                    inform.innerText="";
+                }
+            }
         },
         fillInClassInForm:function(){
             let MondayObj=document.querySelectorAll(".Monday");

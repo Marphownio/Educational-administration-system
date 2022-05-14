@@ -37,7 +37,7 @@ public class StudentController {
     }
 
     // 学生退课
-    @DeleteMapping(value = "/course/drop")
+    @PostMapping(value = "/course/drop")
     public ResultMessage dropCourse(Integer courseId,HttpSession session) {
         Student student = (Student) session.getAttribute("user");
         return studentService.dropCourse(student.getUserId(), courseId);
