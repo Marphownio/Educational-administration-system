@@ -1,5 +1,7 @@
 package com.example.lab.controller;
 
+import com.example.lab.pojo.entity.Student;
+import com.example.lab.pojo.entity.User;
 import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.pojo.entity.StudentApplication;
 import com.example.lab.service.StudentApplicationService;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,8 +27,18 @@ public class StudentApplicationController {
     }
 
     @DeleteMapping(value = "/cancel")
-    public ResultMessage cancelApplication(@RequestParam("applicationID") Integer applicationId){
+    public ResultMessage cancelApplication(@RequestParam("applicationId") Integer applicationId){
         return studentApplicationService.deleteStudentApplication(applicationId);
+    }
+
+    @GetMapping(value = "/personallist")
+    public ResponseEntity<Set<StudentApplication>> findStudentApplication(HttpSession session){
+        User student = (Student)session.getAttribute("user");
+        Set<StudentApplication> applications = new HashSet<>(studentApplicationService.findStudentApplication(student.getUserId()));
+        if (applications.isEmpty()){
+            return new ResponseEntity<>(new HashSet<>(),HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(applications,HttpStatus.OK);
     }
 
     @GetMapping(value = "/list")

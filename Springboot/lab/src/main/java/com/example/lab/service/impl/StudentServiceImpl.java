@@ -104,9 +104,8 @@ public class StudentServiceImpl implements StudentService {
         Admin admin = adminService.getAdmin();
         if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND){
             try {
-                Course course = courseService.findCourseByCourseId(courseId);
-                course.getStudents().removeIf(student1 -> Objects.equals(student.getUserId(), studentId));
-                courseService.updateCourse(course);
+                student.getCourses().removeIf(course1 -> Objects.equals(course1.getCourseId(),courseId));
+                userService.updateUser(student);
             } catch (Exception e) {
                 resultMessage = ResultMessage.FAILED;
             }

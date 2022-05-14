@@ -1,5 +1,6 @@
 package com.example.lab.pojo.entity;
 
+import com.example.lab.pojo.enums.ApplicationStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,8 @@ public class Student extends User {
     @JsonIgnore
     private Set<StudentApplication> studentApplications = new HashSet<>();
 
+    @Column(nullable = false)
+    private ApplicationStatus applicationStatus;
     // 通过用户产生一个学生
     public Student(User user) {
         this.setUserId(user.getUserId());
@@ -40,6 +43,7 @@ public class Student extends User {
         this.setMajor(new Major());
         this.getSchool().setSchoolId(user.getSchool().getSchoolId());
         this.getMajor().setMajorId(user.getMajor().getMajorId());
+        this.setCourses(((Student)user).getCourses());
     }
 
     public Student() {
