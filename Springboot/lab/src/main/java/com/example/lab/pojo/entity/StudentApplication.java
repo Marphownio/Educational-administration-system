@@ -37,6 +37,7 @@ public class StudentApplication {
         this.setCourse(course);
         this.setStudent(student);
         this.setReason(reason);
+        this.setApplicationStatus(ApplicationStatus.IN_REVIEW);
     }
 
     public StudentApplication(){
