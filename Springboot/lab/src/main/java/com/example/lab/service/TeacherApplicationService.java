@@ -13,6 +13,8 @@ public interface TeacherApplicationService {
     // 管理员处理完请求后将其删除
     ResultMessage deleteTeacherApplication(Integer applicationId);
 
+    ResultMessage updateTeacherApplication(TeacherApplication application);
+
     // 管理员查询所有申请
     List<TeacherApplication> findAllTeacherApplication();
 

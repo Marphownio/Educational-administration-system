@@ -1,6 +1,7 @@
 package com.example.lab.service.impl;
 
 import com.example.lab.pojo.entity.*;
+import com.example.lab.pojo.enums.ApplicationStatus;
 import com.example.lab.pojo.enums.ApplicationType;
 import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.repository.TeacherApplicationRepository;
@@ -40,6 +41,7 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
     @Override
     public ResultMessage addTeacherApplication(TeacherApplication application) {
         ResultMessage resultMessage;
+        application.setStatus(ApplicationStatus.IN_REVIEW);
         switch (application.getType()) {
             case ADD:
                 application.setCourseId(0);
@@ -113,6 +115,7 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         application.setOpenToMajors(course.getOpenToMajors());
         application.setClassArrangements(course.getClassArrangements());
         application.setTeacher(course.getTeacher());
+        application.setStatus(ApplicationStatus.IN_REVIEW);
         return ResultMessage.SUCCESS;
     }
 
@@ -133,6 +136,19 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         }
     }
 
+    @Override
+    public ResultMessage updateTeacherApplication(TeacherApplication application) {
+        if (findTeacherApplicationById(application.getApplicationId()) == null) {
+            return ResultMessage.NOTFOUND;
+        }
+        try {
+            teacherApplicationRepository.save(application);
+            return ResultMessage.SUCCESS;
+        } catch (Exception e) {
+            return ResultMessage.FAILED;
+        }
+    }
+
     // 管理员获取所有申请
     @Override
     public List<TeacherApplication> findAllTeacherApplication() {
@@ -148,12 +164,13 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
     // 管理员处理教师对课程的请求
     @Override
     public ResultMessage processTeacherApplication(Integer applicationId, Boolean operation) {
-        if (Boolean.FALSE.equals(operation)) {
-            return this.deleteTeacherApplication(applicationId);
-        }
         TeacherApplication application = this.findTeacherApplicationById(applicationId);
         if (application == null) {
             return ResultMessage.FAILED;
+        }
+        if (Boolean.FALSE.equals(operation)) {
+            application.setStatus(ApplicationStatus.NOT_PASS);
+            return updateTeacherApplication(application);
         }
         Course course = new Course();
         Admin admin = adminService.getAdmin();
@@ -180,6 +197,9 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
             default:
                 resultMessage = ResultMessage.FAILED; break;
         }
-        return (resultMessage == ResultMessage.SUCCESS) ? this.deleteTeacherApplication(applicationId) : ResultMessage.FAILED;
+        if (resultMessage == ResultMessage.SUCCESS) {
+            application.setStatus(ApplicationStatus.PASS);
+        }
+        return updateTeacherApplication(application);
     }
 }

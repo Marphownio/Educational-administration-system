@@ -1,5 +1,6 @@
 package com.example.lab.pojo.entity;
 
+import com.example.lab.pojo.enums.ApplicationStatus;
 import com.example.lab.pojo.enums.ApplicationType;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,4 +60,7 @@ public class TeacherApplication {
     // 申请的处理方式
     @Column(nullable = false)
     private ApplicationType type;
+
+    @Column(nullable = false)
+    private ApplicationStatus status;
 }

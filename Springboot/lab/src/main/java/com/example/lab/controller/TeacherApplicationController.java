@@ -1,15 +1,13 @@
 package com.example.lab.controller;
 
+import com.example.lab.pojo.enums.ApplicationStatus;
 import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.pojo.entity.TeacherApplication;
 import com.example.lab.service.TeacherApplicationService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/teacher/application")
@@ -31,13 +29,33 @@ public class TeacherApplicationController {
     }
 
     // 获取所有申请
-    @GetMapping(value = "/list")
-    public ResponseEntity<Set<TeacherApplication>> findAllApplication() {
-        Set<TeacherApplication> applications = new HashSet<>(teacherApplicationService.findAllTeacherApplication());
-        if (applications.isEmpty()) {
-            return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(applications ,HttpStatus.OK);
+    @GetMapping(value = "/list/all")
+    public List<TeacherApplication> findAllTeacherApplication() {
+        return teacherApplicationService.findAllTeacherApplication();
     }
 
+    // 获取未审核的所有申请
+    @GetMapping(value = "/list/inReview")
+    public List<TeacherApplication> findAllTeacherApplicationInReview() {
+        List<TeacherApplication> teacherApplications = teacherApplicationService.findAllTeacherApplication();
+        teacherApplications.removeIf(application -> application.getStatus() != ApplicationStatus.IN_REVIEW);
+        return teacherApplications;
+
+    }
+
+    // 获取已通过的所有申请
+    @GetMapping(value = "/list/pass")
+    public List<TeacherApplication> findAllTeacherApplicationPass() {
+        List<TeacherApplication> teacherApplications = teacherApplicationService.findAllTeacherApplication();
+        teacherApplications.removeIf(application -> application.getStatus() != ApplicationStatus.PASS);
+        return teacherApplications;
+    }
+
+    // 获取未通过的所有申请
+    @GetMapping(value = "/list/notPass")
+    public List<TeacherApplication> findAllTeacherApplicationNotPass() {
+        List<TeacherApplication> teacherApplications = teacherApplicationService.findAllTeacherApplication();
+        teacherApplications.removeIf(application -> application.getStatus() != ApplicationStatus.NOT_PASS);
+        return teacherApplications;
+    }
 }
