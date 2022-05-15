@@ -15,10 +15,10 @@
         <router-link to="/teaclassmanage">已有课程维护</router-link>
       </td>
       <td style="text-align:center" class="choose">
-        <router-link to="/resetpassword" > 重置密码 </router-link>
+        <router-link to="/teaApplication" >我的课程申请</router-link>
       </td>
       <td style="text-align:center" class="choose">
-        <router-link to="/index_teacher" > 敬请期待 </router-link>
+        <router-link to="/resetpassword" > 重置密码 </router-link>
       </td>
     </tr>
   </table>

@@ -21,14 +21,15 @@
       <el-table-column align="center" prop="course.term" width="60px" label="学期"/>
       <el-table-column align="center" prop="reason" label="申请理由" />
       <el-table-column align="center" v-slot="scope" prop="applicationStatus" width="150px" label="审核状态">
-        <el-tag v-if="scope.row.applicationStatus=='IN_REVIEW'" size="small">审核中</el-tag>
-        <el-tag v-if="scope.row.applicationStatus=='PASS'" type="success" size="small">审核通过</el-tag>
+        <el-tag v-if="scope.row.applicationStatus=='IN_REVIEW'" size="small">&nbsp;&nbsp;审&nbsp;&nbsp;核&nbsp;&nbsp;中&nbsp;&nbsp;</el-tag>
+        <el-tag v-if="scope.row.applicationStatus=='PASS'" type="success" size="small">&nbsp;&nbsp;审核通过&nbsp;&nbsp;</el-tag>
         <el-tag v-if="scope.row.applicationStatus=='NOT_PASS'" type="danger" size="small">审核未通过</el-tag>
       </el-table-column>
       <el-table-column align="center" v-slot="scope" prop="" label="操作" width="180px">
-        <el-popconfirm  @confirm="deleteMyApplication(scope.row)"  title="确认删除申请吗？">
+        <el-popconfirm  @confirm="deleteMyApplication(scope.row)"  title="确认取消申请吗？">
           <template #reference>
-            <el-button type="danger" plain>删除申请</el-button>
+            <el-button v-if="scope.row.applicationStatus=='NOT_PASS'||scope.row.applicationStatus=='PASS'" type="danger" size="small" plain disabled>取消申请</el-button>
+            <el-button v-else type="danger" size="small" plain>取消申请</el-button>
           </template>
         </el-popconfirm>
       </el-table-column>
