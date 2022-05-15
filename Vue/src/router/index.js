@@ -163,7 +163,7 @@ router.beforeEach((to,from,next)=>{
       }
       //学生身份
       if(token==="3"){
-        if(to.path==="/index_stu"||to.path==="//stuApplication"||to.path==="/finishedclass"||to.path==="/classselection"||to.path==="/resetpassword"||to.path==="/personalinfo"||to.path==="/myclass"){
+        if(to.path==="/index_stu"||to.path==="/stuApplication"||to.path==="/finishedclass"||to.path==="/classselection"||to.path==="/resetpassword"||to.path==="/personalinfo"||to.path==="/myclass"){
           next();
         }
         else{

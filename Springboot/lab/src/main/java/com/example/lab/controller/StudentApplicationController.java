@@ -26,7 +26,7 @@ public class StudentApplicationController {
         return studentApplicationService.addStudentApplication(courseId,studentId,reason);
     }
 
-    @DeleteMapping(value = "/cancel")
+    @PostMapping(value = "/cancel")
     public ResultMessage cancelApplication(@RequestParam("applicationId") Integer applicationId){
         return studentApplicationService.deleteStudentApplication(applicationId);
     }

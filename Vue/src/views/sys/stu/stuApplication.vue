@@ -6,40 +6,32 @@
   <body>
   <Nav></Nav>
   <div id="welc">这是您的选课申请列表</div>
-  <div id="finidhedclassbody">
+  <div id="stuAppliationTable">
     <el-table
-        :data="finishedClassData"
-        id="finishedClass"
+        :data="stuApplicationData"
+        id="stuApplicationForm"
         border=true>
-      <el-table-column align="center"
-                       prop="year"
-                       label="学年"
-                       sortable
-                       column-key="date"
-                       :filters="years"
-                       :filter-method="filterHandler"
-      >
-
+      <el-table-column align="center" prop="course" width="150px" label="申请课程编号">
+        <template v-slot="scope">
+          {{scope.row.course.courseCategory.courseCategoryNumber}}.{{scope.row.course.courseId}}
+        </template>
       </el-table-column>
-      <el-table-column align="center"
-                       prop="term"
-                       label="学期"
-                       sortable
-                       column-key="date"
-                       :filters="terms"
-                       :filter-method="filterHandler"
-      >
-
+      <el-table-column align="center" prop="course.courseCategory.courseName" width="180px" label="申请课程名称"/>
+      <el-table-column align="center" prop="course.academicYear" width="100px" label="学年"/>
+      <el-table-column align="center" prop="course.term" width="60px" label="学期"/>
+      <el-table-column align="center" prop="reason" label="申请理由" />
+      <el-table-column align="center" v-slot="scope" prop="applicationStatus" width="150px" label="审核状态">
+        <el-tag v-if="scope.row.applicationStatus=='IN_REVIEW'" size="small">审核中</el-tag>
+        <el-tag v-if="scope.row.applicationStatus=='PASS'" type="success" size="small">审核通过</el-tag>
+        <el-tag v-if="scope.row.applicationStatus=='NOT_PASS'" type="danger" size="small">审核未通过</el-tag>
       </el-table-column>
-      <el-table-column align="center" prop="courseId" label="课程编号" />
-      <el-table-column align="center" prop="courseName" label="课程名称"/>
-      <el-table-column align="center" prop="school.schoolName major.majorName" label="开课院系与专业"  />
-      <el-table-column align="center" prop="classHour" label="学时" />
-      <el-table-column align="center" prop="credit" label="学分" />
-      <el-table-column align="center" prop="teacher.username" label="任课教师" />
-      <el-table-column align="center" prop="introduction" label="课程介绍" />
-      <el-table-column align="center" prop="courseTime coursePlace" label="上课时间与地点" />
-      <el-table-column align="center" prop="capacity" label="选课容量" />
+      <el-table-column align="center" v-slot="scope" prop="" label="操作" width="180px">
+        <el-popconfirm  @confirm="deleteMyApplication(scope.row)"  title="确认删除申请吗？">
+          <template #reference>
+            <el-button type="danger" plain>删除申请</el-button>
+          </template>
+        </el-popconfirm>
+      </el-table-column>
     </el-table>
 
   </div>
@@ -47,9 +39,9 @@
 </template>
 
 
-<script src="../../../assets/js/finishedclass.js" type="text/javascript">
+<script src="../../../assets/js/stuApplication.js" type="text/javascript">
 </script>
 
 
-<style src="../../../assets/css/finishedclass.css" scoped>
+<style src="../../../assets/css/stuApplication.css" scoped>
 </style>
