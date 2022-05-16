@@ -201,7 +201,7 @@ public class CourseServiceImpl implements CourseService {
         } else {
             try {
                 course.setCourseNumber(originalCourse.getCourseNumber());
-                course.setNumberOfStudents(originalCourse.getStudents().size());
+                course.setNumberOfStudents(course.getStudents().size());
                 courseRepository.save(course);
             }
             catch (Exception e) {
@@ -238,12 +238,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> findCourseByTerm(String academicYear, String term) {
-        List<Course> courses = new ArrayList<>();
-        for (Course course : courseRepository.findAll()) {
-            if (Objects.equals(course.getAcademicYear(), academicYear) && Objects.equals(course.getTerm(), term)) {
-                courses.add(course);
-            }
-        }
+        List<Course> courses = findAllCourse();
+        courses.removeIf(course -> !(Objects.equals(course.getAcademicYear(), academicYear) && Objects.equals(course.getTerm(), term)));
         return courses;
     }
 
