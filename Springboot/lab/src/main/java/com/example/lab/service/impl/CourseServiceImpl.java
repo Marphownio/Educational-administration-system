@@ -314,10 +314,9 @@ public class CourseServiceImpl implements CourseService {
             HashMap<String,String> wrongMessage = new HashMap<>();
             String line;
             //首行列标题
-            wrongMessage.put(reader.readLine(),"错误原因");
+            reader.readLine();
             while((line = reader.readLine())!= null) {
                 String[] item = line.split(",");
-                System.out.println(line);
                 boolean notNullFlag = true;
                 boolean formFlag = true;
                 for (String i : item) {
@@ -456,6 +455,11 @@ public class CourseServiceImpl implements CourseService {
                                     wrongMessage.put(line,i+"课程安排上课地点教室不存在！");
                                     break;
                                 }
+                                if (classroom.getCapacity() < capacity){
+                                    formFlag = false;
+                                    wrongMessage.put(line,"课程安排课程容量超过教室容量！");
+                                    break;
+                                }
                                 building = classroom.getBuilding();
                             }
                             else {
@@ -468,6 +472,23 @@ public class CourseServiceImpl implements CourseService {
                             classArrangement.setDayOfWeek(dayOfWeek);
                             classArrangement.setBuilding(building);
                             classArrangement.setClassTimes(classTimes);
+                            List<ClassArrangement> allArrangements = classArrangementService.findAllClassArrangement();
+                            for (ClassArrangement h:allArrangements){
+                                if (h.getClassroom() == classArrangement.getClassroom() && h.getDayOfWeek() == classArrangement.getDayOfWeek()){
+                                    for (ClassTime l:h.getClassTimes()){
+                                        for (ClassTime o:classArrangement.getClassTimes()){
+                                            if (l == o){
+                                                formFlag = false;
+                                                wrongMessage.put(line,"课程安排冲突!");
+                                                break;
+                                            }
+                                        }
+                                        if (!formFlag)break;
+                                    }
+                                }
+                                if (!formFlag)break;
+                            }
+                            if (!formFlag)break;
                             classArrangements.add(classArrangement);
                         }
                     }
