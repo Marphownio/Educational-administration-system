@@ -8,8 +8,10 @@ import com.example.lab.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -80,21 +82,21 @@ public class CourseController {
         return new ResponseEntity<>(course, HttpStatus.OK);
     }
 
-//    @PostMapping("/batchimport")
-//    public ResponseEntity<HashMap<String,String>> batchImportCourse(@RequestParam(value = "file",required = false) MultipartFile file) {
-//        //判断文件是否为空
-//        if(file == null) return ResultMessage.NOTFOUND;
-//        //获取文件名
-//        String name = file.getOriginalFilename();
-//        //进一步判断文件是否为空（即判断其大小是否为0或其名称是否为null）
-//        long size=file.getSize();
-//        if (name == null || ("").equals(name) && size == 0) return ResultMessage.NOTFOUND;
-//        //批量导入。参数：文件名，文件。
-//        ResultMessage resultMessage = courseService.batchImportCourse(file);
-//        if(resultMessage == ResultMessage.SUCCESS){
-//            return ResultMessage.SUCCESS;
-//        }else{
-//            return ResultMessage.FAILED;
-//        }
-//    }
+    @PostMapping("/batchimport")
+    public ResponseEntity<HashMap<String,String>> batchImportCourse(@RequestParam(value = "file",required = false) MultipartFile file) {
+        //判断文件是否为空
+        if(file == null) return new ResponseEntity<>(new HashMap<>(),HttpStatus.NO_CONTENT);
+        //获取文件名
+        String name = file.getOriginalFilename();
+        //进一步判断文件是否为空（即判断其大小是否为0或其名称是否为null）
+        long size=file.getSize();
+        if (name == null || ("").equals(name) && size == 0) return new ResponseEntity<>(new HashMap<>(),HttpStatus.NO_CONTENT);
+        //批量导入。参数：文件名，文件。
+        try {
+            return new ResponseEntity<>(courseService.batchImportCourse(file),HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new HashMap<>(),HttpStatus.NOT_IMPLEMENTED);
+        }
+
+    }
 }
