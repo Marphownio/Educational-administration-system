@@ -317,6 +317,7 @@ public class CourseServiceImpl implements CourseService {
             wrongMessage.put(reader.readLine(),"错误原因");
             while((line = reader.readLine())!= null) {
                 String[] item = line.split(",");
+                System.out.println(line);
                 boolean notNullFlag = true;
                 boolean formFlag = true;
                 for (String i : item) {
@@ -386,7 +387,7 @@ public class CourseServiceImpl implements CourseService {
                             openToMajors.add(majorService.findMajorByMajorName(i));
                         } else {
                             formFlag = false;
-                            wrongMessage.put(line, "专业不存在！");
+                            wrongMessage.put(line, i+"专业不存在！");
                             break;
                         }
                     }
@@ -452,7 +453,7 @@ public class CourseServiceImpl implements CourseService {
                                 classroom = classroomService.findClassroomById(Integer.valueOf(matcher1.group(2)));
                                 if (classroom == null){
                                     formFlag = false;
-                                    wrongMessage.put(line,"课程安排上课地点教室不存在！");
+                                    wrongMessage.put(line,i+"课程安排上课地点教室不存在！");
                                     break;
                                 }
                                 building = classroom.getBuilding();

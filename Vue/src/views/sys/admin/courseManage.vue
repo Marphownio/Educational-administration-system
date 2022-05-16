@@ -20,7 +20,7 @@
                 <el-upload
                         class="upload-demo"
                         action="http://localhost/api/course/batchimport"
-                        :on-success="getCourseForm"
+                        :on-success="showwrongmessage"
                         method="post"
                         enctype=“multipart/form-data”
                         accept=".csv"
@@ -419,7 +419,19 @@
                 </el-form-item>
             </el-form>
         </el-dialog>
+
+        <el-dialog
+                v-model="dialogVisible3"
+                title="错误信息显示"
+                width="1000px"
+                @close="fresh()"
+                id="dialog3"
+        >
+            <textarea v-model="wrongmessage" readonly style="font-size: 15px"></textarea>
+            <el-button type="primary" @click="exporttxt" >导出为txt</el-button>
+        </el-dialog>
     </div>
+
     </body>
 </template>
 

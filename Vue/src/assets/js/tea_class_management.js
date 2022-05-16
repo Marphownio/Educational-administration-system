@@ -461,6 +461,14 @@ export default {
                                     type: 'error',
                                 });
                             }
+                            else if(res.data=='CONFLICT')
+                            {
+                                this.$message({
+                                    showClose: true,
+                                    message: '时间地点与已有课程冲突',
+                                    type: 'error',
+                                });
+                            }
                         }
                     )
                 }
@@ -540,7 +548,7 @@ export default {
                     params.openToMajors=  openToMajors;
                     params.capacity=this.ruleForm1.capacity;
                     if(typeof this.ruleForm1.introduction==="undefined"||(typeof this.ruleForm1.introduction==="string"&&this.ruleForm1.introduction.length===0))
-                        params.introduction= "该课程暂无描述信息";
+                        params.introduction= "该课程暂无介绍";
                     else
                         params.introduction=this.ruleForm1.introduction;
                     params.type='UPDATE'
@@ -567,6 +575,14 @@ export default {
                                     this.$message({
                                         showClose: true,
                                         message: '操作失败',
+                                        type: 'error',
+                                    });
+                                }
+                                else if(res.data=='CONFLICT')
+                                {
+                                    this.$message({
+                                        showClose: true,
+                                        message: '时间地点与已有课程冲突',
                                         type: 'error',
                                     });
                                 }
