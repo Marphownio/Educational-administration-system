@@ -75,6 +75,7 @@
             <el-table-column prop="schoolId" label="学院代码" width="120px" sortable/>
             <el-table-column prop="majorName" label="所属专业" width="120px" sortable/>
             <el-table-column prop="majorId" label="专业代码" width="120px" sortable/>
+            <el-table-column prop="coursetype" label="课程类型" width="120px" sortable/>
             <el-table-column prop="classHour" label="学时" width="120px" sortable/>
             <el-table-column prop="credit" label="学分" width="120px" sortable/>
             <el-table-column align="center" label="任课教师" sortable>
@@ -173,6 +174,7 @@
                 <el-table-column prop="courseCategory.school.schoolId" label="学院代码" width="120px"/>
                 <el-table-column prop="courseCategory.major.majorName" label="所属专业" width="120px"/>
                 <el-table-column prop="courseCategory.major.majorId" label="专业代码" width="120px"/>
+                <el-table-column prop="coursetype" label="课程类型" width="120px"/>
                 <el-table-column prop="courseCategory.classHour" label="学时" width="120px"/>
                 <el-table-column prop="courseCategory.credit" label="学分" width="120px"/>
                 <el-table-column prop="teacher.username" label="任课教师" width="120px"/>
