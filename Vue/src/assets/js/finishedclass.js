@@ -35,188 +35,22 @@ export default {
                 { text: '1', value: '1' },
                 { text: '2', value: '2' },
             ],
-            finishedClassData:[{
-                term: "1",
-                academicYear: "2000-2001",
-                capacity: 30,
-                classArrangements: [
-                    {
-                        classArrangementId: 8,
-                        building:
-                            {
-                                buildingId: 2,
-                                buildingName: "第二教学楼"
-                            },
-                        classroom:
-                            {
-                                building: {buildingId: 2, buildingName: "第二教学楼"},
-                                capacity: 80,
-                                classroomId: 202
-                            },
-                        dayOfWeek: "TUESDAY",
-                        classTimes: [{
-                            classTimeId: 1,
-                            startTimeHour: null,
-                            startTimeMin: null,
-                            endTimeHour: null,
-                            endTimeMin: null
-                        }],
-                    },
-                    {
-                        classArrangementId: 2,
-                        building:
-                            {
-                                buildingId: 1,
-                                buildingName: "第一教学楼"
-                            },
-                        classroom:
-                            {
-                                building: {buildingId: 2, buildingName: "第二教学楼"},
-                                capacity: 80,
-                                classroomId: 102
-                            },
-                        dayOfWeek: "FRIDAY",
-                        classTimes: [{
-                            classTimeId: 1,
-                            startTimeHour: null,
-                            startTimeMin: null,
-                            endTimeHour: null,
-                            endTimeMin: null
-                        },
-                            {
-                                classTimeId: 2,
-                                startTimeHour: null,
-                                startTimeMin: null,
-                                endTimeHour: null,
-                                endTimeMin: null
-                            },
-                            {
-                                classTimeId: 3,
-                                startTimeHour: null,
-                                startTimeMin: null,
-                                endTimeHour: null,
-                                endTimeMin: null
-                            },
-                            {
-                                classTimeId: 7,
-                                startTimeHour: null,
-                                startTimeMin: null,
-                                endTimeHour: null,
-                                endTimeMin: null
-                            },],
-                    },],
-                introduction:'cdww',
-                courseCategory:
-                    {
-                        school:{
-                            schoolName:'计算机科学学院',
-                        },
-                        major:{
-                            majorName:'软件工程',
-                        },
-                        courseCategoryNumber:'Math101',
-                        courseCategoryId: 1,
-                        courseName: "数学分析",
-                        classHour: 5,
-                        credit: 5,
-                    },
-                courseId: 2,
-                courseNumber: 2,
-                teacher: {username: "哈哈哈",},
-            },
-                {
-                    term: "2",
-                    academicYear: "2000-2001",
-                    classArrangements: [
-                        {
-                            building:
-                                {
-                                    buildingId: 2,
-                                    buildingName: "第二教学楼"
-                                },
-                            classroom:
-                                {
-                                    building: {buildingId: 2, buildingName: "第二教学楼"},
-                                    capacity: 80,
-                                    classroomId: 202
-                                },
-                            dayOfWeek: "MONDAY",
-                            classTimes: [{
-                                classTimeId: 5,
-                                startTimeHour: null,
-                                startTimeMin: null,
-                                endTimeHour: null,
-                                endTimeMin: null
-                            }],
-                        },],
-                    courseCategory:
-                        {
-                            school:{
-                                schoolName:'计算机科学学院',
-                            },
-                            major:{
-                                majorName:'软件工程',
-                            },
-                            courseCategoryNumber:'Math102',
-                            courseCategoryId: 1,
-                            courseName: "概率论",
-                            classHour: 5,
-                            credit: 5,
-                        },
-                    courseId: 2,
-                    courseNumber: 2,
-                    teacher: {username: "哈哈哈",},
-                },
-                {
-                    term: "2",
-                    academicYear: "2002-2003",
-                    classArrangements: [
-                        {
-                            building:
-                                {
-                                    buildingId: 2,
-                                    buildingName: "第二教学楼"
-                                },
-                            classroom:
-                                {
-                                    building: {buildingId: 2, buildingName: "第二教学楼"},
-                                    capacity: 80,
-                                    classroomId: 202
-                                },
-                            dayOfWeek: "MONDAY",
-                            classTimes: [{
-                                classTimeId: 5,
-                                startTimeHour: null,
-                                startTimeMin: null,
-                                endTimeHour: null,
-                                endTimeMin: null
-                            }],
-                        },],
-                    courseCategory:
-                        {
-                            school:{
-                                schoolName:'计算机科学学院',
-                            },
-                            major:{
-                                majorName:'软件工程',
-                            },
-                            courseCategoryNumber:'Math103',
-                            courseCategoryId: 1,
-                            courseName: "高等代数",
-                            classHour: 5,
-                            credit: 5,
-                        },
-                    courseId: 2,
-                    courseNumber: 2,
-                    teacher: {username: "哈哈哈",},
-                },
-            ],
+            finishedClassData:[],
         }
     },
     mounted() {},
     created(){
+        this.getFinishedClass();
     },
     methods: {
+        getFinishedClass(){
+            const that = this;
+            request.get("/student/course/completed").then(function (res){
+                that.finishedClassData=res;
+            },function (err){
+                ALERTMSG.show(that,true,"获取已修课程失败!请再次尝试！","error");
+            })
+        },
         filterHandlerYear(value, row, column) {
             let property = column['property'];
             return row[property] === value;

@@ -241,6 +241,10 @@ export default {
                         ALERTMSG.show(that,true,"选课成功!","success");
                         that.getStudingClass();
                         that.getclassinfo();
+                    } else if (response === "EXIST") {
+                        ALERTMSG.show(that,true,"您已经选过同类课程!","warning");
+                        that.getStudingClass();
+                        that.getclassinfo();
                     }
                 },function (err) {
                     ALERTMSG.show(that,true,"选课失败！请重新尝试!","error");
