@@ -20,7 +20,7 @@
                 <el-upload
                         class="upload-demo"
                         action="http://localhost/api/course/batchimport"
-                        :on-success="getCourseForm"
+                        :on-success="showwrongmessage"
                         method="post"
                         enctype=“multipart/form-data”
                         accept=".csv"
@@ -75,6 +75,7 @@
             <el-table-column prop="schoolId" label="学院代码" width="120px" sortable/>
             <el-table-column prop="majorName" label="所属专业" width="120px" sortable/>
             <el-table-column prop="majorId" label="专业代码" width="120px" sortable/>
+            <el-table-column prop="coursetype" label="课程类型" width="120px" sortable/>
             <el-table-column prop="classHour" label="学时" width="120px" sortable/>
             <el-table-column prop="credit" label="学分" width="120px" sortable/>
             <el-table-column align="center" label="任课教师" sortable>
@@ -173,6 +174,7 @@
                 <el-table-column prop="courseCategory.school.schoolId" label="学院代码" width="120px"/>
                 <el-table-column prop="courseCategory.major.majorName" label="所属专业" width="120px"/>
                 <el-table-column prop="courseCategory.major.majorId" label="专业代码" width="120px"/>
+                <el-table-column prop="coursetype" label="课程类型" width="120px"/>
                 <el-table-column prop="courseCategory.classHour" label="学时" width="120px"/>
                 <el-table-column prop="courseCategory.credit" label="学分" width="120px"/>
                 <el-table-column prop="teacher.username" label="任课教师" width="120px"/>
@@ -417,7 +419,19 @@
                 </el-form-item>
             </el-form>
         </el-dialog>
+
+        <el-dialog
+                v-model="dialogVisible3"
+                title="错误信息显示"
+                width="1000px"
+                @close="fresh()"
+                id="dialog3"
+        >
+            <textarea v-model="wrongmessage" readonly style="font-size: 15px"></textarea>
+            <el-button type="primary" @click="exporttxt" >导出为txt</el-button>
+        </el-dialog>
     </div>
+
     </body>
 </template>
 

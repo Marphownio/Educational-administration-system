@@ -36,6 +36,8 @@ export default {
             return true;
         };
         return{
+            dialogVisible3:false,
+            wrongmessage:'',
             addcourse:false,
             checked: false,
             updatecourse:false,
@@ -279,6 +281,33 @@ export default {
         this.getapplicationData();
     },
     methods:{
+        showwrongmessage(response){
+            this.dialogVisible3=true;
+            let str=JSON.stringify(response);
+            str=str.replace(/","/g,'\n');
+            str=str.replace(/"/g,'');
+            str=str.replace(/{/g,'');
+            str=str.replace(/}/g,'');
+            this.wrongmessage=str;
+        },
+        fresh(){
+            this.$router.go(0);
+        },
+        exporttxt()
+        {
+            const filename = "课程添加错误信息";
+            const text=this.wrongmessage;
+            const pom = document.createElement('a');
+            pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            pom.setAttribute('download', filename);
+            if (document.createEvent) {
+                const event = document.createEvent('MouseEvents');
+                event.initEvent('click', true, true);
+                pom.dispatchEvent(event);
+            } else {
+                pom.click();
+            }
+        },
         refresh(){
             this.ruleForm1= {
                 arrangement: []
@@ -430,11 +459,18 @@ export default {
             })
         },
         getapplicationData(){
-            request.get("/teacher/application/list").then(res=>{
+            request.get("/teacher/application/list/inReview").then(res=>{
                 this.applicationData=res;
-                console.log(res);
                 for(let i=0;i<Object.keys(this.applicationData).length;i++)
                 {
+                    if(this.applicationData[i].courseNumber!==null)
+                    {
+                        this.applicationData[i].courseCategoryNumbershow=this.applicationData[i].courseCategory.courseCategoryNumber+'.'
+                    +this.applicationData[i].courseNumber;
+                    }
+                    else{
+                        this.applicationData[i].courseCategoryNumbershow=this.applicationData[i].courseCategory.courseCategoryNumber;
+                    }
                     let classarrangementstr='';
                     for(let k=0;k<Object.keys(this.applicationData[i].classArrangements).length;k++)
                     {
@@ -457,6 +493,12 @@ export default {
                             JSON.stringify(this.applicationData[i].classArrangements[k].dayOfWeek).replace(/"/g,"")+' ; ');
                     }
                     this.applicationData[i].classarrangement=classarrangementstr;
+                    if(Object.keys(this.applicationData[i].openToMajors).length===Object.keys(this.majorListData).length)
+                        this.applicationData[i].coursetype="通选";
+                    else if(Object.keys(this.applicationData[i].openToMajors).length===1)
+                        this.applicationData[i].coursetype="专业";
+                    else
+                        this.applicationData[i].coursetype="面向部分专业";
                 }
             })
         },
@@ -513,8 +555,8 @@ export default {
                 message: '操作成功',
                 type: 'success',
             });
-            this.getapplicationData();
             this.checkcourse=false;
+            this.$router.go(0);
         },
         showCourse(){
             request.get("/course/list")
@@ -542,6 +584,12 @@ export default {
                 this.courseData[j].credit=this.courseData[j].courseCategory.credit;
                 this.courseData[j].teacherName=this.courseData[j].teacher.username;
                 this.courseData[j].teacherId=this.courseData[j].teacher.userId;
+                if(Object.keys(this.courseData[j].openToMajors).length===Object.keys(this.majorListData).length)
+                    this.courseData[j].coursetype="通选";
+                else if(Object.keys(this.courseData[j].openToMajors).length===1)
+                    this.courseData[j].coursetype="专业";
+                else
+                    this.courseData[j].coursetype="面向部分专业";
                 let classarrangementstr='';
                 let timestr='';
                 let placestr='';
@@ -586,8 +634,8 @@ export default {
                 message: '操作成功',
                 type: 'success',
             });
-            this.getapplicationData();
             this.checkcourse=false;
+            this.$router.go(0);
         },
         remove(item){
             if(Object.keys(this.ruleForm1.arrangement).length>1)
@@ -609,7 +657,6 @@ export default {
         },
 
         submitaddcourse(){
-            console.log(this.ruleForm1);
             this.fillclassArrangementId();
             this.$refs.ruleForm1.validate((valid,error)=>{
                 if(valid){
@@ -643,7 +690,7 @@ export default {
                     params.openToMajors=  openToMajors;
                     params.capacity=this.ruleForm1.capacity;
                     if(typeof this.ruleForm1.introduction==="undefined"||(typeof this.ruleForm1.introduction==="string"&&this.ruleForm1.introduction.length===0))
-                        params.introduction= "该课程暂无描述信息";
+                        params.introduction= "该课程暂无介绍";
                     else
                         params.introduction=this.ruleForm1.introduction;
                     this.$axios({
@@ -660,7 +707,7 @@ export default {
                                 type: 'success',
                             });
                             this.addcourse = false;
-                            //this.$router.go(0);
+                            this.$router.go(0);
                         }
                         else if(res.data==='EXIST')
                         {
@@ -675,6 +722,14 @@ export default {
                             this.$message({
                                 showClose: true,
                                 message: '课程代码不能与其他课程类相同',
+                                type: 'error',
+                            });
+                        }
+                        else if(res.data=='CONFLICT')
+                        {
+                            this.$message({
+                                showClose: true,
+                                message: '时间地点与已有课程冲突',
                                 type: 'error',
                             });
                         }
@@ -751,6 +806,14 @@ export default {
                                     type: 'error',
                                 });
                             }
+                            else if(res.data=='CONFLICT')
+                            {
+                                this.$message({
+                                    showClose: true,
+                                    message: '时间地点与已有课程冲突',
+                                    type: 'error',
+                                });
+                            }
                         }
                     )
                 }
@@ -810,43 +873,43 @@ export default {
                 }
             })
         },
-        handleChange(file) {
-            this.fileTemp = file.raw
-            if (this.fileTemp) {
-                if ((this.fileTemp.type === '.csv') || (this.fileTemp.type === 'application/vnd.ms-excel')) {
-                    request.post("/course/batchimport",this.fileTemp).then(res=>{
-                        if(res.data==='FAILED')
-                        {
-                            this.$message({
-                                "showClose": true,
-                                "message": '上传失败',
-                                "type": 'fail',
-                            });
-                            this.getUserForm()
-                        }
-                        if(res.data==='SUCCESS')
-                        {
-                            this.$message({
-                                "showClose": true,
-                                "message": '操作成功',
-                                "type": 'success',
-                            });
-                            this.getUserForm()
-                        }
-                    })
-                } else {
-                    this.$message({
-                        type: 'warning',
-                        message: '附件格式错误，请删除后重新上传！'
-                    })
-                }
-            } else {
-                this.$message({
-                    type: 'warning',
-                    message: '请上传附件！'
-                })
-            }
-        },
+        // handleChange(file) {
+        //     this.fileTemp = file.raw
+        //     if (this.fileTemp) {
+        //         if ((this.fileTemp.type === '.csv') || (this.fileTemp.type === 'application/vnd.ms-excel')) {
+        //             request.post("/course/batchimport",this.fileTemp).then(res=>{
+        //                 if(res.data==='FAILED')
+        //                 {
+        //                     this.$message({
+        //                         "showClose": true,
+        //                         "message": '上传失败',
+        //                         "type": 'fail',
+        //                     });
+        //                     this.getUserForm()
+        //                 }
+        //                 if(res.data==='SUCCESS')
+        //                 {
+        //                     this.$message({
+        //                         "showClose": true,
+        //                         "message": '操作成功',
+        //                         "type": 'success',
+        //                     });
+        //                     this.getUserForm()
+        //                 }
+        //             })
+        //         } else {
+        //             this.$message({
+        //                 type: 'warning',
+        //                 message: '附件格式错误，请删除后重新上传！'
+        //             })
+        //         }
+        //     } else {
+        //         this.$message({
+        //             type: 'warning',
+        //             message: '请上传附件！'
+        //         })
+        //     }
+        // },
         editHandle(obj){
                 this.updatecourse=true;
                 this.ruleForm1=obj;

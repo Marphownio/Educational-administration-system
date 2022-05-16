@@ -12,7 +12,7 @@
         <router-link to="/personalinfo" >个人信息</router-link>
       </td>
       <td style="text-align:center" class="choose">
-        <router-link to="/classselection">选课</router-link>
+        <div id="xx" @click="getState()">选课</div>
       </td>
       <td style="text-align:center" class="choose">
         <router-link to="/myclass" > 我的课表 </router-link>
@@ -40,10 +40,25 @@
 
 <script>
 import Nav from "@/views/inc/Nav";
+import request from "@/utils/request";
+import ALERTMSG from "@/assets/js/alert";
 export default {
   name: "index_stu",
   components:{
     Nav
+  },
+  methods:{
+    getState(){
+      const that = this;
+      request.get("/admin/courseSelect/status").then(res=>{
+        if(res!=="START_FIRST"&&res!=="START_SECOND"){
+          ALERTMSG.show(that,true,"当前选课未开放!","warning");
+        }
+        else{
+          this.$router.push('/classselection')
+        }
+      })
+    }
   }
 }
 </script>

@@ -202,10 +202,10 @@ export default {
         this.getTime();
         this.getTeacher();
         this.getacademicterm();
-        this.getMajorList();
         this.getcourseCategory();
     },
     created(){
+        this.getMajorList();
        this.get_class_infor();
     },
     methods:{
@@ -365,6 +365,7 @@ export default {
             })
         },
         search(){
+            if(this.selectableData){
             this.selectableData1 = computed(() =>
                 this.selectableData.filter(
                     (data) =>
@@ -386,6 +387,7 @@ export default {
                         data.teacher.username.toLowerCase().includes(this.search33.toLowerCase())
                 )
             );
+            }
         },
         apply_new_class(){
             this.fillclassArrangementId();
@@ -456,6 +458,14 @@ export default {
                                 this.$message({
                                     showClose: true,
                                     message: '操作失败',
+                                    type: 'error',
+                                });
+                            }
+                            else if(res.data=='CONFLICT')
+                            {
+                                this.$message({
+                                    showClose: true,
+                                    message: '时间地点与已有课程冲突',
                                     type: 'error',
                                 });
                             }
@@ -538,7 +548,7 @@ export default {
                     params.openToMajors=  openToMajors;
                     params.capacity=this.ruleForm1.capacity;
                     if(typeof this.ruleForm1.introduction==="undefined"||(typeof this.ruleForm1.introduction==="string"&&this.ruleForm1.introduction.length===0))
-                        params.introduction= "该课程暂无描述信息";
+                        params.introduction= "该课程暂无介绍";
                     else
                         params.introduction=this.ruleForm1.introduction;
                     params.type='UPDATE'
@@ -568,6 +578,14 @@ export default {
                                         type: 'error',
                                     });
                                 }
+                                else if(res.data=='CONFLICT')
+                                {
+                                    this.$message({
+                                        showClose: true,
+                                        message: '时间地点与已有课程冲突',
+                                        type: 'error',
+                                    });
+                                }
                             }
                         )
                     }
@@ -584,39 +602,46 @@ export default {
             const that =this;
             request.get("/course/list")
                 .then(res=>{
-                    this.tableData=res;
+                    this.selectableData=res;
                     this.filltabledata();
+                    this.search();
                 },function (err) {
                     ALERTMSG.show(that,true,"课程信息获取失败！","error");
                     return false;
                 });
         },
         filltabledata(){
-            for(let i=0;i<Object.keys(this.tableData).length;i++)
+            for(let i=0;i<Object.keys(this.selectableData).length;i++)
             {
-                this.tableData[i].courseCategoryNumbershow=this.tableData[i].courseCategory.courseCategoryNumber+'.'+this.tableData[i].courseNumber;
+                this.selectableData[i].courseCategoryNumbershow=this.selectableData[i].courseCategory.courseCategoryNumber+'.'+this.selectableData[i].courseNumber;
                 let classarrangementstr='';
-                for(let k=0;k<Object.keys(this.tableData[i].classArrangements).length;k++)
+                for(let k=0;k<Object.keys(this.selectableData[i].classArrangements).length;k++)
                 {
                     let times='';
                     let timesinorder=[];
-                    timesinorder.length=Object.keys(this.tableData[i].classArrangements[k].classTimes).length;
+                    timesinorder.length=Object.keys(this.selectableData[i].classArrangements[k].classTimes).length;
                     //将classTimes按从小到大放入timesinorder
-                    for(let l=0;l<Object.keys(this.tableData[i].classArrangements[k].classTimes).length;l++)
+                    for(let l=0;l<Object.keys(this.selectableData[i].classArrangements[k].classTimes).length;l++)
                     {
-                        timesinorder[l]=this.tableData[i].classArrangements[k].classTimes[l].classTimeId;
+                        timesinorder[l]=this.selectableData[i].classArrangements[k].classTimes[l].classTimeId;
                     }
                     timesinorder=timesinorder.sort();
                     for(let l=0;l<Object.keys(timesinorder).length;l++)
                     {
                         times=times.concat(timesinorder[l]+',');
                     }
-                    classarrangementstr=classarrangementstr.concat(this.tableData[i].classArrangements[k].building.buildingName+','+
-                        this.tableData[i].classArrangements[k].classroom.classroomId+','+
+                    classarrangementstr=classarrangementstr.concat(this.selectableData[i].classArrangements[k].building.buildingName+','+
+                        this.selectableData[i].classArrangements[k].classroom.classroomId+','+
                         times+
-                        JSON.stringify(this.tableData[i].classArrangements[k].dayOfWeek).replace(/"/g,"")+'\n')
+                        JSON.stringify(this.selectableData[i].classArrangements[k].dayOfWeek).replace(/"/g,"")+'\n')
                 }
-                this.tableData[i].classarrangement = classarrangementstr;
+                this.selectableData[i].classarrangement = classarrangementstr;
+                if(Object.keys(this.selectableData[i].openToMajors).length===Object.keys(this.majorListData).length)
+                    this.selectableData[i].coursetype="通选";
+                else if(Object.keys(this.selectableData[i].openToMajors).length===1)
+                    this.selectableData[i].coursetype="专业";
+                else
+                    this.selectableData[i].coursetype="面向部分专业";
             }
 
         },

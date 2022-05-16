@@ -74,6 +74,13 @@ a:hover {
 #react{
     text-align: center;
 }
+#dialog3{
+    text-align: center;
+}
+textarea{
+    width: 900px;
+    min-height: 400px;
+}
 
 
 

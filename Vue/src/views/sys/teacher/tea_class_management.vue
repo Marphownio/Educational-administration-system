@@ -16,7 +16,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-table id="teaclassinformtable" :data="tableData" >
+    <el-table id="teaclassinformtable" :data="selectableDataShow" >
         <el-table-column prop="openToMajors" label="" width="120px" v-if="false"/>
         <el-table-column prop="classArrangements" label="" width="120px" v-if="false"/>
         <el-table-column prop="courseId" label="" width="120px" v-if="false"/>
@@ -46,6 +46,7 @@
         </el-table-column>
         <el-table-column align="center"  prop="courseCategory.school.schoolName" label="开课院系"/>
         <el-table-column align="center" prop="courseCategory.major.majorName" label="开课专业" />
+        <el-table-column align="center" prop="coursetype" label="课程类型"/>
         <el-table-column align="center" prop="courseCategory.classHour" label="学时" width="60px" />
         <el-table-column align="center" prop="courseCategory.credit" label="学分" width="60px" />
         <el-table-column align="center" label="任课教师">

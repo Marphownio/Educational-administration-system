@@ -18,7 +18,9 @@
             <el-table-column prop="courseName" label="课程名称" width="120px"/>
             <el-table-column prop="courseschoolName" label="开课院系" width="120px"/>
             <el-table-column prop="coursemajorName" label="所属专业" width="120px"/>
+            <el-table-column prop="coursetype" label="课程类型" width="120px"/>
             <el-table-column prop="username" label="学生姓名" width="120px" />
+            <el-table-column prop="userId" label="学号" width="120px" />
             <el-table-column v-slot="scope" prop="status" label="学生状态" width="120px">
                 <el-tag v-if="scope.row.status===true&&scope.row.role==='STUDENT'" type="success">在读</el-tag>
                 <el-tag v-if="scope.row.status===true&&scope.row.role==='TEACHER'" type="success">在岗</el-tag>
@@ -27,7 +29,6 @@
             </el-table-column>
             <el-table-column prop="school.schoolName" label="学生院系" width="120px"/>
             <el-table-column prop="major.majorName" label="学生专业" width="120px"/>
-            <el-table-column prop="idNumber" label="身份证号" width="180px" />
             <el-table-column prop="phoneNumber" label="手机号" width="120px" />
             <el-table-column prop="email" label="邮箱" width="180px" />
         </el-table>

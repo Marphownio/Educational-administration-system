@@ -168,7 +168,6 @@ export default {
         showwrongmessage(response){
             this.dialogVisible3=true;
             let str=JSON.stringify(response);
-            console.log(str);
             str=str.replace(/","/g,'\n');
             str=str.replace(/"/g,'');
             str=str.replace(/{/g,'');

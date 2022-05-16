@@ -51,8 +51,8 @@ export default {
                 phoneNumber:'',
                 email:'',
                 status:'',
-                school:'',
-                major:'',
+                school:{},
+                major:{},
             },
             PersonalData :{
                     User:'',
@@ -165,13 +165,9 @@ export default {
                     this.Userform.idNumber=this.PersonalData.User.idNumber;
                     this.Userform.status=this.PersonalData.User.status;
                     this.Userform.email=this.PersonalData.User.email;
-                    this.Userform.school=JSON.parse(this.PersonalData.User.school.schoolId);
-                    this.Userform.major=JSON.parse(this.PersonalData.User.major.majorId);
-                    let newPhoneformData = new FormData();
-                    for(let key in this.Userform) {
-                        newPhoneformData.append(key,this.Userform[key]);
-                    }
-                    request.put("/user/update",newPhoneformData)
+                    this.Userform.school.schoolId=String(this.PersonalData.User.school.schoolId);
+                    this.Userform.major.majorId=String(this.PersonalData.User.major.majorId);
+                    request.put("/user/update",this.Userform)
                       .then(function (response) {
                           ALERTMSG.show(that,true,"手机号码修改成功!","success");
                           that.getUserinfo();
@@ -198,13 +194,10 @@ export default {
                     this.Userform.idNumber=this.PersonalData.User.idNumber;
                     this.Userform.status=this.PersonalData.User.status;
                     this.Userform.phoneNumber=this.PersonalData.User.phoneNumber;
-                    this.Userform.school=JSON.parse(this.PersonalData.User.school.schoolId);
-                    this.Userform.major=JSON.parse(this.PersonalData.User.major.majorId);
+                    this.Userform.school.schoolId=String(this.PersonalData.User.school.schoolId);
+                    this.Userform.major.majorId=String(this.PersonalData.User.major.majorId);
                     let newemailformData = new FormData();
-                    for(let key in this.Userform) {
-                        newemailformData.append(key,this.Userform[key]);
-                    }
-                    request.put("/user/update",newemailformData)
+                    request.put("/user/update",this.Userform)
                         .then(function (response) {
                             ALERTMSG.show(that,true,"邮箱地址修改成功!","success");
                             that.getUserinfo();
