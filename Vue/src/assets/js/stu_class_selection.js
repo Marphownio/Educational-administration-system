@@ -10,6 +10,7 @@ export default {
     },
     data(){
         return {
+            currentState:'',
             schooltimetable: [],
             classinfortable1: [],
             teachingBuildings: [],
@@ -55,6 +56,7 @@ export default {
     },
     mounted(){},
     created(){
+        this.getAcademicState();
         this.getclassinfo();
         this.search();
         this.getSchooltimetable();
@@ -67,6 +69,12 @@ export default {
             this.fliterTimeAndPlaceForm.buildingId='';
             this.fliterTimeAndPlaceForm.dayOfWeek='';
             this.fliterTimeAndPlaceForm.classTimeId='';
+        },
+        getAcademicState(){
+            request.get("/admin/courseSelect/status").then(res=>{
+                console.log(res)
+                this.currentState=res;
+            })
         },
         getBuildings(){
             request.get("/building/list").then(res=>{
@@ -200,7 +208,7 @@ export default {
             const that=this;
                 request.get("/student/course/selectable")
                     .then(function(res){
-                            console.log(res);
+                        console.log(res);
                             that.selectableData=res;
                     }
                     ,function (err) {

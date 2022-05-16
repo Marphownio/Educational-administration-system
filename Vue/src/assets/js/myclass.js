@@ -33,6 +33,10 @@ export default {
             const formAAA = new FormData();
             formAAA.append('courseId', courseId);
             request.post("/student/course/drop",formAAA).then(function(res){
+                if(res==="NOT_OPEN"){
+                    ALERTMSG.show(that,true,"当前退课未开放!","warning");
+                    return false;
+                }
                 ALERTMSG.show(that,true,"退课成功!","success");
                 setTimeout(function() {
                     that.$router.go(0);

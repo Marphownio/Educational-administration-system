@@ -112,7 +112,7 @@
             </template>
           </el-table-column>
         <el-table-column align="center" v-slot="scope" fixed="right" prop="icon" label="操作">
-          <div v-if="scope.row.capacity<=scope.row.numberOfStudents">
+          <div v-if="scope.row.capacity<=scope.row.numberOfStudents&&this.currentState==='START_SECOND'">
             <el-button @click="applyStudentSelectOpen(scope.row)" type="success" plain>选课申请</el-button>
           </div>
           <div v-else>
