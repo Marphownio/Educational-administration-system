@@ -106,6 +106,10 @@ public class StudentServiceImpl implements StudentService {
             try {
                 student.getCourses().removeIf(course1 -> Objects.equals(course1.getCourseId(),courseId));
                 updateStudent(student);
+                Course course = courseService.findCourseByCourseId(courseId);
+                Integer updateStudentNumber = course.getNumberOfStudents();
+                course.setNumberOfStudents(updateStudentNumber - 1);
+                courseService.updateCourse(course);
             } catch (Exception e) {
                 resultMessage = ResultMessage.FAILED;
             }
