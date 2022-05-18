@@ -213,41 +213,48 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ResultMessage firstScreening() {
-        Admin admin = adminService.getAdmin();
-        List<Course> courses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
-        // 备份，失败时回滚
-        List<Course> backupCourses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
 
         // 课程时间冲突
         for (Student student : findAllStudent()) {
             Set<Course> courseSet = findAllCoursesStudying(student.getUserId());
+            if (courseSet.isEmpty()) {
+                continue;
+            }
+            Set<Course> courseSet1 = findAllCoursesStudying(student.getUserId());
             for (Course course1 : courseSet) {
                 for (Course course2 : courseSet) {
                     if (Objects.equals(course1.getCourseId(), course2.getCourseId())) {
                         continue;
                     }
-                    if (Boolean.TRUE.equals(isTimeConflict(course1, course2))) {
-                        courseSet.removeIf(course -> Objects.equals(course.getCourseId(), course2.getCourseId()));
+                    if (Boolean.TRUE.equals(isTimeConflict(course1, course2)) && courseSet1.contains(course1)) {
+                        courseSet1.removeIf(course -> Objects.equals(course.getCourseId(), course2.getCourseId()));
                     }
                 }
             }
-            student.setCourses(courseSet);
-            updateStudent(student);
+            student.setCourses(courseSet1);
+            try {
+                studentRepository.save(student);
+            } catch (Exception e) {
+                return ResultMessage.FAILED;
+            }
         }
 
+        Admin admin = adminService.getAdmin();
         // 选课人数超课程容量
+        List<Course> courses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
+        // 备份，失败时回滚
+        List<Course> backupCourses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
         for (Course course : courses) {
             List<Student> students = new ArrayList<>(course.getStudents());
             Collections.sort(students);
             course.getStudents().clear();
-            course.setStudents(new HashSet<>(students.subList(0, max(min(course.getCapacity(), students.size()) - 1, 0))));
-            if (courseService.updateCourse(course) == ResultMessage.SUCCESS) {
-                continue;
+            course.setStudents(new HashSet<>(students.subList(0, min(course.getCapacity(), students.size()))));
+            try {
+                courseRepository.save(course);
+            } catch (Exception e) {
+                courseRepository.saveAll(backupCourses);
+                return ResultMessage.FAILED;
             }
-            for (Course course1 : backupCourses) {
-                courseService.updateCourse(course1);
-            }
-            return ResultMessage.FAILED;
         }
         return ResultMessage.SUCCESS;
 
