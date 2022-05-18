@@ -101,7 +101,7 @@ public class StudentServiceImpl implements StudentService {
         } else {
             // 去除已选/已修的课程,去除以往学期的课程
             selectableCourses.removeIf(course -> student.getCourses().contains(course)
-                    || (Objects.equals(course.getAcademicYear(), adminService.getAdmin().getAcademicYear()) && Objects.equals(course.getTerm(), adminService.getAdmin().getTerm())));
+                    || !(Objects.equals(course.getAcademicYear(), adminService.getAdmin().getAcademicYear()) && Objects.equals(course.getTerm(), adminService.getAdmin().getTerm())));
             return selectableCourses;
         }
     }
