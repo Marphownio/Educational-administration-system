@@ -40,13 +40,12 @@ public class TeacherController {
         Teacher teacher = teacherService.findTeacherByTeacherId(user.getUserId());
         if (teacher == null || teacher.getTeacherApplications().isEmpty()) {
             return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
-        }
-        else {
+        } else {
             return new ResponseEntity<>(teacher.getTeacherApplications(), HttpStatus.OK);
         }
     }
 
-    // 当前学年指定教师的任课课程
+    // 当前学年学期教师的任课课程
     @GetMapping(value = "/courses")
     public ResponseEntity<Set<Course>> findAllCoursesTheTeacherTeaches(HttpSession session) {
         User user = (User)session.getAttribute("user");
@@ -56,7 +55,7 @@ public class TeacherController {
         }
         Set<Course> courses = new HashSet<>(teacher.getCourses());
         Admin admin = adminService.getAdmin();
-        courses.removeIf(course -> Objects.equals(course.getAcademicYear(), admin.getAcademicYear()) && Objects.equals(course.getTerm(), admin.getTerm()));
+        courses.removeIf(course -> !(Objects.equals(course.getAcademicYear(), admin.getAcademicYear()) && Objects.equals(course.getTerm(), admin.getTerm())));
         if (courses.isEmpty()) {
             return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
