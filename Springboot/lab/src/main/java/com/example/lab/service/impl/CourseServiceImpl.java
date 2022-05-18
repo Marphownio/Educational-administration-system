@@ -169,11 +169,16 @@ public class CourseServiceImpl implements CourseService {
             return ResultMessage.NOTFOUND;
         }
         else {
-            try {
-                courseRepository.deleteById(courseId);
-                return ResultMessage.SUCCESS;
+            if (findCourseByCourseId(courseId).getStudents().isEmpty()){
+                try {
+                    courseRepository.deleteById(courseId);
+                    return ResultMessage.SUCCESS;
+                }
+                catch (Exception exception) {
+                    return ResultMessage.FAILED;
+                }
             }
-            catch (Exception exception) {
+            else {
                 return ResultMessage.FAILED;
             }
         }
@@ -185,6 +190,7 @@ public class CourseServiceImpl implements CourseService {
         if (originalCourse == null) {
             return ResultMessage.NOTFOUND;
         }
+        course.setStudents(originalCourse.getStudents());
         // 更新前检查
         course.setStudents(originalCourse.getStudents());
         ResultMessage resultMessage = checkBeforeAddOrUpdateCourse(course);

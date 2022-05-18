@@ -36,6 +36,7 @@ export default {
         };
         return{
             dialogVisible3:false,
+            warningdialog:false,
             wrongmessage:'',
             addcourse:false,
             checked: false,
@@ -262,7 +263,8 @@ export default {
             termData:[
                 {term:1},
                 {term:2}
-            ]
+            ],
+            delcourse:[]
         }
     },
 
@@ -351,14 +353,11 @@ export default {
                 )
             );
             }
+            else this.courseData=[];
         },
         changeterm(){
-            request.get("/course/list",{
-                params:{
-                    academicYear:this.academicyear,
-                    term:this.term
-                },
-            }).then(res=>{
+            request.get("/course/list/"+this.academicyear+"/"+this.term
+            ).then(res=>{
                 this.courseData= res;
                 this.fillcourse();
                 this.search1();
@@ -481,7 +480,7 @@ export default {
                         {
                             timesinorder[l]=this.applicationData[i].classArrangements[k].classTimes[l].classTimeId;
                         }
-                        timesinorder=timesinorder.sort();
+                        timesinorder.sort();
                         for(let l=0;l<Object.keys(timesinorder).length;l++)
                         {
                             times=times.concat(timesinorder[l]+',');
@@ -602,7 +601,7 @@ export default {
                     {
                         timesinorder[l]=this.courseData[j].classArrangements[k].classTimes[l].classTimeId;
                     }
-                    timesinorder=timesinorder.sort();
+                    timesinorder.sort();
                     for(let l=0;l<Object.keys(timesinorder).length;l++)
                     {
                         times=times.concat(timesinorder[l]+',');
@@ -956,6 +955,15 @@ export default {
             })
         },
         delHandle(obj){
+            if(obj.numberOfStudents!=0)
+            {
+                this.$message({
+                    showClose: true,
+                    message: '该课程已有学生选课，无法删除',
+                    type: 'error',
+                });
+                return 0;
+            }
                 this.$axios.delete("/api/course/delete/"+obj.courseId).then(res=> {
                     if(res.data==='SUCCESS'){
                         this.$message({
@@ -974,6 +982,26 @@ export default {
                         });
                     }
                 })
+        },
+        confirmdel(){
+            this.$axios.delete("/api/course/delete/"+this.delcourse.courseId).then(res=> {
+                if(res.data==='SUCCESS'){
+                    this.$message({
+                        showClose: true,
+                        message: '操作成功',
+                        type: 'success',
+                    });
+                    this.$router.go(0);
+                }
+                else if(res.data==='FAILED')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '操作失败',
+                        type: 'error',
+                    });
+                }
+            })
         },
         delHandle2(row){
             this.$axios.delete("/api/courseCategory/delete/"+row.courseCategoryId).then(res=> {

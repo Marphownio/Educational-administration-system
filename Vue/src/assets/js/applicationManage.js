@@ -35,11 +35,14 @@ export default {
     methods:{
         getapplication(){
             request.get("/student/application/list").then(res=>{
-                this.applicationData=res;
-                for(let i=0;i<Object.keys(this.applicationData).length;i++)
+                for(let i=0;i<Object.keys(res).length;i++)
                 {
-                    this.applicationData[i].courseNumbershow=this.applicationData[i].course.courseCategory.courseCategoryNumber+'.'
-                    +this.applicationData[i].course.courseNumber;
+                    if(res[i].applicationStatus==="IN_REVIEW")
+                    {
+                        this.applicationData[i]=res[i];
+                        this.applicationData[i].courseNumbershow=this.applicationData[i].course.courseCategory.courseCategoryNumber+'.'
+                        +this.applicationData[i].course.courseNumber;
+                    }
                 }
             })
         },
@@ -49,11 +52,19 @@ export default {
                     applicationId:id,
                     operation:true
                 }
-            })
-            this.$message({
-                showClose: true,
-                message: '操作成功',
-                type: 'success',
+            }).then(res=> {
+                if(res==="SUCCESS")
+                    this.$message({
+                        showClose: true,
+                        message: '操作成功',
+                        type: 'success',
+                    });
+                else if(res==="OUTOFRANGE")
+                    this.$message({
+                        showClose: true,
+                        message: '选课容量超出教室容量，无法通过该请求',
+                        type: 'error',
+                    });
             });
         },
         rejectApplication(id){

@@ -90,6 +90,7 @@
             </el-table-column>
             <el-table-column prop="teacherId" label="教师工号" width="120px" sortable/>
             <el-table-column prop="capacity" label="选课容量" width="120px" sortable/>
+            <el-table-column prop="numberOfStudents" label="已选人数" width="120px"/>
             <el-table-column prop="classarrangement" label="课程安排" width="200px" >
                 <template #header>
                     <el-input v-model="search14" size="small" @change="search1()" placeholder="搜索上课时间" />
@@ -104,7 +105,11 @@
             <el-table-column v-slot="scope" fixed="right" prop="icon" label="操作" width="170px">
                 <div>
                     <el-button @click="editHandle(scope.row)">编辑</el-button>
-                    <el-button type="danger" @click="delHandle(scope.row)">删除</el-button>
+                    <el-popconfirm @confirm="delHandle(scope.row)" title="确认删除课程吗？">
+                        <template #reference>
+                            <el-button type="danger">删除</el-button>
+                        </template>
+                    </el-popconfirm>
                 </div>
             </el-table-column>
         </el-table>
@@ -430,6 +435,7 @@
             <textarea v-model="wrongmessage" readonly style="font-size: 15px"></textarea>
             <el-button type="primary" @click="exporttxt" >导出为txt</el-button>
         </el-dialog>
+
     </div>
 
     </body>
