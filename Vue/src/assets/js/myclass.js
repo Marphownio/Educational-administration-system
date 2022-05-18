@@ -54,6 +54,7 @@ export default {
         },
         getStudingClass:function(){
           request.get("/student/course/studying").then(res=>{
+              console.log(res);
                 this.classinfortable= res;
             });
         },

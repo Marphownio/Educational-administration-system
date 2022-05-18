@@ -33,7 +33,7 @@ a:hover {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
     margin-top: 30px;
     background-color:rgb(255,255,255,0.7);
     border-radius: 10px;

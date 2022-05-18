@@ -193,13 +193,13 @@
         :row-style="{height:'70px'}"
         :cell-style="{padding:'0px'}"
         border>
-      <el-table-column align="center" prop="classTimeId,startTimeHour,startTimeMin,endTimeHour,endTimeMin" label="次">
+      <el-table-column class="everyCol" align="center" prop="classTimeId,startTimeHour,startTimeMin,endTimeHour,endTimeMin" label="次">
         <template v-slot="scope">
           <p class="xxh1">第{{scope.row.classTimeId}}节课</p>
           <p class="xxh2">{{scope.row.startTimeHour}}:<span v-if="scope.row.startTimeMin<10">0</span>{{scope.row.startTimeMin}}---{{scope.row.endTimeHour}}:<span v-if="scope.row.endTimeMin<10">0</span>{{scope.row.endTimeMin}}</p>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="name" label="一">
+      <el-table-column class="everyCol" align="center" prop="name" label="一">
         <template v-slot="scope">
           <div class="Monday">
             <div class="classid"></div>
@@ -209,7 +209,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="address" label="二">
+      <el-table-column class="everyCol" align="center" prop="address" label="二">
         <template v-slot="scope">
           <div class="Tuesday">
             <div class="classid"></div>
@@ -219,7 +219,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="address" label="三">
+      <el-table-column class="everyCol" align="center" prop="address" label="三">
         <template v-slot="scope">
           <div class="Wednesday">
             <div class="classid"></div>
@@ -229,7 +229,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="address" label="四">
+      <el-table-column class="everyCol" align="center" prop="address" label="四">
         <template v-slot="scope">
           <div class="Thursday">
             <div class="classid"></div>
@@ -239,7 +239,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="address" label="五">
+      <el-table-column class="everyCol" align="center" prop="address" label="五">
         <template v-slot="scope">
           <div class="Friday">
             <div class="classid"></div>
@@ -249,7 +249,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="address" label="六">
+      <el-table-column class="everyCol" align="center" prop="address" label="六">
         <template v-slot="scope">
           <div class="Saturday">
             <div class="classid"></div>
@@ -259,7 +259,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="address" label="七">
+      <el-table-column class="everyCol" align="center" prop="address" label="七">
         <template v-slot="scope">
           <div class="Sunday">
             <div class="classid"></div>
