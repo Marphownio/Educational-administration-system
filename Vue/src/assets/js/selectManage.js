@@ -134,34 +134,40 @@ export default {
         nextStatue(){
             const that = this;
             request.post("/admin/courseSelect/next").then(function(res){
-                ALERTMSG.show(that,true,"阶段更改成功!","success");
-                if(that.currentStatue=='5'){
-                    let tem=that.currentTime[0].academicYear;
-                    that.formInLine.academicYear=tem[0]+tem[1]+tem[2]+tem[3];
-                    that.formInLine.academicYear2=Number(that.formInLine.academicYear)+1;
-                    that.formInLine.term=that.currentTime[0].term;
-                    if(that.formInLine.term=='2'){
-                        that.formInLine.term='1';
-                        that.formInLine.academicYear=that.formInLine.academicYear2;
+                if(res==="SUCCESS"){
+                    ALERTMSG.show(that,true,"阶段更改成功!","success");
+                    if(that.currentStatue=='5'){
+                        let tem=that.currentTime[0].academicYear;
+                        that.formInLine.academicYear=tem[0]+tem[1]+tem[2]+tem[3];
                         that.formInLine.academicYear2=Number(that.formInLine.academicYear)+1;
-                    }
-                    else{
-                        that.formInLine.term='2';
-                    }
-                    let formData = new FormData();
-                    that.formInLine.academicYear=that.formInLine.academicYear+'-'+that.formInLine.academicYear2;
-                    formData.append('academicYear',that.formInLine.academicYear);
-                    formData.append('term',that.formInLine.term);
-                    request.put("/admin/academicYearAndTerm/set",formData).then(function(res){
-                        if(res =='SUCCESS'){
-                            that.getYearAndTerm();
-                            ALERTMSG.show(that,true,"学年学期设置成功!","success");
+                        that.formInLine.term=that.currentTime[0].term;
+                        if(that.formInLine.term=='2'){
+                            that.formInLine.term='1';
+                            that.formInLine.academicYear=that.formInLine.academicYear2;
+                            that.formInLine.academicYear2=Number(that.formInLine.academicYear)+1;
                         }
-                    },function (err){
-                        ALERTMSG.show(that,true,"学年学期设置失败!","error");
-                    })
+                        else{
+                            that.formInLine.term='2';
+                        }
+                        let formData = new FormData();
+                        that.formInLine.academicYear=that.formInLine.academicYear+'-'+that.formInLine.academicYear2;
+                        formData.append('academicYear',that.formInLine.academicYear);
+                        formData.append('term',that.formInLine.term);
+                        request.put("/admin/academicYearAndTerm/set",formData).then(function(res){
+                            if(res =='SUCCESS'){
+                                that.getYearAndTerm();
+                                ALERTMSG.show(that,true,"学年学期设置成功!","success");
+                            }
+                        },function (err){
+                            ALERTMSG.show(that,true,"学年学期设置失败!","error");
+                        })
+                    }
+                    that.getStatus();
                 }
-                that.getStatus();
+                else if(res==="FAILED"){
+                    ALERTMSG.show(that,true,"阶段更改失败!","error");
+                }
+
             },function (err){
                 ALERTMSG.show(that,true,"阶段更改失败!","error");
             })
