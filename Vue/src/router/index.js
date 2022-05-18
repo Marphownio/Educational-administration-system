@@ -108,11 +108,11 @@ const routes = [
     name:'Courseselectionmanage',
     component: ()=>import('../views/sys/admin/courseselectionManage')
   },
-  // {
-  //   path: '*',
-  //   name: 'NotFound',
-  //   component: () => import('../views/NotFoundComponent.vue')
-  // }
+  {
+      path:'/myStudent',
+      name:'myStudent',
+      component: ()=>import('../views/sys/teacher/myStudents.vue')
+    },
 ]
 
 const router = createRouter({
@@ -154,7 +154,7 @@ router.beforeEach((to,from,next)=>{
       }
       //教师身份
       if(token==="2"){
-        if(to.path==="/teaApplication"||to.path==="/index_teacher"||to.path==="/resetpassword"||to.path==="/teaclassmanage"||to.path==="/personalinfo"){
+        if(to.path==="/myStudent"||to.path==="/teaApplication"||to.path==="/index_teacher"||to.path==="/resetpassword"||to.path==="/teaclassmanage"||to.path==="/personalinfo"){
           next();
         }
         else{
