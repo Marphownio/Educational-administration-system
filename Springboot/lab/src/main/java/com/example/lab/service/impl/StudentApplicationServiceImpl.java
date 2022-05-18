@@ -92,9 +92,12 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
             }
             try {
                 course.setCapacity(course.getCapacity() + 1);
-                course.getStudents().add(studentApplication.getStudent());
-                courseService.updateCourse(course);
+                course.setNumberOfStudents(course.getNumberOfStudents() + 1);
 
+                courseService.updateCourse(course);
+                Student student = studentApplication.getStudent();
+                student.getCourses().add(courseService.findCourseByCourseId(studentApplication.getCourse().getCourseId()));
+                studentService.updateStudent(student);
                 studentApplication.setApplicationStatus(ApplicationStatus.PASS);
                 studentApplicationRepository.save(studentApplication);
                 return  resultMessage;
