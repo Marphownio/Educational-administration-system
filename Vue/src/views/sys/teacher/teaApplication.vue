@@ -6,10 +6,10 @@
   <body>
   <Nav></Nav>
   <div id="teawelc">这是您的课程申请列表</div>
-  <div id="teaAppliationTable">
+  <div id="teaappliationtable">
     <el-table
         :data="teaApplicationData"
-        id="teaApplicationForm"
+        id="teaapplicationform"
         border=true>
       <el-table-column align="center" label="课程编号" width="120px">
         <template v-slot="scope">

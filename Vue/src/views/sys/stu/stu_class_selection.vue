@@ -18,7 +18,7 @@
         <el-form
             :model="fliterTimeAndPlaceForm"
             label-width="80px">
-          <div class="flexItems">
+          <div class="flexitems">
             <el-form-item label="上课日次:">
               <el-select v-model="fliterTimeAndPlaceForm.dayOfWeek" placeholder="选择上课日次">
                 <el-option label="周一" value="MONDAY" />
@@ -36,7 +36,7 @@
               </el-select>
             </el-form-item>
           </div>
-          <div class="flexItems">
+          <div class="flexitems">
             <el-form-item label="教学楼:">
               <el-select  v-model="fliterTimeAndPlaceForm.buildingId" placeholder="选择教学楼" @change="getClassroom(this.fliterTimeAndPlaceForm.buildingId)">
                 <el-option v-for="item in buildings" :key="item.buildingId" :label="item.buildingName" :value="item.buildingId" />
@@ -138,7 +138,7 @@
           :model="applyForSelectForm"
           :rules="applyForSelectFormRules"
           label-width="80px">
-        <div class="flexItems">
+        <div class="flexitems">
           <el-form-item label="课程编号:">
             <el-input v-model="applyForSelectForm.applyCourseCategoryNumber" readonly/>
           </el-form-item>
@@ -146,7 +146,7 @@
             <el-input v-model="applyForSelectForm.applyClassName" readonly/>
           </el-form-item>
         </div>
-        <div class="flexItems">
+        <div class="flexitems">
           <el-form-item label="申请人:">
             <el-input v-model="applyForSelectForm.applyStudentName" readonly/>
           </el-form-item>
@@ -157,7 +157,7 @@
           <el-form-item label="申请理由:" prop="applyReason">
             <el-input :rows="8" style="margin-left:10px;width:96%;" v-model="applyForSelectForm.applyReason" type="textarea" />
           </el-form-item>
-        <div class="flexItems">
+        <div class="flexitems">
           <el-form-item>
             <el-button type="primary" @click="toSubmitApply">确认提交</el-button>
             <el-button type="danger" @click="cancleApply">取消提交</el-button>
@@ -193,13 +193,13 @@
         :row-style="{height:'70px'}"
         :cell-style="{padding:'0px'}"
         border>
-      <el-table-column class="everyCol" align="center" prop="classTimeId,startTimeHour,startTimeMin,endTimeHour,endTimeMin" label="次">
+      <el-table-column class="everycol" align="center" prop="classTimeId,startTimeHour,startTimeMin,endTimeHour,endTimeMin" label="次">
         <template v-slot="scope">
           <p class="xxh1">第{{scope.row.classTimeId}}节课</p>
           <p class="xxh2">{{scope.row.startTimeHour}}:<span v-if="scope.row.startTimeMin<10">0</span>{{scope.row.startTimeMin}}---{{scope.row.endTimeHour}}:<span v-if="scope.row.endTimeMin<10">0</span>{{scope.row.endTimeMin}}</p>
         </template>
       </el-table-column>
-      <el-table-column class="everyCol" align="center" prop="name" label="一">
+      <el-table-column class="everycol" align="center" prop="name" label="一">
         <template v-slot="scope">
           <div class="Monday">
             <div class="classid"></div>
@@ -209,7 +209,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column class="everyCol" align="center" prop="address" label="二">
+      <el-table-column class="everycol" align="center" prop="address" label="二">
         <template v-slot="scope">
           <div class="Tuesday">
             <div class="classid"></div>
@@ -219,7 +219,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column class="everyCol" align="center" prop="address" label="三">
+      <el-table-column class="everycol" align="center" prop="address" label="三">
         <template v-slot="scope">
           <div class="Wednesday">
             <div class="classid"></div>
@@ -229,7 +229,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column class="everyCol" align="center" prop="address" label="四">
+      <el-table-column class="everycol" align="center" prop="address" label="四">
         <template v-slot="scope">
           <div class="Thursday">
             <div class="classid"></div>
@@ -239,7 +239,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column class="everyCol" align="center" prop="address" label="五">
+      <el-table-column class="everycol" align="center" prop="address" label="五">
         <template v-slot="scope">
           <div class="Friday">
             <div class="classid"></div>
@@ -249,7 +249,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column class="everyCol" align="center" prop="address" label="六">
+      <el-table-column class="everycol" align="center" prop="address" label="六">
         <template v-slot="scope">
           <div class="Saturday">
             <div class="classid"></div>
@@ -259,7 +259,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column class="everyCol" align="center" prop="address" label="七">
+      <el-table-column class="everycol" align="center" prop="address" label="七">
         <template v-slot="scope">
           <div class="Sunday">
             <div class="classid"></div>
@@ -271,7 +271,7 @@
       </el-table-column>
     </el-table>
 
-    <el-table id="classtimeData" :data="theClassTimeData" style="width: 100%">
+    <el-table id="classtimedata" :data="theClassTimeData" style="width: 100%">
       <el-table-column prop="dayOfWeek" align="center" label="日次">
         <template v-slot="scope">
           <span v-if="scope.row.dayOfWeek=='MONDAY'">周一</span>

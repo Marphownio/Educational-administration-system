@@ -23,7 +23,7 @@
     font-weight: 500;
     font-size: x-small;
 }
-#classtimeData{
+#classtimedata{
     margin-top: 20px;
 }
 #classinformtable{
@@ -99,7 +99,7 @@
     font-weight: 400;
     font-size: medium;
 }
-#chosenclassform .everyCol{
+#chosenclassform .everycol{
     width:12.5%;
 }
 #welcomeinform{
@@ -109,7 +109,7 @@
     font-size: xx-large;
     margin-left: -1000px;
 }
-.flexItems{
+.flexitems{
     display: flex;
     flex-direction: row;
     align-items: center;

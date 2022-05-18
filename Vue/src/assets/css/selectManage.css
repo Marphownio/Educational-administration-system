@@ -14,7 +14,7 @@ a:hover {
     color: #999999;
     text-decoration: underline;
 }
-#setFrame{
+#setframe{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,7 +23,7 @@ a:hover {
     border-radius: 25px;
     background-color: rgb(255,255,255,0.7);
 }
-#showCurrentTime{
+#showcurrenttime{
     margin-top: 20px;
     border-radius: 15px;
 }
@@ -54,7 +54,7 @@ a:hover {
     height: 50px;
     margin:0 auto;
 }
-#flexInput{
+#flexinput{
     display: flex;
     flex-direction: row;
     align-items: center;

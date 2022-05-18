@@ -1,7 +1,6 @@
 import Nav from "@/views/inc/Nav.vue";
 import request from "@/utils/request";
 import ALERTMSG from "@/assets/js/alert";
-import tokenmanage from "@/utils/Tokenmanage";
 export default {
     name: "myclass",
     components:{
