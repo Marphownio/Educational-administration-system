@@ -1,10 +1,8 @@
 package com.example.lab.service.impl;
 
+import com.example.lab.pojo.entity.*;
 import com.example.lab.pojo.enums.ApplicationStatus;
 import com.example.lab.pojo.enums.ResultMessage;
-import com.example.lab.pojo.entity.Course;
-import com.example.lab.pojo.entity.Student;
-import com.example.lab.pojo.entity.StudentApplication;
 import com.example.lab.repository.StudentApplicationRepository;
 import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
@@ -86,8 +84,13 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
             return resultMessage;
         }
         if (studentApplication != null) {
+            Course course = studentApplication.getCourse();
+            for (ClassArrangement classArrangement:course.getClassArrangements()){
+                if (classArrangement.getClassroom().getCapacity().equals(course.getCapacity())){
+                    return ResultMessage.OUTOFRANGE;
+                }
+            }
             try {
-                Course course = studentApplication.getCourse();
                 course.setCapacity(course.getCapacity() + 1);
                 course.getStudents().add(studentApplication.getStudent());
                 courseService.updateCourse(course);
