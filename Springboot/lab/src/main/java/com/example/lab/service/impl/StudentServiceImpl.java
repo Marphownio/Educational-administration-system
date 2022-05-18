@@ -3,6 +3,7 @@ package com.example.lab.service.impl;
 import com.example.lab.pojo.entity.*;
 import com.example.lab.pojo.enums.CourseSelectionStatus;
 import com.example.lab.pojo.enums.ResultMessage;
+import com.example.lab.repository.CourseRepository;
 import com.example.lab.repository.StudentRepository;
 import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Resource
     private StudentRepository studentRepository;
+
+    @Resource
+    private CourseRepository courseRepository;
 
     @Resource
     private AdminService adminService;
@@ -88,7 +92,13 @@ public class StudentServiceImpl implements StudentService {
         }
         Student student = findStudentByStudentId(studentId);
         selectCourse.getStudents().add(student);
-        return courseService.updateCourse(selectCourse);
+        try {
+            selectCourse.setNumberOfStudents(selectCourse.getNumberOfStudents() + 1);
+            courseRepository.save(selectCourse);
+        } catch (Exception e) {
+            resultMessage = ResultMessage.FAILED;
+        }
+        return resultMessage;
     }
 
     @Override
