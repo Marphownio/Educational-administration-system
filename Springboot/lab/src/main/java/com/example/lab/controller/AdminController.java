@@ -2,10 +2,7 @@ package com.example.lab.controller;
 
 import com.example.lab.pojo.enums.CourseSelectionStatus;
 import com.example.lab.pojo.enums.ResultMessage;
-import com.example.lab.service.AdminService;
-import com.example.lab.service.CourseService;
-import com.example.lab.service.StudentApplicationService;
-import com.example.lab.service.TeacherApplicationService;
+import com.example.lab.service.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,7 +21,7 @@ public class AdminController {
     private StudentApplicationService studentApplicationService;
 
     @Resource
-    private CourseService courseService;
+    private StudentService studentService;
 
     // 管理员处理教师对课程的请求
     @RequestMapping(value = "/application/teacher")
@@ -43,7 +40,7 @@ public class AdminController {
     // 改变选课系统状态
     @PostMapping(value = "/courseSelect/next")
     public ResultMessage changeCourseSelectionStatus() {
-        return courseService.changeCourseSelectionStatus();
+        return studentService.changeCourseSelectionStatus();
     }
 
     // 获取当前选课系统状态

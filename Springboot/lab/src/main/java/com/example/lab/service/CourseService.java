@@ -30,10 +30,6 @@ public interface CourseService {
 
     Boolean isConflictArrangement(ClassArrangement classArrangement);
 
-    ResultMessage changeCourseSelectionStatus();
-
-    ResultMessage firstScreening();
-
     //批量添加课程信息
     HashMap<String,String> batchImportCourse(MultipartFile file);
 

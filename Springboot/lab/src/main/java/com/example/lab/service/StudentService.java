@@ -26,4 +26,8 @@ public interface StudentService {
     Set<Course> findAllCoursesCompleted(Integer studentId);
 
     ResultMessage updateStudent(Student student);
+
+    ResultMessage changeCourseSelectionStatus();
+
+    ResultMessage firstScreening();
 }
