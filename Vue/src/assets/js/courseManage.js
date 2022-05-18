@@ -37,6 +37,7 @@ export default {
         };
         return{
             dialogVisible3:false,
+            warningdialog:false,
             wrongmessage:'',
             addcourse:false,
             checked: false,
@@ -263,7 +264,8 @@ export default {
             termData:[
                 {term:1},
                 {term:2}
-            ]
+            ],
+            delcourse:[]
         }
     },
 
@@ -352,14 +354,11 @@ export default {
                 )
             );
             }
+            else this.courseData=[];
         },
         changeterm(){
-            request.get("/course/list",{
-                params:{
-                    academicYear:this.academicyear,
-                    term:this.term
-                },
-            }).then(res=>{
+            request.get("/course/list/"+this.academicyear+"/"+this.term
+            ).then(res=>{
                 this.courseData= res;
                 this.fillcourse();
                 this.search1();
@@ -482,10 +481,11 @@ export default {
                         {
                             timesinorder[l]=this.applicationData[i].classArrangements[k].classTimes[l].classTimeId;
                         }
-                        timesinorder=timesinorder.sort();
-                        for(let l=0;l<Object.keys(timesinorder).length;l++)
+                        let timesinorder2=[];
+                        timesinorder2=timesinorder.sort();
+                        for(let l=0;l<Object.keys(timesinorder2).length;l++)
                         {
-                            times=times.concat(timesinorder[l]+',');
+                            times=times.concat(timesinorder2[l]+',');
                         }
                         classarrangementstr=classarrangementstr.concat(this.applicationData[i].classArrangements[k].building.buildingName+','+
                             this.applicationData[i].classArrangements[k].classroom.classroomId+','+
@@ -957,6 +957,12 @@ export default {
             })
         },
         delHandle(obj){
+            if(obj.numberOfStudents!=0)
+            {
+                this.delcourse=obj;
+                this.warningdialog=true;
+                return 0;
+            }
                 this.$axios.delete("/api/course/delete/"+obj.courseId).then(res=> {
                     if(res.data==='SUCCESS'){
                         this.$message({
@@ -975,6 +981,26 @@ export default {
                         });
                     }
                 })
+        },
+        confirmdel(){
+            this.$axios.delete("/api/course/delete/"+this.delcourse.courseId).then(res=> {
+                if(res.data==='SUCCESS'){
+                    this.$message({
+                        showClose: true,
+                        message: '操作成功',
+                        type: 'success',
+                    });
+                    this.$router.go(0);
+                }
+                else if(res.data==='FAILED')
+                {
+                    this.$message({
+                        showClose: true,
+                        message: '操作失败',
+                        type: 'error',
+                    });
+                }
+            })
         },
         delHandle2(row){
             this.$axios.delete("/api/courseCategory/delete/"+row.courseCategoryId).then(res=> {
