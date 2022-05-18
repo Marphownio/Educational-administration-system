@@ -1,7 +1,6 @@
 package com.example.lab.service.impl;
 
 import com.example.lab.pojo.entity.*;
-import com.example.lab.pojo.enums.CourseSelectionStatus;
 import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.repository.CourseRepository;
 import com.example.lab.service.*;
@@ -15,9 +14,6 @@ import java.time.DayOfWeek;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 
 // 课程的增删改查服务
 @Service
@@ -53,7 +49,8 @@ public class CourseServiceImpl implements CourseService {
     // 增加或更新课程前，检查教师、课程安排、容量、教师与教学楼是否符合要求
     private ResultMessage checkBeforeAddOrUpdateCourse(Course course) {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
-        if (course.getTeacher() == null || teacherService.findTeacherByTeacherId(course.getTeacher().getUserId()) == null
+        if (course.getCapacity() < course.getStudents().size() || course.getTeacher() == null
+                || teacherService.findTeacherByTeacherId(course.getTeacher().getUserId()) == null
                 || course.getCourseCategory() == null || course.getClassArrangements().isEmpty()) {
             return ResultMessage.FAILED;
         }
@@ -128,7 +125,6 @@ public class CourseServiceImpl implements CourseService {
         return false;
     }
 
-
     @Override
     public ResultMessage addCourse(Course course) {
         course.setCourseId(0);
@@ -194,7 +190,9 @@ public class CourseServiceImpl implements CourseService {
         if (originalCourse == null) {
             return ResultMessage.NOTFOUND;
         }
+        course.setStudents(originalCourse.getStudents());
         // 更新前检查
+        course.setStudents(originalCourse.getStudents());
         ResultMessage resultMessage = checkBeforeAddOrUpdateCourse(course);
         if (resultMessage != ResultMessage.SUCCESS) {
             return resultMessage;
@@ -258,54 +256,6 @@ public class CourseServiceImpl implements CourseService {
     public Course findCourseByCourseId(Integer courseId) {
         return courseRepository.findById(courseId).orElse(null);
     }
-
-    @Override
-    public ResultMessage changeCourseSelectionStatus() {
-        ResultMessage resultMessage = ResultMessage.SUCCESS;
-        Admin admin = adminService.getAdmin();
-        try {
-            switch (admin.getCourseSelectionStatus()) {
-                case START_TERM:    admin.setCourseSelectionStatus(CourseSelectionStatus.START_FIRST);  break;
-                case START_FIRST:   admin.setCourseSelectionStatus(CourseSelectionStatus.END_FIRST);    break;
-                case END_FIRST:     admin.setCourseSelectionStatus(CourseSelectionStatus.START_SECOND);
-                    // 第一轮选课结果筛选
-                    resultMessage = firstScreening(); break;
-                case START_SECOND:  admin.setCourseSelectionStatus(CourseSelectionStatus.END_SECOND);   break;
-                case END_SECOND:    admin.setCourseSelectionStatus(CourseSelectionStatus.END_TERM);     break;
-                case END_TERM:      admin.setCourseSelectionStatus(CourseSelectionStatus.START_TERM);   break;
-            }
-            if (resultMessage == ResultMessage.SUCCESS) {
-                resultMessage = adminService.saveAdmin(admin);
-            }
-        }
-        catch (Exception e) {
-            resultMessage = ResultMessage.FAILED;
-        }
-        return resultMessage;
-    }
-
-    @Override
-    public ResultMessage firstScreening() {
-        Admin admin = adminService.getAdmin();
-        List<Course> courses = findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
-        // 备份，失败时回滚
-        List<Course> backupCourses = findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
-        // TODO: 更合理的筛选, 课程时间冲突，模块复选
-        for (Course course : courses) {
-            List<Student> students = new ArrayList<>(course.getStudents());
-            course.getStudents().clear();
-            course.setStudents(new HashSet<>(students.subList(0, max(min(course.getCapacity(), students.size()) - 1, 0))));
-            if (updateCourse(course) == ResultMessage.SUCCESS) {
-                continue;
-            }
-            for (Course course1 : backupCourses) {
-                updateCourse(course1);
-            }
-            return ResultMessage.FAILED;
-        }
-        return ResultMessage.SUCCESS;
-    }
-
 
     @Override
     public HashMap<String,String> batchImportCourse(MultipartFile file) {

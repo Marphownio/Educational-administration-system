@@ -1,6 +1,5 @@
 package com.example.lab.pojo.entity;
 
-import com.example.lab.pojo.enums.ApplicationStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +13,7 @@ import java.util.Set;
 @Setter
 @Getter
 @Proxy(lazy = false)
-public class Student extends User {
+public class Student extends User implements Comparable<Student> {
 
     @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JsonIgnore
@@ -45,5 +44,10 @@ public class Student extends User {
 
     public Student() {
 
+    }
+
+    @Override
+    public int compareTo(Student student) {
+        return this.getUserId() - student.getUserId();
     }
 }

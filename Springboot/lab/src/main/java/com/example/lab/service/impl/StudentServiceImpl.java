@@ -1,8 +1,6 @@
 package com.example.lab.service.impl;
 
-import com.example.lab.pojo.entity.Admin;
-import com.example.lab.pojo.entity.Course;
-import com.example.lab.pojo.entity.Student;
+import com.example.lab.pojo.entity.*;
 import com.example.lab.pojo.enums.CourseSelectionStatus;
 import com.example.lab.pojo.enums.ResultMessage;
 import com.example.lab.repository.StudentRepository;
@@ -10,10 +8,10 @@ import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -59,6 +57,16 @@ public class StudentServiceImpl implements StudentService {
                 && selectCourse.getCapacity() <= selectCourse.getStudents().size()) {
             resultMessage = ResultMessage.FAILED;
         }
+        if (resultMessage == ResultMessage.SUCCESS && admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND) {
+            // 二轮时间冲突，不可选
+            Set<Course> courseSet = findAllCoursesStudying(studentId);
+            for (Course course : courseSet) {
+                if (Boolean.TRUE.equals(isTimeConflict(course, selectCourse))) {
+                    resultMessage = ResultMessage.FAILED;
+                    break;
+                }
+            }
+        }
         return resultMessage;
     }
 
@@ -91,8 +99,9 @@ public class StudentServiceImpl implements StudentService {
         if (selectableCourses.isEmpty()) {
             return new HashSet<>();
         } else {
-            // 去除已选/已修的课程
-            selectableCourses.removeIf(course -> student.getCourses().contains(course));
+            // 去除已选/已修的课程,去除以往学期的课程
+            selectableCourses.removeIf(course -> student.getCourses().contains(course)
+                    || (Objects.equals(course.getAcademicYear(), adminService.getAdmin().getAcademicYear()) && Objects.equals(course.getTerm(), adminService.getAdmin().getTerm())));
             return selectableCourses;
         }
     }
@@ -134,7 +143,7 @@ public class StudentServiceImpl implements StudentService {
             return courses;
         }
         courses.addAll(student.getCourses());
-        courses.removeIf(course -> !Objects.equals(course.getAcademicYear(), academicYear) && Objects.equals(course.getTerm(), term));
+        courses.removeIf(course -> !(Objects.equals(course.getAcademicYear(), academicYear) && Objects.equals(course.getTerm(), term)));
         return courses;
     }
 
@@ -165,5 +174,91 @@ public class StudentServiceImpl implements StudentService {
                 return ResultMessage.FAILED;
             }
         }
+    }
+
+    @Override
+    public ResultMessage changeCourseSelectionStatus() {
+        ResultMessage resultMessage = ResultMessage.SUCCESS;
+        Admin admin = adminService.getAdmin();
+        try {
+            switch (admin.getCourseSelectionStatus()) {
+                case START_TERM:    admin.setCourseSelectionStatus(CourseSelectionStatus.START_FIRST);  break;
+                case START_FIRST:   admin.setCourseSelectionStatus(CourseSelectionStatus.END_FIRST);    break;
+                case END_FIRST:     admin.setCourseSelectionStatus(CourseSelectionStatus.START_SECOND);
+                    // 第一轮选课结果筛选
+                    resultMessage = firstScreening(); break;
+                case START_SECOND:  admin.setCourseSelectionStatus(CourseSelectionStatus.END_SECOND);   break;
+                case END_SECOND:    admin.setCourseSelectionStatus(CourseSelectionStatus.END_TERM);     break;
+                case END_TERM:      admin.setCourseSelectionStatus(CourseSelectionStatus.START_TERM);   break;
+            }
+            if (resultMessage == ResultMessage.SUCCESS) {
+                resultMessage = adminService.saveAdmin(admin);
+            }
+        }
+        catch (Exception e) {
+            resultMessage = ResultMessage.FAILED;
+        }
+        return resultMessage;
+    }
+
+    @Override
+    public ResultMessage firstScreening() {
+        Admin admin = adminService.getAdmin();
+        List<Course> courses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
+        // 备份，失败时回滚
+        List<Course> backupCourses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
+
+        // 课程时间冲突
+        for (Student student : findAllStudent()) {
+            Set<Course> courseSet = findAllCoursesStudying(student.getUserId());
+            for (Course course1 : courseSet) {
+                for (Course course2 : courseSet) {
+                    if (Objects.equals(course1.getCourseId(), course2.getCourseId())) {
+                        continue;
+                    }
+                    if (Boolean.TRUE.equals(isTimeConflict(course1, course2))) {
+                        courseSet.removeIf(course -> Objects.equals(course.getCourseId(), course2.getCourseId()));
+                    }
+                }
+            }
+            student.setCourses(courseSet);
+            updateStudent(student);
+        }
+
+        // 选课人数超课程容量
+        for (Course course : courses) {
+            List<Student> students = new ArrayList<>(course.getStudents());
+            Collections.sort(students);
+            course.getStudents().clear();
+            course.setStudents(new HashSet<>(students.subList(0, max(min(course.getCapacity(), students.size()) - 1, 0))));
+            if (courseService.updateCourse(course) == ResultMessage.SUCCESS) {
+                continue;
+            }
+            for (Course course1 : backupCourses) {
+                courseService.updateCourse(course1);
+            }
+            return ResultMessage.FAILED;
+        }
+        return ResultMessage.SUCCESS;
+
+    }
+    private Boolean isTimeConflict(Course course1, Course course2) {
+        Set<ClassArrangement> classArrangementSet1 = course1.getClassArrangements();
+        Set<ClassArrangement> classArrangementSet2 = course2.getClassArrangements();
+        for (ClassArrangement classArrangement1 : classArrangementSet1) {
+            for (ClassArrangement classArrangement2 : classArrangementSet2) {
+                if (classArrangement1.getDayOfWeek() != classArrangement2.getDayOfWeek()) {
+                    continue;
+                }
+                for (ClassTime classTime1 : classArrangement1.getClassTimes()) {
+                    for (ClassTime classTime2 : classArrangement2.getClassTimes()) {
+                        if (Objects.equals(classTime1.getClassTimeId(), classTime2.getClassTimeId())) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 }
