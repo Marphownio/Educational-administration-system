@@ -23,7 +23,7 @@
     font-weight: 500;
     font-size: x-small;
 }
-#classtimeData{
+#classtimedata{
     margin-top: 20px;
 }
 #classinformtable{
@@ -58,7 +58,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
     margin-bottom: 10px;
     margin-top: 10px;
 }
@@ -99,7 +99,7 @@
     font-weight: 400;
     font-size: medium;
 }
-#chosenclassform el-table-column{
+#chosenclassform .everycol{
     width:12.5%;
 }
 #welcomeinform{
@@ -109,9 +109,9 @@
     font-size: xx-large;
     margin-left: -1000px;
 }
-.flexItems{
+.flexitems{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
 }

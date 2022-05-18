@@ -6,10 +6,10 @@
   <body>
   <Nav></Nav>
   <div id="welc">这是您的选课申请列表</div>
-  <div id="stuAppliationTable">
+  <div id="stuappliationtable">
     <el-table
         :data="stuApplicationData"
-        id="stuApplicationForm"
+        id="stuapplicationform"
         border=true>
       <el-table-column align="center" prop="course" width="150px" label="申请课程编号">
         <template v-slot="scope">

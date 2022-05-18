@@ -7,11 +7,11 @@
     <body>
 
     <Nav></Nav>
-    <div id="setFrame">
+    <div id="setframe">
           <el-table
               :data="currentTime"
               style="width: 80%"
-              id="showCurrentTime">
+              id="showcurrenttime">
             <el-table-column align="center" prop="academicYear" label="当前学年" />
             <el-table-column align="center" v-slot="scope" prop="term" label="当前学期">
               <div v-if="scope.row.term==1">
@@ -56,7 +56,7 @@
                label-width="100px"
                class="demo-form-inline">
         <el-form-item label="设置学年" prop="academicYear" ref="academicYear">
-          <div id="flexInput">
+          <div id="flexinput">
             <el-input @change="formInLine.academicYear2=Number(formInLine.academicYear)+1" v-model="formInLine.academicYear"/>
             {{'-'}}
             <el-input v-model="formInLine.academicYear2" readonly/>

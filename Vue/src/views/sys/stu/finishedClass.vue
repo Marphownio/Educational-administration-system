@@ -9,7 +9,7 @@
   <div id="finidhedclassbody">
     <el-table
         :data="finishedClassData"
-        id="finishedClass"
+        id="finishedclass"
         border=true>
       <el-table-column align="center"
                        prop="academicYear"
