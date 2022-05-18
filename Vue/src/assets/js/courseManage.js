@@ -480,11 +480,10 @@ export default {
                         {
                             timesinorder[l]=this.applicationData[i].classArrangements[k].classTimes[l].classTimeId;
                         }
-                        let timesinorder2=[];
-                        timesinorder2=timesinorder.sort();
-                        for(let l=0;l<Object.keys(timesinorder2).length;l++)
+                        timesinorder.sort();
+                        for(let l=0;l<Object.keys(timesinorder).length;l++)
                         {
-                            times=times.concat(timesinorder2[l]+',');
+                            times=times.concat(timesinorder[l]+',');
                         }
                         classarrangementstr=classarrangementstr.concat(this.applicationData[i].classArrangements[k].building.buildingName+','+
                             this.applicationData[i].classArrangements[k].classroom.classroomId+','+
@@ -602,7 +601,7 @@ export default {
                     {
                         timesinorder[l]=this.courseData[j].classArrangements[k].classTimes[l].classTimeId;
                     }
-                    timesinorder=timesinorder.sort();
+                    timesinorder.sort();
                     for(let l=0;l<Object.keys(timesinorder).length;l++)
                     {
                         times=times.concat(timesinorder[l]+',');
@@ -958,8 +957,11 @@ export default {
         delHandle(obj){
             if(obj.numberOfStudents!=0)
             {
-                this.delcourse=obj;
-                this.warningdialog=true;
+                this.$message({
+                    showClose: true,
+                    message: '该课程已有学生选课，无法删除',
+                    type: 'error',
+                });
                 return 0;
             }
                 this.$axios.delete("/api/course/delete/"+obj.courseId).then(res=> {

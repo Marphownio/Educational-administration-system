@@ -625,7 +625,7 @@ export default {
                     {
                         timesinorder[l]=this.selectableData[i].classArrangements[k].classTimes[l].classTimeId;
                     }
-                    timesinorder=timesinorder.sort();
+                    timesinorder.sort();
                     for(let l=0;l<Object.keys(timesinorder).length;l++)
                     {
                         times=times.concat(timesinorder[l]+',');

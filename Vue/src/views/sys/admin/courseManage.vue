@@ -436,15 +436,6 @@
             <el-button type="primary" @click="exporttxt" >导出为txt</el-button>
         </el-dialog>
 
-        <el-dialog
-                v-model="warningdialog"
-                title="该课程已有学生选课，确认要删除吗？"
-                width="300px"
-                @close="fresh()"
-        >
-            <el-button type="primary" @click="confirmdel" >确认删除</el-button>
-            <el-button type="primary" @click="this.warningdialog=false" >取消</el-button>
-        </el-dialog>
     </div>
 
     </body>
