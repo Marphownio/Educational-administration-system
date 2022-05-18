@@ -194,6 +194,7 @@ public class CourseServiceImpl implements CourseService {
         if (originalCourse == null) {
             return ResultMessage.NOTFOUND;
         }
+        course.setStudents(originalCourse.getStudents());
         // 更新前检查
         ResultMessage resultMessage = checkBeforeAddOrUpdateCourse(course);
         if (resultMessage != ResultMessage.SUCCESS) {
