@@ -158,12 +158,11 @@ public class UserServiceImpl implements UserService {
     public HashMap<String,String> batchImportUser(MultipartFile file) {
         User user = new User();
         HashMap<String,String> wrongMessage = new HashMap<>();
-        try {
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "GBK"))) {
             String line;
             //存储错误用户的信息及相关错误
-            BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "GBK"));
             //首行列标题
-            reader.readLine();
+            line = reader.readLine();
             while((line = reader.readLine())!= null){
                 String []item = line.split(",");
                 if (item.length < 10){
@@ -259,7 +258,6 @@ public class UserServiceImpl implements UserService {
                     }
                 }
             }
-            reader.close();
            //System.out.println(wrongMessage);
             return wrongMessage;
         }

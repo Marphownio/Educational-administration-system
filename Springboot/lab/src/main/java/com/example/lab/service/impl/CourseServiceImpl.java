@@ -260,12 +260,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HashMap<String,String> batchImportCourse(MultipartFile file) {
         Course course = new Course();
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"));
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(),"GBK"))) {
             HashMap<String,String> wrongMessage = new HashMap<>();
             String line;
             //首行列标题
-            reader.readLine();
+            line = reader.readLine();
             while((line = reader.readLine())!= null) {
                 String[] item = line.split(",");
                 boolean notNullFlag = true;
@@ -456,7 +455,6 @@ public class CourseServiceImpl implements CourseService {
                     this.addCourse(course);
                 }
             }
-            reader.close();
             return wrongMessage;
         } catch (Exception e) {
             return new HashMap<>();
