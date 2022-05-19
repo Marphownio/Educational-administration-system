@@ -28,8 +28,56 @@
                     <el-button type="primary" style="margin-left: 20px;margin-right: 20px;margin-top: 10px">通过csv文件添加</el-button>
                 </el-upload>
                 <el-button type="primary" @click="checkcourse=true">审核课程申请</el-button>
+                <div id="filterbtn" type="primary" style="margin-left: 20px;">
+                    <el-popover  placement="bottom"
+                                 title="课程筛选"
+                                 :width="500"
+                                 trigger="click"
+                    >
+                        <el-form
+                                :model="fliterTimeAndPlaceForm"
+                                label-width="80px">
+                            <div class="flexitems">
+                                <el-form-item label="上课日次:">
+                                    <el-select v-model="fliterTimeAndPlaceForm.dayOfWeek" placeholder="选择上课日次">
+                                        <el-option label="周一" value="MONDAY" />
+                                        <el-option label="周二" value="TUESDAY" />
+                                        <el-option label="周三" value="WEDNESDAY" />
+                                        <el-option label="周四" value="THURSDAY" />
+                                        <el-option label="周五" value="FRIDAY" />
+                                        <el-option label="周六" value="SATURDAY" />
+                                        <el-option label="周日" value="SUNDAY" />
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="上课节次:">
+                                    <el-select  v-model="fliterTimeAndPlaceForm.classTimeId" placeholder="选择上课节次">
+                                        <el-option v-for="item in timeData" :key="item.classTimeId" :label="item.classTimeId" :value="item.classTimeId" />
+                                    </el-select>
+                                </el-form-item>
+                            </div>
+                            <div class="flexitems">
+                                <el-form-item label="教学楼:">
+                                    <el-select  v-model="fliterTimeAndPlaceForm.buildingId" placeholder="选择教学楼" @change="getClassroom(0,this.fliterTimeAndPlaceForm.buildingId)">
+                                        <el-option v-for="item in buildingData" :key="item.buildingId" :label="item.buildingName" :value="item.buildingId" />
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="教室:">
+                                    <el-select v-model="fliterTimeAndPlaceForm.classroomId" placeholder="选择教室" >
+                                        <el-option v-for="item in classroomData[0]" :key="item.classroomId" :label="item.classroomId" :value="item.classroomId" />
+                                    </el-select>
+                                </el-form-item>
+                            </div>
+                        </el-form>
+                        <div style="text-align: right; margin: 0">
+                            <el-button size="small" type="danger" plain text @click="cancleFilter();">取消筛选</el-button>
+                        </div>
+                        <template #reference>
+                            <el-button @click="visible = true" type="primary" plain>设置筛选条件</el-button>
+                        </template>
+                    </el-popover>
+                </div>
                 <span>
-                <el-form-item label="学年" prop="academicyear" style="margin-left: 180px">
+                <el-form-item label="学年" prop="academicyear" style="margin-left: 40px">
                     <el-select v-model="academicyear" placeholder="选择学年" >
                         <el-option v-for="item in academicyearData" :key="item.year" :label="item.year" :value="item.year" />
                     </el-select>
@@ -91,12 +139,7 @@
             <el-table-column prop="teacherId" label="教师工号" width="120px" sortable/>
             <el-table-column prop="capacity" label="选课容量" width="120px" sortable/>
             <el-table-column prop="numberOfStudents" label="已选人数" width="120px"/>
-            <el-table-column prop="classarrangement" label="课程安排" width="200px" >
-                <template #header>
-                    <el-input v-model="search14" size="small" @change="search1()" placeholder="搜索上课时间" />
-                    <el-input v-model="search15" size="small" @change="search1()" placeholder="搜索上课地点" />
-                </template>
-            </el-table-column>
+            <el-table-column prop="classarrangement" label="课程安排" width="200px" />
             <el-table-column prop="time" label="上课时间" v-if="false"/>
             <el-table-column prop="place" label="上课地点" v-if="false"/>
             <el-table-column prop="academicYear" label="学年" width="120px"/>

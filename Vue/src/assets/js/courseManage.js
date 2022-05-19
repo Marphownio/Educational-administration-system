@@ -279,6 +279,12 @@ export default {
                 {year:"2022-2023"},
                 {year:"2023-2024"},
             ],
+            fliterTimeAndPlaceForm:{
+                dayOfWeek:'',
+                classTimeId:'',
+                buildingId:'',
+                classroomId:'',
+            },
             termData:[
                 {term:1},
                 {term:2}
@@ -328,6 +334,12 @@ export default {
                 pom.click();
             }
         },
+        cancleFilter(){
+            this.fliterTimeAndPlaceForm.classroomId='';
+            this.fliterTimeAndPlaceForm.buildingId='';
+            this.fliterTimeAndPlaceForm.dayOfWeek='';
+            this.fliterTimeAndPlaceForm.classTimeId='';
+        },
         refresh(){
             this.ruleForm1= {
                 arrangement: []
@@ -357,22 +369,31 @@ export default {
                         data.teacherName.toLowerCase().includes(this.search13.toLowerCase())
                 )
             );
-            this.courseData4 = computed(() =>
-                this.courseData3.filter(
-                    (data) =>
-                        !this.search14 ||
-                        data.time.toLowerCase().includes(this.search14.toLowerCase())
-                )
-            );
             this.courseDatashow = computed(() =>
-                this.courseData4.filter(
-                    (data) =>
-                        !this.search15 ||
-                        data.place.toLowerCase().includes(this.search15.toLowerCase())
-                )
-            );
+                    this.courseData3.filter(
+                (data) =>this.filterAll(data.classArrangements)
+                    )
+                );
             }
             else this.courseData=[];
+        },
+        filterAll(classArrangements){
+            let thisClassroomId = this.fliterTimeAndPlaceForm.classroomId;
+            let thisBuildingId = this.fliterTimeAndPlaceForm.buildingId;
+            let thisClassTimeId = this.fliterTimeAndPlaceForm.classTimeId;
+            let thisDayOfWeek = this.fliterTimeAndPlaceForm.dayOfWeek;
+            for(let i = 0;i<classArrangements.length;i++) {
+                if(classArrangements[i].dayOfWeek.includes(thisDayOfWeek)&&
+                    String(classArrangements[i].building.buildingId).includes(String(thisBuildingId))&&
+                    String(classArrangements[i].classroom.classroomId).includes(String(thisClassroomId))){
+                    for(let j=0;j<classArrangements[i].classTimes.length;j++){
+                        if(String(classArrangements[i].classTimes[j].classTimeId).includes(String(thisClassTimeId))){
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
         },
         changeterm(){
             request.get("/course/list/"+this.academicyear+"/"+this.term
@@ -507,7 +528,7 @@ export default {
                         classarrangementstr=classarrangementstr.concat(this.applicationData[i].classArrangements[k].building.buildingName+','+
                             this.applicationData[i].classArrangements[k].classroom.classroomId+','+
                             times+
-                            JSON.stringify(this.applicationData[i].classArrangements[k].dayOfWeek).replace(/"/g,"")+' ; ');
+                            this.replacedayofweek(this.applicationData[i].classArrangements[k].dayOfWeek)+' ; ');
                     }
                     this.applicationData[i].classarrangement=classarrangementstr;
                     if(Object.keys(this.applicationData[i].openToMajors).length===Object.keys(this.majorListData).length)
@@ -518,6 +539,22 @@ export default {
                         this.applicationData[i].coursetype="面向部分专业";
                 }
             })
+        },
+        replacedayofweek:function(str){
+            if(str==="MONDAY")
+                return "周一";
+            else if(str==="TUESDAY")
+                return "周二";
+            else if(str==="WEDNESDAY")
+                return "周三";
+            else if(str==="THURSDAY")
+                return "周四";
+            else if(str==="FRIDAY")
+                return "周五";
+            else if(str==="SATURDAY")
+                return "周六";
+            else if(str==="SUNDAY")
+                return "周日";
         },
         getTime:function(){
           request.get("/classTime/list").then(res=>{
@@ -628,9 +665,9 @@ export default {
                     classarrangementstr=classarrangementstr.concat(this.courseData[j].classArrangements[k].building.buildingName+','+
                         this.courseData[j].classArrangements[k].classroom.classroomId+','+
                         times+
-                        JSON.stringify(this.courseData[j].classArrangements[k].dayOfWeek).replace(/"/g,"")+' ; ');
+                        this.replacedayofweek(this.courseData[j].classArrangements[k].dayOfWeek)+' ; ');
                     timestr=timestr.concat(times+
-                        JSON.stringify(this.courseData[j].classArrangements[k].dayOfWeek).replace(/"/g,"")+' ; ');
+                        this.replacedayofweek(this.courseData[j].classArrangements[k].dayOfWeek)+' ; ');
                     placestr=placestr.concat(this.courseData[j].classArrangements[k].building.buildingName+','+
                         this.courseData[j].classArrangements[k].classroom.classroomId+' ; ');
                 }

@@ -633,7 +633,7 @@ export default {
                     classarrangementstr=classarrangementstr.concat(this.selectableData[i].classArrangements[k].building.buildingName+','+
                         this.selectableData[i].classArrangements[k].classroom.classroomId+','+
                         times+
-                        JSON.stringify(this.selectableData[i].classArrangements[k].dayOfWeek).replace(/"/g,"")+'\n')
+                        this.replacedayofweek(this.selectableData[i].classArrangements[k].dayOfWeek)+'\n')
                 }
                 this.selectableData[i].classarrangement = classarrangementstr;
                 if(Object.keys(this.selectableData[i].openToMajors).length===Object.keys(this.majorListData).length)
@@ -643,7 +643,22 @@ export default {
                 else
                     this.selectableData[i].coursetype="面向部分专业";
             }
-
+        },
+        replacedayofweek:function(str){
+            if(str==="MONDAY")
+                return "周一";
+            else if(str==="TUESDAY")
+                return "周二";
+            else if(str==="WEDNESDAY")
+                return "周三";
+            else if(str==="THURSDAY")
+                return "周四";
+            else if(str==="FRIDAY")
+                return "周五";
+            else if(str==="SATURDAY")
+                return "周六";
+            else if(str==="SUNDAY")
+                return "周日";
         },
         tea_delete(row){
             this.applicationform=row;
