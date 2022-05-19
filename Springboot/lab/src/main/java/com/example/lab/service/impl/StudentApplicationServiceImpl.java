@@ -3,6 +3,7 @@ package com.example.lab.service.impl;
 import com.example.lab.pojo.entity.*;
 import com.example.lab.pojo.enums.ApplicationStatus;
 import com.example.lab.pojo.enums.ResultMessage;
+import com.example.lab.repository.CourseRepository;
 import com.example.lab.repository.StudentApplicationRepository;
 import com.example.lab.service.*;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
 
     @Resource
     private StudentService studentService;
+
+    @Resource
+    private CourseRepository courseRepository;
 
     @Override
     public ResultMessage addStudentApplication(Integer courseId,Integer studentId,String reason) {
@@ -92,9 +96,12 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
             }
             try {
                 course.setCapacity(course.getCapacity() + 1);
-                course.getStudents().add(studentApplication.getStudent());
-                courseService.updateCourse(course);
+                course.setNumberOfStudents(course.getStudents().size() + 1);
+                courseRepository.save(course);
 
+                Student student = studentApplication.getStudent();
+                student.getCourses().add(courseService.findCourseByCourseId(studentApplication.getCourse().getCourseId()));
+                studentService.updateStudent(student);
                 studentApplication.setApplicationStatus(ApplicationStatus.PASS);
                 studentApplicationRepository.save(studentApplication);
                 return  resultMessage;

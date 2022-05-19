@@ -35,14 +35,20 @@ export default {
     methods:{
         getapplication(){
             request.get("/student/application/list").then(res=>{
+                let flag = 0;
                 for(let i=0;i<Object.keys(res).length;i++)
                 {
+
                     if(res[i].applicationStatus==="IN_REVIEW")
                     {
+                        flag=1;
                         this.applicationData[i]=res[i];
                         this.applicationData[i].courseNumbershow=this.applicationData[i].course.courseCategory.courseCategoryNumber+'.'
                         +this.applicationData[i].course.courseNumber;
                     }
+                }
+                if(flag===0){
+                    this.applicationData="";
                 }
             })
         },
