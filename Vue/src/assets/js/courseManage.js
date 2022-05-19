@@ -603,14 +603,31 @@ export default {
                     applicationId:id,
                     operation:true
                 }
+            }).then(res=>{
+                if(res==="SUCCESS")
+                {
+                    this.$message({
+                    showClose: true,
+                    message: '操作成功',
+                    type: 'success',
+                    });
+                    this.checkcourse=false;
+                    this.$router.go(0);
+                }
+                else if(res==="HAVE_STUDENTS")
+                    this.$message({
+                        showClose: true,
+                        message: '该课程已有学生选课，无法删除！',
+                        type: 'error',
+                    });
+                else if(res==="WRONG_CAPACITY")
+                    this.$message({
+                        showClose: true,
+                        message: '选课容量不能低于已选课人数！',
+                        type: 'error',
+                    });
             })
-            this.$message({
-                showClose: true,
-                message: '操作成功',
-                type: 'success',
-            });
-            this.checkcourse=false;
-            this.$router.go(0);
+
         },
         showCourse(){
             request.get("/course/list")
@@ -779,7 +796,7 @@ export default {
                                 type: 'error',
                             });
                         }
-                        else if(res.data=='CONFLICT')
+                        else if(res.data==='CONFLICT')
                         {
                             this.$message({
                                 showClose: true,
@@ -860,11 +877,19 @@ export default {
                                     type: 'error',
                                 });
                             }
-                            else if(res.data=='CONFLICT')
+                            else if(res.data==='CONFLICT')
                             {
                                 this.$message({
                                     showClose: true,
-                                    message: '时间地点与已有课程冲突',
+                                    message: '时间地点与已有课程冲突！',
+                                    type: 'error',
+                                });
+                            }
+                            else if(res.data==='WRONG_CAPACITY')
+                            {
+                                this.$message({
+                                    showClose: true,
+                                    message: '课程容量不能低于已选课人数！',
                                     type: 'error',
                                 });
                             }
@@ -1011,7 +1036,7 @@ export default {
             })
         },
         delHandle(obj){
-            if(obj.numberOfStudents!=0)
+            if(obj.numberOfStudents!==0)
             {
                 this.$message({
                     showClose: true,

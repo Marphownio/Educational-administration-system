@@ -461,7 +461,7 @@ export default {
                                     type: 'error',
                                 });
                             }
-                            else if(res.data=='CONFLICT')
+                            else if(res.data==='CONFLICT')
                             {
                                 this.$message({
                                     showClose: true,
@@ -515,7 +515,6 @@ export default {
         },
         submit_edit(){
             this.fillclassArrangementId();
-            console.log(this.ruleForm1);
             this.$refs.ruleForm1.validate(valid=>{
                 if(valid){
                     let params ={};
@@ -578,11 +577,19 @@ export default {
                                         type: 'error',
                                     });
                                 }
-                                else if(res.data=='CONFLICT')
+                                else if(res.data==='CONFLICT')
                                 {
                                     this.$message({
                                         showClose: true,
                                         message: '时间地点与已有课程冲突',
+                                        type: 'error',
+                                    });
+                                }
+                                else if(res.data==='WRONG_CAPACITY')
+                                {
+                                    this.$message({
+                                        showClose: true,
+                                        message: '选课容量不能小于已选课人数！',
                                         type: 'error',
                                     });
                                 }
