@@ -49,8 +49,7 @@ public class CourseServiceImpl implements CourseService {
     // 增加或更新课程前，检查教师、课程安排、容量、教师与教学楼是否符合要求
     private ResultMessage checkBeforeAddOrUpdateCourse(Course course) {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
-        if (course.getCapacity() < course.getStudents().size() || course.getTeacher() == null
-                || teacherService.findTeacherByTeacherId(course.getTeacher().getUserId()) == null
+        if (course.getTeacher() == null || teacherService.findTeacherByTeacherId(course.getTeacher().getUserId()) == null
                 || course.getCourseCategory() == null || course.getClassArrangements().isEmpty()) {
             return ResultMessage.FAILED;
         }

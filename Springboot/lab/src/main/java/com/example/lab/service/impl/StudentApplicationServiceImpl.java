@@ -91,7 +91,7 @@ public class StudentApplicationServiceImpl implements StudentApplicationService 
             Course course = studentApplication.getCourse();
             for (ClassArrangement classArrangement:course.getClassArrangements()){
                 if (classArrangement.getClassroom().getCapacity().equals(course.getCapacity())){
-                    return ResultMessage.OUTOFRANGE;
+                    return ResultMessage.WRONG_CAPACITY;
                 }
             }
             try {
