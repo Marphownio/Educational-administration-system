@@ -14,5 +14,7 @@ public enum ResultMessage {
     FAILED_LEFT,
     NOT_OPEN,
     CONFLICT,
-    OUTOFRANGE
+    OUTOFRANGE,
+    WRONG_CAPACITY,
+    HAVE_STUDENTS
 }

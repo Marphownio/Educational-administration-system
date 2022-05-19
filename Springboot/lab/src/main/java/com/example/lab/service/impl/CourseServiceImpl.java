@@ -56,8 +56,10 @@ public class CourseServiceImpl implements CourseService {
         }
         for (ClassArrangement classArrangement : course.getClassArrangements()) {
             Classroom classroom = classroomService.findClassroomById(classArrangement.getClassroom().getClassroomId());
-            if (course.getCapacity() > classroom.getCapacity()
-                    || Boolean.FALSE.equals(commonService.isMatchBuildingAndClassroom(classArrangement.getBuilding(),classArrangement.getClassroom()))) {
+            if (course.getCapacity() > classroom.getCapacity() || course.getCapacity() < course.getStudents().size()) {
+                return ResultMessage.WRONG_CAPACITY;
+            }
+            if (Boolean.FALSE.equals(commonService.isMatchBuildingAndClassroom(classArrangement.getBuilding(),classArrangement.getClassroom()))) {
                 resultMessage = ResultMessage.FAILED;
                 break;
             }
@@ -165,23 +167,20 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public ResultMessage deleteCourse(Integer courseId) {
-        if (findCourseByCourseId(courseId) == null) {
+        ResultMessage resultMessage = ResultMessage.HAVE_STUDENTS;
+        Course course = findCourseByCourseId(courseId);
+        if (course == null) {
             return ResultMessage.NOTFOUND;
         }
-        else {
-            if (findCourseByCourseId(courseId).getStudents().isEmpty()){
-                try {
-                    courseRepository.deleteById(courseId);
-                    return ResultMessage.SUCCESS;
-                }
-                catch (Exception exception) {
-                    return ResultMessage.FAILED;
-                }
-            }
-            else {
-                return ResultMessage.FAILED;
+        if (course.getStudents().isEmpty()){
+            try {
+                courseRepository.deleteById(courseId);
+                resultMessage = ResultMessage.SUCCESS;
+            } catch (Exception exception) {
+                resultMessage = ResultMessage.FAILED;
             }
         }
+        return resultMessage;
     }
 
     @Override
