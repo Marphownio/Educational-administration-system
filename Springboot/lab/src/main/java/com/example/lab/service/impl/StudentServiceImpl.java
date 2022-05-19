@@ -193,10 +193,10 @@ public class StudentServiceImpl implements StudentService {
         try {
             switch (admin.getCourseSelectionStatus()) {
                 case START_TERM:    admin.setCourseSelectionStatus(CourseSelectionStatus.START_FIRST);  break;
-                case START_FIRST:   admin.setCourseSelectionStatus(CourseSelectionStatus.END_FIRST);    break;
-                case END_FIRST:     admin.setCourseSelectionStatus(CourseSelectionStatus.START_SECOND);
+                case START_FIRST:   admin.setCourseSelectionStatus(CourseSelectionStatus.END_FIRST);
                     // 第一轮选课结果筛选
                     resultMessage = firstScreening(); break;
+                case END_FIRST:     admin.setCourseSelectionStatus(CourseSelectionStatus.START_SECOND); break;
                 case START_SECOND:  admin.setCourseSelectionStatus(CourseSelectionStatus.END_SECOND);   break;
                 case END_SECOND:    admin.setCourseSelectionStatus(CourseSelectionStatus.END_TERM);     break;
                 case END_TERM:      admin.setCourseSelectionStatus(CourseSelectionStatus.START_TERM);   break;
@@ -215,23 +215,34 @@ public class StudentServiceImpl implements StudentService {
     public ResultMessage firstScreening() {
 
         // 课程时间冲突
-        for (Student student : findAllStudent()) {
+        List<Student> studentList = findAllStudent();
+        studentList.removeIf(student -> !student.getStatus());
+        for (Student student : studentList) {
             Set<Course> courseSet = findAllCoursesStudying(student.getUserId());
+            Set<Course> courseSet1 = findAllCoursesCompleted(student.getUserId());
             if (courseSet.isEmpty()) {
                 continue;
             }
-            Set<Course> courseSet1 = findAllCoursesStudying(student.getUserId());
-            for (Course course1 : courseSet) {
-                for (Course course2 : courseSet) {
-                    if (Objects.equals(course1.getCourseId(), course2.getCourseId())) {
-                        continue;
-                    }
-                    if (Boolean.TRUE.equals(isTimeConflict(course1, course2)) && courseSet1.contains(course1)) {
-                        courseSet1.removeIf(course -> Objects.equals(course.getCourseId(), course2.getCourseId()));
+            List<Course> courseList = new ArrayList<>(courseSet);
+            for (int i = 0; i < courseList.size() - 1; i++) {
+                Course course1 = courseList.get(i);
+                for (int j = i + 1; j < courseList.size(); j++) {
+                    Course course2 = courseList.get(j);
+                    if (Boolean.TRUE.equals(isTimeConflict(course1, course2))) {
+                        int count = 0;
+                        for (Course course : courseSet) {
+                            if (Objects.equals(course.getCourseId(), course1.getCourseId()) || Objects.equals(course.getCourseId(), course2.getCourseId())) {
+                                count++;
+                            }
+                        }
+                        if (count == 2) {
+                            courseSet.removeIf(course -> Objects.equals(course.getCourseId(), course2.getCourseId()));
+                        }
                     }
                 }
             }
             student.setCourses(courseSet1);
+            student.getCourses().addAll(courseSet);
             try {
                 studentRepository.save(student);
             } catch (Exception e) {
@@ -250,13 +261,14 @@ public class StudentServiceImpl implements StudentService {
             course.getStudents().clear();
             course.setStudents(new HashSet<>(students.subList(0, min(course.getCapacity(), students.size()))));
             try {
+                course.setNumberOfStudents(course.getStudents().size());
                 courseRepository.save(course);
             } catch (Exception e) {
                 courseRepository.saveAll(backupCourses);
                 return ResultMessage.FAILED;
             }
         }
-        return ResultMessage.SUCCESS;
+        return ResultMessage.SUCCESS_LOGIN_ADMIN;
 
     }
     private Boolean isTimeConflict(Course course1, Course course2) {
@@ -270,12 +282,12 @@ public class StudentServiceImpl implements StudentService {
                 for (ClassTime classTime1 : classArrangement1.getClassTimes()) {
                     for (ClassTime classTime2 : classArrangement2.getClassTimes()) {
                         if (Objects.equals(classTime1.getClassTimeId(), classTime2.getClassTimeId())) {
-                            return false;
+                            return true;
                         }
                     }
                 }
             }
         }
-        return true;
+        return false;
     }
 }
