@@ -268,7 +268,7 @@ public class StudentServiceImpl implements StudentService {
                 return ResultMessage.FAILED;
             }
         }
-        return ResultMessage.SUCCESS_LOGIN_ADMIN;
+        return ResultMessage.SUCCESS;
 
     }
     private Boolean isTimeConflict(Course course1, Course course2) {
