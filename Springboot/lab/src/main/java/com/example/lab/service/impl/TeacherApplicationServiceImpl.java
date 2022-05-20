@@ -43,26 +43,30 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
     // 教师申请增删改课程
     @Override
     public ResultMessage addTeacherApplication(TeacherApplication application) {
-        ResultMessage resultMessage = ResultMessage.SUCCESS;
-        ResultMessage resultMessage1 = ResultMessage.FAILED;
-        ResultMessage resultMessage2 = ResultMessage.FAILED;
         application.setStatus(ApplicationStatus.IN_REVIEW);
+        ResultMessage resultMessage = ResultMessage.FAILED;
         switch (application.getType()) {
             case ADD:
                 application.setApplicationId(0);
                 application.setCourseId(0);
                 application.setCourseNumber(null);
-                break;
+                return applicationOfAddOrUpdateCourse(application);
             case UPDATE:
                 application.setApplicationId(0);
                 if (courseService.findCourseByCourseId(application.getCourseId()) == null) {
-                    resultMessage = ResultMessage.FAILED;
+                    resultMessage = ResultMessage.NOTFOUND;
                     break;
                 }
-                break;
+                return applicationOfAddOrUpdateCourse(application);
             case DELETE:
                 resultMessage = this.applicationOfDeleteCourse(application);
         }
+        return resultMessage;
+    }
+    private ResultMessage applicationOfAddOrUpdateCourse(TeacherApplication application) {
+        ResultMessage resultMessage = ResultMessage.SUCCESS;
+        ResultMessage resultMessage1 = ResultMessage.FAILED;
+        ResultMessage resultMessage2 = ResultMessage.FAILED;
         if (application.getType() == ApplicationType.ADD || application.getType() == ApplicationType.UPDATE) {
             resultMessage1 = this.applicationOfAddOrUpdateCourse1(application);
             resultMessage2 = this.applicationOfAddOrUpdateCourse2(application);
@@ -82,6 +86,7 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         }
         return resultMessage;
     }
+
     private ResultMessage applicationOfAddOrUpdateCourse1(TeacherApplication application) {
         if (teacherService.findTeacherByTeacherId(application.getTeacher().getUserId()) == null) {
             return ResultMessage.FAILED;

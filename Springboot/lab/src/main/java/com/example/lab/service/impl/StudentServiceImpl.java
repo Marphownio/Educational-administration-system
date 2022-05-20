@@ -55,22 +55,25 @@ public class StudentServiceImpl implements StudentService {
                 break;
             }
         }
-        // 二轮选课时，已选满的课程不可选
-        if (resultMessage == ResultMessage.SUCCESS && admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND
-                && selectCourse.getCapacity() <= selectCourse.getStudents().size()) {
-            resultMessage = ResultMessage.FAILED;
-        }
+        // 二轮选课时
         if (resultMessage == ResultMessage.SUCCESS && admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND) {
-            // 二轮课程安排冲突，不可选
-            Set<Course> courseSet = findAllCoursesStudying(studentId);
-            for (Course course : courseSet) {
-                if (Boolean.TRUE.equals(isArrangementConflict(course, selectCourse))) {
-                    resultMessage = ResultMessage.FAILED;
-                    break;
-                }
-            }
+            resultMessage = checkBeforeSelectCourse2(studentId, selectCourse);
         }
         return resultMessage;
+    }
+    private ResultMessage checkBeforeSelectCourse2(Integer studentId, Course selectCourse) {
+        // 二轮选课时，已选满的课程不可选
+        if (selectCourse.getCapacity() <= selectCourse.getStudents().size()) {
+            return ResultMessage.FAILED;
+        }
+        // 二轮课程安排冲突，不可选
+        Set<Course> courseSet = findAllCoursesStudying(studentId);
+        for (Course course : courseSet) {
+            if (Boolean.TRUE.equals(isArrangementConflict(course, selectCourse))) {
+                return ResultMessage.FAILED;
+            }
+        }
+        return ResultMessage.SUCCESS;
     }
 
     @Override
