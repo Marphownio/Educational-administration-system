@@ -58,8 +58,8 @@ public class UserServiceImpl implements UserService {
         }
         return resultMessage;
     }
-
-    private ResultMessage loginResult(User user, HttpSession session) {
+    @Override
+    public ResultMessage loginResult(User user, HttpSession session) {
         ResultMessage resultMessage;
         switch (user.getRole()) {
             case TEACHER:
@@ -121,8 +121,8 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
-
-    private ResultMessage saveUser(User user) {
+    @Override
+    public ResultMessage saveUser(User user) {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
         try {
             switch (user.getRole()) {

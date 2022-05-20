@@ -21,7 +21,7 @@ public interface CourseCategoryService {
     List<CourseCategory> findAllCourseCategory();
 
     // 查询一类课程中指定学年学期的课程
-    List<Course> findCourseByTermInCourseCategory(CourseCategory courseCategory, String academicYear, String term);
+    List<Course> findCourseByTermInCourseCategory(Integer courseCategoryId, String academicYear, String term);
 
     // 通过id查询一类课程
     CourseCategory findCourseCategoryByCourseCategoryId(Integer courseCategoryId);

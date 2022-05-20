@@ -83,8 +83,9 @@ public class CourseCategoryServiceImpl implements CourseCategoryService {
     }
 
     @Override
-    public List<Course> findCourseByTermInCourseCategory(CourseCategory courseCategory, String academicYear, String term) {
-        if (courseCategory.getCourses().isEmpty()) {
+    public List<Course> findCourseByTermInCourseCategory(Integer courseCategoryId, String academicYear, String term) {
+        CourseCategory courseCategory = findCourseCategoryByCourseCategoryId(courseCategoryId);
+        if (courseCategory == null || courseCategory.getCourses().isEmpty()) {
             return Collections.emptyList();
         }
         List<Course> courses = new ArrayList<>();

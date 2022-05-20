@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface CourseService {
 
+    Boolean isConflictTime(ClassArrangement classArrangement, ClassArrangement classArrangement1);
+
     // 增加课程
     ResultMessage addCourse(Course course);
 
@@ -27,6 +29,15 @@ public interface CourseService {
 
     // 通过id查询课程
     Course findCourseByCourseId(Integer courseId);
+
+    // 增加或更新课程前，检查教师、课程安排、容量、教师与教学楼是否符合要求
+    ResultMessage checkBeforeAddOrUpdateCourse(Course course);
+
+    // 增加或更新课程前对课程安排和开放专业的准备
+    ResultMessage prepareBeforeAddOrUpdateCourse1(Course course);
+
+    // 增加或更新课程前对所属课程类的准备
+    ResultMessage prepareBeforeAddOrUpdateCourse2(Course course);
 
     Boolean isConflictArrangement(ClassArrangement classArrangement);
 

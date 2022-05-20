@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -45,5 +46,11 @@ public class CourseCategoryController {
             return new ResponseEntity<>(new HashSet<>(), HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(courseCategory.getCourses(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/courses/{academicYear}/{term}")
+    public List<Course> findCourseByTermInCourseCategory(@RequestParam("courseCategoryId") Integer courseCategoryId,
+                                               @PathVariable("academicYear") String academicYear, @PathVariable("term") String term) {
+        return courseCategoryService.findCourseByTermInCourseCategory(courseCategoryId, academicYear, term);
     }
 }

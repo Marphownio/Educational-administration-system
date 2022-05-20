@@ -47,7 +47,8 @@ public class CourseServiceImpl implements CourseService {
     private AdminService adminService;
 
     // 增加或更新课程前，检查教师、课程安排、容量、教师与教学楼是否符合要求
-    private ResultMessage checkBeforeAddOrUpdateCourse(Course course) {
+    @Override
+    public ResultMessage checkBeforeAddOrUpdateCourse(Course course) {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
         if (course.getTeacher() == null || teacherService.findTeacherByTeacherId(course.getTeacher().getUserId()) == null
                 || course.getCourseCategory() == null || course.getClassArrangements().isEmpty()) {
@@ -66,7 +67,8 @@ public class CourseServiceImpl implements CourseService {
         return resultMessage;
     }
     // 增加或更新课程前对课程安排和开放专业的准备
-    private ResultMessage prepareBeforeAddOrUpdateCourse1(Course course) {
+    @Override
+    public ResultMessage prepareBeforeAddOrUpdateCourse1(Course course) {
         // 添加课程安排，由于id改变，需要重新获取
         ResultMessage resultMessage = ResultMessage.SUCCESS;
         Set<ClassArrangement> newClassArrangement = new HashSet<>();
@@ -92,7 +94,8 @@ public class CourseServiceImpl implements CourseService {
         return resultMessage;
     }
     // 增加或更新课程前对所属课程类的准备
-    private ResultMessage prepareBeforeAddOrUpdateCourse2(Course course) {
+    @Override
+    public ResultMessage prepareBeforeAddOrUpdateCourse2(Course course) {
         ResultMessage resultMessage = courseCategoryService.addCourseCategory(course.getCourseCategory());
         if (resultMessage == ResultMessage.FAILED) {
             return ResultMessage.FAILED;
@@ -121,7 +124,8 @@ public class CourseServiceImpl implements CourseService {
         }
         return false;
     }
-    private Boolean isConflictTime(ClassArrangement classArrangement, ClassArrangement classArrangement1) {
+    @Override
+    public Boolean isConflictTime(ClassArrangement classArrangement, ClassArrangement classArrangement1) {
         for (ClassTime classTime : classArrangement.getClassTimes()) {
             for (ClassTime classTime1 : classArrangement1.getClassTimes()) {
                 if (Objects.equals(classTime1.getClassTimeId(), classTime.getClassTimeId())) {

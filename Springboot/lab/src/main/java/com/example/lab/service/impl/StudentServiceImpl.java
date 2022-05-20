@@ -39,7 +39,8 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findAll();
     }
 
-    private ResultMessage checkBeforeSelectCourse(Integer studentId, Course selectCourse) {
+    @Override
+    public ResultMessage checkBeforeSelectCourse(Integer studentId, Course selectCourse) {
         ResultMessage resultMessage = ResultMessage.FAILED;
         if (selectCourse == null) {
             return ResultMessage.FAILED;
@@ -61,7 +62,8 @@ public class StudentServiceImpl implements StudentService {
         }
         return resultMessage;
     }
-    private ResultMessage checkBeforeSelectCourse2(Integer studentId, Course selectCourse) {
+    @Override
+    public ResultMessage checkBeforeSelectCourse2(Integer studentId, Course selectCourse) {
         // 二轮选课时，已选满的课程不可选
         if (selectCourse.getCapacity() <= selectCourse.getStudents().size()) {
             return ResultMessage.FAILED;
@@ -222,9 +224,8 @@ public class StudentServiceImpl implements StudentService {
         List<Course> backupCourses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
         for (Course course : courses) {
             List<Student> students = new ArrayList<>(course.getStudents());
-            Collections.sort(students);
             course.getStudents().clear();
-            course.setStudents(new HashSet<>(students.subList(0, min(course.getCapacity(), students.size()))));
+            course.setStudents(new HashSet<>(randomKick(students, course.getCapacity())));
             try {
                 course.setNumberOfStudents(course.getStudents().size());
                 courseRepository.save(course);
@@ -236,7 +237,8 @@ public class StudentServiceImpl implements StudentService {
         return ResultMessage.SUCCESS;
     }
 
-    private ResultMessage firstScreeningArrangementConflict() {
+    @Override
+    public ResultMessage firstScreeningArrangementConflict() {
         List<Student> studentList = findAllStudent();
         studentList.removeIf(student -> !student.getStatus());
         for (Student student : studentList) {
@@ -250,7 +252,8 @@ public class StudentServiceImpl implements StudentService {
         }
         return ResultMessage.SUCCESS;
     }
-    private void removeConflictCourse(Student student) {
+    @Override
+    public void removeConflictCourse(Student student) {
         Set<Course> courseSet = findAllCoursesStudying(student.getUserId());
         Set<Course> courseSet1 = findAllCoursesCompleted(student.getUserId());
         List<Course> courseList = new ArrayList<>(courseSet);
@@ -266,7 +269,8 @@ public class StudentServiceImpl implements StudentService {
         student.setCourses(courseSet1);
         student.getCourses().addAll(courseSet);
     }
-    private Boolean isContains(Course course1, Course course2, Set<Course> courseSet) {
+    @Override
+    public Boolean isContains(Course course1, Course course2, Set<Course> courseSet) {
         int count = 0;
         for (Course course : courseSet) {
             if (Objects.equals(course.getCourseId(), course1.getCourseId()) || Objects.equals(course.getCourseId(), course2.getCourseId())) {
@@ -275,7 +279,8 @@ public class StudentServiceImpl implements StudentService {
         }
         return count == 2;
     }
-    private Boolean isArrangementConflict(Course course1, Course course2) {
+    @Override
+    public Boolean isArrangementConflict(Course course1, Course course2) {
         Set<ClassArrangement> classArrangementSet1 = course1.getClassArrangements();
         Set<ClassArrangement> classArrangementSet2 = course2.getClassArrangements();
         for (ClassArrangement classArrangement1 : classArrangementSet1) {
@@ -290,7 +295,8 @@ public class StudentServiceImpl implements StudentService {
         }
         return false;
     }
-    private Boolean isTimeConflict(ClassArrangement classArrangement1, ClassArrangement classArrangement2) {
+    @Override
+    public Boolean isTimeConflict(ClassArrangement classArrangement1, ClassArrangement classArrangement2) {
         for (ClassTime classTime1 : classArrangement1.getClassTimes()) {
             for (ClassTime classTime2 : classArrangement2.getClassTimes()) {
                 if (Objects.equals(classTime1.getClassTimeId(), classTime2.getClassTimeId())) {
@@ -299,5 +305,10 @@ public class StudentServiceImpl implements StudentService {
             }
         }
         return false;
+    }
+    @Override
+    public List<Student> randomKick(List<Student> students, Integer capacity) {
+        Collections.sort(students);
+        return students.subList(0, min(capacity, students.size()));
     }
 }

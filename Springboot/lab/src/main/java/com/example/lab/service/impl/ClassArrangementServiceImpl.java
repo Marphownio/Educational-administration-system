@@ -32,17 +32,8 @@ public class ClassArrangementServiceImpl implements ClassArrangementService {
     }
 
     @Override
-    public ClassArrangement updateClassArrangement(ClassArrangement classArrangement) {
-        return addClassArrangement(classArrangement);
-    }
-
-    @Override
     public List<ClassArrangement> findAllClassArrangement() {
         return classArrangementRepository.findAll();
     }
 
-    @Override
-    public ClassArrangement findClassArrangementById(Integer classArrangementId) {
-        return classArrangementRepository.findById(classArrangementId).orElse(null);
-    }
 }

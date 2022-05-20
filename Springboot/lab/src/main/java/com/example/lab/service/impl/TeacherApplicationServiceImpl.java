@@ -63,7 +63,8 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         }
         return resultMessage;
     }
-    private ResultMessage applicationOfAddOrUpdateCourse(TeacherApplication application) {
+    @Override
+    public ResultMessage applicationOfAddOrUpdateCourse(TeacherApplication application) {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
         ResultMessage resultMessage1 = ResultMessage.FAILED;
         ResultMessage resultMessage2 = ResultMessage.FAILED;
@@ -86,8 +87,8 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         }
         return resultMessage;
     }
-
-    private ResultMessage applicationOfAddOrUpdateCourse1(TeacherApplication application) {
+    @Override
+    public ResultMessage applicationOfAddOrUpdateCourse1(TeacherApplication application) {
         if (teacherService.findTeacherByTeacherId(application.getTeacher().getUserId()) == null) {
             return ResultMessage.FAILED;
         }
@@ -113,7 +114,8 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         application.setOpenToMajors(majorSet);
         return resultMessage;
     }
-    private ResultMessage applicationOfAddOrUpdateCourse2(TeacherApplication application) {
+    @Override
+    public ResultMessage applicationOfAddOrUpdateCourse2(TeacherApplication application) {
         CourseCategory courseCategory = courseCategoryService.findCourseCategoryByCourseName(application.getCourseCategory().getCourseName());
         if (courseCategory != null) {
             application.setCourseCategory(courseCategory);
@@ -126,7 +128,8 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
             return resultMessage;
         }
     }
-    private void applicationOfAddOrUpdateCourseFailed(ResultMessage resultMessage2, TeacherApplication application) {
+    @Override
+    public void applicationOfAddOrUpdateCourseFailed(ResultMessage resultMessage2, TeacherApplication application) {
         if (application.getType() == ApplicationType.ADD || application.getType() == ApplicationType.UPDATE) {
             for (ClassArrangement classArrangement : application.getClassArrangements()) {
                 classArrangementService.deleteClassArrangement(classArrangement.getClassArrangementId());
@@ -137,7 +140,8 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
             courseCategoryService.deleteCourseCategory(application.getCourseCategory().getCourseCategoryId());
         }
     }
-    private ResultMessage applicationOfDeleteCourse(TeacherApplication application) {
+    @Override
+    public ResultMessage applicationOfDeleteCourse(TeacherApplication application) {
         Course course = courseService.findCourseByCourseId(application.getCourseId());
         if (course == null) {
             return ResultMessage.FAILED;
@@ -159,14 +163,12 @@ public class TeacherApplicationServiceImpl implements TeacherApplicationService 
         if (findTeacherApplicationById(applicationId) == null) {
             return ResultMessage.NOTFOUND;
         }
-        else {
-            try {
-                teacherApplicationRepository.deleteById(applicationId);
-                return ResultMessage.SUCCESS;
-            }
-            catch (Exception exception) {
-                return ResultMessage.FAILED;
-            }
+        try {
+            teacherApplicationRepository.deleteById(applicationId);
+            return ResultMessage.SUCCESS;
+        }
+        catch (Exception exception) {
+            return ResultMessage.FAILED;
         }
     }
 

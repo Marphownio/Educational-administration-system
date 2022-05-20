@@ -13,10 +13,14 @@ public interface UserService {
     // 登录
     ResultMessage login(String userId, String password, HttpSession session);
 
+    ResultMessage loginResult(User user, HttpSession session);
+
     // 注销
     ResultMessage logout(HttpSession session);
 
     ResultMessage resetPassword(String newPassword, HttpSession session);
+
+    ResultMessage saveUser(User user);
 
     // 增加用户
     ResultMessage addUser(User user);

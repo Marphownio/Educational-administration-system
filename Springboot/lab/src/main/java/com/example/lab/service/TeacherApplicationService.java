@@ -10,6 +10,16 @@ public interface TeacherApplicationService {
     // 教师对增删改课程的申请
     ResultMessage addTeacherApplication(TeacherApplication application);
 
+    ResultMessage applicationOfAddOrUpdateCourse(TeacherApplication application);
+
+    ResultMessage applicationOfAddOrUpdateCourse1(TeacherApplication application);
+
+    ResultMessage applicationOfAddOrUpdateCourse2(TeacherApplication application);
+
+    void applicationOfAddOrUpdateCourseFailed(ResultMessage resultMessage2, TeacherApplication application);
+
+    ResultMessage applicationOfDeleteCourse(TeacherApplication application);
+
     // 管理员处理完请求后将其删除
     ResultMessage deleteTeacherApplication(Integer applicationId);
 

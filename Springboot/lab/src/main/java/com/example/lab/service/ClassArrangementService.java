@@ -11,10 +11,6 @@ public interface ClassArrangementService {
 
     ResultMessage deleteClassArrangement(Integer classArrangementId);
 
-    ClassArrangement updateClassArrangement(ClassArrangement classArrangement);
-
     List<ClassArrangement> findAllClassArrangement();
-
-    ClassArrangement findClassArrangementById(Integer classArrangementId);
 
 }
