@@ -240,20 +240,7 @@ public class StudentServiceImpl implements StudentService {
         List<Student> studentList = findAllStudent();
         studentList.removeIf(student -> !student.getStatus());
         for (Student student : studentList) {
-            Set<Course> courseSet = findAllCoursesStudying(student.getUserId());
-            Set<Course> courseSet1 = findAllCoursesCompleted(student.getUserId());
-            List<Course> courseList = new ArrayList<>(courseSet);
-            for (int i = 0; i < courseList.size() - 1; i++) {
-                Course course1 = courseList.get(i);
-                for (int j = i + 1; j < courseList.size(); j++) {
-                    Course course2 = courseList.get(j);
-                    if (Boolean.TRUE.equals(isArrangementConflict(course1, course2)) && isContains(course1, course2, courseSet)) {
-                        courseSet.removeIf(course -> Objects.equals(course.getCourseId(), course2.getCourseId()));
-                    }
-                }
-            }
-            student.setCourses(courseSet1);
-            student.getCourses().addAll(courseSet);
+            removeConflictCourse(student);
             try {
                 studentRepository.save(student);
             } catch (Exception e) {
@@ -263,7 +250,23 @@ public class StudentServiceImpl implements StudentService {
         }
         return ResultMessage.SUCCESS;
     }
-    private boolean isContains(Course course1, Course course2, Set<Course> courseSet) {
+    private void removeConflictCourse(Student student) {
+        Set<Course> courseSet = findAllCoursesStudying(student.getUserId());
+        Set<Course> courseSet1 = findAllCoursesCompleted(student.getUserId());
+        List<Course> courseList = new ArrayList<>(courseSet);
+        for (int i = 0; i < courseList.size() - 1; i++) {
+            Course course1 = courseList.get(i);
+            for (int j = i + 1; j < courseList.size(); j++) {
+                Course course2 = courseList.get(j);
+                if (Boolean.TRUE.equals(isArrangementConflict(course1, course2)) && Boolean.TRUE.equals(isContains(course1, course2, courseSet))) {
+                    courseSet.removeIf(course -> Objects.equals(course.getCourseId(), course2.getCourseId()));
+                }
+            }
+        }
+        student.setCourses(courseSet1);
+        student.getCourses().addAll(courseSet);
+    }
+    private Boolean isContains(Course course1, Course course2, Set<Course> courseSet) {
         int count = 0;
         for (Course course : courseSet) {
             if (Objects.equals(course.getCourseId(), course1.getCourseId()) || Objects.equals(course.getCourseId(), course2.getCourseId())) {

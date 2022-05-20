@@ -115,11 +115,17 @@ public class CourseServiceImpl implements CourseService {
                     || classArrangement.getDayOfWeek() != classArrangement1.getDayOfWeek()) {
                 continue;
             }
-            for (ClassTime classTime : classArrangement.getClassTimes()) {
-                for (ClassTime classTime1 : classArrangement1.getClassTimes()) {
-                    if (Objects.equals(classTime1.getClassTimeId(), classTime.getClassTimeId())) {
-                        return true;
-                    }
+            if (Boolean.TRUE.equals(isConflictTime(classArrangement, classArrangement1))) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private Boolean isConflictTime(ClassArrangement classArrangement, ClassArrangement classArrangement1) {
+        for (ClassTime classTime : classArrangement.getClassTimes()) {
+            for (ClassTime classTime1 : classArrangement1.getClassTimes()) {
+                if (Objects.equals(classTime1.getClassTimeId(), classTime.getClassTimeId())) {
+                    return true;
                 }
             }
         }
