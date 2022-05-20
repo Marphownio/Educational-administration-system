@@ -224,8 +224,10 @@ public class StudentServiceImpl implements StudentService {
         List<Course> backupCourses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
         for (Course course : courses) {
             List<Student> students = new ArrayList<>(course.getStudents());
-            course.getStudents().clear();
-            course.setStudents(new HashSet<>(randomKick(students, course.getCapacity())));
+            if (!students.isEmpty()) {
+                course.getStudents().clear();
+                course.setStudents(new HashSet<>(randomKick(students, course.getCapacity())));
+            }
             try {
                 course.setNumberOfStudents(course.getStudents().size());
                 courseRepository.save(course);
@@ -308,7 +310,25 @@ public class StudentServiceImpl implements StudentService {
     }
     @Override
     public List<Student> randomKick(List<Student> students, Integer capacity) {
+        // 按学号从小到大排序
         Collections.sort(students);
-        return students.subList(0, min(capacity, students.size()));
+        // 按年级分成多个HashSet, 年级有序，HashSet内同一年纪的学生无序，实现优先高年级，同一年级随机
+        List<Set<Student>> sortedStudents = new ArrayList<>();
+        sortedStudents.add(new HashSet<>());
+        for (int i = 0; i < students.size() - 1; i++) {
+            Student student1 = students.get(i);
+            Student student2 = students.get(i + 1);
+            sortedStudents.get(sortedStudents.size()-1).add(student1);
+            if (student1.getUserId() / 10000 != student2.getUserId() / 10000) {
+                sortedStudents.add(new HashSet<>());
+            }
+        }
+        sortedStudents.get(sortedStudents.size()-1).add(students.get(students.size()-1));
+        // 截取合适数量的学生
+        List<Student> resultStudents = new ArrayList<>();
+        for (Set<Student> studentSet : sortedStudents) {
+            resultStudents.addAll(studentSet);
+        }
+        return resultStudents.subList(0, min(capacity, students.size()));
     }
 }
