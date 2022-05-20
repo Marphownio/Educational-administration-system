@@ -275,193 +275,174 @@ public class CourseServiceImpl implements CourseService {
             line = reader.readLine();
             while((line = reader.readLine())!= null) {
                 String[] item = line.split(",");
-                boolean notNullFlag = true;
+                boolean notNullFlag = false;
                 boolean formFlag = true;
                 for (String i : item) {
                     if (i.length() == 0) {
-                        notNullFlag = false;
+                        notNullFlag = true;
                         break;
                     }
                 }
-                if (item.length < 8 || Boolean.FALSE.equals(notNullFlag)) {
+                if (item.length < 8 || notNullFlag) {
                     wrongMessage.put(line, "必填项缺失！");
-                } else {
-                    if (!item[0].matches("^[0-9]+$")) {
-                        wrongMessage.put(line, "课程编号格式不正确！");
-                        continue;
-                    }
-                    if (!item[1].matches("^([0-9]+)-([0-9]+)")) {
-                        wrongMessage.put(line, "学年格式不正确！");
-                        continue;
-                    }
-                    if (!item[2].matches("^[1|2]")) {
-                        wrongMessage.put(line, "学期格式不正确！");
-                        continue;
-                    }
-                    if (!item[3].matches("^[1-9][0-9+]+")) {
-                        wrongMessage.put(line, "课程容量格式不正确！");
-                        continue;
-                    }
-                    if (!item[7].matches("^[0-9]*$") || item[7].length() != 8) {
-                        wrongMessage.put(line, "教师ID格式不正确");
-                        continue;
-                    }
+                    continue;
+                }
+                if (!item[0].matches("^[0-9]+$")) {
+                    wrongMessage.put(line, "课程编号格式不正确！");
+                    continue;
+                }
+                if (!item[1].matches("^([0-9]+)-([0-9]+)")) {
+                    wrongMessage.put(line, "学年格式不正确！");
+                    continue;
+                }
+                if (!item[2].matches("^[1|2]")) {
+                    wrongMessage.put(line, "学期格式不正确！");
+                    continue;
+                }
+                if (!item[3].matches("^[1-9][0-9+]+")) {
+                    wrongMessage.put(line, "课程容量格式不正确！");
+                    continue;
+                }
+                if (!item[7].matches("^[0-9]{8}$")) {
+                    wrongMessage.put(line, "教师ID格式不正确");
+                    continue;
+                }
 
-                    String introduction = "该课程暂无介绍";
-                    if (item.length == 9) {
-                        introduction = item[8];
-                    }
-                    Integer courseNumber = Integer.valueOf(item[0]);
-                    String academicYear = item[1];
-                    String term = item[2];
-                    Integer capacity = Integer.valueOf(item[3]);
-                    CourseCategory courseCategory = courseCategoryService.findCourseCategoryByCourseName(item[4]);
+                String introduction = (item.length == 9?item[8]:"该课程暂无介绍");
+                Integer courseNumber = Integer.valueOf(item[0]);
+                String academicYear = item[1];
+                String term = item[2];
+                Integer capacity = Integer.valueOf(item[3]);
+                CourseCategory courseCategory = courseCategoryService.findCourseCategoryByCourseName(item[4]);
 
-                    Building building;
-                    Classroom classroom;
-                    Teacher teacher = teacherService.findTeacherByTeacherId(Integer.valueOf(item[7]));
+                Building building;
+                Classroom classroom;
+                Teacher teacher = teacherService.findTeacherByTeacherId(Integer.valueOf(item[7]));
 
-                    HashSet<Major> openToMajors = new HashSet<>();
-                    HashSet<ClassArrangement> classArrangements = new HashSet<>();
-                    DayOfWeek dayOfWeek = null;
+                HashSet<Major> openToMajors = new HashSet<>();
+                HashSet<ClassArrangement> classArrangements = new HashSet<>();
+                DayOfWeek dayOfWeek = null;
 //
-                    String[] arrangements = item[6].split("/");
-                    String[] majors = item[5].split("/");
-                    // 检查课程类是否存在
-                    if (courseCategory == null) {
-                        wrongMessage.put(line, "课程类不存在！");
-                        continue;
+                String[] arrangements = item[6].split("/");
+                String[] majors = item[5].split("/");
+                // 检查课程类是否存在
+                if (courseCategory == null) {
+                    wrongMessage.put(line, "课程类不存在！");
+                    continue;
+                }
+                // 检查老师是否存在
+                if (teacher == null) {
+                    wrongMessage.put(line, "教师不存在！");
+                    continue;
+                }
+                // 获得开放专业
+                for (String i : majors) {
+                    Major major = majorService.findMajorByMajorName(i);
+                    if (major == null) {
+                        formFlag = false;
+                        wrongMessage.put(line, i+"专业不存在！");
+                        break;
                     }
-                    // 检查老师是否存在
-                    if (teacher == null) {
-                        wrongMessage.put(line, "教师不存在！");
-                        continue;
-                    }
-                    // 获得开放专业
-                    for (String i : majors) {
-                        Major major = majorService.findMajorByMajorName(i);
-                        if (major != null) {
-                            openToMajors.add(majorService.findMajorByMajorName(i));
-                        } else {
-                            formFlag = false;
-                            wrongMessage.put(line, i+"专业不存在！");
-                            break;
-                        }
-                    }
-                    if (!formFlag) continue;
+                    openToMajors.add(majorService.findMajorByMajorName(i));
+                }
 
                     // 获得课程安排
-                    for (String i : arrangements) {
-                        HashSet<ClassTime> classTimes = new HashSet<>();
-                        ClassArrangement classArrangement = new ClassArrangement();
-                        if (!i.matches("(.+)\\s(.+)\\s(.+)")){
+                for (String i : arrangements) {
+                    HashSet<ClassTime> classTimes = new HashSet<>();
+                    ClassArrangement classArrangement = new ClassArrangement();
+                    Pattern a = Pattern.compile("(.{2})\\s(1[0-3]|[1-9])-(1[0-3]|[1-9])\\s([A-Z]+)(\\d+)");
+                    Matcher matcher0 = a.matcher(i);
+                    if (!matcher0.find()){
+                        formFlag = false;
+                        wrongMessage.put(line,"课程安排格式错误！");
+                        break;
+                    }
+//                    String[] elements = i.split(" ");
+                        //获得课程安排中的dayofweek
+                    switch (matcher0.group(1)){
+                        case "周一":dayOfWeek = DayOfWeek.MONDAY;break;
+                        case "周二":dayOfWeek = DayOfWeek.TUESDAY;break;
+                        case "周三":dayOfWeek = DayOfWeek.WEDNESDAY;break;
+                        case "周四":dayOfWeek = DayOfWeek.THURSDAY;break;
+                        case "周五":dayOfWeek = DayOfWeek.FRIDAY;break;
+                        case "周六":dayOfWeek = DayOfWeek.SATURDAY;break;
+                        case "周日":dayOfWeek = DayOfWeek.SUNDAY;break;
+                        default:{
                             formFlag = false;
-                            wrongMessage.put(line,"课程安排格式错误！");
-                            break;
-                        }
-                        String[] elements = i.split(" ");
-                        if (elements.length < 3) {
-                            formFlag = false;
-                            wrongMessage.put(line, "课程安排数据缺失!");
-                            break;
-                        } else {
-                            //获得课程安排中的dayofweek
-                            switch (elements[0]){
-                                case "周一":dayOfWeek = DayOfWeek.MONDAY;break;
-                                case "周二":dayOfWeek = DayOfWeek.TUESDAY;break;
-                                case "周三":dayOfWeek = DayOfWeek.WEDNESDAY;break;
-                                case "周四":dayOfWeek = DayOfWeek.THURSDAY;break;
-                                case "周五":dayOfWeek = DayOfWeek.FRIDAY;break;
-                                case "周六":dayOfWeek = DayOfWeek.SATURDAY;break;
-                                case "周日":dayOfWeek = DayOfWeek.SUNDAY;break;
-                                default:{
-                                    formFlag = false;
-                                    wrongMessage.put(line,"课程安排工作日格式不正确！");
-                                }
-                            }
-                            if (!formFlag)break;
-
-                            // 获得上课时间
-                            Pattern time = Pattern.compile("(\\d+)-(\\d+)");
-                            Matcher matcher = time.matcher(elements[1]);
-                            classTimes.clear();
-                            if (matcher.find()){
-                                int start = Integer.parseInt(matcher.group(1));
-                                int end = Integer.parseInt(matcher.group(2));
-                                if (start < 1 || end > 13){
-                                    formFlag = false;
-                                    wrongMessage.put(line,"课程时间错误！");
-                                    break;
-                                }
-                                for (int j = start;j <= end;j++){
-                                    classTimes.add(classTimeService.findClassTimeById(j));
-                                }
-                            }
-                            else {
-                                formFlag = false;
-                                wrongMessage.put(line,"课程安排上课时间格式不正确！");
-                                break;
-                            }
-
-                            // 获得上课地点
-                            Pattern place = Pattern.compile("([A-Z]+)(\\d+)");
-                            Matcher matcher1 = place.matcher(elements[2]);
-                            if (matcher1.find()){
-                                classroom = classroomService.findClassroomById(Integer.valueOf(matcher1.group(2)));
-                                if (classroom == null){
-                                    formFlag = false;
-                                    wrongMessage.put(line,i+"课程安排上课地点教室不存在！");
-                                    break;
-                                }
-                                if (classroom.getCapacity() < capacity){
-                                    formFlag = false;
-                                    wrongMessage.put(line,"课程安排课程容量超过教室容量！");
-                                    break;
-                                }
-                                building = classroom.getBuilding();
-                            }
-                            else {
-                                formFlag = false;
-                                wrongMessage.put(line,"课程安排上课地点格式不正确！");
-                                break;
-                            }
-
-                            classArrangement.setClassroom(classroom);
-                            classArrangement.setDayOfWeek(dayOfWeek);
-                            classArrangement.setBuilding(building);
-                            classArrangement.setClassTimes(classTimes);
-                            List<ClassArrangement> allArrangements = classArrangementService.findAllClassArrangement();
-                            for (ClassArrangement h:allArrangements){
-                                if (h.getClassroom() == classArrangement.getClassroom() && h.getDayOfWeek() == classArrangement.getDayOfWeek()){
-                                    for (ClassTime l:h.getClassTimes()){
-                                        for (ClassTime o:classArrangement.getClassTimes()){
-                                            if (l == o){
-                                                formFlag = false;
-                                                wrongMessage.put(line,"课程安排冲突!");
-                                                break;
-                                            }
-                                        }
-                                        if (!formFlag)break;
-                                    }
-                                }
-                                if (!formFlag)break;
-                            }
-                            if (!formFlag)break;
-                            classArrangements.add(classArrangement);
+                            wrongMessage.put(line,"课程安排工作日格式不正确！");
                         }
                     }
-                    if (!formFlag)continue;
-                    course.setCourseNumber(courseNumber);
-                    course.setCapacity(capacity);
-                    course.setTeacher(teacher);
-                    course.setCourseCategory(courseCategory);
-                    course.setIntroduction(introduction);
-                    course.setClassArrangements(classArrangements);
-                    course.setAcademicYear(academicYear);
-                    course.setTerm(term);
-                    course.setOpenToMajors(openToMajors);
-                    this.addCourse(course);
+                    // 获得上课时间
+//                    Pattern time = Pattern.compile("(\\d+)-(\\d+)");
+//                    Matcher matcher = time.matcher(elements[1]);
+//                    classTimes.clear();
+//                    if (!matcher.find()){
+//                        formFlag = false;
+//                        wrongMessage.put(line,"课程安排上课时间格式不正确！");
+//                        break;
+//                    }
+                    int start = Integer.parseInt(matcher0.group(2));
+                    int end = Integer.parseInt(matcher0.group(3));
+//                    if (start < 1 || end > 13){
+//                        formFlag = false;
+//                        wrongMessage.put(line,"课程时间错误！");
+//                        break;
+//                    }
+                    for (int j = start;j <= end;j++){
+                        classTimes.add(classTimeService.findClassTimeById(j));
+                    }
+
+                    // 获得上课地点
+                    classroom = classroomService.findClassroomById(Integer.valueOf(matcher0.group(5)));
+                    if (classroom == null){
+                        formFlag = false;
+                        wrongMessage.put(line,"课程安排上课地点教室不存在！");
+                        break;
+                    }
+                    if (classroom.getCapacity() < capacity){
+                        formFlag = false;
+                        wrongMessage.put(line,"课程安排课程容量超过教室容量！");
+                        break;
+                    }
+                    building = classroom.getBuilding();
+
+                    classArrangement.setClassroom(classroom);
+                    classArrangement.setDayOfWeek(dayOfWeek);
+                    classArrangement.setBuilding(building);
+                    classArrangement.setClassTimes(classTimes);
+//                    List<ClassArrangement> allArrangements = classArrangementService.findAllClassArrangement();
+//                    for (ClassArrangement c:allArrangements){
+//                        if (c.getClassroom() == classArrangement.getClassroom() && c.getDayOfWeek() == classArrangement.getDayOfWeek()){
+//                            for (ClassTime t:c.getClassTimes()){
+//                                for (ClassTime ti:classArrangement.getClassTimes()){
+//                                    if (t == ti){
+//                                        formFlag = false;
+//                                        wrongMessage.put(line,"课程安排冲突!");
+//                                        break;
+//                                    }
+//                                }
+//                                if (!formFlag)break;
+//                            }
+//                        }
+//                        if (!formFlag)break;
+//                    }
+                    if (this.isConflictArrangement(classArrangement)){
+                        formFlag = false;
+                        break;
+                    }
+                    classArrangements.add(classArrangement);
                 }
+                if (!formFlag)continue;
+                course.setCourseNumber(courseNumber);
+                course.setCapacity(capacity);
+                course.setTeacher(teacher);
+                course.setCourseCategory(courseCategory);
+                course.setIntroduction(introduction);
+                course.setClassArrangements(classArrangements);
+                course.setAcademicYear(academicYear);
+                course.setTerm(term);
+                course.setOpenToMajors(openToMajors);
+                this.addCourse(course);
             }
             return wrongMessage;
         } catch (Exception e) {
