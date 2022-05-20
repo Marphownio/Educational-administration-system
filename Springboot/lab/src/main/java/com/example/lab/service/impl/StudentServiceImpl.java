@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.*;
 
-import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 @Service
@@ -62,10 +61,10 @@ public class StudentServiceImpl implements StudentService {
             resultMessage = ResultMessage.FAILED;
         }
         if (resultMessage == ResultMessage.SUCCESS && admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND) {
-            // 二轮时间冲突，不可选
+            // 二轮课程安排冲突，不可选
             Set<Course> courseSet = findAllCoursesStudying(studentId);
             for (Course course : courseSet) {
-                if (Boolean.TRUE.equals(isTimeConflict(course, selectCourse))) {
+                if (Boolean.TRUE.equals(isArrangementConflict(course, selectCourse))) {
                     resultMessage = ResultMessage.FAILED;
                     break;
                 }
@@ -121,9 +120,9 @@ public class StudentServiceImpl implements StudentService {
         ResultMessage resultMessage = ResultMessage.SUCCESS;
         Student student = findStudentByStudentId(studentId);
         Admin admin = adminService.getAdmin();
-        if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND){
+        if (admin.getCourseSelectionStatus() == CourseSelectionStatus.START_FIRST || admin.getCourseSelectionStatus() == CourseSelectionStatus.START_SECOND) {
             try {
-                student.getCourses().removeIf(course1 -> Objects.equals(course1.getCourseId(),courseId));
+                student.getCourses().removeIf(course1 -> Objects.equals(course1.getCourseId(), courseId));
                 updateStudent(student);
                 Course course = courseService.findCourseByCourseId(courseId);
                 Integer updateStudentNumber = course.getNumberOfStudents();
@@ -132,8 +131,7 @@ public class StudentServiceImpl implements StudentService {
             } catch (Exception e) {
                 resultMessage = ResultMessage.FAILED;
             }
-        }
-        else {
+        } else {
             resultMessage = ResultMessage.NOT_OPEN;
         }
         return resultMessage;
@@ -174,13 +172,11 @@ public class StudentServiceImpl implements StudentService {
     public ResultMessage updateStudent(Student student) {
         if (findStudentByStudentId(student.getUserId()) == null) {
             return ResultMessage.NOTFOUND;
-        }
-        else {
+        } else {
             try {
                 studentRepository.save(student);
                 return ResultMessage.SUCCESS;
-            }
-            catch (Exception exception) {
+            } catch (Exception exception) {
                 return ResultMessage.FAILED;
             }
         }
@@ -204,8 +200,7 @@ public class StudentServiceImpl implements StudentService {
             if (resultMessage == ResultMessage.SUCCESS) {
                 resultMessage = adminService.saveAdmin(admin);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             resultMessage = ResultMessage.FAILED;
         }
         return resultMessage;
@@ -213,43 +208,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public ResultMessage firstScreening() {
-
         // 课程时间冲突
-        List<Student> studentList = findAllStudent();
-        studentList.removeIf(student -> !student.getStatus());
-        for (Student student : studentList) {
-            Set<Course> courseSet = findAllCoursesStudying(student.getUserId());
-            Set<Course> courseSet1 = findAllCoursesCompleted(student.getUserId());
-            if (courseSet.isEmpty()) {
-                continue;
-            }
-            List<Course> courseList = new ArrayList<>(courseSet);
-            for (int i = 0; i < courseList.size() - 1; i++) {
-                Course course1 = courseList.get(i);
-                for (int j = i + 1; j < courseList.size(); j++) {
-                    Course course2 = courseList.get(j);
-                    if (Boolean.TRUE.equals(isTimeConflict(course1, course2))) {
-                        int count = 0;
-                        for (Course course : courseSet) {
-                            if (Objects.equals(course.getCourseId(), course1.getCourseId()) || Objects.equals(course.getCourseId(), course2.getCourseId())) {
-                                count++;
-                            }
-                        }
-                        if (count == 2) {
-                            courseSet.removeIf(course -> Objects.equals(course.getCourseId(), course2.getCourseId()));
-                        }
-                    }
-                }
-            }
-            student.setCourses(courseSet1);
-            student.getCourses().addAll(courseSet);
-            try {
-                studentRepository.save(student);
-            } catch (Exception e) {
-                return ResultMessage.FAILED;
-            }
+        if (firstScreeningArrangementConflict() != ResultMessage.SUCCESS) {
+            return ResultMessage.FAILED;
         }
-
         Admin admin = adminService.getAdmin();
         // 选课人数超课程容量
         List<Course> courses = courseService.findCourseByTerm(admin.getAcademicYear(), admin.getTerm());
@@ -269,9 +231,45 @@ public class StudentServiceImpl implements StudentService {
             }
         }
         return ResultMessage.SUCCESS;
-
     }
-    private Boolean isTimeConflict(Course course1, Course course2) {
+
+    private ResultMessage firstScreeningArrangementConflict() {
+        List<Student> studentList = findAllStudent();
+        studentList.removeIf(student -> !student.getStatus());
+        for (Student student : studentList) {
+            Set<Course> courseSet = findAllCoursesStudying(student.getUserId());
+            Set<Course> courseSet1 = findAllCoursesCompleted(student.getUserId());
+            List<Course> courseList = new ArrayList<>(courseSet);
+            for (int i = 0; i < courseList.size() - 1; i++) {
+                Course course1 = courseList.get(i);
+                for (int j = i + 1; j < courseList.size(); j++) {
+                    Course course2 = courseList.get(j);
+                    if (Boolean.TRUE.equals(isArrangementConflict(course1, course2)) && isContains(course1, course2, courseSet)) {
+                        courseSet.removeIf(course -> Objects.equals(course.getCourseId(), course2.getCourseId()));
+                    }
+                }
+            }
+            student.setCourses(courseSet1);
+            student.getCourses().addAll(courseSet);
+            try {
+                studentRepository.save(student);
+            } catch (Exception e) {
+                studentRepository.saveAll(studentList);
+                return ResultMessage.FAILED;
+            }
+        }
+        return ResultMessage.SUCCESS;
+    }
+    private boolean isContains(Course course1, Course course2, Set<Course> courseSet) {
+        int count = 0;
+        for (Course course : courseSet) {
+            if (Objects.equals(course.getCourseId(), course1.getCourseId()) || Objects.equals(course.getCourseId(), course2.getCourseId())) {
+                count++;
+            }
+        }
+        return count == 2;
+    }
+    private Boolean isArrangementConflict(Course course1, Course course2) {
         Set<ClassArrangement> classArrangementSet1 = course1.getClassArrangements();
         Set<ClassArrangement> classArrangementSet2 = course2.getClassArrangements();
         for (ClassArrangement classArrangement1 : classArrangementSet1) {
@@ -279,12 +277,18 @@ public class StudentServiceImpl implements StudentService {
                 if (classArrangement1.getDayOfWeek() != classArrangement2.getDayOfWeek()) {
                     continue;
                 }
-                for (ClassTime classTime1 : classArrangement1.getClassTimes()) {
-                    for (ClassTime classTime2 : classArrangement2.getClassTimes()) {
-                        if (Objects.equals(classTime1.getClassTimeId(), classTime2.getClassTimeId())) {
-                            return true;
-                        }
-                    }
+                if (Boolean.TRUE.equals(isTimeConflict(classArrangement1, classArrangement2))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private Boolean isTimeConflict(ClassArrangement classArrangement1, ClassArrangement classArrangement2) {
+        for (ClassTime classTime1 : classArrangement1.getClassTimes()) {
+            for (ClassTime classTime2 : classArrangement2.getClassTimes()) {
+                if (Objects.equals(classTime1.getClassTimeId(), classTime2.getClassTimeId())) {
+                    return true;
                 }
             }
         }
