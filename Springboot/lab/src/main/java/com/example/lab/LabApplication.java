@@ -34,10 +34,12 @@ public class LabApplication {
         classTimeService2 = classTimeService;
     }
     public static void prepare() {
+        // 初始化管理员
         Admin admin = new Admin(0,"fudan_admin", UserRole.ADMIN, CourseSelectionStatus.START_TERM,"2021-2022","1");
         if (adminService2.getAdmin() == null) {
             adminService2.saveAdmin(admin);
         }
+        // 初始化课程时间
         if (classTimeService2.findAllClassTime().isEmpty()) {
             Set<ClassTime> classTimes = new HashSet<>();
             classTimes.add(new ClassTime(1, 8, 0, 8, 45));

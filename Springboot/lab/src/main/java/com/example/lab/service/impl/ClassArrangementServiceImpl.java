@@ -30,10 +30,4 @@ public class ClassArrangementServiceImpl implements ClassArrangementService {
             return ResultMessage.FAILED;
         }
     }
-
-    @Override
-    public List<ClassArrangement> findAllClassArrangement() {
-        return classArrangementRepository.findAll();
-    }
-
 }
