@@ -89,7 +89,7 @@ public class StudentServiceImpl implements StudentService {
         if (courseSet != null && !courseSet.isEmpty()) {
             for (Course course : courseSet) {
                 // 已经选过同类课程
-                if (course.getCourseCategory() == selectCourse.getCourseCategory()) {
+                if (Objects.equals(course.getCourseCategory().getCourseCategoryId(), selectCourse.getCourseCategory().getCourseCategoryId())) {
                     return ResultMessage.EXIST;
                 }
             }
