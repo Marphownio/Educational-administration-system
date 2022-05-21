@@ -160,105 +160,74 @@ public class UserServiceImpl implements UserService {
         HashMap<String,String> wrongMessage = new HashMap<>();
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "GBK"))) {
             String line;
-            //存储错误用户的信息及相关错误
-            //首行列标题
             line = reader.readLine();
-            while((line = reader.readLine())!= null){
+            while((line = reader.readLine()) != null){
+
                 String []item = line.split(",");
-                if (item.length < 10){
+                boolean flag = false;
+                for(String i : item){
+                    if (i.length() == 0){
+                        flag = true;
+                        break;
+                    }
+                }
+                if (item.length < 10 || flag){
                     wrongMessage.put(line,"必填项缺失");
+                    continue;
                 }
-                else {
-                    if( item[0].length() != 0 && item[1].length() != 0 && item[2].length() != 0
-                        && item[3].length() != 0 && item[4].length() != 0 && item[7].length() != 0)
-                    {
-                        boolean number1=false,number2 = false,number3=false,charcheck=false,statuscheck=false,match=false;
-                        if(item[2].equals("TEACHER")||item[2].equals("STUDENT"))
-                        {
-                            if(UserRole.valueOf(item[2]) == UserRole.TEACHER)
-                            {
-                                number1 = item[0].matches("^[0-9]*$");
-                                if(!number1 || item[0].length() != 8)
-                                {
-                                    wrongMessage.put(line,"工号需为8位纯数字");
-                                    continue;
-                                }
-                            }
-                            else if(UserRole.valueOf(item[2]) == UserRole.STUDENT)
-                            {
-                                number1 = item[0].matches("^[0-9]*$");
-                                if(!number1 || item[0].length() != 6)
-                                {
-                                    wrongMessage.put(line,"学号需为6位纯数字");
-                                    continue;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            wrongMessage.put(line,"角色输入不正确");
-                            continue;
-                        }
-                        if(item[4].length() == 18){
-                            number2 = item[4].matches("^[0-9]*$");
-                        }
-                        if(!number2)
-                        {
-                            wrongMessage.put(line,"身份证号需为18位纯数字");
-                            continue;
-                        }
-                        if(item[5].length() == 11){
-                            number3 = item[5].matches("^[0-9]*$");
-                        }
-                        else if(item[5].length() == 0) {
-                            number3 = true;
-                        }
-                        if(!number3)
-                        {
-                            wrongMessage.put(line,"手机号需为1开头的11位纯数字");
-                            continue;
-                        }
-                        charcheck = item[3].matches("^[a-zA-Z\u4e00-\u9fa5]+$");
-                        if(!charcheck)
-                        {
-                            wrongMessage.put(line,"姓名输入只能为中英文");
-                            continue;
-                        }
-                        if(item[7].equals("TRUE")||item[7].equals("FALSE"))
-                            statuscheck=true;
-                        if(!statuscheck)
-                        {
-                            wrongMessage.put(line,"状态输入不正确");
-                            continue;
-                        }
-                        if(Boolean.TRUE.equals(commonService.isMatchSchoolAndMajor(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])),majorService.findMajorByMajorId(Integer.valueOf(item[9])))))
-                            match=true;
-                        if(!match)
-                        {
-                            wrongMessage.put(line,"学院与专业不存在或不匹配");
-                            continue;
-                        }
-                        if(number1 && number2 && number3 && charcheck && statuscheck && match)
-                        {
-                            user.setUserId(Integer.valueOf(item[0]));
-                            user.setPassword(item[1]);
-                            user.setUsername(item[3]);
-                            user.setIdNumber(item[4]);
-                            user.setPhoneNumber(item[5]);
-                            user.setEmail(item[6]);
-                            user.setStatus(Boolean.valueOf(item[7]));
-                            user.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])));
-                            user.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[9])));
-                            user.setRole(UserRole.valueOf(item[2]));
-                            addUser(user);
-                        }
-                    }
-                    else{
-                        wrongMessage.put(line,"必填项缺失");
-                    }
+                boolean statuscheck;
+                boolean match;
+                if(!item[2].equals("TEACHER") && !item[2].equals("STUDENT")){
+                    wrongMessage.put(line,"角色输入不正确");
+                    continue;
                 }
+                if(UserRole.valueOf(item[2]) == UserRole.TEACHER && !item[0].matches("^[0-9]{8}$"))
+                {
+                    wrongMessage.put(line,"工号需为8位纯数字");
+                    continue;
+                }
+                if(UserRole.valueOf(item[2]) == UserRole.STUDENT && !item[0].matches("^[0-9]{6}$")){
+                    wrongMessage.put(line,"学号需为6位纯数字");
+                    continue;
+                }
+                if(!item[4].matches("^[0-9]{18}$")){
+                    wrongMessage.put(line,"身份证号需为18位纯数字");
+                    continue;
+                }
+                if(!item[5].matches("^[0-9]{0,11}$"))
+                {
+                    wrongMessage.put(line,"手机号需为1开头的11位纯数字");
+                    continue;
+                }
+                if(!item[3].matches("^[a-zA-Z\u4e00-\u9fa5]+$"))
+                {
+                    wrongMessage.put(line,"姓名输入只能为中英文");
+                    continue;
+                }
+                statuscheck = item[7].equals("TRUE") || item[7].equals("FALSE");
+                if(!statuscheck)
+                {
+                    wrongMessage.put(line,"状态输入不正确");
+                    continue;
+                }
+                match = Boolean.TRUE.equals(commonService.isMatchSchoolAndMajor(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])),majorService.findMajorByMajorId(Integer.valueOf(item[9]))));
+                if(!match)
+                {
+                    wrongMessage.put(line,"学院与专业不存在或不匹配");
+                    continue;
+                }
+                user.setUserId(Integer.valueOf(item[0]));
+                user.setPassword(item[1]);
+                user.setUsername(item[3]);
+                user.setIdNumber(item[4]);
+                user.setPhoneNumber(item[5]);
+                user.setEmail(item[6]);
+                user.setStatus(Boolean.valueOf(item[7]));
+                user.setSchool(schoolService.findSchoolBySchoolId(Integer.valueOf(item[8])));
+                user.setMajor(majorService.findMajorByMajorId(Integer.valueOf(item[9])));
+                user.setRole(UserRole.valueOf(item[2]));
+                addUser(user);
             }
-           //System.out.println(wrongMessage);
             return wrongMessage;
         }
         catch (Exception e) {
